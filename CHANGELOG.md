@@ -4,6 +4,67 @@
 
 ---
 
+## [1.14.0] - Production Deployment - 2026-03-20 🚀🌐
+
+### Production Deployment - Complete ✅
+
+**🌐 Live Dashboard**
+- ✅ Deployed to Vercel (free tier)
+- ✅ Custom domain configured: https://dashboard.omniprise.com.py
+- ✅ SSL certificate automatically provisioned
+- ✅ DNS configured and propagated
+- ✅ All 14 modules live and accessible
+- ✅ Environment variables configured
+- ✅ Global CDN enabled
+
+**📋 Deployment Details**
+- **Platform:** Vercel (Free tier - $0/month)
+- **Method:** Vercel CLI deployment
+- **Build:** Successful with all modules
+- **DNS:** A record pointing to Vercel
+- **SSL:** Automatic HTTPS
+- **CDN:** Global edge network
+- **Status:** Production ready
+
+**🔧 Tools Created**
+- ✅ `deploy.sh` - One-command deployment script
+- ✅ `VERCEL_DEPLOYMENT.md` - Complete deployment guide
+- ✅ Environment variables configured in Vercel
+
+**💰 Cost Savings**
+- Using Vercel CLI (no GitLab integration)
+- Free tier: 100GB bandwidth/month
+- Savings: $240/year vs Vercel Pro
+- All features, same performance
+
+**📊 Environment Variables**
+- NEXT_PUBLIC_SUPABASE_URL
+- NEXT_PUBLIC_SUPABASE_ANON_KEY
+- SUPABASE_SERVICE_ROLE_KEY
+- NEXT_PUBLIC_APP_URL (https://dashboard.omniprise.com.py)
+- NEXT_PUBLIC_APP_NAME (Grupo Omniprise)
+- NEXT_PUBLIC_ENABLE_ANALYTICS (false)
+- NEXT_PUBLIC_ENABLE_DEBUG (false)
+
+**Files Created:**
+- `deploy.sh` - Deployment script
+- `VERCEL_DEPLOYMENT.md` - Deployment documentation
+- `.env.production` - Production environment reference
+
+**Build Status:**
+- ✅ Build passes without errors
+- ✅ All modules working
+- ✅ Custom domain accessible
+- ✅ SSL certificate active
+- ✅ Global CDN enabled
+
+**Module Status:**
+- Total modules: 14 (12 analytics + Settings + Users)
+- All modules production-ready
+- Live at https://dashboard.omniprise.com.py
+
+---
+
 ## [1.13.0] - Grupo Omniprise Branding - 2026-03-20 🏢🎨
 
 ### Branding Update - Complete ✅

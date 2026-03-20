@@ -8,11 +8,14 @@
 
 ### ✅ Dashboard is LIVE!
 
-**Current URL:** https://corporate-food-dashboard.vercel.app
+**Production URL:** https://dashboard.omniprise.com.py
+**Alternate URL:** https://corporate-food-dashboard.vercel.app
 
 **Status:** Production deployment successful
 **Date:** 2026-03-20
 **Version:** v1.13.0
+**SSL:** ✅ Automatic HTTPS enabled
+**DNS:** ✅ Configured and working
 
 ---
 

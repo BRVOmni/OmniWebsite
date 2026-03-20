@@ -775,6 +775,12 @@ Visit [http://localhost:3000](http://localhost:3000) to see the application.
 
 ### Access Points
 
+**Production:**
+- **🌐 Live Dashboard:** https://dashboard.omniprise.com.py
+- **🔐 Login:** https://dashboard.omniprise.com.py/login
+- **📊 Dashboard:** https://dashboard.omniprise.com.py/dashboard
+
+**Development:**
 - **🏠 Home:** http://localhost:3000/
 - **🔐 Login:** http://localhost:3000/login
 - **📊 Dashboard:** http://localhost:3000/dashboard (requires auth)
