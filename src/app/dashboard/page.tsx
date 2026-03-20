@@ -65,7 +65,7 @@ export default function DashboardPage() {
   const [dateRange, setDateRange] = useState<{
     days: number
     label: string
-  }>({ days: 7, label: 'Last 7 days' })
+  }>({ days: 7, label: 'Last 7 days' }) // Initial value, updated after translations load
   const router = useRouter()
   const supabase = createClient()
 

@@ -12,7 +12,7 @@ A modern, executive-level corporate dashboard for managing a multi-brand food se
 
 ---
 
-**Current Version:** v1.10.0 - Production Ready 🚀📚
+**Current Version:** v1.10.1 - Translation Fixes & Polish 🌐✨
 
 ---
 

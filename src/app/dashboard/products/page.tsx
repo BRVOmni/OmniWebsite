@@ -282,7 +282,7 @@ export default function ProductsPage() {
                   <thead>
                     <tr className="border-b border-gray-200">
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase w-12">#</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('product')}</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('products')}</th>
                       <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('sales')}</th>
                       <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('revenue')}</th>
                       <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('quantity')}</th>
@@ -338,7 +338,7 @@ export default function ProductsPage() {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gray-200">
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('product')}</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('products')}</th>
                         <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('sales')}</th>
                       </tr>
                     </thead>
@@ -376,7 +376,7 @@ export default function ProductsPage() {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gray-200">
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('product')}</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('products')}</th>
                         <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('revenue')}</th>
                       </tr>
                     </thead>
@@ -416,7 +416,7 @@ export default function ProductsPage() {
                   <thead>
                     <tr className="border-b border-gray-200">
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase w-12">#</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('product')}</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('products')}</th>
                       <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('quantity')}</th>
                       <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('sales')}</th>
                       <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('revenue')}</th>
