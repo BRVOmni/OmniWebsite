@@ -1,6 +1,127 @@
 # 📝 Change Log
 
-**Corporate Food Service Dashboard**
+**Grupo Omniprise - Corporate Food Service Dashboard**
+
+---
+
+## [1.13.0] - Grupo Omniprise Branding - 2026-03-20 🏢🎨
+
+### Branding Update - Complete ✅
+
+**🏢 Company Identity**
+- ✅ Updated company name to "Grupo Omniprise" throughout application
+- ✅ Added Omniprise logo to all pages (landing, login, signup, sidebar)
+- ✅ Updated app metadata and page titles
+- ✅ Renamed package to `omniprise-dashboard`
+
+**🎨 Visual Updates**
+- ✅ Landing page - Omniprise logo and company name
+- ✅ Login page - Logo branding with welcome message
+- ✅ Signup page - Logo on account creation
+- ✅ Sidebar - Logo next to "Grupo Omniprise" title
+- ✅ App metadata - "Grupo Omniprise | Food Service Chain"
+
+**📝 Configuration Updates**
+- ✅ Environment variables updated (APP_NAME)
+- ✅ Package.json renamed to omniprise-dashboard
+- ✅ Public folder created with logo.png
+
+**Files Created:**
+- `public/logo.png` - Company logo (34KB)
+- `Logo Omniprise.png` - Original logo file
+
+**Files Modified:**
+- `src/app/layout.tsx` - Updated metadata title
+- `src/app/page.tsx` - Landing page with logo
+- `src/app/login/page.tsx` - Login page with logo
+- `src/app/signup/page.tsx` - Signup page with logo
+- `src/components/layout/sidebar.tsx` - Sidebar with logo
+- `package.json` - Renamed to omniprise-dashboard
+- `.env.local` - Updated APP_NAME
+
+**Build Status:**
+- ✅ Build passes without errors
+- ✅ All branding consistent across application
+- ✅ Logo displays correctly on all pages
+
+**Module Status:**
+- Total modules: 14 (12 analytics + Settings + Users)
+- Production-ready with full company branding
+
+---
+
+## [1.12.0] - User Permissions System - 2026-03-20 🔐👥
+
+### Granular Permissions - Complete ✅
+
+**🔐 Four-Tier Role System**
+- ✅ **Admin** - Full access to everything, only role that can manage users
+- ✅ **Branch Manager** - Read-only access to specific locations, configurable pages
+- ✅ **Supervisor** - Supervision module by default, granular permissions available
+- ✅ **Viewer** - Read-only executive summary, sales, and alerts by default
+
+**🗄️ Database Infrastructure**
+- ✅ `user_permissions` table created with 26 permission columns
+- ✅ Row Level Security (RLS) policies configured
+- ✅ Functions for default permissions by role
+- ✅ Auto-creation trigger for new users
+- ✅ Migration applied to production database
+
+**📊 Granular Access Controls**
+- ✅ Page-level permissions (11 modules)
+  - Executive Summary, Sales, Profitability, Cash Closing
+  - Locations, Products, Brands, Alerts
+  - Supervision, Purchases, Payments
+- ✅ Location access filters (array of location IDs, empty = all)
+- ✅ Brand access filters (array of brand IDs, empty = all)
+- ✅ User management permissions (create, edit, delete, reset passwords)
+- ✅ Settings configuration permission
+
+**🎨 Users Page Enhancements**
+- ✅ "Configure Permissions" modal with 3 sections
+  - Page Access checkboxes (11 modules)
+  - Location Access multi-select
+  - Brand Access multi-select
+- ✅ Role descriptions for clarity
+- ✅ Real-time permission updates
+- ✅ Permission checking utilities
+
+**🔧 Utility Functions**
+- ✅ `getUserPermissions()` - Fetch user permissions
+- ✅ `canViewPage()` - Check page access
+- ✅ `canAccessLocation()` - Check location access
+- ✅ `canAccessBrand()` - Check brand access
+- ✅ `updateUserPermissions()` - Update user permissions
+
+**Database Migration:**
+- ✅ Migration 23: `user_permissions` table and functions
+- ✅ RLS policies for secure access control
+- ✅ Auto-assign permissions based on role
+- ✅ Trigger to create permissions for new users
+- ✅ Updated existing users with appropriate permissions
+
+**Files Created:**
+- `supabase/migrations/23_user_permissions.sql` - Permissions system migration
+- `src/lib/utils/permissions.ts` - Permission checking utilities
+
+**Files Modified:**
+- `src/app/dashboard/users/page.tsx` - Complete rewrite with permission configuration
+- `src/lib/translations.ts` - Updated role names (admin, branch_manager, supervisor, viewer)
+
+**Build Status:**
+- ✅ Build passes without errors
+- ✅ Migration applied to production database
+- ✅ Admin user has full permissions verified
+
+**Role Behavior:**
+- **Admin**: Full system access, can manage other users
+- **Branch Manager**: Configurable location and page access
+- **Supervisor**: Supervision module focus, expandable permissions
+- **Viewer**: Investor-friendly read-only access with granular controls
+
+**Module Status:**
+- Total modules: 14 (12 analytics + Settings + Users)
+- Production-ready with comprehensive permissions system
 
 ---
 

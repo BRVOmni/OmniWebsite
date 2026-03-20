@@ -1,4 +1,4 @@
-# 🍽️ Corporate Food Service Dashboard
+# 🍽️ Grupo Omniprise - Corporate Food Service Dashboard
 
 **Multi-Brand Food Service Chain Management Platform**
 
@@ -10,9 +10,11 @@ A modern, executive-level corporate dashboard for managing a multi-brand food se
 
 **Design Philosophy:** Modern, fresh, young, premium, and crystal clear for fast decision-making.
 
+**Company:** Grupo Omniprise
+
 ---
 
-**Current Version:** v1.11.0 - Settings & Users Management ⚙️👥
+**Current Version:** v1.13.0 - Grupo Omniprise Branding 🏢🎨
 
 ---
 
@@ -495,6 +497,35 @@ Users
 
 ## 📝 VERSION HISTORY
 
+### v1.13.0 (2026-03-20) - Grupo Omniprise Branding ✅
+
+**Completed:**
+- ✅ Updated company name to "Grupo Omniprise" throughout application
+- ✅ Added Omniprise logo to all pages (landing, login, signup, sidebar)
+- ✅ Updated app metadata and page titles
+- ✅ Renamed package to `omniprise-dashboard`
+- ✅ Consistent branding across all user-facing pages
+
+### v1.12.0 (2026-03-20) - User Permissions System ✅
+
+**Completed:**
+- ✅ Four-tier role system (Admin, Branch Manager, Supervisor, Viewer)
+- ✅ Granular page-level permissions (11 modules)
+- ✅ Location and brand access controls
+- ✅ Database migration for user_permissions table
+- ✅ RLS policies for secure access control
+- ✅ Permission configuration UI in Users page
+- ✅ Auto-assign permissions on user creation
+- ✅ Permission checking utilities
+
+### v1.11.0 (2026-03-20) - Settings & Users Management ✅
+
+**Completed:**
+- ✅ Settings page for system configuration
+- ✅ Users page for user management
+- ✅ Role-based access control
+- ✅ Full translation support for new pages
+
 ### v1.1.1 (2026-03-19) - Complete Translation System ✅
 
 **Completed:**
@@ -771,9 +802,12 @@ npm run lint     # Run ESLint
 
 ## 👥 TEAM
 
+**Company:** Grupo Omniprise
 **Product Design:** Senior Product Designer + UX/UI Designer
 **Frontend Architecture:** Senior Frontend Architect
 **Domain:** Corporate Dashboards for Food Chains in Expansion
+
+**GitLab Repository:** https://gitlab.com/sbrv-group/omniprise
 
 ---
 

@@ -1,6 +1,6 @@
 # 🗄️ Data Model & Schema
 
-**Corporate Food Service Dashboard**
+**Grupo Omniprise - Corporate Food Service Dashboard**
 
 ---
 

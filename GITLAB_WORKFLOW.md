@@ -1,6 +1,6 @@
 # 🔄 GitLab Workflow Guide
 
-**Corporate Food Service Dashboard**
+**Grupo Omniprise - Corporate Food Service Dashboard**
 
 ---
 
