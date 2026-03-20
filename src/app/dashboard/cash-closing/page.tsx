@@ -153,7 +153,7 @@ export default function CashClosingPage() {
     }> = {}
 
     allCashClosings.forEach((closing) => {
-      const location = closing.locations?.name || 'Unknown'
+      const location = closing.locations?.name || t('unknown')
       if (!locationData[location]) {
         locationData[location] = {
           closings: 0,
@@ -230,7 +230,7 @@ export default function CashClosingPage() {
       <DashboardLayout titleKey="loading" subtitleKey="loading">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading cash closing data...</p>
+          <p className="mt-4 text-gray-600">{t('loadingCashClosing')}</p>
         </div>
       </DashboardLayout>
     )
@@ -365,7 +365,7 @@ export default function CashClosingPage() {
                     allCashClosings.map((closing) => (
                       <tr key={closing.id} className="hover:bg-gray-50">
                         <td className="px-4 py-3 text-sm font-medium text-gray-900">
-                          {closing.locations?.name || 'Unknown'}
+                          {closing.locations?.name || t('unknown')}
                         </td>
                         <td className="px-4 py-3 text-sm text-gray-600">{closing.date}</td>
                         <td className="px-4 py-3 text-sm text-right text-gray-900">

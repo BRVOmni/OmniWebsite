@@ -222,7 +222,7 @@ export default function LocationDetailPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading location details...</p>
+          <p className="mt-4 text-gray-600">{t('loadingLocationDetails')}</p>
         </div>
       </div>
     )
@@ -265,7 +265,7 @@ export default function LocationDetailPage() {
             </div>
             <div className="flex items-center gap-4">
               <div className="text-sm text-gray-600">
-                {t('role')}: <span className="font-medium capitalize">{profile?.role || 'User'}</span>
+                {t('role')}: <span className="font-medium capitalize">{profile?.role || t('user')}</span>
               </div>
               <LanguageToggle />
               <button

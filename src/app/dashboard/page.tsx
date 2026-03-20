@@ -310,11 +310,11 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <DashboardLayout title={t('executiveSummary')} subtitle={t('welcomeBack') + ', ' + (profile?.full_name || user?.email || 'Loading...')}>
+      <DashboardLayout title={t('executiveSummary')} subtitle={t('welcomeBack') + ', ' + (profile?.full_name || user?.email || t('loading'))}>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading dashboard...</p>
+            <p className="mt-4 text-gray-600">{t('loadingDashboard')}</p>
           </div>
         </div>
       </DashboardLayout>
@@ -324,7 +324,7 @@ export default function DashboardPage() {
   return (
     <DashboardLayout
       title={t('executiveSummary')}
-      subtitle={t('welcomeBack') + ', ' + (profile?.full_name || user?.email || 'User')}
+      subtitle={t('welcomeBack') + ', ' + (profile?.full_name || user?.email || t('user'))}
     >
       <div className="max-w-7xl mx-auto">
           {/* Date Filter & Objective */}
