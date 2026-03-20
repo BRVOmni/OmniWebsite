@@ -1,8 +1,6 @@
 -- ============================================================================
 -- MIGRATION 23: User Permissions System
 -- ============================================================================
--- Creates granular permission system for different user roles
--- Admin, Branch Manager, Supervisor, Viewer
 
 -- User Permissions Table
 CREATE TABLE IF NOT EXISTS user_permissions (
@@ -23,10 +21,10 @@ CREATE TABLE IF NOT EXISTS user_permissions (
   can_view_payments BOOLEAN DEFAULT true,
 
   -- Location Access (which locations they can see)
-  location_access TEXT[] DEFAULT '{}', -- Array of location IDs they can access (empty = all)
+  location_access TEXT[] DEFAULT '{}', -- empty = all
 
   -- Brand Access (which brands they can see)
-  brand_access TEXT[] DEFAULT '{}', -- Array of brand IDs they can access (empty = all)
+  brand_access TEXT[] DEFAULT '{}', -- empty = all
 
   -- Additional Permissions
   can_create_users BOOLEAN DEFAULT false,
@@ -79,60 +77,15 @@ CREATE POLICY "Admins can delete permissions"
     EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
   );
 
--- Function to get default permissions based on role
-CREATE OR REPLACE FUNCTION get_default_permissions(user_role TEXT)
-RETURNS TABLE (
-  can_view_executive_summary BOOLEAN,
-  can_view_sales BOOLEAN,
-  can_view_profitability BOOLEAN,
-  can_view_cash_closing BOOLEAN,
-  can_view_locations BOOLEAN,
-  can_view_products BOOLEAN,
-  can_view_brands BOOLEAN,
-  can_view_alerts BOOLEAN,
-  can_view_supervision BOOLEAN,
-  can_view_purchases BOOLEAN,
-  can_view_payments BOOLEAN,
-  can_create_users BOOLEAN,
-  can_edit_users BOOLEAN,
-  can_delete_users BOOLEAN,
-  can_reset_passwords BOOLEAN,
-  can_configure_settings BOOLEAN
-) AS $$
-BEGIN
-  CASE user_role
-    WHEN 'admin' THEN
-      RETURN QUERY SELECT
-        true, true, true, true, true, true, true, true, true, true, true,
-        true, true, true, true, true;
-    WHEN 'manager' THEN
-      RETURN QUERY SELECT
-        true, true, true, true, true, false, false, true, true, true, true,
-        false, false, false, false, false;
-    WHEN 'supervisor' THEN
-      RETURN QUERY SELECT
-        false, false, false, false, false, false, false, false, true, false, false,
-        false, false, false, false, false;
-    WHEN 'viewer' THEN
-      RETURN QUERY SELECT
-        true, true, false, false, true, false, false, true, false, false, false,
-        false, false, false, false, false;
-    ELSE
-      RETURN QUERY SELECT
-        false, false, false, false, false, false, false, false, false, false, false,
-        false, false, false, false, false;
-  END CASE;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- Function to create permissions for new user
-CREATE OR REPLACE FUNCTION create_user_permissions(user_id UUID, user_role TEXT)
+-- Function to create permissions for new user (fixed parameter names)
+CREATE OR REPLACE FUNCTION create_user_permissions(p_user_id UUID, p_user_role TEXT)
 RETURNS VOID AS $$
 BEGIN
   INSERT INTO user_permissions (user_id, can_view_supervision)
-  SELECT user_id, true;
+  VALUES (p_user_id, true)
+  ON CONFLICT (user_id) DO NOTHING;
 
-  IF user_role = 'admin' THEN
+  IF p_user_role = 'admin' THEN
     UPDATE user_permissions SET
       can_view_executive_summary = true,
       can_view_sales = true,
@@ -150,13 +103,13 @@ BEGIN
       can_delete_users = true,
       can_reset_passwords = true,
       can_configure_settings = true
-    WHERE user_id = user_id;
+    WHERE user_id = p_user_id;
 
-  ELSIF user_role = 'manager' THEN
+  ELSIF p_user_role = 'branch_manager' THEN
     UPDATE user_permissions SET
       can_view_executive_summary = true,
       can_view_sales = true,
-      can_view_profitability = false, -- Hidden by default
+      can_view_profitability = false,
       can_view_cash_closing = true,
       can_view_locations = true,
       can_view_products = false,
@@ -165,19 +118,19 @@ BEGIN
       can_view_supervision = false,
       can_view_purchases = false,
       can_view_payments = true
-    WHERE user_id = user_id;
+    WHERE user_id = p_user_id;
 
-  ELSIF user_role = 'supervisor' THEN
+  ELSIF p_user_role = 'supervisor' THEN
     UPDATE user_permissions SET
       can_view_supervision = true
-    WHERE user_id = user_id;
+    WHERE user_id = p_user_id;
 
-  ELSIF user_role = 'viewer' THEN
+  ELSIF p_user_role = 'viewer' THEN
     UPDATE user_permissions SET
       can_view_executive_summary = true,
       can_view_sales = true,
       can_view_alerts = true
-    WHERE user_id = user_id;
+    WHERE user_id = p_user_id;
   END IF;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
@@ -198,12 +151,7 @@ CREATE TRIGGER on_user_created_trigger
   FOR EACH ROW
   EXECUTE FUNCTION on_user_created();
 
--- Insert permissions for existing users
-INSERT INTO user_permissions (user_id)
-  SELECT id FROM users
-  ON CONFLICT (user_id) DO NOTHING;
-
--- Update permissions for existing users
+-- Create permissions for existing users
 DO $$
 DECLARE
   user_record RECORD;
