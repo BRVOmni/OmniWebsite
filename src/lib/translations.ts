@@ -144,7 +144,7 @@ export const translations = {
     userCreated: 'Created',
     userActions: 'Actions',
     roleAdmin: 'Admin',
-    roleManager: 'Manager',
+    roleBranchManager: 'Branch Manager',
     roleSupervisor: 'Supervisor',
     roleViewer: 'Viewer',
     statusActive: 'Active',
@@ -165,6 +165,7 @@ export const translations = {
     canEditAll: 'Can edit all data',
     canManageUsers: 'Can manage users',
     canConfigureSettings: 'Can configure settings',
+    configurePermissions: 'Configure Permissions',
 
     // Alert Types
     alertTypeCash: 'Cash',
@@ -956,7 +957,7 @@ export const translations = {
     userCreated: 'Creado',
     userActions: 'Acciones',
     roleAdmin: 'Administrador',
-    roleManager: 'Gerente',
+    roleBranchManager: 'Gerente de Sucursal',
     roleSupervisor: 'Supervisor',
     roleViewer: 'Visor',
     statusActive: 'Activo',
@@ -977,6 +978,7 @@ export const translations = {
     canEditAll: 'Puede editar todos los datos',
     canManageUsers: 'Puede administrar usuarios',
     canConfigureSettings: 'Puede configurar ajustes',
+    configurePermissions: 'Configurar Permisos',
 
     // Alert Types
     alertTypeCash: 'Caja',
