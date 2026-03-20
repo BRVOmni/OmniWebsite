@@ -4,6 +4,74 @@
 
 ---
 
+## [1.11.0] - Settings & Users Management Pages - 2026-03-20 ⚙️👥
+
+### New Features - Settings & Users Management ✅
+
+**⚙️ Settings Page (`/dashboard/settings`)**
+- ✅ Company settings (name, logo, contact info)
+- ✅ Regional settings (date format, number format, currency, timezone)
+- ✅ Alert thresholds configuration
+  - Low stock threshold
+  - High food cost threshold
+  - Cash difference threshold
+- ✅ Dashboard preferences
+  - Default time range
+  - Enable/disable notifications
+  - Notification email
+- ✅ Save settings with success/error feedback
+
+**👥 Users Management Page (`/dashboard/users`)**
+- ✅ List all users with their roles and status
+- ✅ Create new users (with auth account creation)
+- ✅ Edit existing users (name, role)
+- ✅ Deactivate/reactivate users
+- ✅ Delete users (with confirmation)
+- ✅ Role badges with icons
+  - Admin (purple) - Full access
+  - Manager (blue) - Can edit all data
+  - Supervisor (green) - Assigned locations
+  - Viewer (gray) - Read-only
+- ✅ Last login tracking
+- ✅ Permissions legend
+- ✅ User actions (edit, deactivate, delete)
+
+**🎨 Navigation Updates**
+- ✅ Added "Users" to sidebar with Users icon
+- ✅ Added "Settings" to sidebar with Settings icon
+- ✅ Both pages only accessible to Admin/Manager roles
+- ✅ Automatic redirect for unauthorized users
+
+**🌐 Translation System**
+- ✅ 40+ new translation keys for Settings module
+- ✅ 40+ new translation keys for Users module
+- ✅ Full English/Spanish support
+- ✅ All user-facing text uses translations
+
+**Translation Keys Added:**
+- Settings: companySettings, regionalSettings, dateFormat, numberFormat, currency, timezone, alertThresholds, lowStockThreshold, highFoodCostThreshold, cashDifferenceThreshold, dashboardPreferences, defaultTimeRange, enableNotifications, notificationEmail, saveSettings, settingsSaved, settingsError
+- Users: addUser, createUser, editUser, deleteUser, userName, userEmail, userRole, userStatus, userLastLogin, userCreated, userActions, roleAdmin, roleManager, roleSupervisor, roleViewer, statusActive, statusInactive, activateUser, deactivateUser, resetPassword, sendInvite, inviteSent, userCreated, userUpdated, userDeleted, confirmDeleteUser, confirmDeactivateUser, noUsersFound, userPermissions, canViewAll, canEditAll, canManageUsers, canConfigureSettings
+
+**Files Created:**
+- `src/app/dashboard/settings/page.tsx` - Settings configuration page
+- `src/app/dashboard/users/page.tsx` - Users management page
+
+**Files Modified:**
+- `src/lib/translations.ts` - Added 80+ new translation keys (EN/ES)
+- `src/components/layout/sidebar.tsx` - Added Settings and Users navigation
+
+**Build Status:**
+- ✅ Build passes without errors
+- ✅ All translations working (EN/ES)
+- ✅ Role-based access control implemented
+- ✅ Modern, clean UI consistent with rest of dashboard
+
+**Module Status:**
+- Total modules: 14 (12 analytics + Settings + Users)
+- All pages production-ready
+
+---
+
 ## [1.10.1] - Translation Fixes & Polish - 2026-03-20 🌐✨
 
 ### Translation System Fixes - Complete ✅

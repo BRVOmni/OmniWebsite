@@ -21,7 +21,9 @@ import {
   ClipboardCheck,
   ChevronLeft,
   ChevronRight,
-  X
+  X,
+  Settings,
+  Users as UsersIcon
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
@@ -104,6 +106,20 @@ export function Sidebar() {
       icon: AlertTriangle,
       path: '/dashboard/alerts',
       color: 'text-red-600'
+    },
+    {
+      id: 'users',
+      labelKey: 'users',
+      icon: UsersIcon,
+      path: '/dashboard/users',
+      color: 'text-gray-600'
+    },
+    {
+      id: 'settings',
+      labelKey: 'settings',
+      icon: Settings,
+      path: '/dashboard/settings',
+      color: 'text-gray-600'
     }
   ]
 
