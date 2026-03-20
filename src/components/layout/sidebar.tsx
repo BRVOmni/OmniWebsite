@@ -156,10 +156,24 @@ export function Sidebar() {
         {/* Header */}
         <div className="h-16 flex items-center justify-between px-4 border-b">
           {!collapsed && (
-            <div>
-              <h1 className="text-lg font-bold text-gray-900">{t('dashboard')}</h1>
-              <p className="text-xs text-gray-500">{t('foodServiceChain')}</p>
+            <div className="flex items-center gap-3">
+              <img
+                src="/logo.png"
+                alt="Grupo Omniprise"
+                className="w-8 h-8 object-contain"
+              />
+              <div>
+                <h1 className="text-lg font-bold text-gray-900">Grupo Omniprise</h1>
+                <p className="text-xs text-gray-500">{t('foodServiceChain')}</p>
+              </div>
             </div>
+          )}
+          {collapsed && (
+            <img
+              src="/logo.png"
+              alt="Grupo Omniprise"
+              className="w-8 h-8 object-contain"
+            />
           )}
           <button
             onClick={() => setCollapsed(!collapsed)}

@@ -73,13 +73,18 @@ export default function SignupPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
         <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
+          <img
+            src="/logo.png"
+            alt="Grupo Omniprise"
+            className="w-16 h-16 mx-auto mb-4 object-contain"
+          />
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Account Created!</h1>
-          <p className="text-gray-600 mb-4">Welcome, {fullName}!</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome to Grupo Omniprise!</h1>
+          <p className="text-gray-600 mb-4">Your account has been created, {fullName}</p>
           <p className="text-sm text-gray-500">Redirecting to dashboard...</p>
         </div>
       </div>
@@ -90,8 +95,13 @@ export default function SignupPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Admin Account</h1>
-          <p className="text-gray-600">Set up your corporate dashboard admin</p>
+          <img
+            src="/logo.png"
+            alt="Grupo Omniprise"
+            className="w-16 h-16 mx-auto mb-4 object-contain"
+          />
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Grupo Omniprise</h1>
+          <p className="text-gray-600">Create your admin account</p>
         </div>
 
         <form onSubmit={handleSignup} className="space-y-4">

@@ -40,8 +40,13 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-          <p className="text-gray-600">Sign in to your corporate dashboard</p>
+          <img
+            src="/logo.png"
+            alt="Grupo Omniprise"
+            className="w-16 h-16 mx-auto mb-4 object-contain"
+          />
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Grupo Omniprise</h1>
+          <p className="text-gray-600">Sign in to your dashboard</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">

@@ -3,7 +3,7 @@ import "./globals.css";
 import { LanguageProvider } from "@/lib/language-context";
 
 export const metadata: Metadata = {
-  title: "Corporate Dashboard | Food Service Chain",
+  title: "Grupo Omniprise | Food Service Chain",
   description: "Multi-brand food service chain management platform",
 };
 
