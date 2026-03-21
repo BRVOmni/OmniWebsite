@@ -4,6 +4,42 @@
 
 ---
 
+## [1.15.1] - Translation System Fixed - 2026-03-21 🌐✅
+
+### Bug Fixes - Complete ✅
+
+**🔧 Translation System**
+- ✅ Fixed FindingCard translations with text normalization
+- ✅ Fixed ActionCard translations with text normalization
+- ✅ All Spanish titles/descriptions now translate to English when language is EN
+- ✅ Handle line breaks and extra whitespace in database values
+- ✅ All severity, priority, and status labels translating correctly
+- ✅ Removed debug console.log statements
+
+**📝 Translation Mappings Added**
+- FindingCard: 10 Spanish titles mapped to English
+- ActionCard: 8 Spanish descriptions mapped to English
+- All severity labels: Critical, High, Medium, Low
+- All priority labels: Critical, High, Medium, Low
+- All status labels: Pending, In Progress, Completed, Overdue, Cancelled, Verified
+
+**🐛 Issues Fixed**
+- Line break in database value causing translation mismatch
+- Extra whitespace preventing exact key matching
+- Text normalization function added (`normalizeText`)
+- Columns fixed in findings page (removed non-existent `photo_url`)
+
+**📊 Files Modified**
+- `src/components/supervision/finding-card.tsx`
+- `src/components/supervision/action-card.tsx`
+- `src/app/dashboard/supervision/findings/page.tsx`
+- `README.md` - Version bumped to v1.15.1
+
+**✨ Result**
+All supervision module text now translates correctly between English and Spanish.
+
+---
+
 ## [1.14.0] - Production Deployment - 2026-03-20 🚀🌐
 
 ### Production Deployment - Complete ✅

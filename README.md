@@ -501,6 +501,17 @@ Users
 
 ## 📝 VERSION HISTORY
 
+### v1.15.1 (2026-03-21) - Translation System Fixed ✅
+
+**Completed:**
+- ✅ Fixed FindingCard translations with text normalization
+- ✅ Fixed ActionCard translations with text normalization
+- ✅ All Spanish titles/descriptions now translate to English
+- ✅ Handle line breaks and extra whitespace in database values
+- ✅ All severity, priority, and status labels translating correctly
+- ✅ Removed debug console.log statements
+- ✅ Verified production deployment has latest changes
+
 ### v1.14.0 (2026-03-20) - Production Deployment ✅
 
 **Completed:**
