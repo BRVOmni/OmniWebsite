@@ -195,6 +195,18 @@ export default function FindingsPage() {
     setSearchQuery('')
   }
 
+  // Map finding_type from database to translation key
+  const getFindingTypeLabel = (type: string) => {
+    const typeMap: Record<string, string> = {
+      'caja_diferencias': t('findingTypeCajaDiferencias'),
+      'stock_vencidos': t('findingTypeStockVencidos'),
+      'equipos_falla': t('findingTypeEquiposFalla'),
+      'limpieza_deficiente': t('findingTypeLimpiezaDeficiente'),
+      'personal_ausente': t('findingTypePersonalAusente'),
+    }
+    return typeMap[type] || type
+  }
+
   if (loading) {
     return (
       <DashboardLayout>
@@ -293,7 +305,7 @@ export default function FindingsPage() {
             >
               <option value="all">{t('allTypes')}</option>
               {[...new Set(findings.map(f => f.finding_type))].map(type => (
-                <option key={type} value={type}>{type}</option>
+                <option key={type} value={type}>{getFindingTypeLabel(type)}</option>
               ))}
             </select>
 
@@ -347,7 +359,7 @@ export default function FindingsPage() {
               }`}
               onClick={() => setTypeFilter(typeFilter === type ? 'all' : type)}
             >
-              <div className="text-xs text-gray-500 mb-1 truncate">{type}</div>
+              <div className="text-xs text-gray-500 mb-1 truncate">{getFindingTypeLabel(type)}</div>
               <div className="text-xl font-bold text-gray-900">{count}</div>
             </div>
           ))}
