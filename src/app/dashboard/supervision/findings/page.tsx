@@ -38,10 +38,11 @@ interface FindingData {
   title: string
   description: string
   category: string
+  category_id: string
   is_recurring: boolean
   recurrence_count: number
-  requires_photo: boolean
-  photo_url: string
+  photos: string[]
+  status: string
   created_at: string
   visit_id: string
   supervision_visits: {
@@ -99,10 +100,11 @@ export default function FindingsPage() {
         title,
         description,
         category,
+        category_id,
         is_recurring,
         recurrence_count,
-        requires_photo,
-        photo_url,
+        photos,
+        status,
         created_at,
         visit_id,
         supervision_visits (

@@ -23,7 +23,6 @@ interface FindingCardProps {
   date?: string | Date
   isRecurring?: boolean
   recurrenceCount?: number
-  photoCount?: number
   onClick?: () => void
   className?: string
 }
@@ -38,7 +37,6 @@ export function FindingCard({
   date,
   isRecurring = false,
   recurrenceCount = 0,
-  photoCount = 0,
   onClick,
   className,
 }: FindingCardProps) {
@@ -207,11 +205,6 @@ export function FindingCard({
             {date && (
               <span className="inline-flex items-center gap-1">
                 <span className="font-medium">{t('date')}:</span> {formatDate(date)}
-              </span>
-            )}
-            {photoCount > 0 && (
-              <span className="inline-flex items-center gap-1">
-                📷 {photoCount}
               </span>
             )}
           </div>

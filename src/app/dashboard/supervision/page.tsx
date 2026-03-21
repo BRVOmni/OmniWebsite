@@ -625,6 +625,7 @@ export default function SupervisionPage() {
                   date={finding.created_at}
                   isRecurring={finding.is_recurring}
                   recurrenceCount={finding.recurrence_count}
+                  photoCount={0}
                   onClick={() => router.push(`/dashboard/supervision/findings`)}
                 />
               ))}
