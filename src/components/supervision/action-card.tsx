@@ -135,8 +135,8 @@ export function ActionCard({
     },
   }
 
-  const statusData = statusConfig[isOverdue && status !== 'completed' ? 'overdue' : status]
-  const priorityData = priorityConfig[priority]
+  const statusData = statusConfig[(isOverdue && status !== 'completed' ? 'overdue' : status) as ActionStatus] || statusConfig.pending
+  const priorityData = priorityConfig[priority as ActionPriority] || priorityConfig.medium
   const StatusIcon = statusData.icon
 
   const formatDate = (dateInput: string | Date) => {

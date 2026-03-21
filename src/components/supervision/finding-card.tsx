@@ -147,7 +147,7 @@ export function FindingCard({
     },
   }
 
-  const config = severityConfig[severity]
+  const config = severityConfig[severity as FindingSeverity] || severityConfig.medium
   const Icon = config.icon
 
   const formatDate = (dateInput: string | Date) => {
