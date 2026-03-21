@@ -9,6 +9,7 @@
 import { useLanguage } from '@/lib/language-context'
 import { cn } from '@/lib/utils'
 import { CheckCircle2, Clock, AlertCircle, Calendar, User } from 'lucide-react'
+import { useMemo } from 'react'
 
 export type ActionStatus = 'pending' | 'in_progress' | 'completed' | 'overdue' | 'cancelled' | 'verified'
 export type ActionPriority = 'low' | 'medium' | 'high' | 'critical'
@@ -46,9 +47,20 @@ export function ActionCard({
 }: ActionCardProps) {
   const { t, language } = useLanguage()
 
-  // Normalize status and priority
-  const normalizedStatus = status ? String(status).toLowerCase().trim() as ActionStatus : 'pending'
-  const normalizedPriority = priority ? String(priority).toLowerCase().trim() as ActionPriority : 'medium'
+  // Normalize status and priority with validation
+  const normalizedStatus = useMemo(() => {
+    if (!status) return 'pending'
+    const s = String(status).toLowerCase().trim()
+    const validStatuses = ['pending', 'in_progress', 'completed', 'overdue', 'cancelled', 'verified']
+    return validStatuses.includes(s) ? s : 'pending'
+  }, [status])
+
+  const normalizedPriority = useMemo(() => {
+    if (!priority) return 'medium'
+    const p = String(priority).toLowerCase().trim()
+    const validPriorities = ['low', 'medium', 'high', 'critical']
+    return validPriorities.includes(p) ? p : 'medium'
+  }, [priority])
 
   // Normalize text for lookup (remove extra whitespace, line breaks)
   const normalizeText = (text: string) => {
@@ -79,7 +91,8 @@ export function ActionCard({
     return descMap[normalizedDesc]?.[language] || originalDesc
   }
 
-  const statusConfig: Record<ActionStatus, { icon: typeof CheckCircle2; bgClass: string; textClass: string; label: string }> = {
+  // Memoize status config
+  const statusConfig = useMemo(() => ({
     pending: {
       icon: Clock,
       bgClass: 'bg-gray-50',
@@ -116,9 +129,10 @@ export function ActionCard({
       textClass: 'text-green-700',
       label: t('actionStatusVerified'),
     },
-  }
+  }), [t])
 
-  const priorityConfig: Record<ActionPriority, { bgClass: string; textClass: string; label: string; borderClass: string }> = {
+  // Memoize priority config
+  const priorityConfig = useMemo(() => ({
     low: {
       bgClass: 'bg-blue-50',
       textClass: 'text-blue-700',
@@ -143,10 +157,12 @@ export function ActionCard({
       label: t('priorityCritical'),
       borderClass: 'border-l-red-400',
     },
-  }
+  }), [t])
 
-  const statusData = statusConfig[(isOverdue && normalizedStatus !== 'completed' ? 'overdue' : normalizedStatus) as ActionStatus] || statusConfig.pending
-  const priorityData = priorityConfig[normalizedPriority] || priorityConfig.medium
+  // Get status data with fallback
+  const effectiveStatus = (isOverdue && normalizedStatus !== 'completed') ? 'overdue' : normalizedStatus
+  const statusData = statusConfig[effectiveStatus as keyof typeof statusConfig] || statusConfig.pending
+  const priorityData = priorityConfig[normalizedPriority as keyof typeof priorityConfig] || priorityConfig.medium
   const StatusIcon = statusData.icon
 
   const formatDate = (dateInput: string | Date) => {

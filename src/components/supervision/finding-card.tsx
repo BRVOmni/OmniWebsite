@@ -9,6 +9,7 @@
 import { useLanguage } from '@/lib/language-context'
 import { cn } from '@/lib/utils'
 import { AlertTriangle, AlertCircle, AlertOctagon, Info } from 'lucide-react'
+import { useMemo } from 'react'
 
 export type FindingSeverity = 'low' | 'medium' | 'high' | 'critical'
 export type FindingType = 'caja_diferencias' | 'stock_vencidos' | 'equipos_falla' | 'limpieza_deficiente' | 'personal_ausente'
@@ -43,7 +44,13 @@ export function FindingCard({
   const { t, language } = useLanguage()
 
   // Normalize severity - handle undefined, null, or unexpected values
-  const normalizedSeverity = severity ? String(severity).toLowerCase().trim() as FindingSeverity : 'medium'
+  const normalizedSeverity = useMemo(() => {
+    if (!severity) return 'medium'
+    const s = String(severity).toLowerCase().trim()
+    // Validate it's a known severity
+    const validSeverities = ['low', 'medium', 'high', 'critical']
+    return validSeverities.includes(s) ? s : 'medium'
+  }, [severity])
 
   // Normalize text for lookup (remove extra whitespace, line breaks)
   const normalizeText = (text: string) => {
@@ -127,63 +134,42 @@ export function FindingCard({
     return t(key as any)
   }
 
-  const getSeverityConfig = (sev: string) => {
-    const s = sev ? String(sev).toLowerCase().trim() : 'medium'
+  // Memoize severity config to prevent recalculation and ensure it's always defined
+  const config = useMemo(() => {
+    const configs = {
+      low: {
+        icon: Info,
+        bgClass: 'bg-blue-50',
+        textClass: 'text-blue-700',
+        borderClass: 'border-l-4 border-blue-500',
+        label: t('severityLow'),
+      },
+      medium: {
+        icon: AlertTriangle,
+        bgClass: 'bg-yellow-50',
+        textClass: 'text-yellow-700',
+        borderClass: 'border-l-4 border-yellow-500',
+        label: t('severityMedium'),
+      },
+      high: {
+        icon: AlertCircle,
+        bgClass: 'bg-orange-50',
+        textClass: 'text-orange-700',
+        borderClass: 'border-l-4 border-orange-500',
+        label: t('severityHigh'),
+      },
+      critical: {
+        icon: AlertOctagon,
+        bgClass: 'bg-red-50',
+        textClass: 'text-red-700',
+        borderClass: 'border-l-4 border-red-500',
+        label: t('severityCritical'),
+      },
+    } as const
 
-    // Default config (fallback)
-    const defaultConfig = {
-      icon: AlertTriangle,
-      bgClass: 'bg-yellow-50',
-      textClass: 'text-yellow-700',
-      borderClass: 'border-l-4 border-yellow-500',
-      label: t('severityMedium'),
-    }
+    return configs[normalizedSeverity as keyof typeof configs] || configs.medium
+  }, [normalizedSeverity, t])
 
-    switch (s) {
-      case 'low':
-        return {
-          icon: Info,
-          bgClass: 'bg-blue-50',
-          textClass: 'text-blue-700',
-          borderClass: 'border-l-4 border-blue-500',
-          label: t('severityLow'),
-        }
-      case 'medium':
-        return {
-          icon: AlertTriangle,
-          bgClass: 'bg-yellow-50',
-          textClass: 'text-yellow-700',
-          borderClass: 'border-l-4 border-yellow-500',
-          label: t('severityMedium'),
-        }
-      case 'high':
-        return {
-          icon: AlertCircle,
-          bgClass: 'bg-orange-50',
-          textClass: 'text-orange-700',
-          borderClass: 'border-l-4 border-orange-500',
-          label: t('severityHigh'),
-        }
-      case 'critical':
-        return {
-          icon: AlertOctagon,
-          bgClass: 'bg-red-50',
-          textClass: 'text-red-700',
-          borderClass: 'border-l-4 border-red-500',
-          label: t('severityCritical'),
-        }
-      default:
-        return defaultConfig
-    }
-  }
-
-  const config = getSeverityConfig(normalizedSeverity) || {
-    icon: AlertTriangle,
-    bgClass: 'bg-yellow-50',
-    textClass: 'text-yellow-700',
-    borderClass: 'border-l-4 border-yellow-500',
-    label: t('severityMedium'),
-  }
   const Icon = config.icon
 
   const formatDate = (dateInput: string | Date) => {
