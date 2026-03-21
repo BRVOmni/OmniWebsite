@@ -41,6 +41,8 @@ export function FindingCard({
   onClick,
   className,
 }: FindingCardProps) {
+  console.log('[FindingCard] Component rendered with props:', { title, severity, category })
+
   const { t, language } = useLanguage()
 
   // Normalize severity - handle undefined, null, or unexpected values
@@ -136,6 +138,9 @@ export function FindingCard({
 
   // Hardcoded configs - NEVER depends on t() to avoid undefined issues
   const config = useMemo(() => {
+    console.log('[FindingCard useMemo] severity prop:', severity)
+    console.log('[FindingCard useMemo] normalizedSeverity:', normalizedSeverity)
+
     const configs = {
       low: {
         icon: Info,
@@ -167,10 +172,30 @@ export function FindingCard({
       },
     } as const
 
-    return configs[normalizedSeverity as keyof typeof configs] || configs.medium
-  }, [normalizedSeverity])  // Removed 't' dependency
+    const result = configs[normalizedSeverity as keyof typeof configs] || configs.medium
+    console.log('[FindingCard useMemo] selected config:', result)
+    console.log('[FindingCard useMemo] configs.medium:', configs.medium)
 
-  const Icon = config.icon
+    return result
+  }, [normalizedSeverity, severity])  // Added severity to dependency array
+
+  console.log('[FindingCard] Final config:', config)
+  console.log('[FindingCard] config.bgClass:', config?.bgClass)
+
+  // ULTIMATE SAFETY: If config is somehow undefined (shouldn't happen), use hardcoded values
+  if (!config) {
+    console.error('[FindingCard] CONFIG IS UNDEFINED! Using emergency fallback.')
+  }
+
+  const safeConfig = config || {
+    icon: AlertTriangle,
+    bgClass: 'bg-yellow-50',
+    textClass: 'text-yellow-700',
+    borderClass: 'border-l-4 border-yellow-500',
+    label: 'Medium',
+  }
+
+  const Icon = safeConfig.icon
 
   const formatDate = (dateInput: string | Date) => {
     const d = typeof dateInput === 'string' ? new Date(dateInput) : dateInput
@@ -182,22 +207,22 @@ export function FindingCard({
       onClick={onClick}
       className={cn(
         'relative bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer',
-        config.borderClass,
+        safeConfig.borderClass,
         onClick && 'hover:border-gray-300',
         className
       )}
     >
       {/* Header */}
       <div className="flex items-start gap-3">
-        <div className={cn('p-2 rounded-lg', config.bgClass)}>
-          <Icon className={cn('w-5 h-5', config.textClass)} />
+        <div className={cn('p-2 rounded-lg', safeConfig.bgClass)}>
+          <Icon className={cn('w-5 h-5', safeConfig.textClass)} />
         </div>
 
         <div className="flex-1 min-w-0">
           {/* Title and badges */}
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <h4 className="font-semibold text-gray-900 truncate">{getTitleTranslation(title)}</h4>
-            <span className={cn('inline-flex items-center px-2 py-0.5 rounded text-xs font-medium', config.bgClass, config.textClass)}>
+            <span className={cn('inline-flex items-center px-2 py-0.5 rounded text-xs font-medium', safeConfig.bgClass, safeConfig.textClass)}>
               {t(`severity${normalizedSeverity.charAt(0).toUpperCase() + normalizedSeverity.slice(1)}` as any)}
             </span>
             {isRecurring && recurrenceCount > 0 && (
