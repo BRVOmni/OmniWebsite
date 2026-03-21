@@ -42,6 +42,9 @@ export function FindingCard({
 }: FindingCardProps) {
   const { t, language } = useLanguage()
 
+  // Normalize severity - handle undefined, null, or unexpected values
+  const normalizedSeverity = severity ? String(severity).toLowerCase().trim() as FindingSeverity : 'medium'
+
   // Map finding titles to translation keys
   const getTitleTranslation = (originalTitle: string) => {
     const titleMap: Record<string, { en: string; es: string }> = {
@@ -147,7 +150,7 @@ export function FindingCard({
     },
   }
 
-  const config = severityConfig[severity as FindingSeverity] || severityConfig.medium
+  const config = severityConfig[normalizedSeverity] || severityConfig.medium
   const Icon = config.icon
 
   const formatDate = (dateInput: string | Date) => {

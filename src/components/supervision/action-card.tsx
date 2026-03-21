@@ -46,6 +46,10 @@ export function ActionCard({
 }: ActionCardProps) {
   const { t, language } = useLanguage()
 
+  // Normalize status and priority
+  const normalizedStatus = status ? String(status).toLowerCase().trim() as ActionStatus : 'pending'
+  const normalizedPriority = priority ? String(priority).toLowerCase().trim() as ActionPriority : 'medium'
+
   // Map action descriptions to translation keys
   const getDescriptionTranslation = (originalDesc: string) => {
     const descMap: Record<string, { en: string; es: string }> = {
@@ -135,8 +139,8 @@ export function ActionCard({
     },
   }
 
-  const statusData = statusConfig[(isOverdue && status !== 'completed' ? 'overdue' : status) as ActionStatus] || statusConfig.pending
-  const priorityData = priorityConfig[priority as ActionPriority] || priorityConfig.medium
+  const statusData = statusConfig[(isOverdue && normalizedStatus !== 'completed' ? 'overdue' : normalizedStatus) as ActionStatus] || statusConfig.pending
+  const priorityData = priorityConfig[normalizedPriority] || priorityConfig.medium
   const StatusIcon = statusData.icon
 
   const formatDate = (dateInput: string | Date) => {
