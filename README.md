@@ -14,7 +14,7 @@ A modern, executive-level corporate dashboard for managing a multi-brand food se
 
 ---
 
-**Current Version:** v1.15.5 - Supervision Module Fully Fixed ✅
+**Current Version:** v1.15.6 - Findings Page Translations Complete ✅
 
 **Production URL:** https://dashboard.omniprise.com.py
 
@@ -500,6 +500,22 @@ Users
 ---
 
 ## 📝 VERSION HISTORY
+
+### v1.15.6 (2026-03-21) - Findings Page Translations Complete ✅
+
+**Completed:**
+- ✅ Added translation support for finding types
+- ✅ Created getFindingTypeLabel mapping function
+- ✅ Finding types now translate correctly:
+  - caja_diferencias ↔ Cash Differences / Diferencias de Caja
+  - stock_vencidos ↔ Expired Products / Productos Vencidos
+  - equipos_falla ↔ Equipment Failure / Falla de Equipos
+  - limpieza_deficiente ↔ Poor Cleanliness / Limpieza Deficiente
+  - personal_ausente ↔ Staff Absent / Personal Ausente
+- ✅ Filter dropdown now shows translated types
+- ✅ "Findings by Type" cards now show translated types
+- ✅ All FindingCard translations working perfectly
+- ✅ All VisitTypeBadge translations working
 
 ### v1.15.5 (2026-03-21) - Supervision Module Fully Fixed ✅
 

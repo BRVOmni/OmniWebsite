@@ -4,6 +4,33 @@
 
 ---
 
+## [1.15.6] - Findings Page Translations Complete - 2026-03-21 🌐✅
+
+### Translations Added ✅
+
+**🌐 Finding Type Translations**
+- ✅ Created `getFindingTypeLabel()` mapping function
+- ✅ Added translation support for finding type filter dropdown
+- ✅ Added translation support for "Findings by Type" cards
+- ✅ All finding types now display correctly in EN/ES
+
+**📝 Finding Type Mappings:**
+```
+caja_diferencias     → Cash Differences / Diferencias de Caja
+stock_vencidos       → Expired Products / Productos Vencidos
+equipos_falla        → Equipment Failure / Falla de Equipos
+limpieza_deficiente → Poor Cleanliness / Limpieza Deficiente
+personal_ausente     → Staff Absent / Personal Ausente
+```
+
+**📊 Files Modified:**
+- `src/app/dashboard/supervision/findings/page.tsx`
+
+**✨ Result:**
+All hardcoded text on findings page now translates correctly when switching languages!
+
+---
+
 ## [1.15.5] - Supervision Module Fully Fixed - 2026-03-21 🎉✅
 
 ### Root Cause Identified and Fixed ✅
