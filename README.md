@@ -14,7 +14,11 @@ A modern, executive-level corporate dashboard for managing a multi-brand food se
 
 ---
 
-**Current Version:** v1.13.0 - Grupo Omniprise Branding 🏢🎨
+**Current Version:** v1.14.0 - Production Deployment 🚀🌐
+
+**Production URL:** https://dashboard.omniprise.com.py
+
+**Status:** ✅ Live and Operational
 
 ---
 
@@ -497,6 +501,19 @@ Users
 
 ## 📝 VERSION HISTORY
 
+### v1.14.0 (2026-03-20) - Production Deployment ✅
+
+**Completed:**
+- ✅ Deployed to Vercel (free tier - $0/month)
+- ✅ Custom domain configured: https://dashboard.omniprise.com.py
+- ✅ SSL certificate automatically provisioned
+- ✅ DNS configured and propagated
+- ✅ Root page redirects to login
+- ✅ All 14 modules live and accessible
+- ✅ Environment variables configured
+- ✅ Global CDN enabled
+- ✅ Deployment script created (`./deploy.sh`)
+
 ### v1.13.0 (2026-03-20) - Grupo Omniprise Branding ✅
 
 **Completed:**
@@ -696,7 +713,7 @@ Users
 
 ### All Modules Implemented ✅
 
-The Corporate Food Service Dashboard is now **100% complete** with all 12 modules fully functional:
+The Grupo Omniprise Dashboard is now **100% complete** with all 14 modules fully functional and deployed to production:
 
 **Completed Modules:**
 - ✅ Executive Summary (with sidebar navigation)
@@ -710,12 +727,16 @@ The Corporate Food Service Dashboard is now **100% complete** with all 12 module
 - ✅ Purchases & Merchandise (procurement control)
 - ✅ Payments (centralized payments module)
 - ✅ Operational Supervision (100% complete)
-- ✅ Configuration (system settings)
+- ✅ Settings (system configuration)
+- ✅ Users (user management & permissions)
+- ✅ Login/Signup (authentication)
 
 ### Module Status
-- **Progress:** 12 of 12 modules complete (100%)
-- **Current Focus:** Maintenance and enhancements
-- **Deployment:** Ready for production
+- **Progress:** 14 of 14 modules complete (100%)
+- **Deployment:** ✅ Production live at https://dashboard.omniprise.com.py
+- **User Permissions:** ✅ 4-tier role system implemented
+- **Authentication:** ✅ Supabase Auth integrated
+- **Translations:** ✅ English/Spanish complete
 
 **Completed Modules:**
 - ✅ Executive Summary (with sidebar navigation)
@@ -738,8 +759,9 @@ The Corporate Food Service Dashboard is now **100% complete** with all 12 module
 ### Core Documentation
 - **README.md** - This file, project overview and quick start
 - **CHANGELOG.md** - Detailed version history and release notes
-- **DEPLOYMENT.md** - Production deployment guide
-- **GITLAB_WORKFLOW.md** - GitLab collaboration and CI/CD guide
+- **VERCEL_DEPLOYMENT.md** - Vercel deployment guide and maintenance
+- **CPANEL_DEPLOYMENT.md** - Alternative cPanel deployment options
+- **GITLAB_WORKFLOW.md** - GitLab collaboration and workflow guide
 - **TROUBLESHOOTING.md** - Diagnostic and troubleshooting guide
 
 ### Technical Documentation
@@ -751,7 +773,8 @@ The Corporate Food Service Dashboard is now **100% complete** with all 12 module
 - **OPERATIONAL_SUPERVISION_COMPREHENSIVE.md** - Supervision module details
 
 ### Quick Links
-- 🚀 **Deploy to Production:** See [DEPLOYMENT.md](DEPLOYMENT.md)
+- 🌐 **Live Dashboard:** https://dashboard.omniprise.com.py
+- 🚀 **Vercel Deployment:** See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md)
 - 🔄 **GitLab Workflow:** See [GITLAB_WORKFLOW.md](GITLAB_WORKFLOW.md)
 - 🔧 **Troubleshooting:** See [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 - 📊 **Database Schema:** See [DATA_MODEL.md](DATA_MODEL.md)
@@ -806,14 +829,17 @@ npm run lint     # Run ESLint
 
 ---
 
-## 👥 TEAM
+## 👥 TEAM & CONTACT
 
 **Company:** Grupo Omniprise
 **Product Design:** Senior Product Designer + UX/UI Designer
 **Frontend Architecture:** Senior Frontend Architect
 **Domain:** Corporate Dashboards for Food Chains in Expansion
 
-**GitLab Repository:** https://gitlab.com/sbrv-group/omniprise
+**Links:**
+- **Live Dashboard:** https://dashboard.omniprise.com.py
+- **GitLab Repository:** https://gitlab.com/sbrv-group/omniprise
+- **Vercel Dashboard:** https://vercel.com/brs-projects-c425e547/corporate-food-dashboard
 
 ---
 

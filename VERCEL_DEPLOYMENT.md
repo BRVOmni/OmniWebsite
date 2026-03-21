@@ -13,9 +13,10 @@
 
 **Status:** Production deployment successful
 **Date:** 2026-03-20
-**Version:** v1.13.0
+**Version:** v1.14.0
 **SSL:** ✅ Automatic HTTPS enabled
 **DNS:** ✅ Configured and working
+**Root Redirect:** ✅ Configured to login page
 
 ---
 
