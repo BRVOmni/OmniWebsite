@@ -4,6 +4,69 @@
 
 ---
 
+## [1.15.5] - Supervision Module Fully Fixed - 2026-03-21 🎉✅
+
+### Root Cause Identified and Fixed ✅
+
+**🐛 The Actual Bug: VisitTypeBadge Component**
+- ✅ Found the REAL bug: `VisitTypeBadge` had undefined config
+- ✅ Missing 'use client' directive
+- ✅ No fallback when `type` prop was undefined
+- ✅ This was causing the `Cannot read properties of undefined (reading 'bgClass')` error
+
+**🔧 Fixes Applied:**
+- Added `'use client'` directive to VisitTypeBadge
+- Made `type` prop optional
+- Added `defaultConfig` with hardcoded fallback values
+- Config now ALWAYS has a value, can never be undefined
+- Removed all debug console.log statements
+
+**✨ Result:**
+- Findings page now loads without errors
+- All supervision module pages working perfectly
+- Translations working correctly (EN/ES)
+- Dashboard fully operational
+
+**📊 Files Modified:**
+- `src/components/supervision/visit-type-badge.tsx`
+- `src/components/supervision/finding-card.tsx`
+
+---
+
+## [1.15.4] - Translation System Refinement - 2026-03-21 🌐
+
+### Improvements
+
+**🔧 Config Object Refactoring**
+- ✅ Removed `t()` dependency from config objects
+- ✅ Hardcoded config values that never depend on translations
+- ✅ Translations applied only in JSX during render
+- ✅ Simplified code and eliminated timing issues
+- ✅ Added `safeConfig` variable with hardcoded fallback
+
+**📊 Files Modified:**
+- `src/components/supervision/finding-card.tsx`
+- `src/components/supervision/action-card.tsx`
+
+---
+
+## [1.15.3] - Bulletproof Config System - 2026-03-21 🛡️
+
+### Bug Fixes
+
+**🔧 Memoization and Validation**
+- ✅ Added `useMemo` for all config objects
+- ✅ Added validation for severity/status/priority values
+- ✅ Added safeConfig fallback with hardcoded defaults
+- ✅ All configs guaranteed to be defined
+- ✅ Removed dependency on `t()` function in config initialization
+
+**📊 Files Modified:**
+- `src/components/supervision/finding-card.tsx`
+- `src/components/supervision/action-card.tsx`
+
+---
+
 ## [1.15.2] - Findings Page Fixed - 2026-03-21 🐛✅
 
 ### Bug Fixes - Complete ✅

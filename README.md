@@ -14,7 +14,7 @@ A modern, executive-level corporate dashboard for managing a multi-brand food se
 
 ---
 
-**Current Version:** v1.15.2 - Findings Page Fixed ✅
+**Current Version:** v1.15.5 - Supervision Module Fully Fixed ✅
 
 **Production URL:** https://dashboard.omniprise.com.py
 
@@ -500,6 +500,33 @@ Users
 ---
 
 ## 📝 VERSION HISTORY
+
+### v1.15.5 (2026-03-21) - Supervision Module Fully Fixed ✅
+
+**Completed:**
+- ✅ Fixed VisitTypeBadge undefined config error
+- ✅ Added 'use client' directive to VisitTypeBadge
+- ✅ Added defaultConfig with hardcoded fallback values
+- ✅ Made type prop optional to handle undefined values
+- ✅ Removed all debug console.log statements
+- ✅ All supervision module pages now working without errors
+- ✅ Translations working perfectly (EN/ES)
+
+### v1.15.4 (2026-03-21) - Translation System Refinement ✅
+
+**Completed:**
+- ✅ Removed t() dependency from config objects
+- ✅ Hardcoded config values that never depend on translations
+- ✅ Translations applied only in JSX during render
+- ✅ Simplified code and eliminated timing issues
+
+### v1.15.3 (2026-03-21) - Bulletproof Config System ✅
+
+**Completed:**
+- ✅ Added useMemo for all config objects
+- ✅ Added validation for severity/status/priority values
+- ✅ Added safeConfig fallback with hardcoded defaults
+- ✅ All configs guaranteed to be defined
 
 ### v1.15.2 (2026-03-21) - Findings Page Fixed ✅
 

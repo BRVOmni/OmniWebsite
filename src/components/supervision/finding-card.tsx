@@ -41,8 +41,6 @@ export function FindingCard({
   onClick,
   className,
 }: FindingCardProps) {
-  console.log('[FindingCard] Component rendered with props:', { title, severity, category })
-
   const { t, language } = useLanguage()
 
   // Normalize severity - handle undefined, null, or unexpected values
@@ -138,16 +136,13 @@ export function FindingCard({
 
   // Hardcoded configs - NEVER depends on t() to avoid undefined issues
   const config = useMemo(() => {
-    console.log('[FindingCard useMemo] severity prop:', severity)
-    console.log('[FindingCard useMemo] normalizedSeverity:', normalizedSeverity)
-
     const configs = {
       low: {
         icon: Info,
         bgClass: 'bg-blue-50',
         textClass: 'text-blue-700',
         borderClass: 'border-l-4 border-blue-500',
-        label: 'Low',  // Translation will be applied during render
+        label: 'Low',
       },
       medium: {
         icon: AlertTriangle,
@@ -172,21 +167,10 @@ export function FindingCard({
       },
     } as const
 
-    const result = configs[normalizedSeverity as keyof typeof configs] || configs.medium
-    console.log('[FindingCard useMemo] selected config:', result)
-    console.log('[FindingCard useMemo] configs.medium:', configs.medium)
-
-    return result
-  }, [normalizedSeverity, severity])  // Added severity to dependency array
-
-  console.log('[FindingCard] Final config:', config)
-  console.log('[FindingCard] config.bgClass:', config?.bgClass)
+    return configs[normalizedSeverity as keyof typeof configs] || configs.medium
+  }, [normalizedSeverity, severity])
 
   // ULTIMATE SAFETY: If config is somehow undefined (shouldn't happen), use hardcoded values
-  if (!config) {
-    console.error('[FindingCard] CONFIG IS UNDEFINED! Using emergency fallback.')
-  }
-
   const safeConfig = config || {
     icon: AlertTriangle,
     bgClass: 'bg-yellow-50',
