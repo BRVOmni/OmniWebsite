@@ -134,43 +134,65 @@ export function FindingCard({
     return t(key as any)
   }
 
+  // Hardcoded default safeConfig (never depends on t)
+  const defaultConfig = {
+    icon: AlertTriangle,
+    bgClass: 'bg-yellow-50',
+    textClass: 'text-yellow-700',
+    borderClass: 'border-l-4 border-yellow-500',
+    label: 'Medium',
+  }
+
   // Memoize severity config to prevent recalculation and ensure it's always defined
   const config = useMemo(() => {
+    // Hardcoded configs as fallback (doesn't depend on t)
     const configs = {
       low: {
         icon: Info,
         bgClass: 'bg-blue-50',
         textClass: 'text-blue-700',
         borderClass: 'border-l-4 border-blue-500',
-        label: t('severityLow'),
+        label: 'Low',
       },
       medium: {
         icon: AlertTriangle,
         bgClass: 'bg-yellow-50',
         textClass: 'text-yellow-700',
         borderClass: 'border-l-4 border-yellow-500',
-        label: t('severityMedium'),
+        label: 'Medium',
       },
       high: {
         icon: AlertCircle,
         bgClass: 'bg-orange-50',
         textClass: 'text-orange-700',
         borderClass: 'border-l-4 border-orange-500',
-        label: t('severityHigh'),
+        label: 'High',
       },
       critical: {
         icon: AlertOctagon,
         bgClass: 'bg-red-50',
         textClass: 'text-red-700',
         borderClass: 'border-l-4 border-red-500',
-        label: t('severityCritical'),
+        label: 'Critical',
       },
     } as const
 
-    return configs[normalizedSeverity as keyof typeof configs] || configs.medium
+    const selectedConfig = configs[normalizedSeverity as keyof typeof configs]
+
+    // Try to use translated label if t function is available
+    if (selectedConfig && t) {
+      return {
+        ...selectedConfig,
+        label: t(`severity${normalizedSeverity.charAt(0).toUpperCase() + normalizedSeverity.slice(1)}` as any) || selectedConfig.label,
+      }
+    }
+
+    return selectedConfig || defaultConfig
   }, [normalizedSeverity, t])
 
-  const Icon = config.icon
+  // Final safety check - if config is still somehow undefined, use default
+  const safeConfig = config || defaultConfig
+  const Icon = safeConfig.icon
 
   const formatDate = (dateInput: string | Date) => {
     const d = typeof dateInput === 'string' ? new Date(dateInput) : dateInput
@@ -182,23 +204,23 @@ export function FindingCard({
       onClick={onClick}
       className={cn(
         'relative bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer',
-        config.borderClass,
+        safeConfig.borderClass,
         onClick && 'hover:border-gray-300',
         className
       )}
     >
       {/* Header */}
       <div className="flex items-start gap-3">
-        <div className={cn('p-2 rounded-lg', config.bgClass)}>
-          <Icon className={cn('w-5 h-5', config.textClass)} />
+        <div className={cn('p-2 rounded-lg', safeConfig.bgClass)}>
+          <Icon className={cn('w-5 h-5', safeConfig.textClass)} />
         </div>
 
         <div className="flex-1 min-w-0">
           {/* Title and badges */}
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <h4 className="font-semibold text-gray-900 truncate">{getTitleTranslation(title)}</h4>
-            <span className={cn('inline-flex items-center px-2 py-0.5 rounded text-xs font-medium', config.bgClass, config.textClass)}>
-              {config.label}
+            <span className={cn('inline-flex items-center px-2 py-0.5 rounded text-xs font-medium', safeConfig.bgClass, safeConfig.textClass)}>
+              {safeConfig.label}
             </span>
             {isRecurring && recurrenceCount > 0 && (
               <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700">

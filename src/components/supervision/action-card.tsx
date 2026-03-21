@@ -159,10 +159,25 @@ export function ActionCard({
     },
   }), [t])
 
+  // Hardcoded defaults (never depend on t)
+  const defaultStatusData = {
+    icon: Clock,
+    bgClass: 'bg-gray-50',
+    textClass: 'text-gray-600',
+    label: 'Pending',
+  }
+
+  const defaultPriorityData = {
+    bgClass: 'bg-yellow-50',
+    textClass: 'text-yellow-700',
+    label: 'Medium',
+    borderClass: 'border-l-yellow-400',
+  }
+
   // Get status data with fallback
   const effectiveStatus = (isOverdue && normalizedStatus !== 'completed') ? 'overdue' : normalizedStatus
-  const statusData = statusConfig[effectiveStatus as keyof typeof statusConfig] || statusConfig.pending
-  const priorityData = priorityConfig[normalizedPriority as keyof typeof priorityConfig] || priorityConfig.medium
+  const statusData = statusConfig[effectiveStatus as keyof typeof statusConfig] || defaultStatusData
+  const priorityData = priorityConfig[normalizedPriority as keyof typeof priorityConfig] || defaultPriorityData
   const StatusIcon = statusData.icon
 
   const formatDate = (dateInput: string | Date) => {
