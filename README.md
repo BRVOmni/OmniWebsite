@@ -14,7 +14,7 @@ A modern, executive-level corporate dashboard for managing a multi-brand food se
 
 ---
 
-**Current Version:** v1.15.1 - Translation System Fixed ✅
+**Current Version:** v1.15.2 - Findings Page Fixed ✅
 
 **Production URL:** https://dashboard.omniprise.com.py
 
@@ -500,6 +500,16 @@ Users
 ---
 
 ## 📝 VERSION HISTORY
+
+### v1.15.2 (2026-03-21) - Findings Page Fixed ✅
+
+**Completed:**
+- ✅ Fixed "Cannot read properties of undefined (reading 'bgClass')" error
+- ✅ Added defensive checks to filter out invalid findings
+- ✅ Added fallback for getSeverityConfig function
+- ✅ Removed non-existent photoCount prop from all pages
+- ✅ All translation fixes preserved and working
+- ✅ Findings page now loads without errors
 
 ### v1.15.1 (2026-03-21) - Translation System Fixed ✅
 

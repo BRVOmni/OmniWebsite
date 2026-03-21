@@ -4,6 +4,39 @@
 
 ---
 
+## [1.15.2] - Findings Page Fixed - 2026-03-21 🐛✅
+
+### Bug Fixes - Complete ✅
+
+**🔧 Findings Page Error Fixed**
+- ✅ Fixed "Cannot read properties of undefined (reading 'bgClass')" error
+- ✅ Added defensive checks to filter out invalid findings
+- ✅ Added fallback for getSeverityConfig function (never returns undefined)
+- ✅ Removed non-existent photoCount prop from all pages
+- ✅ Made severity prop accept string type for flexibility
+
+**🛡️ Defensive Programming Added**
+- Filter findings to only render those with valid title and severity
+- Default values for FindingCard props (title='', severity='medium')
+- Fallback config in getSeverityConfig
+- Applied to all pages using FindingCard:
+  - /dashboard/supervision/findings
+  - /dashboard/supervision (main dashboard)
+  - /dashboard/supervision/locations/[id]
+
+**✨ Preserved Working Features**
+- All translation fixes still working
+- Text normalization handling line breaks
+- Spanish to English translations for findings and actions
+
+**📊 Files Modified**
+- `src/components/supervision/finding-card.tsx`
+- `src/app/dashboard/supervision/findings/page.tsx`
+- `src/app/dashboard/supervision/page.tsx`
+- `src/app/dashboard/supervision/locations/[id]/page.tsx`
+
+---
+
 ## [1.15.1] - Translation System Fixed - 2026-03-21 🌐✅
 
 ### Bug Fixes - Complete ✅
