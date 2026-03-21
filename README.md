@@ -14,11 +14,11 @@ A modern, executive-level corporate dashboard for managing a multi-brand food se
 
 ---
 
-**Current Version:** v1.15.0 - Supervision Module Complete ✅
+**Current Version:** v1.15.1 - Translation System Fixed ✅
 
 **Production URL:** https://dashboard.omniprise.com.py
 
-**Status:** ✅ Live and Operational - All Modules Complete
+**Status:** ✅ Live and Operational - All Modules Complete with Working Translations
 
 ---
 
