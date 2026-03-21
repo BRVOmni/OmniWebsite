@@ -568,6 +568,8 @@ export const translations = {
     required: 'Required',
     optional: 'Optional',
     photos: 'Photos',
+    before: 'Before',
+    after: 'After',
 
     // Photo Upload
     uploadPhotos: 'Upload Photos',
@@ -1380,6 +1382,8 @@ export const translations = {
     required: 'Requerido',
     optional: 'Opcional',
     photos: 'Fotos',
+    before: 'Antes',
+    after: 'Después',
 
     // Photo Upload
     uploadPhotos: 'Subir Fotos',

@@ -168,18 +168,19 @@ export default function FindingsPage() {
 
   // Calculate statistics
   const stats = useMemo(() => {
+    // Get all unique finding types
+    const findingTypes = [...new Set(findings.map(f => f.finding_type))]
+    const byType: Record<string, number> = {}
+    findingTypes.forEach(type => {
+      byType[type] = findings.filter(f => f.finding_type === type).length
+    })
+
     return {
       total: findings.length,
       critical: findings.filter(f => f.severity === 'critical').length,
       high: findings.filter(f => f.severity === 'high').length,
       recurring: findings.filter(f => f.is_recurring).length,
-      byType: {
-        caja_diferencias: findings.filter(f => f.finding_type === 'caja_diferencias').length,
-        stock_vencidos: findings.filter(f => f.finding_type === 'stock_vencidos').length,
-        equipos_falla: findings.filter(f => f.finding_type === 'equipos_falla').length,
-        limpieza_deficiente: findings.filter(f => f.finding_type === 'limpieza_deficiente').length,
-        personal_ausente: findings.filter(f => f.finding_type === 'personal_ausente').length,
-      },
+      byType,
     }
   }, [findings])
 
@@ -289,11 +290,9 @@ export default function FindingsPage() {
               className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">{t('allTypes')}</option>
-              <option value="caja_diferencias">{t('findingTypeCajaDiferencias')}</option>
-              <option value="stock_vencidos">{t('findingTypeStockVencidos')}</option>
-              <option value="equipos_falla">{t('findingTypeEquiposFalla')}</option>
-              <option value="limpieza_deficiente">{t('findingTypeLimpiezaDeficiente')}</option>
-              <option value="personal_ausente">{t('findingTypePersonalAusente')}</option>
+              {[...new Set(findings.map(f => f.finding_type))].map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
             </select>
 
             {/* Category */}
@@ -346,7 +345,7 @@ export default function FindingsPage() {
               }`}
               onClick={() => setTypeFilter(typeFilter === type ? 'all' : type)}
             >
-              <div className="text-xs text-gray-500 mb-1">{t(`findingType${type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('')}`)}</div>
+              <div className="text-xs text-gray-500 mb-1 truncate">{type}</div>
               <div className="text-xl font-bold text-gray-900">{count}</div>
             </div>
           ))}

@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * Action Card Component
  *
@@ -42,7 +44,30 @@ export function ActionCard({
   onClick,
   className,
 }: ActionCardProps) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+
+  // Map action descriptions to translation keys
+  const getDescriptionTranslation = (originalDesc: string) => {
+    const descMap: Record<string, { en: string; es: string }> = {
+      'Implement double cash count procedure and daily reconciliation with responsible signature.': { en: 'Implement double cash count procedure and daily reconciliation with responsible signature.', es: 'Implementar procedimiento de doble conteo de caja y conciliación diaria con firma responsable.' },
+      'Implementar procedimiento de doble conteo de caja y conciliación diaria con firma responsable.': { en: 'Implement double cash count procedure and daily reconciliation with responsible signature.', es: 'Implementar procedimiento de doble conteo de caja y conciliación diaria con firma responsable.' },
+      'Manager must request written authorization to leave the location. Designate a substitute.': { en: 'Manager must request written authorization to leave the location. Designate a substitute.', es: 'Gerente debe solicitar autorización por escrito para ausentarse del local. Designar suplente.' },
+      'Gerente debe solicitar autorización por escrito para ausentarse del local. Designar suplente.': { en: 'Manager must request written authorization to leave the location. Designate a substitute.', es: 'Gerente debe solicitar autorización por escrito para ausentarse del local. Designar suplente.' },
+      'Remove expired products, implement weekly expiration date review.': { en: 'Remove expired products, implement weekly expiration date review.', es: 'Retirar productos vencidos, implementar revisión semanal de fechas de vencimiento.' },
+      'Retirar productos vencidos, implementar revisión semanal de fechas de vencimiento.': { en: 'Remove expired products, implement weekly expiration date review.', es: 'Retirar productos vencidos, implementar revisión semanal de fechas de vencimiento.' },
+      'Create restroom cleaning checklist every 2 hours with signed record.': { en: 'Create restroom cleaning checklist every 2 hours with signed record.', es: 'Crear checklist de limpieza de baños cada 2 horas con registro firmado.' },
+      'Crear checklist de limpieza de baños cada 2 horas con registro firmado.': { en: 'Create restroom cleaning checklist every 2 hours with signed record.', es: 'Crear checklist de limpieza de baños cada 2 horas con registro firmado.' },
+      'Call refrigeration technician. Record temperature 3 times per day.': { en: 'Call refrigeration technician. Record temperature 3 times per day.', es: 'Llamar técnico de refrigeración. Registrar temperatura 3 veces por día.' },
+      'Llamar técnico de refrigeración. Registrar temperatura 3 veces por día.': { en: 'Call refrigeration technician. Record temperature 3 times per day.', es: 'Llamar técnico de refrigeración. Registrar temperatura 3 veces por día.' },
+      'Verify all staff have complete uniforms before starting shift.': { en: 'Verify all staff have complete uniforms before starting shift.', es: 'Verificar que todo el personal tenga uniforme completo antes de iniciar turno.' },
+      'Verificar que todo el personal tenga uniforme completo antes de iniciar turno.': { en: 'Verify all staff have complete uniforms before starting shift.', es: 'Verificar que todo el personal tenga uniforme completo antes de iniciar turno.' },
+      'Train staff on FIFO procedure. Place reminder signs.': { en: 'Train staff on FIFO procedure. Place reminder signs.', es: 'Capacitar al personal sobre procedimiento FIFO. Colocar carteles recordatorios.' },
+      'Capacitar al personal sobre procedimiento FIFO. Colocar carteles recordatorios.': { en: 'Train staff on FIFO procedure. Place reminder signs.', es: 'Capacitar al personal sobre procedimiento FIFO. Colocar carteles recordatorios.' },
+      'Request small denomination bills from bank daily. Maintain minimum change fund.': { en: 'Request small denomination bills from bank daily. Maintain minimum change fund.', es: 'Solicitar billetes de menor denominación al banco diariamente. Mantaner fondo de cambio mínimo.' },
+      'Solicitar billetes de menor denominación al banco diariamente. Mantaner fondo de cambio mínimo.': { en: 'Request small denomination bills from bank daily. Maintain minimum change fund.', es: 'Solicitar billetes de menor denominación al banco diariamente. Mantaner fondo de cambio mínimo.' },
+    }
+    return descMap[originalDesc]?.[language] || originalDesc
+  }
 
   const statusConfig: Record<ActionStatus, { icon: typeof CheckCircle2; bgClass: string; textClass: string; label: string }> = {
     pending: {
@@ -159,7 +184,7 @@ export function ActionCard({
 
       {/* Description */}
       <p className="text-sm font-medium text-gray-900 mb-3 line-clamp-2">
-        {description}
+        {getDescriptionTranslation(description)}
       </p>
 
       {/* Metadata */}
@@ -195,9 +220,9 @@ export function ActionCard({
 
         {(hasBeforePhoto || hasAfterPhoto) && (
           <span className="flex items-center gap-1">
-            {hasBeforePhoto && '📷 Before'}
+            {hasBeforePhoto && `📷 ${t('before')}`}
             {hasBeforePhoto && hasAfterPhoto && ' → '}
-            {hasAfterPhoto && 'After 📷'}
+            {hasAfterPhoto && `${t('after')} 📷`}
           </span>
         )}
       </div>
