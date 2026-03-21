@@ -379,7 +379,6 @@ export default function FindingsPage() {
                     date={finding.created_at}
                     isRecurring={finding.is_recurring}
                     recurrenceCount={finding.recurrence_count}
-                    photoCount={finding.photo_url ? 1 : 0}
                   />
                   <div className="mt-2 flex items-center gap-3 text-xs text-gray-500">
                     <span>{t('visit')}: {new Date(finding.supervision_visits?.visit_date || '').toLocaleDateString()}</span>

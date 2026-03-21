@@ -50,8 +50,14 @@ export function ActionCard({
   const normalizedStatus = status ? String(status).toLowerCase().trim() as ActionStatus : 'pending'
   const normalizedPriority = priority ? String(priority).toLowerCase().trim() as ActionPriority : 'medium'
 
+  // Normalize text for lookup (remove extra whitespace, line breaks)
+  const normalizeText = (text: string) => {
+    return text.replace(/\s+/g, ' ').trim()
+  }
+
   // Map action descriptions to translation keys
   const getDescriptionTranslation = (originalDesc: string) => {
+    const normalizedDesc = normalizeText(originalDesc)
     const descMap: Record<string, { en: string; es: string }> = {
       'Implement double cash count procedure and daily reconciliation with responsible signature.': { en: 'Implement double cash count procedure and daily reconciliation with responsible signature.', es: 'Implementar procedimiento de doble conteo de caja y conciliación diaria con firma responsable.' },
       'Implementar procedimiento de doble conteo de caja y conciliación diaria con firma responsable.': { en: 'Implement double cash count procedure and daily reconciliation with responsible signature.', es: 'Implementar procedimiento de doble conteo de caja y conciliación diaria con firma responsable.' },
@@ -70,7 +76,7 @@ export function ActionCard({
       'Request small denomination bills from bank daily. Maintain minimum change fund.': { en: 'Request small denomination bills from bank daily. Maintain minimum change fund.', es: 'Solicitar billetes de menor denominación al banco diariamente. Mantaner fondo de cambio mínimo.' },
       'Solicitar billetes de menor denominación al banco diariamente. Mantaner fondo de cambio mínimo.': { en: 'Request small denomination bills from bank daily. Maintain minimum change fund.', es: 'Solicitar billetes de menor denominación al banco diariamente. Mantaner fondo de cambio mínimo.' },
     }
-    return descMap[originalDesc]?.[language] || originalDesc
+    return descMap[normalizedDesc]?.[language] || originalDesc
   }
 
   const statusConfig: Record<ActionStatus, { icon: typeof CheckCircle2; bgClass: string; textClass: string; label: string }> = {

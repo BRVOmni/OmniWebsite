@@ -45,8 +45,14 @@ export function FindingCard({
   // Normalize severity - handle undefined, null, or unexpected values
   const normalizedSeverity = severity ? String(severity).toLowerCase().trim() as FindingSeverity : 'medium'
 
+  // Normalize text for lookup (remove extra whitespace, line breaks)
+  const normalizeText = (text: string) => {
+    return text.replace(/\s+/g, ' ').trim()
+  }
+
   // Map finding titles to translation keys
   const getTitleTranslation = (originalTitle: string) => {
+    const normalizedTitle = normalizeText(originalTitle)
     const titleMap: Record<string, { en: string; es: string }> = {
       'Significant cash difference': { en: 'Significant cash difference', es: 'Caja con diferencia significativa' },
       'Caja con diferencia significativa': { en: 'Significant cash difference', es: 'Caja con diferencia significativa' },
@@ -69,11 +75,13 @@ export function FindingCard({
       'Manager not present during shift': { en: 'Manager not present during shift', es: 'Gerente no presente en turno' },
       'Gerente no presente en turno': { en: 'Manager not present during shift', es: 'Gerente no presente en turno' },
     }
-    return titleMap[originalTitle]?.[language] || originalTitle
+
+    return titleMap[normalizedTitle]?.[language] || originalTitle
   }
 
   // Map finding descriptions to translation keys
   const getDescriptionTranslation = (originalDesc: string) => {
+    const normalizedDesc = normalizeText(originalDesc)
     const descMap: Record<string, { en: string; es: string }> = {
       'A difference of 500,000 Gs. was found in the cash count without documented justification.': { en: 'A difference of 500,000 Gs. was found in the cash count without documented justification.', es: 'Se encontró una diferencia de 500.000 Gs. en el conteo de caja sin justificación documentada.' },
       'Se encontró una diferencia de 500.000 Gs. en el conteo de caja sin justificación documentada.': { en: 'A difference of 500,000 Gs. was found in the cash count without documented justification.', es: 'Se encontró una diferencia de 500.000 Gs. en el conteo de caja sin justificación documentada.' },
@@ -96,7 +104,7 @@ export function FindingCard({
       'Location manager not present during the morning shift without authorization.': { en: 'Location manager not present during the morning shift without authorization.', es: 'Gerente de local no presente durante el turno de la mañana sin autorización.' },
       'Gerente de local no presente durante el turno de la mañana sin autorización.': { en: 'Location manager not present during the morning shift without authorization.', es: 'Gerente de local no presente durante el turno de la mañana sin autorización.' },
     }
-    return descMap[originalDesc]?.[language] || originalDesc
+    return descMap[normalizedDesc]?.[language] || originalDesc
   }
 
   // Map Spanish categories from database to translation keys
@@ -119,38 +127,53 @@ export function FindingCard({
     return t(key as any)
   }
 
-  const severityConfig: Record<FindingSeverity, { icon: typeof AlertTriangle; bgClass: string; textClass: string; borderClass: string; label: string }> = {
-    low: {
-      icon: Info,
-      bgClass: 'bg-blue-50',
-      textClass: 'text-blue-700',
-      borderClass: 'border-l-4 border-blue-500',
-      label: t('severityLow'),
-    },
-    medium: {
-      icon: AlertTriangle,
-      bgClass: 'bg-yellow-50',
-      textClass: 'text-yellow-700',
-      borderClass: 'border-l-4 border-yellow-500',
-      label: t('severityMedium'),
-    },
-    high: {
-      icon: AlertCircle,
-      bgClass: 'bg-orange-50',
-      textClass: 'text-orange-700',
-      borderClass: 'border-l-4 border-orange-500',
-      label: t('severityHigh'),
-    },
-    critical: {
-      icon: AlertOctagon,
-      bgClass: 'bg-red-50',
-      textClass: 'text-red-700',
-      borderClass: 'border-l-4 border-red-500',
-      label: t('severityCritical'),
-    },
+  const getSeverityConfig = (sev: string) => {
+    const s = sev ? String(sev).toLowerCase().trim() : 'medium'
+    switch (s) {
+      case 'low':
+        return {
+          icon: Info,
+          bgClass: 'bg-blue-50',
+          textClass: 'text-blue-700',
+          borderClass: 'border-l-4 border-blue-500',
+          label: t('severityLow'),
+        }
+      case 'medium':
+        return {
+          icon: AlertTriangle,
+          bgClass: 'bg-yellow-50',
+          textClass: 'text-yellow-700',
+          borderClass: 'border-l-4 border-yellow-500',
+          label: t('severityMedium'),
+        }
+      case 'high':
+        return {
+          icon: AlertCircle,
+          bgClass: 'bg-orange-50',
+          textClass: 'text-orange-700',
+          borderClass: 'border-l-4 border-orange-500',
+          label: t('severityHigh'),
+        }
+      case 'critical':
+        return {
+          icon: AlertOctagon,
+          bgClass: 'bg-red-50',
+          textClass: 'text-red-700',
+          borderClass: 'border-l-4 border-red-500',
+          label: t('severityCritical'),
+        }
+      default:
+        return {
+          icon: AlertTriangle,
+          bgClass: 'bg-yellow-50',
+          textClass: 'text-yellow-700',
+          borderClass: 'border-l-4 border-yellow-500',
+          label: t('severityMedium'),
+        }
+    }
   }
 
-  const config = severityConfig[normalizedSeverity] || severityConfig.medium
+  const config = getSeverityConfig(normalizedSeverity)
   const Icon = config.icon
 
   const formatDate = (dateInput: string | Date) => {
