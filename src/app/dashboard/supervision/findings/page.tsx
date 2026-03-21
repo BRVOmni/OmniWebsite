@@ -363,16 +363,18 @@ export default function FindingsPage() {
 
           <div className="divide-y">
             {filteredFindings.length > 0 ? (
-              filteredFindings.map(finding => (
+              filteredFindings
+                .filter(finding => finding.title && finding.severity) // Only render valid findings
+                .map(finding => (
                 <div
                   key={finding.id}
                   onClick={() => router.push(`/dashboard/supervision/visits/${finding.visit_id}`)}
                   className="p-4 hover:bg-gray-50 cursor-pointer transition-colors"
                 >
                   <FindingCard
-                    title={finding.title}
+                    title={finding.title || ''}
                     description={finding.description}
-                    severity={finding.severity as any}
+                    severity={finding.severity || 'medium'}
                     type={finding.finding_type as any}
                     category={finding.category}
                     location={finding.supervision_visits?.locations?.name}

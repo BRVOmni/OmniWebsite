@@ -16,7 +16,7 @@ export type FindingType = 'caja_diferencias' | 'stock_vencidos' | 'equipos_falla
 interface FindingCardProps {
   title: string
   description?: string
-  severity: FindingSeverity
+  severity: FindingSeverity | string  // Accept string for flexibility
   type?: FindingType
   category?: string
   location?: string
@@ -129,6 +129,16 @@ export function FindingCard({
 
   const getSeverityConfig = (sev: string) => {
     const s = sev ? String(sev).toLowerCase().trim() : 'medium'
+
+    // Default config (fallback)
+    const defaultConfig = {
+      icon: AlertTriangle,
+      bgClass: 'bg-yellow-50',
+      textClass: 'text-yellow-700',
+      borderClass: 'border-l-4 border-yellow-500',
+      label: t('severityMedium'),
+    }
+
     switch (s) {
       case 'low':
         return {
@@ -163,17 +173,17 @@ export function FindingCard({
           label: t('severityCritical'),
         }
       default:
-        return {
-          icon: AlertTriangle,
-          bgClass: 'bg-yellow-50',
-          textClass: 'text-yellow-700',
-          borderClass: 'border-l-4 border-yellow-500',
-          label: t('severityMedium'),
-        }
+        return defaultConfig
     }
   }
 
-  const config = getSeverityConfig(normalizedSeverity)
+  const config = getSeverityConfig(normalizedSeverity) || {
+    icon: AlertTriangle,
+    bgClass: 'bg-yellow-50',
+    textClass: 'text-yellow-700',
+    borderClass: 'border-l-4 border-yellow-500',
+    label: t('severityMedium'),
+  }
   const Icon = config.icon
 
   const formatDate = (dateInput: string | Date) => {

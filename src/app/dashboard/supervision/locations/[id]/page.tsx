@@ -378,18 +378,20 @@ export default function LocationDetailPage() {
               <h3 className="font-semibold text-gray-900">{t('activeFindings')}</h3>
             </div>
             <div className="p-4 space-y-3 max-h-96 overflow-y-auto">
-              {findings.slice(0, 5).map(finding => (
+              {findings
+                .filter(finding => finding.title && finding.severity)
+                .slice(0, 5)
+                .map(finding => (
                 <FindingCard
                   key={finding.id}
-                  title={finding.title}
+                  title={finding.title || ''}
                   description={finding.description}
-                  severity={finding.severity as any}
+                  severity={finding.severity || 'medium'}
                   type={finding.finding_type as any}
                   category={finding.category}
                   date={finding.created_at}
                   isRecurring={finding.is_recurring}
                   recurrenceCount={finding.recurrence_count}
-                  photoCount={finding.photo_url ? 1 : 0}
                   onClick={() => {}}
                   className="cursor-default"
                 />

@@ -613,19 +613,21 @@ export default function SupervisionPage() {
               </button>
             </div>
             <div className="space-y-3">
-              {filteredData.findings.slice(0, 5).map(finding => (
+              {filteredData.findings
+                .filter(finding => finding.title && finding.severity)
+                .slice(0, 5)
+                .map(finding => (
                 <FindingCard
                   key={finding.id}
-                  title={finding.title}
+                  title={finding.title || ''}
                   description={finding.description}
-                  severity={finding.severity as any}
+                  severity={finding.severity || 'medium'}
                   type={finding.finding_type as any}
                   category={finding.category}
                   location={finding.supervision_visits?.locations?.name}
                   date={finding.created_at}
                   isRecurring={finding.is_recurring}
                   recurrenceCount={finding.recurrence_count}
-                  photoCount={0}
                   onClick={() => router.push(`/dashboard/supervision/findings`)}
                 />
               ))}
