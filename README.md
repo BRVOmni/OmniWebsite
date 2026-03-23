@@ -14,7 +14,7 @@ A modern, executive-level corporate dashboard for managing a multi-brand food se
 
 ---
 
-**Current Version:** v1.15.7 - Corrective Actions Page Fixed 🔧✅
+**Current Version:** v1.15.8 - Corrective Actions Page Fixed (Column Alignment) 🔧✅
 
 **Production URL:** https://dashboard.omniprise.com.py
 
@@ -500,6 +500,20 @@ Users
 ---
 
 ## 📝 VERSION HISTORY
+
+### v1.15.8 (2026-03-23) - Corrective Actions Page Fixed (Column Alignment) 🔧✅
+
+**Completed:**
+- ✅ Fixed column name mismatches between frontend query and database schema
+- ✅ Query now uses correct columns: actual_completion_date, before_photo_url, after_photo_url
+- ✅ Added data transformation to maintain ActionCard compatibility
+- ✅ Fixed updateActionStatus to update actual_completion_date
+- ✅ Added error handling to prevent crashes on database errors
+- ✅ Applied RLS policy to enable authenticated users to read corrective_actions
+- ✅ Enhanced .gitignore for better security
+
+**Database Applied:**
+RLS policy has been applied to Supabase database.
 
 ### v1.15.7 (2026-03-23) - Corrective Actions Page Fixed 🔧✅
 

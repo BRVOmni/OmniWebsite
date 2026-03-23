@@ -4,7 +4,7 @@
 
 ---
 
-## [1.15.7] - Corrective Actions Page Fixed - 2026-03-23 🔧✅
+## [1.15.8] - Corrective Actions Page Fixed (Column Alignment) - 2026-03-23 🔧✅
 
 ### Bug Fixes Applied ✅
 
@@ -12,36 +12,33 @@
 
 Root causes identified and fixed:
 1. ❌ Frontend query referenced non-existent database columns
-2. ❌ RLS policies used wrong pattern for authenticated users
-3. ❌ locations/cities RLS policies inconsistent with other tables
+2. ❌ RLS policies prevented authenticated users from reading data
 
-**🔧 Frontend Fixes (Schema Alignment):**
+**🔧 Frontend Fixes (Column Name Alignment):**
+- Fixed query to use correct database column names:
+  - `actual_completion_date` instead of `completed_at`
+  - `before_photo_url` instead of `before_photos` array
+  - `after_photo_url` instead of `after_photos` array
+- Added data transformation to maintain ActionCard compatibility
+- Fixed `updateActionStatus` to update `actual_completion_date`
+- Added error handling to prevent crashes on database errors
+- Improved filter to handle null/undefined data gracefully
 - Updated `ActionData` interface to match actual database schema
-- Removed non-existent fields: `immediate_action`, `long_term_solution`, `responsible_role`
-- Removed non-existent fields: `before_photo_url`, `after_photo_url`, `verified_by`, `verification_date`
-- Changed `actual_completion_date` → `completed_at` (matches database)
-- Changed `before_photo_url` → `before_photos` (array)
-- Changed `after_photo_url` → `after_photos` (array)
-- Updated Supabase query to select only existing columns
-- Added defensive filter: `.filter(action => action.description && action.status)`
-- Updated `updateActionStatus` to use `completed_at` instead of `actual_completion_date`
-- All translation keys verified and working
 
 **🔧 Database Fixes (RLS Policies):**
-- Fixed corrective_actions RLS to use `auth.role() = 'authenticated'` pattern
-- Fixed locations RLS to use `auth.role() = 'authenticated'` pattern
-- Fixed cities RLS to use `auth.role() = 'authenticated'` pattern
-- All three tables now match the pattern used by working tables (sales, alerts, supervision_visits)
-- Removed conflicting SELECT policies
+- Applied RLS policy using `auth.role() = 'authenticated'` pattern
+- Matches the pattern used by working tables (sales, alerts, supervision_visits)
+- Enables authenticated users to read corrective_actions data
 
 **📊 Files Modified:**
-- `src/app/dashboard/supervision/actions/page.tsx` (schema alignment)
+- `src/app/dashboard/supervision/actions/page.tsx` (column alignment, error handling)
+- `.gitignore` (enhanced security for environment files)
 
 **🗄️ Database Migration:**
-- `supabase/migrations/20260323_fix_corrective_actions_rls.sql` (RLS policy fixes)
+- `supabase/migrations/20260323_corrective_actions_columns_and_rls.sql` (RLS policy fix)
 
 **✨ Result:**
-Corrective actions page now loads and displays all 8 actions with full functionality!
+Corrective actions page now loads and displays data with full functionality!
 
 ---
 
