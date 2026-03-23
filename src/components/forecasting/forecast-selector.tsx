@@ -14,7 +14,6 @@
 
 import { useState } from 'react'
 import { useLanguage } from '@/lib/language-context'
-import { Button } from '@/components/ui/button'
 import { algorithmInfo } from '@/lib/forecasting/algorithms'
 import type { ForecastRequest, ForecastHorizon, ForecastMethod, ForecastDimension } from '@/lib/forecasting/types'
 
@@ -212,14 +211,15 @@ export function ForecastSelector({
 
       {/* Generate button */}
       <div className="flex justify-end">
-        <Button
+        <button
+          type="button"
           onClick={() =>
             onForecast({
               horizon,
               method,
               dimension,
               dimensionId: dimensionId || undefined,
-              confidence
+              confidence: confidence ?? 0.95
             })
           }
           disabled={loading}
@@ -233,7 +233,7 @@ export function ForecastSelector({
           ) : (
             t('generateForecast') || 'Generate Forecast'
           )}
-        </Button>
+        </button>
       </div>
     </div>
   )

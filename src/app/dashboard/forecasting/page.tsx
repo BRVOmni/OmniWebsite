@@ -96,7 +96,7 @@ export default function ForecastingPage() {
         horizon: params.horizon,
         method: params.method,
         dimension: params.dimension,
-        confidence: params.confidence.toString()
+        confidence: (params.confidence ?? 0.95).toString()
       })
 
       if (params.dimensionId) {
