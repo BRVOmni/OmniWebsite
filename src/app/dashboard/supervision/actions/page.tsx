@@ -37,12 +37,15 @@ interface ActionData {
   responsible_person: string
   priority: string
   committed_date: string
-  completed_at: string | null
+  actual_completion_date?: string | null
+  completed_at?: string | null  // Transformed from actual_completion_date
   status: string
   is_overdue: boolean
   days_overdue: number
-  before_photos: string[] | null
-  after_photos: string[] | null
+  before_photo_url?: string | null
+  after_photo_url?: string | null
+  before_photos?: string[] | null  // Transformed from before_photo_url
+  after_photos?: string[] | null  // Transformed from after_photo_url
   location_id: string
   locations: LocationInfo
   created_at: string
@@ -86,7 +89,7 @@ export default function ActionsPage() {
   }, [router, supabase])
 
   const loadActions = async () => {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('corrective_actions')
       .select(`
         id,
@@ -94,12 +97,12 @@ export default function ActionsPage() {
         responsible_person,
         priority,
         committed_date,
-        completed_at,
+        actual_completion_date,
         status,
         is_overdue,
         days_overdue,
-        before_photos,
-        after_photos,
+        before_photo_url,
+        after_photo_url,
         location_id,
         created_at,
         locations (
@@ -112,7 +115,21 @@ export default function ActionsPage() {
       `)
       .order('created_at', { ascending: false })
 
-    setActions(data as unknown as ActionData[] || [])
+    if (error) {
+      console.error('Error loading corrective actions:', error)
+      setActions([])
+      return
+    }
+
+    // Transform data to match expected format
+    const transformedData = (data || []).map((action: any) => ({
+      ...action,
+      completed_at: action.actual_completion_date,
+      before_photos: action.before_photo_url ? [action.before_photo_url] : null,
+      after_photos: action.after_photo_url ? [action.after_photo_url] : null,
+    }))
+
+    setActions(transformedData as ActionData[])
   }
 
   const loadLocations = async () => {
@@ -125,9 +142,12 @@ export default function ActionsPage() {
     setLocations(data as unknown as LocationInfo[] || [])
   }
 
-  // Filter actions
+  // Filter actions - only include valid actions
   const filteredActions = useMemo(() => {
     return actions.filter(action => {
+      // Skip invalid actions (missing required fields)
+      if (!action.description || !action.status || !action.id) return false
+
       // Status filter
       if (statusFilter !== 'all' && action.status !== statusFilter) return false
 
@@ -144,10 +164,12 @@ export default function ActionsPage() {
       // Search query
       if (searchQuery) {
         const query = searchQuery.toLowerCase()
+        const locationName = action.locations?.name || ''
+        const responsiblePerson = action.responsible_person || ''
         return (
           action.description.toLowerCase().includes(query) ||
-          action.responsible_person?.toLowerCase().includes(query) ||
-          action.locations?.name.toLowerCase().includes(query)
+          responsiblePerson.toLowerCase().includes(query) ||
+          locationName.toLowerCase().includes(query)
         )
       }
 
@@ -181,7 +203,7 @@ export default function ActionsPage() {
       .from('corrective_actions')
       .update({
         status: newStatus,
-        completed_at: newStatus === 'completed' ? new Date().toISOString() : null,
+        actual_completion_date: newStatus === 'completed' ? new Date().toISOString().split('T')[0] : null,
       })
       .eq('id', actionId)
 
@@ -349,11 +371,11 @@ export default function ActionsPage() {
                     priority={(action.priority || 'medium') as any}
                     responsiblePerson={action.responsible_person}
                     committedDate={action.committed_date}
-                    actualCompletionDate={action.completed_at || undefined}
+                    actualCompletionDate={action.actual_completion_date || action.completed_at || undefined}
                     isOverdue={action.is_overdue}
                     daysOverdue={action.days_overdue}
-                    hasBeforePhoto={action.before_photos && action.before_photos.length > 0}
-                    hasAfterPhoto={action.after_photos && action.after_photos.length > 0}
+                    hasBeforePhoto={Boolean(action.before_photo_url || (action.before_photos && action.before_photos.length > 0))}
+                    hasAfterPhoto={Boolean(action.after_photo_url || (action.after_photos && action.after_photos.length > 0))}
                     onClick={() => router.push(`/dashboard/supervision/actions/${action.id}`)}
                   />
                   <div className="mt-2 flex items-center justify-between">
