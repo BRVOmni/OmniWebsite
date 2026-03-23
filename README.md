@@ -14,7 +14,7 @@ A modern, executive-level corporate dashboard for managing a multi-brand food se
 
 ---
 
-**Current Version:** v1.17.1 - Forecasting Module Fixes 🔧✅
+**Current Version:** v1.18.0 - Specialized Forecasting Pages 📊✅
 
 **Production URL:** https://dashboard.omniprise.com.py
 
@@ -364,6 +364,12 @@ System configuration.
 - Simple Exponential Smoothing (SES) - No trend/seasonality
 - Double Exponential Smoothing (DES) - With trend
 - Triple Exponential Smoothing (TES) - With trend & seasonality
+
+**Specialized Pages:**
+- ✅ **Sales Forecasting** (`/dashboard/forecasting/sales`) - Historical data with future predictions
+- ✅ **Staffing Forecasting** (`/dashboard/forecasting/staffing`) - Hourly patterns and staff optimization
+- ✅ **Inventory Forecasting** (`/dashboard/forecasting/inventory`) - Product demand and stock-out risks
+- ✅ **Seasonal Forecasting** (`/dashboard/forecasting/seasonal`) - Weekly patterns and seasonal indices
 
 ---
 
