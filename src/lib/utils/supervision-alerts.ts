@@ -7,6 +7,33 @@
 
 import { createClient } from '@/lib/supabase/client'
 
+// Type definitions for Supabase query results
+interface VisitWithLocation {
+  location_id: string
+  locations: {
+    brand_id?: string
+    name?: string
+  } | null
+}
+
+interface OverdueVisit {
+  id: string
+  location_id: string
+  scheduled_date: string
+  scheduled_shift: string
+  supervisors: { name?: string } | null
+  locations: { name?: string } | null
+}
+
+interface CorrectiveAction {
+  id: string
+  location_id: string
+  description: string
+  deadline: string
+  priority: string
+  responsible_person?: string
+}
+
 export interface AlertData {
   location_id: string
   brand_id?: string
@@ -81,7 +108,7 @@ export async function createCriticalFindingAlert(finding: {
   }
 
   const location_id = visit.location_id
-  const brand_id = (visit.locations as any)?.brand_id
+  const brand_id = (visit as VisitWithLocation).locations?.brand_id
 
   const severity = finding.severity === 'critical' ? 'critical' : 'high'
 
@@ -226,8 +253,8 @@ export async function createRecurringIssueAlert(finding: {
   }
 
   const location_id = visit.location_id
-  const location_name = (visit.locations as any)?.name
-  const brand_id = (visit.locations as any)?.brand_id
+  const location_name = (visit as VisitWithLocation).locations?.name
+  const brand_id = (visit as VisitWithLocation).locations?.brand_id
 
   const description = [
     `A critical operational issue has recurred for the ${finding.recurrence_count} time in the last 90 days.`,
@@ -295,8 +322,8 @@ export async function runSupervisionAlertChecks(): Promise<{
             location_id: visit.location_id,
             scheduled_date: visit.scheduled_date,
             scheduled_shift: visit.scheduled_shift,
-            supervisor_name: (visit.supervisors as any)?.name,
-            location_name: (visit.locations as any)?.name
+            supervisor_name: visit.supervisors?.name,
+            location_name: visit.locations?.name
           })
 
           if (result.success) {
@@ -327,7 +354,14 @@ export async function runSupervisionAlertChecks(): Promise<{
           .single()
 
         if (!existingAlert) {
-          const result = await createOverdueActionAlert(action as any)
+          const result = await createOverdueActionAlert({
+            id: action.id,
+            location_id: action.location_id,
+            description: action.description,
+            deadline: action.deadline,
+            priority: action.priority,
+            responsible_person: action.responsible_person
+          })
 
           if (result.success) {
             actionAlertsCreated++

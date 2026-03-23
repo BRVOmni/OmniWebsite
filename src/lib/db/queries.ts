@@ -5,7 +5,6 @@
  */
 
 import { createClient } from '../supabase/client'
-import type { Database } from '../supabase/database.types'
 
 /**
  * Get all countries

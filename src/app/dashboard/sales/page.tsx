@@ -17,7 +17,7 @@ import { PaymentBreakdown } from '@/components/shared/payment-breakdown'
 import { DimensionFilters } from '@/components/shared/dimension-filters'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { DollarSign, ShoppingBag, Receipt, Download, TrendingUp } from 'lucide-react'
-import * as XLSX from 'xlsx'
+import ExcelJS from 'exceljs'
 
 interface Sale {
   id: string
@@ -118,58 +118,75 @@ export default function SalesAnalyticsPage() {
     await loadSalesData(startDate, endDate)
   }
 
-  const handleExport = () => {
-    // Export to Excel with professional formatting
-    const rows = sales.map(sale => ({
-      [t('date')]: sale.date,
-      [t('orderNumber')]: sale.order_number,
-      [t('location')]: (sale.locations as { name?: string })?.name || 'N/A',
-      [t('brand')]: (sale.brands as { name?: string })?.name || 'N/A',
-      [t('channel')]: (sale.channels as { name?: string })?.name || 'N/A',
-      [t('payment')]: (sale.payment_methods as { name?: string })?.name || 'N/A',
-      [t('total')]: Math.round(sale.total_amount),
-      [t('net')]: Math.round(sale.net_amount),
-      [t('items')]: sale.items_count,
-    }))
+  const handleExport = async () => {
+    // Export to Excel with professional formatting using ExcelJS
+    const workbook = new ExcelJS.Workbook()
+    const worksheet = workbook.addWorksheet('Transactions')
+    const summarySheet = workbook.addWorksheet('Summary')
 
-    // Create transactions worksheet
-    const worksheet = XLSX.utils.json_to_sheet(rows)
+    // Add headers
+    const headers = [t('date'), t('orderNumber'), t('location'), t('brand'), t('channel'), t('payment'), t('total'), t('net'), t('items')]
+    worksheet.addRow(headers)
+
+    // Style headers
+    const headerRow = worksheet.getRow(1)
+    headerRow.font = { bold: true }
+    headerRow.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FFE0E0E0' }
+    }
+
+    // Add data rows
+    sales.forEach(sale => {
+      worksheet.addRow([
+        sale.date,
+        sale.order_number,
+        (sale.locations as { name?: string })?.name || 'N/A',
+        (sale.brands as { name?: string })?.name || 'N/A',
+        (sale.channels as { name?: string })?.name || 'N/A',
+        (sale.payment_methods as { name?: string })?.name || 'N/A',
+        Math.round(sale.total_amount),
+        Math.round(sale.net_amount),
+        sale.items_count,
+      ])
+    })
 
     // Set column widths
-    worksheet['!cols'] = [
-      { wch: 12 }, // Date
-      { wch: 15 }, // Order Number
-      { wch: 25 }, // Location
-      { wch: 20 }, // Brand
-      { wch: 15 }, // Channel
-      { wch: 15 }, // Payment
-      { wch: 15 }, // Total
-      { wch: 15 }, // Net
-      { wch: 8 },  // Items
+    worksheet.columns = [
+      { width: 12 }, // Date
+      { width: 15 }, // Order Number
+      { width: 25 }, // Location
+      { width: 20 }, // Brand
+      { width: 15 }, // Channel
+      { width: 15 }, // Payment
+      { width: 15 }, // Total
+      { width: 15 }, // Net
+      { width: 8 },  // Items
     ]
 
-    // Create workbook
-    const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Transactions')
+    // Add summary sheet
+    summarySheet.addRow([t('salesAnalytics'), '', ''])
+    summarySheet.addRow(['', '', ''])
+    summarySheet.addRow([t('netSales'), `₲${netSales.toLocaleString()}`, ''])
+    summarySheet.addRow([t('orders'), orders.toString(), ''])
+    summarySheet.addRow([t('averageTicket'), `₲${Math.round(averageTicket).toLocaleString()}`, ''])
+    summarySheet.addRow(['', '', ''])
+    summarySheet.addRow(['Export Date', new Date().toLocaleDateString(), ''])
+    summarySheet.addRow(['Total Records', sales.length.toString(), ''])
 
-    // Create summary worksheet with KPIs
-    const summaryData = [
-      [t('salesAnalytics'), '', ''],
-      ['', '', ''],
-      [t('netSales'), `₲${netSales.toLocaleString()}`, ''],
-      [t('orders'), orders.toString(), ''],
-      [t('averageTicket'), `₲${Math.round(averageTicket).toLocaleString()}`, ''],
-      ['', '', ''],
-      ['Export Date', new Date().toLocaleDateString(), ''],
-      ['Total Records', sales.length.toString(), ''],
-    ]
-
-    const summarySheet = XLSX.utils.aoa_to_sheet(summaryData)
-    summarySheet['!cols'] = [{ wch: 20 }, { wch: 25 }, { wch: 15 }]
-    XLSX.utils.book_append_sheet(workbook, summarySheet, 'Summary')
+    summarySheet.columns = [{ width: 20 }, { width: 25 }, { width: 15 }]
+    summarySheet.getCell('A1').font = { bold: true, size: 14 }
 
     // Generate and download
-    XLSX.writeFile(workbook, `sales-analytics-${new Date().toISOString().split('T')[0]}.xlsx`)
+    const buffer = await workbook.xlsx.writeBuffer()
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `sales-analytics-${new Date().toISOString().split('T')[0]}.xlsx`
+    a.click()
+    window.URL.revokeObjectURL(url)
   }
 
   const handleSignOut = async () => {
@@ -284,7 +301,7 @@ export default function SalesAnalyticsPage() {
               <DateRangeFilter onDateChange={handleDateChange} />
             </div>
             <button
-              onClick={handleExport}
+              onClick={() => handleExport()}
               disabled={sales.length === 0}
               className="flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-lg px-4 py-3 hover:bg-gray-50 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
             >

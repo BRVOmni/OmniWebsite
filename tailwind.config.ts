@@ -48,6 +48,40 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      keyframes: {
+        'fade-in': {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'slide-in': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'scale-in': {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { opacity: '1', boxShadow: '0 0 0 0 rgba(34, 197, 94, 0.4)' },
+          '50%': { opacity: '0.8', boxShadow: '0 0 0 8px rgba(34, 197, 94, 0)' },
+        },
+        'shimmer': {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        'bounce-slight': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-2px)' },
+        },
+      },
+      animation: {
+        'fade-in': 'fade-in 0.5s ease-out forwards',
+        'slide-in': 'slide-in 0.3s ease-out forwards',
+        'scale-in': 'scale-in 0.3s ease-out forwards',
+        'pulse-glow': 'pulse-glow 2s infinite',
+        'shimmer': 'shimmer 2s infinite',
+        'bounce-slight': 'bounce-slight 0.6s ease-in-out',
+      },
     },
   },
   plugins: [],

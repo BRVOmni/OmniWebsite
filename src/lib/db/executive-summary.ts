@@ -6,6 +6,24 @@
 
 import { createClient } from '../supabase/client'
 
+// Type definitions for Supabase query results
+interface SaleWithLocation {
+  location_id: string
+  net_amount: number | string
+  locations: {
+    name?: string
+  } | null
+}
+
+interface SaleWithBrand {
+  brand_id: string
+  net_amount: number | string
+  brands: {
+    name?: string
+    color?: string
+  } | null
+}
+
 /**
  * Get executive summary KPIs
  */
@@ -124,9 +142,9 @@ export async function getLocationRankings(filters: {
   if (error) throw error
 
   // Aggregate by location
-  const rankings = data?.reduce((acc, sale) => {
+  const rankings = (data as SaleWithLocation[])?.reduce((acc, sale) => {
     const locId = sale.location_id
-    const locName = (sale.locations as any)?.name || 'Unknown'
+    const locName = sale.locations?.name || 'Unknown'
     if (!acc[locId]) {
       acc[locId] = { locationId: locId, locationName: locName, totalSales: 0 }
     }
@@ -159,10 +177,10 @@ export async function getBrandRankings(filters: {
   if (error) throw error
 
   // Aggregate by brand
-  const rankings = data?.reduce((acc, sale) => {
+  const rankings = (data as SaleWithBrand[])?.reduce((acc, sale) => {
     const brandId = sale.brand_id
-    const brand = (sale.brands as any)?.name || 'Unknown'
-    const color = (sale.brands as any)?.color || '#000000'
+    const brand = sale.brands?.name || 'Unknown'
+    const color = sale.brands?.color || '#000000'
     if (!acc[brandId]) {
       acc[brandId] = { brandId, brand, color, totalSales: 0 }
     }

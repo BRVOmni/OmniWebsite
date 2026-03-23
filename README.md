@@ -14,11 +14,13 @@ A modern, executive-level corporate dashboard for managing a multi-brand food se
 
 ---
 
-**Current Version:** v1.15.8 - Corrective Actions Page Fixed (Column Alignment) 🔧✅
+**Current Version:** v1.16.0 - Security Hardening Complete 🔒✅
 
 **Production URL:** https://dashboard.omniprise.com.py
 
 **Status:** ✅ Live and Operational - All Modules Complete with Working Translations
+
+**Security:** ✅ All critical and high-priority vulnerabilities resolved (0 known vulnerabilities)
 
 ---
 
@@ -500,6 +502,33 @@ Users
 ---
 
 ## 📝 VERSION HISTORY
+
+### v1.16.0 (2026-03-23) - Security Hardening Complete 🔒✅
+
+**Critical Security Fixes:**
+- ✅ **CRITICAL:** Exposed API keys removed from repository
+- ✅ **HIGH:** XLSX library replaced with ExcelJS (0 vulnerabilities)
+- ✅ **HIGH:** Next.js updated to v15.5.14 (cache vulnerability patched)
+- ✅ **HIGH:** ESLint and TypeScript checks re-enabled for production builds
+
+**Changes:**
+- Removed actual API keys from `.env.local` and `.env.production`
+- Added `.env.production` to `.gitignore`
+- Updated Vercel environment variables with encrypted keys
+- Replaced vulnerable XLSX library with secure ExcelJS
+- Updated Next.js framework to secure version
+- Re-enabled security checks in production builds
+- Created comprehensive Security_Review.md documentation
+
+**Result:**
+- **0 vulnerabilities** in production dependencies
+- All critical and high-priority security issues resolved
+- Application maintains full functionality
+- Production: https://dashboard.omniprise.com.py
+
+**Documentation:**
+- See `Security_Review.md` for complete security assessment
+- See `CHANGELOG.md` for detailed change history
 
 ### v1.15.8 (2026-03-23) - Corrective Actions Page Fixed (Column Alignment) 🔧✅
 

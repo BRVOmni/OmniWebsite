@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/language-context";
+import { ToastProvider } from "@/components/shared/toast";
 
 export const metadata: Metadata = {
   title: "Grupo Omniprise | Food Service Chain",
@@ -16,7 +17,9 @@ export default function RootLayout({
     <html suppressHydrationWarning>
       <body suppressHydrationWarning>
         <LanguageProvider>
-          {children}
+          <ToastProvider>
+            {children}
+          </ToastProvider>
         </LanguageProvider>
       </body>
     </html>

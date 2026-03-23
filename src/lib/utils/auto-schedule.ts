@@ -48,6 +48,15 @@ export interface SchedulingResult {
   warnings: string[]
 }
 
+interface ExistingVisit {
+  id: string
+  location_id: string
+  supervisor_id: string
+  scheduled_date: string
+  shift: string
+  visit_type: string
+}
+
 /**
  * Default scheduling rules
  */
@@ -104,7 +113,7 @@ async function getSupervisors(): Promise<SupervisorInfo[]> {
 /**
  * Get existing scheduled visits for a date range
  */
-async function getExistingVisits(startDate: string, endDate: string): Promise<any[]> {
+async function getExistingVisits(startDate: string, endDate: string): Promise<ExistingVisit[]> {
   const supabase = createClient()
 
   const { data, error } = await supabase
@@ -115,7 +124,7 @@ async function getExistingVisits(startDate: string, endDate: string): Promise<an
     .in('status', ['pending', 'scheduled'])
 
   if (error) throw error
-  return data || []
+  return (data || []) as ExistingVisit[]
 }
 
 /**
@@ -173,7 +182,7 @@ function assignSupervisor(
   location: LocationInfo,
   supervisors: SupervisorInfo[],
   currentAssignments: Map<string, number>,
-  existingVisits: any[]
+  existingVisits: ExistingVisit[]
 ): SupervisorInfo | null {
   // Filter supervisors who are assigned to this location
   const assignedSupervisors = supervisors.filter(sup =>
@@ -331,7 +340,7 @@ export async function generateSchedule(
     const existingVisits = await getExistingVisits(startDate, endDate)
 
     // Create a map of existing visits by location and date
-    const existingVisitsMap = new Map<string, any[]>()
+    const existingVisitsMap = new Map<string, ExistingVisit[]>()
     existingVisits.forEach(visit => {
       const key = `${visit.location_id}-${visit.scheduled_date}`
       if (!existingVisitsMap.has(key)) {
