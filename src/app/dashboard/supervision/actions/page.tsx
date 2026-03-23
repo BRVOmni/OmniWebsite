@@ -34,23 +34,19 @@ interface LocationInfo {
 interface ActionData {
   id: string
   description: string
-  immediate_action: string
-  long_term_solution: string
   responsible_person: string
-  responsible_role: string
   priority: string
   committed_date: string
-  actual_completion_date: string | null
+  completed_at: string | null
   status: string
   is_overdue: boolean
   days_overdue: number
-  before_photo_url: string | null
-  after_photo_url: string | null
-  verified_by: string | null
-  verification_date: string | null
+  before_photos: string[] | null
+  after_photos: string[] | null
   location_id: string
   locations: LocationInfo
   created_at: string
+  deadline?: string
 }
 
 export default function ActionsPage() {
@@ -95,20 +91,15 @@ export default function ActionsPage() {
       .select(`
         id,
         description,
-        immediate_action,
-        long_term_solution,
         responsible_person,
-        responsible_role,
         priority,
         committed_date,
-        actual_completion_date,
+        completed_at,
         status,
         is_overdue,
         days_overdue,
-        before_photo_url,
-        after_photo_url,
-        verified_by,
-        verification_date,
+        before_photos,
+        after_photos,
         location_id,
         created_at,
         locations (
@@ -155,7 +146,6 @@ export default function ActionsPage() {
         const query = searchQuery.toLowerCase()
         return (
           action.description.toLowerCase().includes(query) ||
-          action.immediate_action?.toLowerCase().includes(query) ||
           action.responsible_person?.toLowerCase().includes(query) ||
           action.locations?.name.toLowerCase().includes(query)
         )
@@ -191,7 +181,7 @@ export default function ActionsPage() {
       .from('corrective_actions')
       .update({
         status: newStatus,
-        actual_completion_date: newStatus === 'completed' ? new Date().toISOString().split('T')[0] : null,
+        completed_at: newStatus === 'completed' ? new Date().toISOString() : null,
       })
       .eq('id', actionId)
 
@@ -346,28 +336,29 @@ export default function ActionsPage() {
 
           <div className="divide-y">
             {filteredActions.length > 0 ? (
-              filteredActions.map(action => (
+              filteredActions
+                .filter(action => action.description && action.status) // Only render valid actions
+                .map(action => (
                 <div
                   key={action.id}
                   className="p-4 hover:bg-gray-50 transition-colors"
                 >
                   <ActionCard
-                    description={action.description}
-                    status={action.status as any}
-                    priority={action.priority as any}
+                    description={action.description || ''}
+                    status={(action.status || 'pending') as any}
+                    priority={(action.priority || 'medium') as any}
                     responsiblePerson={action.responsible_person}
-                    responsibleRole={action.responsible_role}
                     committedDate={action.committed_date}
-                    actualCompletionDate={action.actual_completion_date || undefined}
+                    actualCompletionDate={action.completed_at || undefined}
                     isOverdue={action.is_overdue}
                     daysOverdue={action.days_overdue}
-                    hasBeforePhoto={!!action.before_photo_url}
-                    hasAfterPhoto={!!action.after_photo_url}
+                    hasBeforePhoto={action.before_photos && action.before_photos.length > 0}
+                    hasAfterPhoto={action.after_photos && action.after_photos.length > 0}
                     onClick={() => router.push(`/dashboard/supervision/actions/${action.id}`)}
                   />
                   <div className="mt-2 flex items-center justify-between">
                     <span className="text-xs text-gray-500">
-                      {action.locations.name} • {new Date(action.created_at).toLocaleDateString()}
+                      {action.locations?.name || 'N/A'} • {new Date(action.created_at || '').toLocaleDateString()}
                     </span>
                     {action.status !== 'completed' && action.status !== 'verified' && (
                       <div className="flex gap-2">

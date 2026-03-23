@@ -14,7 +14,7 @@ A modern, executive-level corporate dashboard for managing a multi-brand food se
 
 ---
 
-**Current Version:** v1.15.6 - Findings Page Translations Complete ✅
+**Current Version:** v1.15.7 - Corrective Actions Page Fixed 🔧✅
 
 **Production URL:** https://dashboard.omniprise.com.py
 
@@ -500,6 +500,18 @@ Users
 ---
 
 ## 📝 VERSION HISTORY
+
+### v1.15.7 (2026-03-23) - Corrective Actions Page Fixed 🔧✅
+
+**Completed:**
+- ✅ Fixed 400 error when fetching corrective_actions from database
+- ✅ Added defensive filters to prevent rendering invalid data
+- ✅ Added fallback values for undefined/null properties
+- ✅ Created RLS policy migration for database fix
+- ✅ Fixed potential crash on null location relationships
+
+**Database Action Required:**
+Run the RLS policy migration in Supabase Dashboard SQL Editor to enable corrective_actions access.
 
 ### v1.15.6 (2026-03-21) - Findings Page Translations Complete ✅
 
