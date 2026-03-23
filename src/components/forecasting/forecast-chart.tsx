@@ -30,7 +30,9 @@ import {
 import type { ForecastResult } from '@/lib/forecasting/types'
 
 interface ForecastChartProps {
-  forecast: ForecastResult
+  forecast?: ForecastResult
+  data?: Array<{ date: string; amount: number; upper?: number; lower?: number }>
+  showForecast?: boolean
   height?: number
   showLegend?: boolean
   showGrid?: boolean
@@ -48,6 +50,8 @@ interface ChartDataPoint {
 
 export function ForecastChart({
   forecast,
+  data: dataProp,
+  showForecast: showForecastProp = true,
   height = 300,
   showLegend = true,
   showGrid = true,
@@ -55,26 +59,43 @@ export function ForecastChart({
 }: ForecastChartProps) {
   // Combine historical and forecast data for chart
   const chartData = useMemo(() => {
-    const historical: ChartDataPoint[] = forecast.historicalData.map((d) => ({
-      date: d.date,
-      actual: d.value,
-      forecast: null,
-      lowerBound: null,
-      upperBound: null,
-      type: 'historical' as const
-    }))
+    // If forecast object is provided, use it
+    if (forecast?.historicalData && forecast?.forecast) {
+      const historical: ChartDataPoint[] = forecast.historicalData.map((d) => ({
+        date: d.date,
+        actual: d.value,
+        forecast: null,
+        lowerBound: null,
+        upperBound: null,
+        type: 'historical' as const
+      }))
 
-    const forecastData: ChartDataPoint[] = forecast.forecast.map((d) => ({
-      date: d.date,
-      actual: null,
-      forecast: d.value,
-      lowerBound: d.lowerBound,
-      upperBound: d.upperBound,
-      type: 'forecast' as const
-    }))
+      const forecastData: ChartDataPoint[] = forecast.forecast.map((d) => ({
+        date: d.date,
+        actual: null,
+        forecast: d.value,
+        lowerBound: d.lowerBound,
+        upperBound: d.upperBound,
+        type: 'forecast' as const
+      }))
 
-    return [...historical, ...forecastData]
-  }, [forecast])
+      return [...historical, ...forecastData]
+    }
+
+    // If simple data array is provided
+    if (dataProp) {
+      return dataProp.map((d, i) => ({
+        date: d.date,
+        actual: showForecastProp ? null : d.amount,
+        forecast: showForecastProp ? d.amount : null,
+        lowerBound: d.lower ?? null,
+        upperBound: d.upper ?? null,
+        type: (showForecastProp ? 'forecast' : 'historical') as const
+      }))
+    }
+
+    return []
+  }, [forecast, dataProp, showForecastProp])
 
   // Custom tooltip
   const CustomTooltip = ({ active, payload }: any) => {
@@ -137,6 +158,15 @@ export function ForecastChart({
       return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
     }
     return ''
+  }
+
+  // Don't render if no data
+  if (!chartData || chartData.length === 0) {
+    return (
+      <div className="w-full flex items-center justify-center" style={{ height }}>
+        <p className="text-gray-500">No data available</p>
+      </div>
+    )
   }
 
   return (
