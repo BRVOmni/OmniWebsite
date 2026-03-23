@@ -39,7 +39,7 @@ export default function SalesAnalyticsPage() {
   const router = useRouter()
   const supabase = createClient()
 
-  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null)
   const [profile, setProfile] = useState<{ full_name?: string; role?: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const [allSales, setAllSales] = useState<Sale[]>([])

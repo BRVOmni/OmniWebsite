@@ -60,7 +60,7 @@ export default function ProductsPage() {
   const router = useRouter()
   const supabase = createClient()
 
-  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null)
   const [profile, setProfile] = useState<{ full_name?: string; role?: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const [allSales, setAllSales] = useState<SalesData[]>([])
@@ -263,7 +263,7 @@ export default function ProductsPage() {
               title={t('productAlerts')}
               value={activeProductAlerts}
               icon={AlertCircle}
-              status={activeProductAlerts > 0 ? 'problem' : 'good'}
+              status={activeProductAlerts > 0 ? 'danger' : 'success'}
               tooltip={t('productAlertsTooltip')}
             />
           </div>

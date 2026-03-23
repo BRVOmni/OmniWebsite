@@ -57,7 +57,7 @@ export default function LocationsPage() {
   const router = useRouter()
   const supabase = createClient()
 
-  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null)
   const [profile, setProfile] = useState<{ full_name?: string; role?: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const [allLocations, setAllLocations] = useState<LocationData[]>([])
@@ -212,10 +212,10 @@ export default function LocationsPage() {
   const totalNetworkAlerts = locationsWithMetrics.reduce((sum, loc) => sum + loc.activeAlerts, 0)
   const locationsWithIssues = locationsWithMetrics.filter(loc => loc.closingIssues > 0 || loc.criticalAlerts > 0).length
 
-  const getHealthStatus = (location: typeof locationsWithMetrics[0]): 'good' | 'attention' | 'problem' => {
-    if (location.criticalAlerts > 0 || location.closingIssues > 2) return 'problem'
-    if (location.closingIssues > 0 || location.activeAlerts > 0) return 'attention'
-    return 'good'
+  const getHealthStatus = (location: typeof locationsWithMetrics[0]): 'success' | 'warning' | 'danger' => {
+    if (location.criticalAlerts > 0 || location.closingIssues > 2) return 'danger'
+    if (location.closingIssues > 0 || location.activeAlerts > 0) return 'warning'
+    return 'success'
   }
 
   if (loading) {
@@ -259,14 +259,14 @@ export default function LocationsPage() {
               title={t('activeAlerts')}
               value={totalNetworkAlerts}
               icon={AlertCircle}
-              status={totalNetworkAlerts > 0 ? 'problem' : 'good'}
+              status={totalNetworkAlerts > 0 ? 'danger' : 'success'}
               tooltip={t('activeAlertsTooltip')}
             />
             <KPICard
               title={t('locationsWithIssues')}
               value={locationsWithIssues}
               icon={AlertCircle}
-              status={locationsWithIssues > 0 ? 'attention' : 'good'}
+              status={locationsWithIssues > 0 ? 'warning' : 'success'}
               tooltip={t('locationsWithIssuesTooltip')}
             />
           </div>
@@ -298,11 +298,11 @@ export default function LocationsPage() {
                         <h3 className="text-lg font-semibold text-gray-900">{location.name}</h3>
                       </div>
                       <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
-                        healthStatus === 'good' ? 'bg-green-100 text-green-700' :
-                        healthStatus === 'attention' ? 'bg-yellow-100 text-yellow-700' :
+                        healthStatus === 'success' ? 'bg-green-100 text-green-700' :
+                        healthStatus === 'warning' ? 'bg-yellow-100 text-yellow-700' :
                         'bg-red-100 text-red-700'
                       }`}>
-                        {healthStatus === 'good' ? t('healthy') : healthStatus === 'attention' ? t('attention') : t('critical')}
+                        {healthStatus === 'success' ? t('healthy') : healthStatus === 'warning' ? t('warning') : t('critical')}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-600">

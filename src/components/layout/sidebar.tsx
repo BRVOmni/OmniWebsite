@@ -25,6 +25,7 @@ import {
   Settings,
   Users as UsersIcon,
   Bell,
+  BarChart3,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
@@ -136,6 +137,13 @@ export function Sidebar() {
       icon: ClipboardCheck,
       path: '/dashboard/supervision',
       color: 'text-orange-600',
+    },
+    {
+      id: 'forecasting',
+      labelKey: 'forecasting',
+      icon: BarChart3,
+      path: '/dashboard/forecasting',
+      color: 'text-indigo-600',
     },
     {
       id: 'alerts',

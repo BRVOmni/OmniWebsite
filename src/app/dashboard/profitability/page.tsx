@@ -50,7 +50,7 @@ export default function ProfitabilityPage() {
   const router = useRouter()
   const supabase = createClient()
 
-  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null)
   const [profile, setProfile] = useState<{ full_name?: string; role?: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const [allSales, setAllSales] = useState<SalesData[]>([])
@@ -257,16 +257,16 @@ export default function ProfitabilityPage() {
   }, [allSales, purchases])
 
   // Get status for KPI cards
-  const getFoodCostStatus = (): 'good' | 'attention' | 'problem' => {
-    if (foodCostPercent < 30) return 'good'
-    if (foodCostPercent < 40) return 'attention'
-    return 'problem'
+  const getFoodCostStatus = (): 'success' | 'warning' | 'danger' => {
+    if (foodCostPercent < 30) return 'success'
+    if (foodCostPercent < 40) return 'warning'
+    return 'danger'
   }
 
-  const getMarginStatus = (): 'good' | 'attention' | 'problem' => {
-    if (grossMarginPercent >= 70) return 'good'
-    if (grossMarginPercent >= 50) return 'attention'
-    return 'problem'
+  const getMarginStatus = (): 'success' | 'warning' | 'danger' => {
+    if (grossMarginPercent >= 70) return 'success'
+    if (grossMarginPercent >= 50) return 'warning'
+    return 'danger'
   }
 
   if (loading) {
@@ -348,7 +348,7 @@ export default function ProfitabilityPage() {
               value={estimatedProfitability}
               icon={DollarSign}
               prefix="₲"
-              status={estimatedProfitability >= 0 ? 'good' : 'problem'}
+              status={estimatedProfitability >= 0 ? 'success' : 'danger'}
               tooltip={t('estimatedProfitabilityTooltip')}
             />
             <KPICard

@@ -4,6 +4,108 @@
 
 ---
 
+## [1.17.0] - UI/UX Polish & Forecasting Module - 2026-03-23 🎨✅
+
+### UI/UX Enhancements Applied ✅
+
+**🎨 Major Visual Improvements:**
+
+1. **Custom Animation Framework:**
+   - Added 6 custom keyframe animations to Tailwind config
+   - Animations: fade-in, slide-in, scale-in, pulse-glow, shimmer, bounce-slight
+   - All animations use smooth easing functions for premium feel
+
+2. **Enhanced KPI Cards:**
+   - Animated number counter with easing (easeOutQuart)
+   - Scale effect on hover (1.02x)
+   - Status badge pulse animations
+   - Staggered entry animations
+   - Icon glow effects on hover
+   - Bottom border accent animation
+   - Intersection Observer for lazy loading
+
+3. **Page Transition System:**
+   - Smooth fade-in + slide-up transitions (500ms)
+   - Staggered children wrapper for cascading effects
+   - Loading skeleton components (KPI cards, charts, tables)
+   - Gradient background on layout (slate-50 → slate-100)
+
+4. **Sidebar Micro-interactions:**
+   - Active state indicator with glow effect
+   - Icon scale animation on hover (1.1x)
+   - Notification badge for alerts with pulse
+   - Improved collapse/expand transitions (300ms)
+   - Hover shimmer effect on nav items
+   - Mobile menu button with bounce animation
+
+5. **Toast Notification System:**
+   - Beautiful slide-in animations
+   - Auto-dismiss with progress bar
+   - 4 types: success, error, warning, info
+   - Hover pause on auto-dismiss
+   - Staggered entry for multiple toasts
+   - Use via `useToast()` hook
+
+6. **Chart Animations:**
+   - Progressive data point entry (50ms stagger)
+   - Pie slice hover scale effects
+   - Legend item interactions
+   - Loading skeleton states
+   - Enhanced tooltip styling with backdrop blur
+
+**📊 New Components:**
+- `PageTransition` - Wrapper for page transitions
+- `StaggeredChildren` - Cascading animation wrapper
+- `Skeleton` family - Loading placeholders
+- `ToastProvider` - Notification system
+- `KPICard` - Enhanced with animations
+- `SalesChart` - Animated line chart
+- `ChannelBreakdown` - Animated pie chart
+
+### Forecasting Module Added ✅
+
+**🔮 New Features:**
+
+1. **Sales Forecasting:**
+   - Multiple forecast algorithms (SMA, Exponential Smoothing)
+   - Configurable forecast horizons (short/medium/long term)
+   - Forecast by location, brand, or channel
+   - Confidence intervals
+   - Forecast accuracy metrics (MAE, MAPE, RMSE)
+
+2. **Specialized Forecasts:**
+   - Sales forecasting dashboard
+   - Staffing forecasting
+   - Inventory/demand forecasting
+   - Seasonal trend analysis
+
+3. **Forecast Selector Component:**
+   - Easy parameter configuration
+   - Real-time forecast generation
+   - Visual forecast result display
+
+**📁 New Files:**
+- `src/app/dashboard/forecasting/page.tsx` - Main forecasting hub
+- `src/app/api/forecasting/sales/route.ts` - Forecast API endpoint
+- `src/components/forecasting/` - Forecast components
+- `src/lib/forecasting/` - Forecast algorithms and types
+- `src/components/ui/button.tsx` - Reusable button component
+- `supabase/migrations/24_forecasting_views.sql` - Database views
+
+**🔧 Bug Fixes:**
+- Fixed TypeScript type errors (User email optional)
+- Fixed CashClosingData locations array type
+- Fixed status prop values (good→success, problem→danger, attention→warning)
+- Added missing translation key ("view")
+- Fixed Link component usage in login page
+
+**📚 Documentation Updates:**
+- Added AuthUser type to types/index.ts
+- Updated translations with forecasting module keys
+- Enhanced .gitignore for better security
+
+---
+
 ## [1.16.0] - Security Hardening Complete - 2026-03-23 🔒✅
 
 ### Security Fixes Applied ✅

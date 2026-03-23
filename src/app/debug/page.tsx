@@ -11,8 +11,8 @@ export default async function DebugPage() {
   let connectionStatus = 'unknown'
   let errorMessage = ''
   let countriesCount = 0
-  let supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'Not set'
-  let hasAnonKey = !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'Not set'
+  const hasAnonKey = !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   try {
     // Test connection

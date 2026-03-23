@@ -66,7 +66,7 @@ export default function LocationDetailPage() {
   const params = useParams()
   const supabase = createClient()
 
-  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null)
   const [profile, setProfile] = useState<{ full_name?: string; role?: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const [location, setLocation] = useState<LocationInfo | null>(null)
@@ -353,7 +353,7 @@ export default function LocationDetailPage() {
               title={t('activeAlerts')}
               value={metrics.activeAlerts}
               icon={AlertCircle}
-              status={metrics.criticalAlerts > 0 ? 'problem' : metrics.activeAlerts > 0 ? 'attention' : 'good'}
+              status={metrics.criticalAlerts > 0 ? 'danger' : metrics.activeAlerts > 0 ? 'warning' : 'success'}
               tooltip={t('activeAlertsTooltip')}
             />
           </div>

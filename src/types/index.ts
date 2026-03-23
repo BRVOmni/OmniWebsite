@@ -3,6 +3,20 @@
  */
 
 /**
+ * Auth User (matches Supabase User type)
+ */
+export interface AuthUser {
+  id: string;
+  email?: string;
+  phone?: string;
+  email_confirmed_at?: string;
+  phone_confirmed_at?: string;
+  last_sign_in_at?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+/**
  * Database entity types (will be generated from Supabase)
  */
 export type Json =

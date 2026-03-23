@@ -37,9 +37,9 @@ interface CashClosingData {
   closed_by: string | null
   observation: string | null
   requires_review: boolean
-  locations: {
+  locations: Array<{
     name: string
-  }
+  }>
 }
 
 export default function CashClosingPage() {
@@ -47,7 +47,7 @@ export default function CashClosingPage() {
   const router = useRouter()
   const supabase = createClient()
 
-  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null)
   const [profile, setProfile] = useState<{ full_name?: string; role?: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const [allCashClosings, setAllCashClosings] = useState<CashClosingData[]>([])
@@ -153,7 +153,7 @@ export default function CashClosingPage() {
     }> = {}
 
     allCashClosings.forEach((closing) => {
-      const location = closing.locations?.name || t('unknown')
+      const location = closing.locations?.[0]?.name || t('unknown')
       if (!locationData[location]) {
         locationData[location] = {
           closings: 0,
@@ -261,21 +261,21 @@ export default function CashClosingPage() {
                 title={t('closedCorrectly')}
                 value={closedCorrectly}
                 icon={CheckCircle}
-                status="good"
+                status="success"
                 tooltip={t('closedCorrectlyTooltip')}
               />
               <KPICard
                 title={t('withDifference')}
                 value={withDifference}
                 icon={AlertCircle}
-                status={withDifference > 0 ? 'problem' : 'good'}
+                status={withDifference > 0 ? 'danger' : 'success'}
                 tooltip={t('withDifferenceTooltip')}
               />
               <KPICard
                 title={t('pendingReview')}
                 value={pendingReview}
                 icon={Clock}
-                status={pendingReview > 0 ? 'attention' : 'good'}
+                status={pendingReview > 0 ? 'warning' : 'success'}
                 tooltip={t('pendingReviewTooltip')}
               />
             </div>
@@ -290,7 +290,7 @@ export default function CashClosingPage() {
                 value={Math.abs(totalCashDifference)}
                 icon={Wallet}
                 prefix="₲"
-                status={totalCashDifference !== 0 ? 'problem' : 'good'}
+                status={totalCashDifference !== 0 ? 'danger' : 'success'}
                 tooltip={t('cashDifferenceTooltip')}
               />
               <KPICard
@@ -298,7 +298,7 @@ export default function CashClosingPage() {
                 value={Math.abs(totalBancardDifference)}
                 icon={CreditCard}
                 prefix="₲"
-                status={totalBancardDifference !== 0 ? 'problem' : 'good'}
+                status={totalBancardDifference !== 0 ? 'danger' : 'success'}
                 tooltip={t('bancardDifferenceTooltip')}
               />
               <KPICard
@@ -306,7 +306,7 @@ export default function CashClosingPage() {
                 value={Math.abs(totalUpayDifference)}
                 icon={CreditCard}
                 prefix="₲"
-                status={totalUpayDifference !== 0 ? 'problem' : 'good'}
+                status={totalUpayDifference !== 0 ? 'danger' : 'success'}
                 tooltip={t('upayDifferenceTooltip')}
               />
               <KPICard
@@ -314,7 +314,7 @@ export default function CashClosingPage() {
                 value={Math.abs(totalDifference)}
                 icon={DollarSign}
                 prefix="₲"
-                status={totalDifference !== 0 ? 'problem' : 'good'}
+                status={totalDifference !== 0 ? 'danger' : 'success'}
                 tooltip={t('totalDifferenceTooltip')}
               />
             </div>
@@ -365,7 +365,7 @@ export default function CashClosingPage() {
                     allCashClosings.map((closing) => (
                       <tr key={closing.id} className="hover:bg-gray-50">
                         <td className="px-4 py-3 text-sm font-medium text-gray-900">
-                          {closing.locations?.name || t('unknown')}
+                          {(closing.locations as any)?.[0]?.name || t('unknown')}
                         </td>
                         <td className="px-4 py-3 text-sm text-gray-600">{closing.date}</td>
                         <td className="px-4 py-3 text-sm text-right text-gray-900">
