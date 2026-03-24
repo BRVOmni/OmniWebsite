@@ -15,8 +15,9 @@ import { ForecastSelector } from '@/components/forecasting/forecast-selector'
 import { KPICard } from '@/components/shared/kpi-card'
 import { DateRangeFilter } from '@/components/shared/date-range-filter'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
-import { TrendingUp, DollarSign, ShoppingBag, Target } from 'lucide-react'
+import { Download, TrendingUp, DollarSign, ShoppingBag, Target } from 'lucide-react'
 import type { ForecastResult, ForecastRequest } from '@/lib/forecasting/types'
+import { exportSalesForecast } from '@/lib/utils/forecast-export'
 
 interface SalesForecastData {
   total: number
@@ -112,6 +113,38 @@ export default function SalesForecastingPage() {
     }
   }
 
+  const handleExport = async () => {
+    if (!forecast || !kpis) {
+      alert('Please generate a forecast before exporting')
+      return
+    }
+
+    try {
+      await exportSalesForecast(
+        {
+          forecast,
+          historicalData: salesData.map(sale => ({
+            date: sale.date,
+            value: Number(sale.net_amount)
+          })),
+          kpis: {
+            totalSales: kpis.total,
+            predictedSales: kpis.predicted,
+            growthRate: kpis.growth_rate,
+            confidence: kpis.confidence
+          }
+        },
+        {
+          language: (t('salesForecasting') === 'Pronósticos de Ventas' || t('salesForecasting') === 'Pronóstico de Ventas') ? 'es' : 'en',
+          includeAccuracy: true
+        }
+      )
+    } catch (error) {
+      console.error('Export failed:', error)
+      alert('Failed to export forecast')
+    }
+  }
+
   const historicalData = salesData.map(sale => ({
     date: new Date(sale.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
     amount: Number(sale.net_amount)
@@ -137,12 +170,23 @@ export default function SalesForecastingPage() {
           </p>
         </div>
 
-        {/* Date Range Filter */}
-        <DateRangeFilter
-          startDate={dateRange.startDate}
-          endDate={dateRange.endDate}
-          onRangeChange={setDateRange}
-        />
+        {/* Date Range Filter & Export */}
+        <div className="flex gap-4">
+          <DateRangeFilter
+            startDate={dateRange.startDate}
+            endDate={dateRange.endDate}
+            onRangeChange={setDateRange}
+          />
+          <button
+            onClick={handleExport}
+            disabled={!forecast || !kpis}
+            className="flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-lg px-4 py-3 hover:bg-gray-50 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed whitespace-nowrap"
+            title={t('exportExcel') || 'Export to Excel'}
+          >
+            <Download className="w-4 h-4 text-gray-600" />
+            <span className="text-sm font-medium text-gray-700">{t('exportExcel') || 'Export Excel'}</span>
+          </button>
+        </div>
 
         {/* KPIs */}
         {kpis && (

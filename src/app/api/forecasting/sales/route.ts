@@ -11,6 +11,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import { generateForecast } from '@/lib/forecasting/algorithms'
+import { backtest, calculateAccuracyMetrics } from '@/lib/forecasting/backtesting'
 import type { ForecastRequest, ForecastHorizon, ForecastMethod, ForecastDimension } from '@/lib/forecasting/types'
 
 /**
@@ -144,7 +145,40 @@ export async function GET(request: Request) {
     // Generate forecast
     const forecast = generateForecast(timeSeriesData, forecastRequest)
 
-    return NextResponse.json(forecast)
+    // Perform backtesting if we have enough data (at least 20 points)
+    let accuracy = undefined
+    if (timeSeriesData.length >= 20) {
+      try {
+        const trainSize = Math.floor(timeSeriesData.length * 0.8)
+        const trainingData = timeSeriesData.slice(0, trainSize)
+        const testData = timeSeriesData.slice(trainSize)
+
+        // Generate forecast for test period
+        const testForecast = generateForecast(trainingData, {
+          ...forecastRequest,
+          horizon: 'short' // Use short horizon for backtesting
+        })
+
+        // Calculate accuracy metrics
+        const actuals = testData.map(d => d.value)
+        const predicted = testForecast.forecast.slice(0, actuals.length).map(f => f.value)
+
+        if (predicted.length >= actuals.length) {
+          accuracy = calculateAccuracyMetrics(actuals, predicted.slice(0, actuals.length))
+        }
+      } catch (error) {
+        console.error('Backtesting failed:', error)
+        // Don't fail the request if backtesting fails
+      }
+    }
+
+    // Add accuracy to forecast result
+    const result = {
+      ...forecast,
+      accuracy
+    }
+
+    return NextResponse.json(result)
 
   } catch (error) {
     console.error('Sales forecast API error:', error)
@@ -251,7 +285,36 @@ export async function POST(request: Request) {
     // Generate forecast
     const forecast = generateForecast(timeSeriesData, body as ForecastRequest)
 
-    return NextResponse.json(forecast)
+    // Perform backtesting if we have enough data
+    let accuracy = undefined
+    if (timeSeriesData.length >= 20) {
+      try {
+        const trainSize = Math.floor(timeSeriesData.length * 0.8)
+        const trainingData = timeSeriesData.slice(0, trainSize)
+        const testData = timeSeriesData.slice(trainSize)
+
+        const testForecast = generateForecast(trainingData, {
+          ...body,
+          horizon: 'short'
+        } as ForecastRequest)
+
+        const actuals = testData.map(d => d.value)
+        const predicted = testForecast.forecast.slice(0, actuals.length).map(f => f.value)
+
+        if (predicted.length >= actuals.length) {
+          accuracy = calculateAccuracyMetrics(actuals, predicted.slice(0, actuals.length))
+        }
+      } catch (error) {
+        console.error('Backtesting failed:', error)
+      }
+    }
+
+    const result = {
+      ...forecast,
+      accuracy
+    }
+
+    return NextResponse.json(result)
 
   } catch (error) {
     console.error('Sales forecast API error:', error)

@@ -1,19 +1,26 @@
 /**
- * Auto-Scheduling Utility
+ * Auto-Scheduling System for Supervision Visits
  *
- * Generates supervision visit schedules based on frequency rules,
- * supervisor capacity, and geographic optimization.
+ * Automatically generates supervision visit schedules based on:
+ * - Location visit frequency requirements
+ * - Supervisor capacity and availability
+ * - Geographic optimization
+ * - Visit type distribution (rapid, full audit, surprise)
  */
 
 import { createClient } from '@/lib/supabase/client'
 
+// ============================================================================
+// TYPES
+// ============================================================================
+
 export interface ScheduleVisit {
   location_id: string
   supervisor_id: string
-  scheduled_date: string
-  shift: 'morning' | 'afternoon'
+  planned_date: string
+  planned_shift: string
   visit_type: 'rapida' | 'completa' | 'sorpresa'
-  priority?: 'low' | 'medium' | 'high'
+  priority?: 'critical' | 'high' | 'normal' | 'low'
   status?: 'pending' | 'in_progress' | 'completed' | 'missed' | 'cancelled'
 }
 
@@ -24,6 +31,10 @@ export interface LocationInfo {
   brand_id: string
   latitude?: number
   longitude?: number
+  supervision_priority?: 'critical' | 'high' | 'regular' | 'low'
+  required_rapid_visits_per_week?: number
+  required_full_audit_per_month?: number
+  required_surprise_visits_per_month?: number
 }
 
 export interface SupervisorInfo {
@@ -32,12 +43,21 @@ export interface SupervisorInfo {
   email: string
   assigned_locations?: string[]
   max_visits_per_day?: number
+  preferred_shifts?: string[]
+  preferred_days?: number[]
 }
 
 export interface SchedulingRule {
+  id?: string
   visit_type: 'rapida' | 'completa' | 'sorpresa'
   frequency_per_month: number
   priority: 'low' | 'medium' | 'high'
+  rapid_visits_per_week?: number
+  full_audit_per_month?: number
+  surprise_visits_per_month?: number
+  max_visits_per_day?: number
+  max_visits_per_week?: number
+  high_priority_locations?: string[]
 }
 
 export interface SchedulingResult {
@@ -46,6 +66,14 @@ export interface SchedulingResult {
   visits_skipped: number
   errors: string[]
   warnings: string[]
+  visits_created_details?: Array<{
+    id: string
+    location: string
+    supervisor: string
+    date: string
+    shift: string
+    type: string
+  }>
 }
 
 interface ExistingVisit {
@@ -86,9 +114,20 @@ async function getLocations(): Promise<LocationInfo[]> {
 
   const { data, error } = await supabase
     .from('locations')
-    .select('id, name, city, brand_id, latitude, longitude')
-    .eq('active', true)
-    .order('city')
+    .select(`
+      id,
+      name,
+      city,
+      brand_id,
+      latitude,
+      longitude,
+      supervision_priority,
+      required_rapid_visits_per_week,
+      required_full_audit_per_month,
+      required_surprise_visits_per_month
+    `)
+    .eq('is_active', true)
+    .order('supervision_priority', { ascending: false })
 
   if (error) throw error
   return data || []
@@ -102,12 +141,23 @@ async function getSupervisors(): Promise<SupervisorInfo[]> {
 
   const { data, error } = await supabase
     .from('supervisors')
-    .select('id, name, email, assigned_locations, max_visits_per_day')
-    .eq('active', true)
+    .select(`
+      id,
+      name,
+      email,
+      assigned_location_ids,
+      preferred_shifts,
+      preferred_days
+    `)
+    .eq('is_active', true)
     .order('name')
 
   if (error) throw error
-  return data || []
+  return (data || []).map((s: any) => ({
+    ...s,
+    assigned_locations: s.assigned_location_ids || [],
+    max_visits_per_day: 8 // Default max
+  }))
 }
 
 /**
@@ -118,13 +168,17 @@ async function getExistingVisits(startDate: string, endDate: string): Promise<Ex
 
   const { data, error } = await supabase
     .from('supervision_schedule')
-    .select('id, location_id, supervisor_id, scheduled_date, shift, visit_type')
-    .gte('scheduled_date', startDate)
-    .lte('scheduled_date', endDate)
-    .in('status', ['pending', 'scheduled'])
+    .select('id, location_id, supervisor_id, planned_date, planned_shift, visit_type')
+    .gte('planned_date', startDate)
+    .lte('planned_date', endDate)
+    .eq('status', 'pending')
 
   if (error) throw error
-  return (data || []) as ExistingVisit[]
+  return (data || []).map((v: any) => ({
+    ...v,
+    scheduled_date: v.planned_date,
+    shift: v.planned_shift
+  })) as ExistingVisit[]
 }
 
 /**
@@ -342,7 +396,7 @@ export async function generateSchedule(
     // Create a map of existing visits by location and date
     const existingVisitsMap = new Map<string, ExistingVisit[]>()
     existingVisits.forEach(visit => {
-      const key = `${visit.location_id}-${visit.scheduled_date}`
+      const key = `${visit.location_id}-${visit.planned_date || visit.scheduled_date}`
       if (!existingVisitsMap.has(key)) {
         existingVisitsMap.set(key, [])
       }
@@ -386,10 +440,10 @@ export async function generateSchedule(
           visitsToCreate.push({
             location_id: location.id,
             supervisor_id: supervisor.id,
-            scheduled_date: dateStr,
-            shift,
+            planned_date: dateStr,
+            planned_shift: shift,
             visit_type: rule.visit_type,
-            priority: rule.priority,
+            priority: rule.priority === 'high' ? 'high' : rule.priority === 'medium' ? 'normal' : rule.priority,
             status: 'pending'
           })
 
@@ -403,7 +457,7 @@ export async function generateSchedule(
       const visitsBySupervisorDay = new Map<string, ScheduleVisit[]>()
 
       visitsToCreate.forEach(visit => {
-        const key = `${visit.supervisor_id}-${visit.scheduled_date}`
+        const key = `${visit.supervisor_id}-${visit.planned_date}`
         if (!visitsBySupervisorDay.has(key)) {
           visitsBySupervisorDay.set(key, [])
         }
@@ -424,26 +478,45 @@ export async function generateSchedule(
 
     // Insert visits into database
     const supabase = createClient()
+    const createdVisits: Array<{
+      id: string
+      location: string
+      supervisor: string
+      date: string
+      shift: string
+      type: string
+    }> = []
 
     for (const visit of visitsToCreate) {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('supervision_schedule')
         .insert({
           location_id: visit.location_id,
           supervisor_id: visit.supervisor_id,
-          scheduled_date: visit.scheduled_date,
-          shift: visit.shift,
+          planned_date: visit.planned_date,
+          planned_shift: visit.planned_shift,
           visit_type: visit.visit_type,
-          priority: visit.priority,
+          priority: visit.priority || 'normal',
           status: visit.status || 'pending',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
+          is_auto_scheduled: true
         })
+        .select('id, locations(name), supervisors(name)')
+        .single()
 
       if (error) {
         errors.push(`Failed to create visit for location ${visit.location_id}: ${error.message}`)
       } else {
         visitsCreated++
+        if (data) {
+          createdVisits.push({
+            id: data.id,
+            location: (data as any).locations?.name || 'Unknown',
+            supervisor: (data as any).supervisors?.name || 'Unknown',
+            date: visit.planned_date,
+            shift: visit.planned_shift,
+            type: visit.visit_type
+          })
+        }
       }
     }
 
@@ -452,7 +525,8 @@ export async function generateSchedule(
       visits_created: visitsCreated,
       visits_skipped: visitsSkipped,
       errors,
-      warnings
+      warnings,
+      visits_created_details: createdVisits
     }
   } catch (error) {
     return {
@@ -473,6 +547,12 @@ export async function previewNextMonthSchedule(): Promise<{
   month: number
   monthName: string
   estimatedVisits: number
+  visitsByType: {
+    rapida: number
+    completa: number
+    sorpresa: number
+  }
+  coverage: number
 }> {
   const today = new Date()
   let nextMonth = today.getMonth() + 1
@@ -491,13 +571,195 @@ export async function previewNextMonthSchedule(): Promise<{
     'July', 'August', 'September', 'October', 'November', 'December'
   ]
 
-  // Estimate visits: 8 rapid + 2 complete + 1 surprise = 11 per location per month
-  const estimatedVisits = locations.length * 11
+  // Calculate visits based on location requirements
+  let rapidVisits = 0
+  let fullAudits = 0
+  let surpriseVisits = 0
+
+  locations.forEach(loc => {
+    rapidVisits += (loc.required_rapid_visits_per_week || 2) * 4 // 4 weeks per month
+    fullAudits += loc.required_full_audit_per_month || 1
+    surpriseVisits += loc.required_surprise_visits_per_month || 1
+  })
+
+  const estimatedVisits = rapidVisits + fullAudits + surpriseVisits
+  const coverage = locations.length > 0 ? 100 : 0
 
   return {
     year: nextYear,
     month: nextMonth,
     monthName: monthNames[nextMonth],
-    estimatedVisits
+    estimatedVisits,
+    visitsByType: {
+      rapida: rapidVisits,
+      completa: fullAudits,
+      sorpresa: surpriseVisits
+    },
+    coverage
   }
+}
+
+/**
+ * Check visit compliance with frequency requirements
+ */
+export async function checkVisitCompliance(locationId?: string): Promise<{
+  compliantLocations: string[]
+  nonCompliantLocations: Array<{
+    id: string
+    name: string
+    issues: string[]
+  }>
+}> {
+  const supabase = createClient()
+
+  const compliant: string[] = []
+  const nonCompliant: Array<{
+    id: string
+    name: string
+    issues: string[]
+  }> = []
+
+  let locationQuery = supabase
+    .from('locations')
+    .select('id, name, required_rapid_visits_per_week, required_full_audit_per_month, required_surprise_visits_per_month')
+    .eq('is_active', true)
+
+  if (locationId) {
+    locationQuery = locationQuery.eq('id', locationId)
+  }
+
+  const { data: locations } = await locationQuery
+
+  if (!locations) return { compliantLocations: compliant, nonCompliantLocations: nonCompliant }
+
+  for (const location of locations as any[]) {
+    const issues: string[] = []
+
+    // Check rapid visits (last 7 days)
+    const sevenDaysAgo = new Date()
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+
+    const { count: rapidVisits } = await supabase
+      .from('supervision_visits')
+      .select('id', { count: 'exact', head: true })
+      .eq('location_id', location.id)
+      .eq('visit_type', 'rapida')
+      .gte('visit_date', sevenDaysAgo.toISOString().split('T')[0])
+
+    if ((rapidVisits || 0) < (location.required_rapid_visits_per_week || 2)) {
+      issues.push(`${(location.required_rapid_visits_per_week || 2) - (rapidVisits || 0)} rapid visits missing this week`)
+    }
+
+    // Check full audits (last 30 days)
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+    const { count: fullAudits } = await supabase
+      .from('supervision_visits')
+      .select('id', { count: 'exact', head: true })
+      .eq('location_id', location.id)
+      .eq('visit_type', 'completa')
+      .gte('visit_date', thirtyDaysAgo.toISOString().split('T')[0])
+
+    if ((fullAudits || 0) < (location.required_full_audit_per_month || 1)) {
+      issues.push(`${(location.required_full_audit_per_month || 1) - (fullAudits || 0)} full audits missing this month`)
+    }
+
+    // Check surprise visits (last 30 days)
+    const { count: surpriseVisits } = await supabase
+      .from('supervision_visits')
+      .select('id', { count: 'exact', head: true })
+      .eq('location_id', location.id)
+      .eq('visit_type', 'sorpresa')
+      .gte('visit_date', thirtyDaysAgo.toISOString().split('T')[0])
+
+    if ((surpriseVisits || 0) < (location.required_surprise_visits_per_month || 1)) {
+      issues.push(`${(location.required_surprise_visits_per_month || 1) - (surpriseVisits || 0)} surprise visits missing this month`)
+    }
+
+    if (issues.length === 0) {
+      compliant.push(location.id)
+    } else {
+      nonCompliant.push({
+        id: location.id,
+        name: location.name,
+        issues
+      })
+    }
+  }
+
+  return { compliantLocations: compliant, nonCompliantLocations: nonCompliant }
+}
+
+/**
+ * Suggest reschedule options for a visit
+ */
+export async function suggestReschedule(
+  visitId: string
+): Promise<Array<{
+  date: string
+  shift: string
+  supervisor: string
+  reason: string
+}>> {
+  const supabase = createClient()
+
+  // Get the visit
+  const { data: visit } = await supabase
+    .from('supervision_schedule')
+    .select('*, locations(name), supervisors(name)')
+    .eq('id', visitId)
+    .single()
+
+  if (!visit) return []
+
+  const suggestions: Array<{
+    date: string
+    shift: string
+    supervisor: string
+    reason: string
+  }> = []
+
+  // Check next 7 days for available slots
+  for (let i = 1; i <= 7; i++) {
+    const date = new Date(visit.planned_date)
+    date.setDate(date.getDate() + i)
+
+    // Skip weekends
+    const dayOfWeek = date.getDay()
+    if (dayOfWeek === 0 || dayOfWeek === 6) continue
+
+    const dateStr = date.toISOString().split('T')[0]
+
+    // Check if supervisor is available
+    const { data: existing } = await supabase
+      .from('supervision_schedule')
+      .select('id')
+      .eq('supervisor_id', visit.supervisor_id)
+      .eq('planned_date', dateStr)
+      .eq('status', 'pending')
+
+    const supervisorCapacity = (existing?.length || 0) < 8
+
+    // Check if location is available
+    const { data: locationExisting } = await supabase
+      .from('supervision_schedule')
+      .select('id')
+      .eq('location_id', visit.location_id)
+      .eq('planned_date', dateStr)
+      .eq('visit_type', visit.visit_type)
+
+    const locationAvailable = (locationExisting?.length || 0) === 0
+
+    if (supervisorCapacity && locationAvailable) {
+      suggestions.push({
+        date: dateStr,
+        shift: visit.planned_shift,
+        supervisor: (visit as any).supervisors?.name || 'Assigned Supervisor',
+        reason: 'Supervisor and location available'
+      })
+    }
+  }
+
+  return suggestions.slice(0, 3) // Return top 3 suggestions
 }

@@ -278,27 +278,34 @@ function NewVisitForm() {
     )
   }, [checklistItems, stepCategories])
 
-  // Calculate 5 key questions (auto-calculated)
+  // Calculate 5 key questions (auto-calculated based on category scores)
   const keyQuestions = useMemo(() => {
-    const liderazgoItems = checklistResultsByCategory('Liderazgo')
-    const ordenItems = checklistResultsByCategory('Orden')
-    const cajaItems = checklistResultsByCategory('Caja')
-    const stockItems = checklistResultsByCategory('Stock')
-    const limpiezaItems = checklistResultsByCategory('Limpieza')
-    const equiposItems = checklistResultsByCategory('Equipos')
+    const categoryScores = scores.categoryScores
 
-    const allCompliant = (items: ChecklistResult[]) => {
-      return items.length > 0 && items.every(i => i.compliant === true)
-    }
+    // Operations: liderazgo + orden combined score >= 70%
+    const operationsScore = (categoryScores['Liderazgo'] || 0 + categoryScores['Orden'] || 0) / 2
+
+    // Money: caja score >= 70
+    const moneyScore = categoryScores['Caja'] || 0
+
+    // Product: stock score >= 70
+    const productScore = categoryScores['Stock'] || 0
+
+    // Customer experience: limpieza + equipos combined score >= 70%
+    const customerScore = (categoryScores['Limpieza'] || 0 + categoryScores['Equipos'] || 0) / 2
+
+    // Manager control: liderazgo >= 70 AND manager marked as in control
+    const managerScore = categoryScores['Liderazgo'] || 0
+    const managerInControl = visitData.manager_in_control === true
 
     return {
-      operations_functioning: allCompliant([...liderazgoItems, ...ordenItems]),
-      money_controlled: allCompliant(cajaItems),
-      product_managed: allCompliant(stockItems),
-      customer_experience_adequate: allCompliant([...limpiezaItems, ...equiposItems]),
-      manager_team_control: allCompliant(liderazgoItems) && visitData.manager_in_control === true,
+      operations_functioning: operationsScore >= 70,
+      money_controlled: moneyScore >= 70,
+      product_managed: productScore >= 70,
+      customer_experience_adequate: customerScore >= 70,
+      manager_team_control: managerScore >= 70 && managerInControl
     }
-  }, [checklistResults, checklistItems, visitData.manager_in_control])
+  }, [scores.categoryScores, visitData.manager_in_control])
 
   const checklistResultsByCategory = (categoryName: string) => {
     return Object.values(checklistResults).filter(result => {
@@ -307,24 +314,59 @@ function NewVisitForm() {
     })
   }
 
-  // Calculate scores
+  // Helper to get current step's items
+  const getCurrentStepItems = () => {
+    return checklistItems.filter(item =>
+      stepCategories.some(cat => item.category_id === cat || item.name_es.includes(cat))
+    )
+  }
+
+  // Calculate scores (using proper 6-category weighted system)
   const scores = useMemo(() => {
     const categoryScores: Record<string, number> = {}
+    const categoryWeights: Record<string, number> = {
+      'Liderazgo': 0.15,
+      'Orden': 0.20,
+      'Caja': 0.25,
+      'Stock': 0.20,
+      'Limpieza': 0.10,
+      'Equipos': 0.10
+    }
+
+    let weightedTotal = 0
+    let hasAnyItems = false
+
     categories.forEach(cat => {
       const items = checklistResultsByCategory(cat.name_es)
       if (items.length === 0) {
         categoryScores[cat.name_es] = 0
         return
       }
+      hasAnyItems = true
+
       const compliantCount = items.filter(i => i.compliant === true).length
-      categoryScores[cat.name_es] = Math.round((compliantCount / items.length) * 100)
+      const criticalCount = items.filter(i => !i.compliant && i.is_critical).length
+
+      // Base score from compliance percentage
+      let score = (compliantCount / items.length) * 100
+
+      // Deduct points for non-compliant critical items (15 points each)
+      score -= criticalCount * 15
+
+      categoryScores[cat.name_es] = Math.max(0, Math.round(score))
+
+      // Add to weighted total
+      weightedTotal += categoryScores[cat.name_es] * categoryWeights[cat.name_es]
     })
 
-    const avgScore = Object.values(categoryScores).length > 0
-      ? Math.round(Object.values(categoryScores).reduce((sum, score) => sum + score, 0) / Object.values(categoryScores).length)
+    const avgScore = hasAnyItems ? Math.round(weightedTotal) : 0
+
+    // Calculate operation score (liderazgo + orden)
+    const score_operacion = Object.keys(categoryScores).length > 0
+      ? Math.round((categoryScores['Liderazgo'] + categoryScores['Orden']) / 2)
       : 0
 
-    return { categoryScores, avgScore }
+    return { categoryScores, avgScore, score_operacion }
   }, [checklistResults, categories])
 
   const handleChecklistChange = (itemId: string, compliant: boolean | null, notes: string) => {
@@ -376,6 +418,21 @@ function NewVisitForm() {
   }
 
   const goToStep = (step: Step) => {
+    // Validate current step before moving on
+    const currentStepItems = getCurrentStepItems()
+
+    if (currentStep !== 'review' && currentStepItems.length > 0) {
+      // Check if all items in current step have been answered
+      const allAnswered = currentStepItems.every(item =>
+        checklistResults[item.id]?.compliant !== undefined
+      )
+
+      if (!allAnswered) {
+        alert('Please complete all checklist items before proceeding to the next step.')
+        return
+      }
+    }
+
     // Mark current step as completed
     if (!completedSteps.includes(currentStep)) {
       setCompletedSteps([...completedSteps, currentStep])
@@ -395,10 +452,18 @@ function NewVisitForm() {
     setSubmitting(true)
 
     try {
-      // Create visit record
-      const { data: visit, error: visitError } = await supabase
-        .from('supervision_visits')
-        .insert({
+      // Determine classification based on total score
+      const classification =
+        scores.avgScore >= 90 ? 'excelente' :
+        scores.avgScore >= 75 ? 'bueno' :
+        scores.avgScore >= 60 ? 'regular' :
+        'deficiente'
+
+      // Create visit record using API for proper scoring
+      const response = await fetch('/api/supervision/visits', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           location_id: visitData.location_id,
           supervisor_id: visitData.supervisor_id || user?.id,
           visit_date: visitData.visit_date,
@@ -408,34 +473,23 @@ function NewVisitForm() {
           manager_present: visitData.manager_present,
           manager_in_control: visitData.manager_in_control,
           start_time: startTime?.toISOString(),
-          end_time: new Date().toISOString(),
+          end_time: complete ? new Date().toISOString() : undefined,
           duration_minutes: elapsedTime,
           step1_observation_completed: completedSteps.includes('observation'),
           step2_operations_completed: completedSteps.includes('operations'),
           step3_cash_completed: completedSteps.includes('cash'),
           step4_product_completed: completedSteps.includes('product'),
           step5_equipment_completed: completedSteps.includes('equipment'),
-          score_liderazgo: scores.categoryScores['Liderazgo'],
-          score_orden: scores.categoryScores['Orden'],
-          score_caja: scores.categoryScores['Caja'],
-          score_stock: scores.categoryScores['Stock'],
-          score_limpieza: scores.categoryScores['Limpieza'],
-          score_equipos: scores.categoryScores['Equipos'],
-          score_total: scores.avgScore,
-          score_operacion: Math.round((scores.categoryScores['Liderazgo'] + scores.categoryScores['Orden']) / 2),
-          classification: scores.avgScore >= 90 ? 'excelente' : scores.avgScore >= 70 ? 'bueno' : scores.avgScore >= 50 ? 'regular' : 'critico',
-          operations_functioning: keyQuestions.operations_functioning,
-          money_controlled: keyQuestions.money_controlled,
-          product_managed: keyQuestions.product_managed,
-          customer_experience_adequate: keyQuestions.customer_experience_adequate,
-          manager_team_control: keyQuestions.manager_team_control,
-          visit_completed: complete,
-          scheduled_visit_id: scheduleId,
+          visit_completed: complete
         })
-        .select()
-        .single()
+      })
 
-      if (visitError) throw visitError
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to create visit')
+      }
+
+      const { visit } = await response.json()
 
       // Insert checklist results
       const resultsToInsert = Object.values(checklistResults).map(result => ({
@@ -483,6 +537,31 @@ function NewVisitForm() {
         }
       }
 
+      // If final submission, update with scores
+      if (complete) {
+        await fetch(`/api/supervision/visits?id=${visit.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            final_submission: true,
+            checklist_results: Object.values(checklistResults).map(r => ({
+              item_id: r.item_id,
+              category: categories.find(c => c.name_es.includes(r.item_id))?.name_es || 'General',
+              compliant: r.compliant ?? false,
+              is_critical: checklistItems.find(i => i.id === r.item_id)?.is_critical || false,
+              notes: r.notes
+            })),
+            findings: findings.map(f => ({
+              severity: f.severity,
+              category: f.category,
+              title: f.title,
+              description: f.description
+            })),
+            observations_general: findings.length > 0 ? findings.map(f => `- ${f.title}: ${f.description}`).join('\n') : ''
+          })
+        })
+      }
+
       // Update schedule if applicable
       if (scheduleId && complete) {
         await supabase
@@ -497,6 +576,7 @@ function NewVisitForm() {
       router.push('/dashboard/supervision')
     } catch (error) {
       console.error('Error saving visit:', error)
+      alert('Error saving visit: ' + (error instanceof Error ? error.message : 'Unknown error'))
       setSubmitting(false)
     }
   }

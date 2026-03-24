@@ -13,8 +13,9 @@ import { ForecastChart } from '@/components/forecasting/forecast-chart'
 import { ForecastSelector } from '@/components/forecasting/forecast-selector'
 import { KPICard } from '@/components/shared/kpi-card'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
-import { Users, Clock, TrendingUp, DollarSign } from 'lucide-react'
+import { Download, Users, Clock, TrendingUp, DollarSign } from 'lucide-react'
 import type { ForecastResult, ForecastRequest } from '@/lib/forecasting/types'
+import { exportStaffingForecast } from '@/lib/utils/forecast-export'
 
 interface HourlyPattern {
   hour: number
@@ -31,102 +32,128 @@ export default function StaffingForecastingPage() {
   const [generating, setGenerating] = useState(false)
   const [hourlyPatterns, setHourlyPatterns] = useState<HourlyPattern[]>([])
   const [forecast, setForecast] = useState<ForecastResult | null>(null)
+  const [summary, setSummary] = useState<{
+    peak_hour: number
+    peak_sales: number
+    total_staff_needed: number
+    total_transactions: number
+  } | null>(null)
 
   useEffect(() => {
-    loadHourlyPatterns()
+    loadStaffingForecast()
   }, [])
 
-  const loadHourlyPatterns = async () => {
+  const loadStaffingForecast = async () => {
     setLoading(true)
     try {
-      const thirtyDaysAgo = new Date()
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-
-      const { data } = await supabase
-        .from('mv_hourly_sales_patterns')
-        .select('*')
-        .gte('date', thirtyDaysAgo.toISOString().split('T')[0])
-        .order('hour', { ascending: true })
-
-      if (data) {
-        const aggregated = aggregateByHour(data)
-        setHourlyPatterns(aggregated)
+      const response = await fetch('/api/forecasting/staffing')
+      if (!response.ok) {
+        throw new Error('Failed to load staffing forecast')
       }
+      const data = await response.json()
+
+      // Convert API response to HourlyPattern format
+      const patterns: HourlyPattern[] = data.patterns.map((p: any) => ({
+        hour: p.hour,
+        avg_sales: p.expected_sales,
+        avg_transactions: p.expected_transactions,
+        recommended_staff: p.recommended_staff
+      }))
+
+      setHourlyPatterns(patterns)
+      setSummary(data.summary)
     } catch (error) {
-      console.error('Failed to load hourly patterns:', error)
+      console.error('Failed to load staffing forecast:', error)
     } finally {
       setLoading(false)
     }
   }
 
-  const aggregateByHour = (data: any[]): HourlyPattern[] => {
-    const byHour: Record<number, HourlyPattern> = {}
-
-    data.forEach(row => {
-      const hour = row.hour
-      if (!byHour[hour]) {
-        byHour[hour] = {
-          hour,
-          avg_sales: 0,
-          avg_transactions: 0,
-          recommended_staff: 0
-        }
-      }
-      byHour[hour].avg_sales += Number(row.avg_sales || 0)
-      byHour[hour].avg_transactions += Number(row.avg_transactions || 0)
-    })
-
-    const count = data.length / 24 // Average over days
-    return Object.values(byHour).map(h => ({
-      ...h,
-      avg_sales: h.avg_sales / Math.max(1, count),
-      avg_transactions: h.avg_transactions / Math.max(1, count),
-      recommended_staff: calculateRecommendedStaff(h.avg_sales / Math.max(1, count))
-    }))
-  }
-
-  const calculateRecommendedStaff = (avgSales: number): number => {
-    // Rule of thumb: 1 staff per ₲500,000 in hourly sales
-    // Minimum 1 staff, maximum based on peak capacity
-    const staffNeeded = Math.ceil(avgSales / 500000)
-    return Math.max(1, Math.min(10, staffNeeded))
-  }
-
   const handleForecast = async (params: ForecastRequest) => {
     setGenerating(true)
     try {
-      // Generate staffing forecast based on hourly patterns
-      const forecastData = hourlyPatterns.map(pattern => {
-        const growthFactor = 1.05 // Assume 5% growth
-        return {
-          date: `${pattern.hour}:00`,
-          value: pattern.avg_sales * growthFactor,
-          upper: pattern.avg_sales * growthFactor * 1.1,
-          lower: pattern.avg_sales * growthFactor * 0.9
-        }
+      // Regenerate forecast with new parameters
+      const queryParams = new URLSearchParams({
+        horizon: params.horizon
       })
+
+      const response = await fetch(`/api/forecasting/staffing?${queryParams}`)
+      if (!response.ok) {
+        throw new Error('Failed to generate staffing forecast')
+      }
+
+      const data = await response.json()
+
+      // Convert API response to HourlyPattern format
+      const patterns: HourlyPattern[] = data.patterns.map((p: any) => ({
+        hour: p.hour,
+        avg_sales: p.expected_sales,
+        avg_transactions: p.expected_transactions,
+        recommended_staff: p.recommended_staff
+      }))
+
+      setHourlyPatterns(patterns)
+      setSummary(data.summary)
+
+      // Create forecast data for chart
+      const forecastData = patterns.map(p => ({
+        date: p.time_label,
+        amount: p.expected_sales
+      }))
 
       setForecast({
         algorithm: params.method,
         horizon: params.horizon,
-        data: forecastData.map(d => d.value),
-        upperBound: forecastData.map(d => d.upper),
-        lowerBound: forecastData.map(d => d.lower),
+        data: forecastData.map(d => d.amount),
+        upperBound: forecastData.map(d => d.amount * 1.1),
+        lowerBound: forecastData.map(d => d.amount * 0.9),
         metrics: { mae: 0, mse: 0, rmse: 0, mape: 0 }
       })
     } catch (error) {
       console.error('Staffing forecast failed:', error)
+      alert('Failed to generate staffing forecast')
     } finally {
       setGenerating(false)
     }
   }
 
+  const handleExport = async () => {
+    if (!summary || hourlyPatterns.length === 0) {
+      alert('No data to export')
+      return
+    }
+
+    try {
+      await exportStaffingForecast(
+        {
+          date: new Date().toISOString().split('T')[0],
+          patterns: hourlyPatterns.map(h => ({
+            hour: h.hour,
+            time_label: `${h.hour}:00`,
+            expected_sales: h.avg_sales,
+            expected_transactions: h.avg_transactions,
+            recommended_staff: h.recommended_staff,
+            busy_period: h.hour >= 10 && h.hour <= 14 // Simple heuristic
+          })),
+          summary: summary!
+        },
+        {
+          language: (t('staffingForecasting') === 'Pronósticos de Personal' || t('staffingForecasting') === 'Pronóstico de Personal') ? 'es' : 'en'
+        }
+      )
+    } catch (error) {
+      console.error('Export failed:', error)
+      alert('Failed to export forecast')
+    }
+  }
+
+  // Calculate derived values from API data
   const peakHours = hourlyPatterns
-    .filter(h => h.hour >= 10 && h.hour <= 14) // Lunch peak
     .sort((a, b) => b.avg_sales - a.avg_sales)
     .slice(0, 3)
 
-  const totalStaffNeeded = hourlyPatterns.reduce((sum, h) => sum + h.recommended_staff, 0)
+  const totalStaffNeeded = summary?.total_staff_needed ||
+    hourlyPatterns.reduce((sum, h) => sum + h.recommended_staff, 0)
 
   const chartData = hourlyPatterns.map(h => ({
     date: `${h.hour}:00`,
@@ -136,14 +163,25 @@ export default function StaffingForecastingPage() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        {/* Header */}
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            {t('staffingForecasting') || 'Staffing Forecasting'}
-          </h1>
-          <p className="text-gray-600 mt-1">
-            {t('staffingForecastingDescription') || 'Optimize staff scheduling based on sales patterns and forecasting'}
-          </p>
+        {/* Header & Export */}
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {t('staffingForecasting') || 'Staffing Forecasting'}
+            </h1>
+            <p className="text-gray-600 mt-1">
+              {t('staffingForecastingDescription') || 'Optimize staff scheduling based on sales patterns and forecasting'}
+            </p>
+          </div>
+          <button
+            onClick={handleExport}
+            disabled={hourlyPatterns.length === 0}
+            className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
+            title={t('exportExcel') || 'Export to Excel'}
+          >
+            <Download className="w-4 h-4 text-gray-600" />
+            <span className="text-sm font-medium text-gray-700">{t('exportExcel') || 'Export'}</span>
+          </button>
         </div>
 
         {/* KPIs */}

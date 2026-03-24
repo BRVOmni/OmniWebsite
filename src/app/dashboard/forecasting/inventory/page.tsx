@@ -13,8 +13,9 @@ import { ForecastChart } from '@/components/forecasting/forecast-chart'
 import { ForecastSelector } from '@/components/forecasting/forecast-selector'
 import { KPICard } from '@/components/shared/kpi-card'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
-import { Package, AlertTriangle, ShoppingCart, TrendingUp } from 'lucide-react'
+import { Download, Package, AlertTriangle, ShoppingCart, TrendingUp } from 'lucide-react'
 import type { ForecastResult, ForecastRequest } from '@/lib/forecasting/types'
+import { exportInventoryForecast } from '@/lib/utils/forecast-export'
 
 interface ProductForecast {
   product_name: string
@@ -33,120 +34,130 @@ export default function InventoryForecastingPage() {
   const [generating, setGenerating] = useState(false)
   const [productForecasts, setProductForecasts] = useState<ProductForecast[]>([])
   const [forecast, setForecast] = useState<ForecastResult | null>(null)
+  const [summary, setSummary] = useState<{
+    total_products: number
+    high_risk_count: number
+    medium_risk_count: number
+    total_recommended_order_qty: number
+  } | null>(null)
 
   useEffect(() => {
-    loadProductForecasts()
+    loadInventoryForecast()
   }, [])
 
-  const loadProductForecasts = async () => {
+  const loadInventoryForecast = async () => {
     setLoading(true)
     try {
-      const thirtyDaysAgo = new Date()
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-
-      const { data: salesData } = await supabase
-        .from('sales')
-        .select('id, date, products_summary')
-        .gte('date', thirtyDaysAgo.toISOString().split('T')[0])
-
-      if (salesData) {
-        const forecasts = analyzeProductDemand(salesData)
-        setProductForecasts(forecasts)
+      const response = await fetch('/api/forecasting/inventory')
+      if (!response.ok) {
+        throw new Error('Failed to load inventory forecast')
       }
+      const data = await response.json()
+
+      // Convert API response to ProductForecast format
+      const forecasts: ProductForecast[] = data.products.map((p: any) => ({
+        product_name: p.product_name,
+        current_stock: p.current_stock,
+        predicted_demand: p.predicted_period_demand,
+        stock_out_risk: p.stock_out_risk,
+        recommended_order: p.recommended_order,
+        category: p.category
+      }))
+
+      setProductForecasts(forecasts)
+      setSummary(data.summary)
     } catch (error) {
-      console.error('Failed to load product forecasts:', error)
+      console.error('Failed to load inventory forecast:', error)
     } finally {
       setLoading(false)
     }
   }
 
-  const analyzeProductDemand = (salesData: any[]): ProductForecast[] => {
-    const productStats: Record<string, {
-      total_qty: number
-      daily_avg: number
-      category: string
-    }> = {}
-
-    salesData.forEach(sale => {
-      try {
-        const products = typeof sale.products_summary === 'string'
-          ? JSON.parse(sale.products_summary)
-          : sale.products_summary
-
-        if (Array.isArray(products)) {
-          products.forEach((p: any) => {
-            const name = p.product_name || p.name || 'Unknown'
-            if (!productStats[name]) {
-              productStats[name] = {
-                total_qty: 0,
-                daily_avg: 0,
-                category: p.category || 'General'
-              }
-            }
-            productStats[name].total_qty += Number(p.quantity || 0)
-          })
-        }
-      } catch (e) {
-        // Skip invalid entries
-      }
-    })
-
-    return Object.entries(productStats)
-      .map(([name, stats]) => {
-        const dailyAvg = stats.total_qty / 30
-        const predictedDemand = dailyAvg * 7 // Next 7 days
-        const currentStock = Math.floor(Math.random() * 100) // Simulated - would come from inventory table
-        const stockOutRisk = currentStock < predictedDemand * 0.5 ? 'high'
-          : currentStock < predictedDemand ? 'medium'
-          : 'low'
-        const recommendedOrder = Math.max(0, predictedDemand - currentStock)
-
-        return {
-          product_name: name,
-          current_stock: currentStock,
-          predicted_demand: Math.round(predictedDemand),
-          stock_out_risk: stockOutRisk,
-          recommended_order: Math.round(recommendedOrder),
-          category: stats.category
-        }
-      })
-      .sort((a, b) => b.recommended_order - a.recommended_order)
-      .slice(0, 20)
-  }
-
   const handleForecast = async (params: ForecastRequest) => {
     setGenerating(true)
     try {
-      // Aggregate by category for forecast
-      const byCategory: Record<string, number[]> = []
-
-      productForecasts.forEach(p => {
-        if (!byCategory[p.category]) {
-          byCategory[p.category] = []
-        }
-        byCategory[p.category].push(p.predicted_demand)
+      // Regenerate forecast with new parameters
+      const queryParams = new URLSearchParams({
+        horizon: params.horizon
       })
 
-      const forecastData = Object.entries(byCategory).map(([cat, demands]) => ({
-        date: cat,
-        amount: demands.reduce((s, d) => s + d, 0)
+      const response = await fetch(`/api/forecasting/inventory?${queryParams}`)
+      if (!response.ok) {
+        throw new Error('Failed to generate inventory forecast')
+      }
+
+      const data = await response.json()
+
+      // Convert API response to ProductForecast format
+      const forecasts: ProductForecast[] = data.products.map((p: any) => ({
+        product_name: p.product_name,
+        current_stock: p.current_stock,
+        predicted_demand: p.predicted_period_demand,
+        stock_out_risk: p.stock_out_risk,
+        recommended_order: p.recommended_order,
+        category: p.category
+      }))
+
+      setProductForecasts(forecasts)
+      setSummary(data.summary)
+
+      // Create forecast data for chart
+      const topProducts = forecasts.slice(0, 10)
+      const forecastData = topProducts.map(p => ({
+        date: p.product_name.substring(0, 15),
+        amount: p.predicted_demand
       }))
 
       setForecast({
         algorithm: params.method,
         horizon: params.horizon,
-        data: forecastData.map(d => d.value),
+        data: forecastData.map(d => d.amount),
+        upperBound: forecastData.map(d => d.amount * 1.1),
+        lowerBound: forecastData.map(d => d.amount * 0.9),
         metrics: { mae: 0, mse: 0, rmse: 0, mape: 0 }
       })
     } catch (error) {
       console.error('Inventory forecast failed:', error)
+      alert('Failed to generate inventory forecast')
     } finally {
       setGenerating(false)
     }
   }
 
+  const handleExport = async () => {
+    if (!summary || productForecasts.length === 0) {
+      alert('No data to export')
+      return
+    }
+
+    try {
+      await exportInventoryForecast(
+        {
+          products: productForecasts.map(p => ({
+            product_name: p.product_name,
+            category: p.category,
+            current_stock: p.current_stock,
+            predicted_demand: p.predicted_demand,
+            stock_out_risk: p.stock_out_risk,
+            recommended_order: p.recommended_order,
+            days_of_stock_remaining: Math.max(0, Math.floor(p.current_stock / Math.max(1, p.predicted_demand / 30)))
+          })),
+          summary: summary!
+        },
+        {
+          language: (t('inventoryForecasting') === 'Pronósticos de Inventario' || t('inventoryForecasting') === 'Pronóstico de Inventario') ? 'es' : 'en'
+        }
+      )
+    } catch (error) {
+      console.error('Export failed:', error)
+      alert('Failed to export forecast')
+    }
+  }
+
+  // Calculate derived values from API data
   const highRiskProducts = productForecasts.filter(p => p.stock_out_risk === 'high')
-  const totalRecommendedOrder = productForecasts.reduce((sum, p) => sum + p.recommended_order, 0)
+  const totalRecommendedOrder = summary?.total_recommended_order_qty ||
+    productForecasts.reduce((sum, p) => sum + p.recommended_order, 0)
 
   const topProducts = productForecasts.slice(0, 10)
   const chartData = topProducts.map(p => ({
@@ -157,14 +168,25 @@ export default function InventoryForecastingPage() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        {/* Header */}
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            {t('inventoryForecasting') || 'Inventory Forecasting'}
-          </h1>
-          <p className="text-gray-600 mt-1">
-            {t('inventoryForecastingDescription') || 'Predict product demand and optimize inventory levels'}
-          </p>
+        {/* Header & Export */}
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {t('inventoryForecasting') || 'Inventory Forecasting'}
+            </h1>
+            <p className="text-gray-600 mt-1">
+              {t('inventoryForecastingDescription') || 'Predict product demand and optimize inventory levels'}
+            </p>
+          </div>
+          <button
+            onClick={handleExport}
+            disabled={productForecasts.length === 0}
+            className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
+            title={t('exportExcel') || 'Export to Excel'}
+          >
+            <Download className="w-4 h-4 text-gray-600" />
+            <span className="text-sm font-medium text-gray-700">{t('exportExcel') || 'Export'}</span>
+          </button>
         </div>
 
         {/* KPIs */}

@@ -39,6 +39,21 @@ interface ForecastChartProps {
   currency?: string
 }
 
+// Legacy forecast format (for backward compatibility with existing pages)
+interface LegacyForecastResult {
+  algorithm: string
+  horizon: string
+  data: number[]
+  upperBound?: number[]
+  lowerBound?: number[]
+  metrics?: {
+    mae: number
+    mse: number
+    rmse: number
+    mape: number
+  }
+}
+
 interface ChartDataPoint {
   date: string
   actual: number | null
@@ -46,6 +61,31 @@ interface ChartDataPoint {
   lowerBound: number | null
   upperBound: number | null
   type: 'historical' | 'forecast'
+}
+
+// Compatible data format from pages
+interface LegacyDataPoint {
+  date: string
+  amount: number
+  upper?: number
+  lower?: number
+}
+
+// Type guard to check if forecast is the legacy format
+function isLegacyForecast(forecast: any): forecast is LegacyForecastResult {
+  return forecast && typeof forecast === 'object' && 'data' in forecast && Array.isArray(forecast.data)
+}
+
+// Convert legacy forecast to standard chart data
+function convertLegacyForecastToChartData(legacy: LegacyForecastResult, startIndex = 0): ChartDataPoint[] {
+  return legacy.data.map((value, index) => ({
+    date: `Day ${startIndex + index + 1}`,
+    actual: null,
+    forecast: value,
+    lowerBound: legacy.lowerBound?.[index] ?? null,
+    upperBound: legacy.upperBound?.[index] ?? null,
+    type: 'forecast' as const
+  }))
 }
 
 export function ForecastChart({
@@ -59,8 +99,8 @@ export function ForecastChart({
 }: ForecastChartProps) {
   // Combine historical and forecast data for chart
   const chartData = useMemo(() => {
-    // If forecast object is provided, use it
-    if (forecast?.historicalData && forecast?.forecast) {
+    // If forecast object is provided (ForecastResult type)
+    if (forecast && !isLegacyForecast(forecast) && forecast.historicalData && forecast.forecast) {
       const historical: ChartDataPoint[] = forecast.historicalData.map((d) => ({
         date: d.date,
         actual: d.value,
@@ -82,9 +122,14 @@ export function ForecastChart({
       return [...historical, ...forecastData]
     }
 
-    // If simple data array is provided
-    if (dataProp) {
-      return dataProp.map((d, i) => ({
+    // If legacy forecast format is provided, convert it
+    if (forecast && isLegacyForecast(forecast)) {
+      return convertLegacyForecastToChartData(forecast)
+    }
+
+    // If simple data array is provided (legacy format from pages)
+    if (dataProp && dataProp.length > 0) {
+      return dataProp.map((d) => ({
         date: d.date,
         actual: showForecastProp ? null : d.amount,
         forecast: showForecastProp ? d.amount : null,

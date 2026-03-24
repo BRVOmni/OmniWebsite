@@ -13,8 +13,9 @@ import { ForecastChart } from '@/components/forecasting/forecast-chart'
 import { ForecastSelector } from '@/components/forecasting/forecast-selector'
 import { KPICard } from '@/components/shared/kpi-card'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
-import { Calendar, TrendingUp, BarChart3, Activity } from 'lucide-react'
+import { Calendar, Download, TrendingUp, BarChart3, Activity } from 'lucide-react'
 import type { ForecastResult, ForecastRequest } from '@/lib/forecasting/types'
+import { exportSeasonalAnalysis } from '@/lib/utils/forecast-export'
 
 interface SeasonalData {
   period: string
@@ -32,6 +33,11 @@ export default function SeasonalForecastingPage() {
   const [generating, setGenerating] = useState(false)
   const [seasonalData, setSeasonalData] = useState<SeasonalData[]>([])
   const [forecast, setForecast] = useState<ForecastResult | null>(null)
+  const [trend, setTrend] = useState<{
+    direction: string
+    strength: number
+    description: string
+  } | null>(null)
 
   useEffect(() => {
     loadSeasonalData()
@@ -40,21 +46,23 @@ export default function SeasonalForecastingPage() {
   const loadSeasonalData = async () => {
     setLoading(true)
     try {
-      const ninetyDaysAgo = new Date()
-      ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)
-      const today = new Date()
-
-      const { data: salesData } = await supabase
-        .from('sales')
-        .select('date, net_amount, total_amount')
-        .gte('date', ninetyDaysAgo.toISOString().split('T')[0])
-        .lte('date', today.toISOString().split('T')[0])
-        .order('date', { ascending: true })
-
-      if (salesData) {
-        const seasonal = calculateSeasonalPatterns(salesData)
-        setSeasonalData(seasonal)
+      const response = await fetch('/api/forecasting/seasonal')
+      if (!response.ok) {
+        throw new Error('Failed to load seasonal data')
       }
+      const data = await response.json()
+
+      // Convert API response to SeasonalData format
+      const seasonal: SeasonalData[] = data.weekly_pattern.map((p: any) => ({
+        period: p.day_name,
+        actual: p.avg_sales,
+        seasonal_index: p.seasonal_index,
+        detrended: Math.round(p.avg_sales / p.seasonal_index),
+        year_over_year: 0 // Will be calculated if needed
+      }))
+
+      setSeasonalData(seasonal)
+      setTrend(data.trend)
     } catch (error) {
       console.error('Failed to load seasonal data:', error)
     } finally {
@@ -62,54 +70,41 @@ export default function SeasonalForecastingPage() {
     }
   }
 
-  const calculateSeasonalPatterns = (data: any[]): SeasonalData[] => {
-    // Group by day of week
-    const byDayOfWeek: Record<number, { total: number; count: number }> = {
-      0: { total: 0, count: 0 }, // Sunday
-      1: { total: 0, count: 0 }, // Monday
-      2: { total: 0, count: 0 }, // Tuesday
-      3: { total: 0, count: 0 }, // Wednesday
-      4: { total: 0, count: 0 }, // Thursday
-      5: { total: 0, count: 0 }, // Friday
-      6: { total: 0, count: 0 }  // Saturday
-    }
-
-    data.forEach(sale => {
-      const day = new Date(sale.date).getDay()
-      byDayOfWeek[day].total += Number(sale.net_amount)
-      byDayOfWeek[day].count++
-    })
-
-    const overallAvg = Object.values(byDayOfWeek).reduce((sum, d) => sum + d.total / Math.max(1, d.count), 0) / 7
-
-    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-
-    return Object.entries(byDayOfWeek).map(([day, stats]) => {
-      const avg = stats.total / Math.max(1, stats.count)
-      const seasonalIndex = avg / overallAvg
-      const dayNum = parseInt(day)
-
-      return {
-        period: dayNames[dayNum],
-        actual: Math.round(avg),
-        seasonal_index: Math.round(seasonalIndex * 100) / 100,
-        detrended: Math.round(avg / seasonalIndex),
-        year_over_year: Math.round((Math.random() - 0.5) * 20) // Simulated
-      }
-    })
-  }
-
   const handleForecast = async (params: ForecastRequest) => {
     setGenerating(true)
     try {
+      // Regenerate forecast with new parameters
+      const queryParams = new URLSearchParams({
+        horizon: params.horizon
+      })
+
+      const response = await fetch(`/api/forecasting/seasonal?${queryParams}`)
+      if (!response.ok) {
+        throw new Error('Failed to generate seasonal forecast')
+      }
+
+      const data = await response.json()
+
+      // Convert API response to SeasonalData format
+      const seasonal: SeasonalData[] = data.weekly_pattern.map((p: any) => ({
+        period: p.day_name,
+        actual: p.avg_sales,
+        seasonal_index: p.seasonal_index,
+        detrended: Math.round(p.avg_sales / p.seasonal_index),
+        year_over_year: 0
+      }))
+
+      setSeasonalData(seasonal)
+      setTrend(data.trend)
+
       // Generate 4-week forecast based on seasonal patterns
       const forecastData = []
-      const days = seasonalData.map(d => d.actual)
+      const days: number[] = []
       const upper: number[] = []
       const lower: number[] = []
 
       for (let week = 0; week < 4; week++) {
-        seasonalData.forEach((day, i) => {
+        seasonal.forEach((day) => {
           const baseValue = day.actual * (1 + week * 0.02) // 2% growth per week
           forecastData.push({
             date: `Week ${week + 1} ${day.period}`,
@@ -133,14 +128,47 @@ export default function SeasonalForecastingPage() {
       })
     } catch (error) {
       console.error('Seasonal forecast failed:', error)
+      alert('Failed to generate seasonal forecast')
     } finally {
       setGenerating(false)
     }
   }
 
+  // Calculate derived values from API data
   const peakDay = seasonalData.length > 0 ? seasonalData.reduce((max, d) => d.actual > max.actual ? d : max, seasonalData[0]) : null
   const slowDay = seasonalData.length > 0 ? seasonalData.reduce((min, d) => d.actual < min.actual ? d : min, seasonalData[0]) : null
   const seasonalVariation = peakDay && slowDay ? ((peakDay.actual - slowDay.actual) / slowDay.actual * 100) : 0
+
+  const handleExport = async () => {
+    if (!trend || seasonalData.length === 0) {
+      alert('No data to export')
+      return
+    }
+
+    try {
+      await exportSeasonalAnalysis(
+        {
+          weekly_pattern: seasonalData.map(d => ({
+            day_name: d.period,
+            avg_sales: d.actual,
+            seasonal_index: d.seasonal_index
+          })),
+          trend: trend!,
+          summary: {
+            peak_day: peakDay?.period || 'N/A',
+            trough_day: slowDay?.period || 'N/A',
+            seasonal_variation_percent: seasonalVariation
+          }
+        },
+        {
+          language: (t('seasonalForecasting') === 'Pronósticos Estacionales' || t('seasonalForecasting') === 'Pronóstico Estacional') ? 'es' : 'en'
+        }
+      )
+    } catch (error) {
+      console.error('Export failed:', error)
+      alert('Failed to export seasonal analysis')
+    }
+  }
 
   const chartData = seasonalData.map(d => ({
     date: d.period,
@@ -155,14 +183,25 @@ export default function SeasonalForecastingPage() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        {/* Header */}
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            {t('seasonalForecasting') || 'Seasonal Forecasting'}
-          </h1>
-          <p className="text-gray-600 mt-1">
-            {t('seasonalForecastingDescription') || 'Analyze seasonal patterns and predict future trends'}
-          </p>
+        {/* Header & Export */}
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {t('seasonalForecasting') || 'Seasonal Forecasting'}
+            </h1>
+            <p className="text-gray-600 mt-1">
+              {t('seasonalForecastingDescription') || 'Analyze seasonal patterns and predict future trends'}
+            </p>
+          </div>
+          <button
+            onClick={handleExport}
+            disabled={seasonalData.length === 0}
+            className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
+            title={t('exportExcel') || 'Export to Excel'}
+          >
+            <Download className="w-4 h-4 text-gray-600" />
+            <span className="text-sm font-medium text-gray-700">{t('exportExcel') || 'Export'}</span>
+          </button>
         </div>
 
         {/* KPIs */}
