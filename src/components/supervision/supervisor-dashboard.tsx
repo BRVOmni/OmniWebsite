@@ -28,7 +28,7 @@ import {
   Clock,
   AlertTriangle
 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useLanguage } from '@/lib/language-context'
 import { cn } from '@/lib/utils'
 
 interface SupervisorData {
@@ -79,7 +79,7 @@ interface SupervisorDashboardProps {
 }
 
 export function SupervisorDashboard({ supervisorId, days = 90 }: SupervisorDashboardProps) {
-  const t = useTranslations()
+  const { t } = useLanguage()
   const [data, setData] = useState<SupervisorData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -139,7 +139,7 @@ export function SupervisorDashboard({ supervisorId, days = 90 }: SupervisorDashb
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">{data.supervisor_name}</h2>
-          <p className="text-muted-foreground">{t('supervision.dashboard.supervisorOverview')}</p>
+          <p className="text-muted-foreground">{t('supervisorOverview')}</p>
         </div>
         <div className="flex items-center gap-2">
           {tierBadge}
@@ -152,28 +152,28 @@ export function SupervisorDashboard({ supervisorId, days = 90 }: SupervisorDashb
       {/* Key Metrics */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <MetricCard
-          title={t('supervision.dashboard.avgScore')}
+          title={t('avgScore')}
           value={data.average_score.toString()}
           icon={<Award className="h-4 w-4" />}
           trend={trendIcon}
           color={data.average_score >= 80 ? 'green' : data.average_score >= 60 ? 'yellow' : 'red'}
         />
         <MetricCard
-          title={t('supervision.dashboard.completionRate')}
+          title={t('completionRate')}
           value={`${data.completion_rate}%`}
           icon={<CheckCircle2 className="h-4 w-4" />}
           color={data.completion_rate >= 80 ? 'green' : data.completion_rate >= 60 ? 'yellow' : 'red'}
         />
         <MetricCard
-          title={t('supervision.dashboard.complianceRate')}
+          title={t('complianceRate')}
           value={`${data.compliance_rate}%`}
           icon={<Users className="h-4 w-4" />}
           color={data.compliance_rate >= 80 ? 'green' : data.compliance_rate >= 60 ? 'yellow' : 'red'}
         />
         <MetricCard
-          title={t('supervision.dashboard.workload')}
-          value={data.workload.status}
-          subtitle={`${data.locations_assigned} ${t('common.locations')}`}
+          title={t('workload')}
+          value={t('workloadStatus.' + data.workload.status)}
+          subtitle={`${data.locations_assigned} ${t('locations')}`}
           icon={<MapPin className="h-4 w-4" />}
           color={data.workload.level > 80 ? 'red' : data.workload.level > 50 ? 'yellow' : 'green'}
         />
@@ -183,15 +183,15 @@ export function SupervisorDashboard({ supervisorId, days = 90 }: SupervisorDashb
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">{t('supervision.dashboard.findings')}</CardTitle>
+            <CardTitle className="text-lg">{t('findings')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">{t('supervision.dashboard.totalFindings')}</span>
+              <span className="text-sm text-muted-foreground">{t('totalFindings')}</span>
               <Badge variant="secondary">{data.total_findings}</Badge>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">{t('supervision.dashboard.criticalFindings')}</span>
+              <span className="text-sm text-muted-foreground">{t('criticalFindingsCount')}</span>
               <Badge variant="destructive">{data.critical_findings}</Badge>
             </div>
           </CardContent>
@@ -199,15 +199,15 @@ export function SupervisorDashboard({ supervisorId, days = 90 }: SupervisorDashb
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">{t('supervision.dashboard.actions')}</CardTitle>
+            <CardTitle className="text-lg">{t('actions')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">{t('supervision.dashboard.completedActions')}</span>
+              <span className="text-sm text-muted-foreground">{t('completedActions')}</span>
               <Badge variant="default" className="bg-green-500">{data.actions_completed}</Badge>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">{t('supervision.dashboard.overdueActions')}</span>
+              <span className="text-sm text-muted-foreground">{t('overdueActions')}</span>
               <Badge variant="destructive">{data.actions_overdue}</Badge>
             </div>
           </CardContent>
@@ -217,9 +217,9 @@ export function SupervisorDashboard({ supervisorId, days = 90 }: SupervisorDashb
       {/* Assigned Locations */}
       <Card>
         <CardHeader>
-          <CardTitle>{t('supervision.dashboard.assignedLocations')}</CardTitle>
+          <CardTitle>{t('assignedLocations')}</CardTitle>
           <CardDescription>
-            {data.assigned_locations.length} {t('common.locations')} • {t('supervision.dashboard.lastVisitInfo')}
+            {data.assigned_locations.length} {t('locations')} • {t('lastVisitInfo')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -235,7 +235,7 @@ export function SupervisorDashboard({ supervisorId, days = 90 }: SupervisorDashb
                   <p className="text-xs text-muted-foreground">
                     {item.last_visit_date
                       ? new Date(item.last_visit_date).toLocaleDateString()
-                      : t('supervision.dashboard.noVisits')
+                      : t('never')
                     }
                   </p>
                 </div>
@@ -249,8 +249,8 @@ export function SupervisorDashboard({ supervisorId, days = 90 }: SupervisorDashb
       {data.upcoming_visits.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>{t('supervision.dashboard.upcomingVisits')}</CardTitle>
-            <CardDescription>{t('supervision.dashboard.next7Days')}</CardDescription>
+            <CardTitle>{t('upcomingVisits')}</CardTitle>
+            <CardDescription>{t('next7Days')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">

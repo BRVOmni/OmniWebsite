@@ -122,6 +122,7 @@ export default function SupervisionPage() {
   const [allActions, setAllActions] = useState<ActionData[]>([])
   const [allLocations, setAllLocations] = useState<LocationInfo[]>([])
   const [allSupervisors, setAllSupervisors] = useState<SupervisorInfo[]>([])
+  const [advancedMetrics, setAdvancedMetrics] = useState<any>(null)
 
   // Filters
   const [selectedSupervisor, setSelectedSupervisor] = useState<string>('all')
@@ -143,12 +144,27 @@ export default function SupervisionPage() {
         .single()
 
       setProfile(profileData)
-      await loadAllData()
+      await Promise.all([
+        loadAllData(),
+        loadAdvancedMetrics()
+      ])
       setLoading(false)
     }
 
     init()
   }, [router, supabase])
+
+  const loadAdvancedMetrics = async () => {
+    try {
+      const response = await fetch('/api/supervision/metrics?type=dashboard&days=30')
+      if (response.ok) {
+        const data = await response.json()
+        setAdvancedMetrics(data.kpis)
+      }
+    } catch (error) {
+      console.error('Error loading advanced metrics:', error)
+    }
+  }
 
   const loadAllData = async (startDate?: string, endDate?: string) => {
     await Promise.all([
@@ -575,6 +591,34 @@ export default function SupervisionPage() {
             size="md"
           />
         </div>
+
+        {/* Advanced Metrics from API */}
+        {advancedMetrics && (
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-sm border border-blue-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">{t('advancedMetrics')}</h3>
+              <BarChart3 className="w-5 h-5 text-blue-600" />
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div>
+                <div className="text-sm text-blue-700">{t('totalSupervisors')}</div>
+                <div className="text-2xl font-bold text-gray-900">{advancedMetrics.total_supervisors || 0}</div>
+              </div>
+              <div>
+                <div className="text-sm text-blue-700">{t('totalLocations')}</div>
+                <div className="text-2xl font-bold text-gray-900">{advancedMetrics.total_locations || 0}</div>
+              </div>
+              <div>
+                <div className="text-sm text-blue-700">{t('complianceScore')}</div>
+                <div className="text-2xl font-bold text-gray-900">{advancedMetrics.compliance_score || 0}%</div>
+              </div>
+              <div>
+                <div className="text-sm text-blue-700">{t('locationsNeedingVisit')}</div>
+                <div className="text-2xl font-bold text-gray-900">{advancedMetrics.locations_without_visit || 0}</div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Score Distribution */}
         <div className="bg-white rounded-xl shadow-sm border p-6">

@@ -4,17 +4,22 @@
  * Finding Card Component
  *
  * Displays an operational finding with severity indicator
+ * Includes photo display and upload functionality
  */
 
 import { useLanguage } from '@/lib/language-context'
 import { cn } from '@/lib/utils'
-import { AlertTriangle, AlertCircle, AlertOctagon, Info } from 'lucide-react'
-import { useMemo } from 'react'
+import { AlertTriangle, AlertCircle, AlertOctagon, Info, Image as ImageIcon, Plus } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { PhotoUpload, PhotoGallery } from '@/components/supervision/photo-upload'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 
 export type FindingSeverity = 'low' | 'medium' | 'high' | 'critical'
 export type FindingType = 'caja_diferencias' | 'stock_vencidos' | 'equipos_falla' | 'limpieza_deficiente' | 'personal_ausente'
 
 interface FindingCardProps {
+  id?: string  // Finding ID for photo upload
   title: string
   description?: string
   severity: FindingSeverity | string  // Accept string for flexibility
@@ -24,6 +29,8 @@ interface FindingCardProps {
   date?: string | Date
   isRecurring?: boolean
   recurrenceCount?: number
+  photos?: string[]  // Existing photos
+  onPhotoUploaded?: (url: string) => void
   onClick?: () => void
   className?: string
 }
@@ -42,6 +49,7 @@ export function FindingCard({
   className,
 }: FindingCardProps) {
   const { t, language } = useLanguage()
+  const [showPhotoDialog, setShowPhotoDialog] = useState(false)
 
   // Normalize severity - handle undefined, null, or unexpected values
   const normalizedSeverity = useMemo(() => {
@@ -239,8 +247,65 @@ export function FindingCard({
               </span>
             )}
           </div>
+
+          {/* Photos */}
+          {(photos && photos.length > 0) && (
+            <div className="mt-3 pt-3 border-t">
+              <div className="flex items-center gap-2 mb-2">
+                <ImageIcon className="w-4 h-4 text-gray-400" />
+                <span className="text-xs text-gray-500">{photos.length} {t('photos')}</span>
+              </div>
+              <div className="flex gap-2">
+                {photos.slice(0, 3).map((photo, index) => (
+                  <div
+                    key={index}
+                    className="w-16 h-16 rounded-lg overflow-hidden border border-gray-200"
+                  >
+                    <img
+                      src={photo}
+                      alt={`Finding photo ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+                {photos.length > 3 && (
+                  <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center text-xs text-gray-500">
+                    +{photos.length - 3}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Add Photo Button */}
+      {id && !onClick && (
+        <div className="px-4 pb-3 border-t pt-3">
+          <Dialog open={showPhotoDialog} onOpenChange={setShowPhotoDialog}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="w-full">
+                <Plus className="w-4 h-4 mr-2" />
+                {t('addPhoto')}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{t('addPhotoToFinding')}</DialogTitle>
+              </DialogHeader>
+              <PhotoUpload
+                entityType="finding"
+                entityId={id}
+                photoType="before"
+                onPhotoUploaded={(url) => {
+                  onPhotoUploaded?.(url)
+                  setShowPhotoDialog(false)
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
+      )}
     </div>
   )
 }

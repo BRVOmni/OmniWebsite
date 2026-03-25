@@ -11,7 +11,7 @@ import { useState, useRef } from 'react'
 import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { useTranslations } from 'next-intl'
+import { useLanguage } from '@/lib/language-context'
 
 interface PhotoUploadProps {
   entityType: 'finding' | 'action'
@@ -36,7 +36,7 @@ export function PhotoUpload({
   accept = 'image/jpeg,image/png,image/webp',
   maxSize = 5
 }: PhotoUploadProps) {
-  const t = useTranslations()
+  const { t } = useLanguage()
   const [isUploading, setIsUploading] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string | null>(currentPhoto || null)
   const [error, setError] = useState<string | null>(null)
@@ -48,14 +48,14 @@ export function PhotoUpload({
 
     // Validate file size
     if (file.size > maxSize * 1024 * 1024) {
-      setError(t('supervision.photoUpload.errorSize', { maxSize: maxSize.toString() }))
+      setError(t('errorSize').replace('{{maxSize}}', maxSize.toString()))
       return
     }
 
     // Validate file type
     const allowedTypes = accept.split(',')
     if (!allowedTypes.includes(file.type)) {
-      setError(t('supervision.photoUpload.errorType'))
+      setError(t('errorType'))
       return
     }
 
@@ -141,10 +141,10 @@ export function PhotoUpload({
 
   const getPhotoTypeLabel = () => {
     const labels = {
-      before: t('supervision.photoUpload.before'),
-      after: t('supervision.photoUpload.after'),
-      verification: t('supervision.photoUpload.verification'),
-      evidence: t('supervision.photoUpload.evidence')
+      before: t('before'),
+      after: t('after'),
+      verification: t('verification'),
+      evidence: t('evidence')
     }
     return labels[photoType]
   }
@@ -199,20 +199,20 @@ export function PhotoUpload({
             <div className="space-y-1">
               <p className="text-sm font-medium">
                 {isUploading
-                  ? t('supervision.photoUpload.uploading')
+                  ? t('uploading')
                   : isDragging
-                    ? t('supervision.photoUpload.dropHere')
-                    : t('supervision.photoUpload.dragDrop')
+                    ? t('dropHere')
+                    : t('dragDrop')
                 }
               </p>
               <p className="text-xs text-muted-foreground">
-                {t('supervision.photoUpload.allowedFormats')} • {maxSize}MB {t('common.max')}
+                {t('allowedFormats')} • {maxSize}MB {t('max')}
               </p>
             </div>
 
             <Button type="button" variant="secondary" size="sm" disabled={disabled || isUploading}>
               <Upload className="h-4 w-4 mr-2" />
-              {t('supervision.photoUpload.browse')}
+              {t('browse')}
             </Button>
           </div>
 
@@ -262,13 +262,13 @@ interface PhotoGalleryProps {
 }
 
 export function PhotoGallery({ photos, onRemove, disabled }: PhotoGalleryProps) {
-  const t = useTranslations()
+  const { t } = useLanguage()
 
   if (photos.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
         <ImageIcon className="h-12 w-12 mx-auto mb-2 opacity-50" />
-        <p className="text-sm">{t('supervision.photoUpload.noPhotos')}</p>
+        <p className="text-sm">{t('noPhotos')}</p>
       </div>
     )
   }

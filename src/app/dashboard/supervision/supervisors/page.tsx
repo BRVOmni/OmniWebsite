@@ -5,6 +5,7 @@
  *
  * Track and analyze supervisor performance metrics.
  * Shows visit completion rates, efficiency, quality scores, and rankings.
+ * Integrated with SupervisorDashboard for detailed individual views.
  */
 
 import { useEffect, useState, useMemo } from 'react'
@@ -13,6 +14,9 @@ import { useRouter } from 'next/navigation'
 import { useLanguage } from '@/lib/language-context'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { ScoreCard } from '@/components/supervision/score-card'
+import { SupervisorDashboard } from '@/components/supervision/supervisor-dashboard'
+import { Button } from '@/components/ui/button'
+import { ChevronLeft } from 'lucide-react'
 import {
   Users,
   Trophy,
@@ -106,7 +110,8 @@ export default function SupervisorsPage() {
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const [performanceData, setPerformanceData] = useState<SupervisorPerformance[]>([])
-  const [selectedPeriod, setSelectedPeriod] = useState<'30' | '90' | '180'>('30')
+  const [selectedPeriod, setSelectedPeriod] = useState<'30' | '90' | '180'>('90')
+  const [selectedSupervisorId, setSelectedSupervisorId] = useState<string | null>(null)
 
   useEffect(() => {
     const init = async () => {
@@ -289,6 +294,28 @@ export default function SupervisorsPage() {
     )
   }
 
+  // Show individual supervisor dashboard
+  if (selectedSupervisorId) {
+    return (
+      <DashboardLayout>
+        <div className="space-y-6">
+          <Button
+            variant="ghost"
+            onClick={() => setSelectedSupervisorId(null)}
+            className="mb-4"
+          >
+            <ChevronLeft className="h-4 w-4 mr-2" />
+            {t('backToList')}
+          </Button>
+          <SupervisorDashboard
+            supervisorId={selectedSupervisorId}
+            days={parseInt(selectedPeriod)}
+          />
+        </div>
+      </DashboardLayout>
+    )
+  }
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -413,17 +440,25 @@ export default function SupervisorsPage() {
             >
               {/* Header */}
               <div className="p-4 border-b flex items-start justify-between">
-                <div>
+                <div className="flex-1">
                   <h3 className="font-semibold text-gray-900">{perf.supervisor.name}</h3>
                   {perf.supervisor.email && (
                     <p className="text-sm text-gray-500">{perf.supervisor.email}</p>
                   )}
                 </div>
-                <ScoreCard
-                  score={perf.avgScore}
-                  classification={perf.avgScore >= 90 ? 'excelente' : perf.avgScore >= 70 ? 'bueno' : perf.avgScore >= 50 ? 'regular' : 'critico'}
-                  size="sm"
-                />
+                <div className="flex items-center gap-3">
+                  <ScoreCard
+                    score={perf.avgScore}
+                    classification={perf.avgScore >= 90 ? 'excelente' : perf.avgScore >= 70 ? 'bueno' : perf.avgScore >= 50 ? 'regular' : 'critico'}
+                    size="sm"
+                  />
+                  <Button
+                    size="sm"
+                    onClick={() => setSelectedSupervisorId(perf.supervisor.id)}
+                  >
+                    {t('viewDetails')}
+                  </Button>
+                </div>
               </div>
 
               {/* Metrics Grid */}

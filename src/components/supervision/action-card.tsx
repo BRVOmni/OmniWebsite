@@ -4,17 +4,22 @@
  * Action Card Component
  *
  * Displays a corrective action with status, priority, and deadline tracking
+ * Includes photo display and upload functionality
  */
 
 import { useLanguage } from '@/lib/language-context'
 import { cn } from '@/lib/utils'
-import { CheckCircle2, Clock, AlertCircle, Calendar, User } from 'lucide-react'
-import { useMemo } from 'react'
+import { CheckCircle2, Clock, AlertCircle, Calendar, User, Image as ImageIcon, Camera } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { PhotoUpload } from '@/components/supervision/photo-upload'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 
 export type ActionStatus = 'pending' | 'in_progress' | 'completed' | 'overdue' | 'cancelled' | 'verified'
 export type ActionPriority = 'low' | 'medium' | 'high' | 'critical'
 
 interface ActionCardProps {
+  id?: string  // Action ID for photo upload
   description: string
   status: ActionStatus
   priority: ActionPriority
@@ -26,6 +31,9 @@ interface ActionCardProps {
   daysOverdue?: number
   hasBeforePhoto?: boolean
   hasAfterPhoto?: boolean
+  beforePhotoUrl?: string
+  afterPhotoUrl?: string
+  onPhotoUploaded?: (url: string, type: 'before' | 'after') => void
   onClick?: () => void
   className?: string
 }
@@ -46,6 +54,8 @@ export function ActionCard({
   className,
 }: ActionCardProps) {
   const { t, language } = useLanguage()
+  const [showPhotoDialog, setShowPhotoDialog] = useState(false)
+  const [photoType, setPhotoType] = useState<'before' | 'after'>('before')
 
   // Normalize status and priority with validation
   const normalizedStatus = useMemo(() => {
@@ -259,14 +269,120 @@ export function ActionCard({
           </div>
         )}
 
-        {(hasBeforePhoto || hasAfterPhoto) && (
-          <span className="flex items-center gap-1">
-            {hasBeforePhoto && `📷 ${t('before')}`}
-            {hasBeforePhoto && hasAfterPhoto && ' → '}
-            {hasAfterPhoto && `${t('after')} 📷`}
-          </span>
+        {(hasBeforePhoto || hasAfterPhoto || beforePhotoUrl || afterPhotoUrl) && (
+          <div className="flex items-center gap-2">
+            {beforePhotoUrl && (
+              <div
+                className="w-10 h-10 rounded overflow-hidden border border-gray-200 cursor-pointer hover:opacity-80"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  window.open(beforePhotoUrl, '_blank')
+                }}
+              >
+                <img
+                  src={beforePhotoUrl}
+                  alt="Before"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+            {beforePhotoUrl && !hasBeforePhoto && (
+              <span className="text-xs text-blue-600">📷</span>
+            )}
+            {afterPhotoUrl && (
+              <div
+                className="w-10 h-10 rounded overflow-hidden border border-gray-200 cursor-pointer hover:opacity-80"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  window.open(afterPhotoUrl, '_blank')
+                }}
+              >
+                <img
+                  src={afterPhotoUrl}
+                  alt="After"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+            {afterPhotoUrl && !hasAfterPhoto && (
+              <span className="text-xs text-green-600">📷</span>
+            )}
+            {!beforePhotoUrl && hasBeforePhoto && (
+              <span className="text-xs text-blue-600">📷 {t('before')}</span>
+            )}
+            {!afterPhotoUrl && hasAfterPhoto && (
+              <span className="text-xs text-green-600">📷 {t('after')}</span>
+            )}
+          </div>
         )}
       </div>
+
+      {/* Add Photo Buttons */}
+      {id && status !== 'completed' && status !== 'verified' && !onClick && (
+        <div className="px-2 pb-2 pt-2 border-t flex gap-2">
+          <Dialog
+            open={showPhotoDialog && photoType === 'before'}
+            onOpenChange={(open) => {
+              setShowPhotoDialog(open)
+              if (open) setPhotoType('before')
+            }}
+          >
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="flex-1 h-8 text-xs">
+                <Camera className="w-3 h-3 mr-1" />
+                {t('before')}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{t('addBeforePhoto')}</DialogTitle>
+              </DialogHeader>
+              <PhotoUpload
+                entityType="action"
+                entityId={id}
+                photoType="before"
+                currentPhoto={beforePhotoUrl}
+                onPhotoUploaded={(url) => {
+                  onPhotoUploaded?.(url, 'before')
+                  setShowPhotoDialog(false)
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+
+          {status === 'in_progress' && (
+            <Dialog
+              open={showPhotoDialog && photoType === 'after'}
+              onOpenChange={(open) => {
+                setShowPhotoDialog(open)
+                if (open) setPhotoType('after')
+              }}
+            >
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className="flex-1 h-8 text-xs">
+                  <Camera className="w-3 h-3 mr-1" />
+                  {t('after')}
+                </Button>
+              </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{t('addAfterPhoto')}</DialogTitle>
+              </DialogHeader>
+              <PhotoUpload
+                entityType="action"
+                entityId={id}
+                photoType="after"
+                currentPhoto={afterPhotoUrl}
+                onPhotoUploaded={(url) => {
+                  onPhotoUploaded?.(url, 'after')
+                  setShowPhotoDialog(false)
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+          )}
+        </div>
+      )}
     </div>
   )
 }
