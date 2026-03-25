@@ -4,6 +4,52 @@
 
 ---
 
+## [1.21.0] - Supervision Module Phase 2 Complete - Photos & Analytics - 2026-03-25 📸✅
+
+### New Features
+- ✅ **Photo Upload System:** Complete photo management for findings and actions
+  - Drag & drop photo upload with progress indication
+  - Before/After photo support for findings
+  - Verification photos for completed actions
+  - Photo gallery with click-to-enlarge
+  - File validation (size, type) with proper error messages
+  - Supabase Storage integration
+
+- ✅ **Advanced Analytics Dashboard:** Comprehensive supervisor performance metrics
+  - Real-time supervisor performance metrics
+  - Individual supervisor dashboard with detailed analytics
+  - Location health tracking and compliance scoring
+  - Workload distribution analysis
+  - Performance tier system (Champion, Gold, Silver, Bronze)
+  - Heat map data for geographic visualization
+
+### UI Components
+- ✅ Dialog (Modal) component for photo uploads
+- ✅ Card component for structured content
+- ✅ Skeleton component for loading states
+- ✅ Badge component for status indicators
+- ✅ Enhanced ActionCard with photo display
+- ✅ Enhanced FindingCard with photo gallery
+- ✅ SupervisorDashboard component
+
+### Translations
+- ✅ 60+ new translation keys (English/Spanish)
+- ✅ Fixed translation imports for consistency
+
+### Technical Improvements
+- ✅ Fixed all build errors and missing dependencies
+- ✅ Added @radix-ui/react-dialog for modals
+- ✅ Added class-variance-authority for component variants
+- ✅ Photo upload API endpoint (/api/supervision/photos)
+- ✅ Metrics API endpoint (/api/supervision/metrics)
+- ✅ Supervisor analytics API endpoint (/api/supervision/supervisors)
+
+### Module Count
+- **Total Modules:** 15
+- **Supervision Features:** 100% complete (Phase 1 + Phase 2)
+
+---
+
 ## [1.18.0] - Specialized Forecasting Pages - 2026-03-23 📊✅
 
 ### New Features

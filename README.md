@@ -14,7 +14,7 @@ A modern, executive-level corporate dashboard for managing a multi-brand food se
 
 ---
 
-**Current Version:** v1.20.0 - Supervision Module Phase 2 Complete 📊✅
+**Current Version:** v1.21.0 - Supervision Module Phase 2 Complete - Photos & Analytics 📸✅
 
 **Production URL:** https://dashboard.omniprise.com.py
 
@@ -592,6 +592,37 @@ Users
 ---
 
 ## 📝 VERSION HISTORY
+
+### v1.21.0 (2026-03-25) - Supervision Module Phase 2 Complete - Photos & Analytics 📸✅
+
+**Completed (Photos & Analytics):**
+- ✅ **Photo Upload System** - Complete photo management
+  - Drag & drop upload with progress indication
+  - Before/After photos for findings and actions
+  - Verification photos for completed actions
+  - Photo gallery with click-to-enlarge
+  - File validation and error messages
+  - Supabase Storage integration
+
+**New Components:**
+- ✅ Dialog, Card, Skeleton, Badge UI components
+- ✅ PhotoUpload component with drag & drop
+- ✅ PhotoGallery component for multiple photos
+- ✅ SupervisorDashboard for individual analytics
+
+**New API Routes:**
+- ✅ `/api/supervision/photos` - Photo upload (POST, GET, DELETE)
+- ✅ `/api/supervision/metrics` - Advanced metrics (dashboard, supervisors, locations)
+- ✅ `/api/supervisors` - Supervisor analytics and leaderboard
+
+**Features:**
+- Real-time photo upload with preview
+- Individual supervisor performance dashboards
+- Workload distribution and health tracking
+- Performance tier system (Champion → Standard)
+- Heat map data for geographic visualization
+
+---
 
 ### v1.20.0 (2026-03-24) - Supervision Module Phase 2 Complete 📊✅
 
