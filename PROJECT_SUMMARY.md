@@ -57,19 +57,21 @@ This document provides a comprehensive overview of all Omniprise projects, their
 
 ## 🌐 WEBSITE PROJECT STATUS
 
-### **Status: ✅ WEBSITE LIVE & FULLY OPERATIONAL (v1.5)**
-- **Current Version:** v1.5 (Franchise Features Complete & Deployment Fixed)
+### **Status: ✅ WEBSITE LIVE & FULLY OPERATIONAL (v1.5.2)**
+- **Current Version:** v1.5.2 (Logo Fixed & All Features Complete)
 - **Target Version:** v2.0 (Next.js Migration)
 - **Current URL:** https://www.omniprise.com.py ✅ LIVE & WORKING
-- **Deployment Status:** Vercel production operational
+- **Deployment Status:** Vercel production operational & automated
 - **Estimated Migration:** 6 weeks
 
-### Recent Progress (v1.5):
-- ✅ **Logo Assets Present** - Logo files in public/logos/ directory
-- ✅ **File Size Optimized** - ~52KB HTML with efficient structure
-- ✅ **Proper Asset Management** - Logo files managed as separate assets
-- ✅ **Browser Caching** - Separate logo files enable better caching
-- ✅ **Deployment Working** - Vercel production deployment fixed and operational
+### Today's Progress (v1.5 → v1.5.2):
+- ✅ **Logo Assets Fixed** - Moved SVG logos to root directory for proper deployment
+- ✅ **Logo Working** - Professional SVG logo with brand colors, accessible at production
+- ✅ **Logo Configuration** - Removed problematic CSS filters, updated HTML references
+- ✅ **File Size Optimized** - ~51KB HTML with efficient structure
+- ✅ **Proper Asset Management** - Logo files as separate SVG assets
+- ✅ **Browser Caching** - SVG format enables better caching and performance
+- ✅ **Deployment Working** - Vercel production operational & automated
 - ✅ **Franchise Features Complete** - Full franchise selling section with correct perspective
 - ✅ **Navigation Enhanced** - Franchise links in both header and footer
 - ✅ **All Text Fixes Applied** - dark-kitchens, proper phrasing, percentage display
