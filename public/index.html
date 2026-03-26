@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Omniprise — Plataforma de Marcas Gastronómicas</title>
+  <meta name="description" content="Omniprise es un operador gastronómico creado para desarrollar, operar e integrar marcas de alto impacto en Paraguay." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #111110;
+      --off-black: #161614;
+      --dark: #1e1e1c;
+      --border: rgba(255,255,255,0.08);
+      --border-strong: rgba(255,255,255,0.16);
+      --white: #f5f4f0;
+      --white-dim: rgba(245,244,240,0.6);
+      --white-hint: rgba(245,244,240,0.25);
+      --font-display: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--off-black); color: var(--white);
+      font-family: var(--font-body); font-weight: 300; line-height: 1.6;
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 64px;
+      background: rgba(22,22,20,0.88);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 0.5px solid var(--border); transition: background 0.3s;
+    }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-logo img { height: 28px; width: auto; filter: invert(0); display: block; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 13px; font-weight: 400; color: var(--white-dim); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta { font-size: 13px; font-weight: 500; color: var(--off-black); background: var(--white); text-decoration: none; padding: 9px 22px; border-radius: 100px; letter-spacing: 0.03em; transition: opacity 0.2s; cursor: pointer; border: none; font-family: var(--font-body); }
+    .nav-cta:hover { opacity: 0.85; }
+    .nav-empleados { font-size: 13px; font-weight: 400; color: var(--white-dim); text-decoration: none; padding: 9px 22px; border-radius: 100px; border: 0.5px solid var(--border-strong); letter-spacing: 0.03em; transition: color 0.2s, border-color 0.2s; }
+    .nav-empleados:hover { color: var(--white); border-color: var(--white-dim); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(10,10,9,0.88);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+      padding: 24px;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+    .modal-box {
+      background: var(--dark);
+      border: 0.5px solid var(--border-strong);
+      max-width: 560px; width: 100%;
+      padding: 56px 52px;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.35s ease;
+    }
+    .modal-overlay.open .modal-box { transform: translateY(0); }
+    .modal-close {
+      position: absolute; top: 20px; right: 24px;
+      background: none; border: none; cursor: pointer;
+      color: var(--white-hint); font-size: 22px; line-height: 1;
+      transition: color 0.2s; padding: 4px;
+    }
+    .modal-close:hover { color: var(--white); }
+    .modal-eyebrow { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white-hint); font-weight: 500; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .modal-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--border-strong); }
+    .modal-title { font-family: var(--font-display); font-weight: 900; font-size: clamp(28px, 4vw, 42px); text-transform: uppercase; letter-spacing: 0.02em; color: var(--white); line-height: 1; margin-bottom: 28px; }
+    .modal-body { font-size: 15px; color: var(--white-dim); line-height: 1.85; margin-bottom: 36px; }
+    .modal-body strong { color: var(--white); font-weight: 500; }
+    .modal-email-block { border: 0.5px solid var(--border-strong); padding: 20px 24px; margin-bottom: 32px; }
+    .modal-email-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white-hint); font-weight: 500; margin-bottom: 8px; }
+    .modal-email-value { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: 0.04em; color: var(--white); }
+    .modal-steps { list-style: none; }
+    .modal-steps li { font-size: 14px; color: var(--white-dim); padding: 12px 0; border-bottom: 0.5px solid var(--border); display: flex; gap: 16px; line-height: 1.6; }
+    .modal-steps li:last-child { border-bottom: none; }
+    .modal-steps li::before { content: attr(data-n); font-family: var(--font-display); font-weight: 900; font-size: 11px; letter-spacing: 0.12em; color: var(--white-hint); min-width: 18px; padding-top: 2px; }
+    .modal-btn-close { display: inline-flex; margin-top: 32px; font-family: var(--font-body); font-size: 14px; font-weight: 500; color: var(--off-black); background: var(--white); text-decoration: none; padding: 12px 28px; border-radius: 100px; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .modal-btn-close:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 48px 80px; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 60%, rgba(255,255,255,0.03) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 20% 80%, rgba(255,255,255,0.02) 0%, transparent 60%); }
+    .hero-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white-hint); margin-bottom: 32px; opacity: 0; transform: translateY(16px); animation: fadeUp 0.8s 0.2s forwards; }
+    .hero-title { font-family: var(--font-display); font-weight: 900; font-size: clamp(72px, 12vw, 160px); line-height: 0.92; letter-spacing: -0.01em; text-transform: uppercase; color: var(--white); margin-bottom: 40px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s 0.35s forwards; }
+    .hero-title em { font-style: normal; color: var(--white-hint); }
+    .hero-sub { font-size: clamp(16px, 2.2vw, 21px); font-weight: 300; color: var(--white-dim); max-width: 640px; line-height: 1.7; margin-bottom: 56px; opacity: 0; transform: translateY(16px); animation: fadeUp 0.9s 0.5s forwards; }
+    .hero-sub strong { color: var(--white); font-weight: 500; }
+    .hero-actions { display: flex; gap: 16px; opacity: 0; transform: translateY(12px); animation: fadeUp 0.8s 0.65s forwards; }
+    .btn-primary { font-size: 15px; font-weight: 500; color: var(--off-black); background: var(--white); text-decoration: none; padding: 14px 32px; border-radius: 100px; letter-spacing: 0.02em; transition: opacity 0.2s, transform 0.2s; }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-secondary { font-size: 15px; font-weight: 400; color: var(--white-dim); text-decoration: none; padding: 14px 32px; border-radius: 100px; border: 0.5px solid var(--border-strong); letter-spacing: 0.02em; transition: color 0.2s, border-color 0.2s, transform 0.2s; }
+    .btn-secondary:hover { color: var(--white); border-color: var(--white-dim); transform: translateY(-1px); }
+    .hero-scroll { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; animation: fadeIn 1s 1.2s forwards; }
+    .hero-scroll span { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white-hint); }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--white-hint), transparent); animation: scrollPulse 2s 1.5s infinite; }
+
+    /* STATEMENT */
+    .statement { padding: 140px 48px; max-width: 1200px; margin: 0 auto; }
+    .statement-text { font-family: var(--font-display); font-weight: 700; font-size: clamp(32px, 5vw, 64px); line-height: 1.1; text-transform: uppercase; letter-spacing: 0.01em; }
+    .statement-text .muted { color: var(--white-hint); }
+    .statement-text .highlight { color: var(--white); }
+    .statement-aside { margin-top: 64px; display: flex; gap: 80px; align-items: flex-start; border-top: 0.5px solid var(--border); padding-top: 48px; }
+    .statement-aside p { font-size: 16px; color: var(--white-dim); max-width: 440px; line-height: 1.8; }
+    .statement-aside p strong { color: var(--white); font-weight: 500; }
+    .aside-tag { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white-hint); font-weight: 500; white-space: nowrap; padding-top: 4px; min-width: 100px; }
+
+    /* STATS */
+    .stats { padding: 80px 48px 120px; border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); background: var(--black); }
+    .stats-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); }
+    .stat-item { background: var(--black); padding: 48px 40px; text-align: center; }
+    .stat-number { font-family: var(--font-display); font-weight: 900; font-size: clamp(48px, 6vw, 80px); line-height: 1; color: var(--white); letter-spacing: -0.02em; display: block; margin-bottom: 12px; }
+    .stat-label { font-size: 12px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white-hint); }
+
+    /* HOW */
+    .how { padding: 140px 48px; max-width: 1200px; margin: 0 auto; }
+    .section-label { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--white-hint); font-weight: 500; margin-bottom: 56px; display: flex; align-items: center; gap: 16px; }
+    .section-label::before { content: ''; display: inline-block; width: 32px; height: 1px; background: var(--border-strong); }
+    .section-title { font-family: var(--font-display); font-weight: 900; font-size: clamp(40px, 6vw, 76px); line-height: 0.95; text-transform: uppercase; letter-spacing: 0.01em; margin-bottom: 80px; }
+    .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 0.5px solid var(--border); }
+    .pillar { background: var(--off-black); padding: 48px 40px; transition: background 0.3s; }
+    .pillar:hover { background: var(--dark); }
+    .pillar-num { font-family: var(--font-display); font-weight: 900; font-size: 11px; letter-spacing: 0.15em; color: var(--white-hint); margin-bottom: 32px; }
+    .pillar-title { font-family: var(--font-display); font-weight: 700; font-size: 22px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); margin-bottom: 16px; line-height: 1.2; }
+    .pillar-desc { font-size: 14px; color: var(--white-dim); line-height: 1.8; }
+
+    /* BRANDS */
+    .brands { padding: 140px 48px; background: var(--black); border-top: 0.5px solid var(--border); }
+    .brands-inner { max-width: 1200px; margin: 0 auto; }
+    .brands-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 80px; }
+
+    /* 2-column grid — each card is a self-contained flex column with natural height */
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 0.5px solid var(--border);
+    }
+    .brand-card {
+      background: var(--black);
+      padding: 52px 44px 48px;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s;
+    }
+    .brand-card:hover { background: var(--dark); }
+
+    /* Fixed-height logo zone so cards align cleanly across rows */
+    .brand-logo-area {
+      height: 96px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 32px;
+      flex-shrink: 0;
+    }
+    .brand-logo-area svg { max-height: 80px; max-width: 210px; width: auto; height: auto; overflow: visible; }
+
+    .brand-tag { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white-hint); font-weight: 500; margin-bottom: 12px; flex-shrink: 0; }
+    .brand-name { font-family: var(--font-display); font-weight: 900; font-size: clamp(24px, 2.8vw, 36px); text-transform: uppercase; letter-spacing: 0.02em; color: var(--white); line-height: 1; margin-bottom: 10px; flex-shrink: 0; }
+    .brand-tagline { font-size: 13px; color: var(--white-dim); margin-bottom: 20px; font-style: italic; line-height: 1.5; flex-shrink: 0; }
+    .brand-detail { font-size: 14px; color: var(--white-hint); line-height: 1.85; flex: 1; }
+    .brand-badge { display: inline-flex; margin-top: 28px; align-self: flex-start; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white-hint); border: 0.5px solid var(--border-strong); padding: 5px 14px; border-radius: 100px; flex-shrink: 0; }
+
+    /* Barrio Pizzero spans both columns */
+    .brand-card--wide { grid-column: 1 / -1; }
+    .brand-card--wide .brand-inner-grid { display: grid; grid-template-columns: 300px 1fr; gap: 64px; align-items: start; }
+
+    /* VISION */
+    .vision { padding: 160px 48px; text-align: center; position: relative; overflow: hidden; }
+    .vision::before { content: 'OMNIPRISE'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: var(--font-display); font-weight: 900; font-size: clamp(80px, 16vw, 220px); text-transform: uppercase; color: rgba(255,255,255,0.02); white-space: nowrap; pointer-events: none; letter-spacing: 0.05em; }
+    .vision-inner { max-width: 900px; margin: 0 auto; position: relative; }
+    .vision-year { font-family: var(--font-display); font-weight: 900; font-size: 13px; letter-spacing: 0.2em; color: var(--white-hint); text-transform: uppercase; margin-bottom: 40px; }
+    .vision-headline { font-family: var(--font-display); font-weight: 800; font-size: clamp(36px, 5.5vw, 72px); line-height: 1.05; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 40px; }
+    .vision-body { font-size: clamp(16px, 2vw, 20px); color: var(--white-dim); line-height: 1.8; max-width: 680px; margin: 0 auto; }
+    .vision-body strong { color: var(--white); font-weight: 500; }
+
+    /* PARTNERS */
+    .partners { padding: 140px 48px; background: var(--black); border-top: 0.5px solid var(--border); }
+    .partners-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 120px; align-items: center; }
+    .partners-left .section-label { margin-bottom: 32px; }
+    .partners-headline { font-family: var(--font-display); font-weight: 900; font-size: clamp(40px, 5.5vw, 68px); line-height: 0.95; text-transform: uppercase; letter-spacing: 0.01em; margin-bottom: 32px; }
+    .partners-body { font-size: 16px; color: var(--white-dim); line-height: 1.8; margin-bottom: 48px; }
+    .partners-body strong { color: var(--white); font-weight: 500; }
+    .partners-right { border-left: 0.5px solid var(--border); padding-left: 80px; }
+    .contact-block { margin-bottom: 48px; }
+    .contact-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white-hint); font-weight: 500; margin-bottom: 8px; }
+    .contact-value { font-family: var(--font-display); font-weight: 700; font-size: 20px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--white); }
+
+    /* FOOTER */
+    footer { padding: 48px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .footer-logo { display: flex; align-items: center; }
+    .footer-logo img { height: 22px; width: auto; filter: brightness(0.35); display: block; }
+    .footer-copy { font-size: 12px; color: var(--white-hint); letter-spacing: 0.05em; }
+    .footer-links { display: flex; gap: 32px; list-style: none; }
+    .footer-links a { font-size: 12px; color: var(--white-hint); text-decoration: none; letter-spacing: 0.05em; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--white); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { to { opacity: 1; } }
+    @keyframes scrollPulse { 0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:.7;transform:scaleY(1.15)} }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .brands-grid { grid-template-columns: 1fr; }
+      .brand-card--wide .brand-inner-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 24px 60px; }
+      .statement, .how, .brands, .vision, .partners { padding: 80px 24px; }
+      .stats { padding: 60px 24px; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .pillars { grid-template-columns: 1fr; }
+      .partners-inner { grid-template-columns: 1fr; gap: 60px; }
+      .partners-right { border-left: none; border-top: 0.5px solid var(--border); padding-left: 0; padding-top: 60px; }
+      .statement-aside { flex-direction: column; gap: 24px; }
+      .brands-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+      footer { flex-direction: column; gap: 24px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+      .brand-card { padding: 40px 28px; }
+    }
+
+    /* FRANCHISE */
+    .franchise { padding: 140px 48px; background: var(--black); border-top: 0.5px solid var(--border); }
+    .franchise-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .franchise-eyebrow { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white-hint); font-weight: 500; margin-bottom: 24px; }
+    .franchise-title { font-family: var(--font-display); font-weight: 900; font-size: clamp(40px, 6vw, 64px); line-height: 0.95; text-transform: uppercase; letter-spacing: 0.01em; margin-bottom: 32px; }
+    .franchise-title em { font-style: normal; color: var(--white-hint); }
+    .franchise-sub { font-size: 16px; color: var(--white-dim); line-height: 1.8; margin-bottom: 48px; max-width: 520px; }
+    .franchise-sub strong { color: var(--white); font-weight: 500; }
+    .franchise-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px; }
+    .franchise-benefit { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+    .benefit-icon { font-size: 32px; line-height: 1; }
+    .franchise-benefit h3 { font-family: var(--font-display); font-weight: 700; font-size: 16px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); }
+    .franchise-benefit p { font-size: 13px; color: var(--white-dim); line-height: 1.6; }
+    .franchise-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+    .btn-franchise { display: inline-flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 500; color: var(--off-black); background: var(--white); text-decoration: none; padding: 16px 36px; border-radius: 100px; letter-spacing: 0.02em; transition: all 0.3s ease; }
+    .btn-franchise:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,255,255,0.15); }
+    .btn-franchise-text { display: inline; }
+    .btn-franchise-arrow { font-size: 18px; transition: transform 0.3s ease; }
+    .btn-franchise:hover .btn-franchise-arrow { transform: translateX(4px); }
+    .franchise-note { font-size: 13px; color: var(--white-hint); line-height: 1.6; }
+    .franchise-visual { display: flex; justify-content: center; }
+    .franchise-card { background: var(--off-black); border: 0.5px solid var(--border-strong); border-radius: 24px; padding: 48px; max-width: 480px; }
+    .franchise-card-header { margin-bottom: 32px; }
+    .franchise-card-header h4 { font-family: var(--font-display); font-weight: 700; font-size: 18px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); }
+    .franchise-card-body { display: flex; flex-direction: column; gap: 32px; }
+    .franchise-step { display: flex; gap: 20px; align-items: flex-start; }
+    .step-number { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: var(--white); color: var(--off-black); font-family: var(--font-display); font-weight: 900; font-size: 18px; border-radius: 50%; flex-shrink: 0; }
+    .step-content h5 { font-family: var(--font-display); font-weight: 700; font-size: 15px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); margin-bottom: 8px; }
+    .step-content p { font-size: 14px; color: var(--white-dim); line-height: 1.6; }
+
+    @media (max-width: 1024px) {
+      .franchise-inner { grid-template-columns: 1fr; gap: 60px; }
+      .franchise-visual { order: -1; }
+    }
+
+    @media (max-width: 768px) {
+      .franchise-benefits { grid-template-columns: 1fr; }
+      .franchise-card { padding: 32px 24px; }
+      .franchise-step { gap: 16px; }
+      .step-number { width: 40px; height: 40px; font-size: 16px; }
+    }
+
+    @media (max-width: 600px) {
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .hero-actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <a href="#" class="nav-logo"><img src="/logos/omniprise-logo.jpg" alt="Omniprise" /></a>
+    <ul class="nav-links">
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#marcas">Marcas</a></li>
+      <li><a href="#vision">Visión</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="#" class="nav-empleados" id="nav-empleados-btn" data-href="https://dashboard.omniprise.com.py">Empleados</a>
+      <button class="nav-cta" id="nav-cta-btn">Trabajemos juntos</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <p class="hero-eyebrow">Asunción, Paraguay — Est. 2024</p>
+    <h1 class="hero-title">No somos<br/><em>un</em> restaurante.</h1>
+    <p class="hero-sub">Somos una <strong>plataforma de marcas gastronómicas</strong> con foco en escala, eficiencia y crecimiento sostenido.</p>
+    <div class="hero-actions">
+      <a href="#marcas" class="btn-primary">Nuestras marcas</a>
+      <a href="#franquicia" class="btn-secondary">Conviértete en Socio →</a>
+      <a href="#nosotros" class="btn-secondary" style="border: 0.5px solid var(--border);">Conocer más</a>
+    </div>
+    <div class="hero-scroll"><span>Bajar</span><div class="scroll-line"></div></div>
+  </section>
+
+  <section class="statement" id="nosotros">
+    <div class="statement-text reveal">
+      <div class="muted">Omniprise es un operador</div>
+      <div class="muted">gastronómico creado para</div>
+      <div class="highlight">desarrollar, operar</div>
+      <div class="highlight">e integrar marcas de</div>
+      <div class="highlight">alto impacto.</div>
+    </div>
+    <div class="statement-aside reveal">
+      <span class="aside-tag">Nacida en 2024</span>
+      <p>Combinando restaurantes físicos, dark-kitchens, delivery y canales de consumo masivo. Nacida a finales de 2024, Omniprise aceleró su desarrollo durante 2025 y dio un <strong>salto estratégico el 1 de enero de 2026</strong>, incorporando marcas con mucha trayectoria en el mercado a su portafolio mediante adquisición — consolidándose como un <strong>grupo en expansión activa.</strong></p>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stats-inner">
+      <div class="stat-item reveal"><span class="stat-number" data-target="7">0</span><span class="stat-label">Marcas en portafolio</span></div>
+      <div class="stat-item reveal"><span class="stat-number" data-target="17">0</span><span class="stat-label">Locales físicos activos</span></div>
+      <div class="stat-item reveal"><span class="stat-number" data-target="135">0</span><span class="stat-label">Colaboradores</span></div>
+      <div class="stat-item reveal"><span class="stat-number">30%</span><span class="stat-label">Crecimiento proyectado 2026</span></div>
+    </div>
+  </section>
+
+  <section class="how">
+    <p class="section-label reveal">Nuestra lógica</p>
+    <h2 class="section-title reveal">Cómo<br/>crece<br/>Omniprise.</h2>
+    <div class="pillars">
+      <div class="pillar reveal"><div class="pillar-num">01</div><div class="pillar-title">Marcas propias desde cero</div><p class="pillar-desc">Desarrollamos conceptos gastronómicos con identidad fuerte, pensados para escalar desde el primer día.</p></div>
+      <div class="pillar reveal"><div class="pillar-num">02</div><div class="pillar-title">Adquisición e integración</div><p class="pillar-desc">Incorporamos marcas con tracción comprobada y las integramos a nuestra plataforma operativa para acelerar su crecimiento.</p></div>
+      <div class="pillar reveal"><div class="pillar-num">03</div><div class="pillar-title">Expansión híbrida</div><p class="pillar-desc">Crecemos con locales físicos y dark-kitchens, combinando presencia territorial y cobertura de entrega masiva.</p></div>
+      <div class="pillar reveal"><div class="pillar-num">04</div><div class="pillar-title">Entrega y consumo recurrente</div><p class="pillar-desc">Fuerte orientación a plataformas digitales y consumo frecuente, generando volumen y previsibilidad.</p></div>
+      <div class="pillar reveal"><div class="pillar-num">05</div><div class="pillar-title">Comercio gastronómico masivo</div><p class="pillar-desc">Proyección hacia canales de consumo masivo: supermercados, tiendas de conveniencia y locales deportivos.</p></div>
+      <div class="pillar reveal"><div class="pillar-num">06</div><div class="pillar-title">Operaciones centralizadas</div><p class="pillar-desc">Centralización de compras, procesos y estándares para generar volumen, eficiencia y relaciones de largo plazo.</p></div>
+    </div>
+  </section>
+
+  <section class="brands" id="marcas">
+    <div class="brands-inner">
+      <div class="brands-header">
+        <div>
+          <p class="section-label reveal">Portafolio</p>
+          <h2 class="section-title reveal" style="margin-bottom:0">Nuestras<br/>Marcas.</h2>
+        </div>
+        <p class="reveal" style="font-size:14px;color:var(--white-dim);max-width:320px;line-height:1.7;">7 marcas activas en 6 ciudades. Desde experiencias temáticas de alto impacto hasta cocinas de alta rotación.</p>
+      </div>
+
+      <div class="brands-grid">
+
+        <!-- ① UFO -->
+        <div class="brand-card reveal">
+          <div class="brand-logo-area">
+            <svg viewBox="0 0 190 76" xmlns="http://www.w3.org/2000/svg">
+              <!-- White pill background -->
+              <rect x="1" y="1" width="84" height="74" rx="16" fill="#f5f4f0"/>
+              <!-- U -->
+              <text x="9" y="58" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="46" fill="#111110">U</text>
+              <!-- F -->
+              <text x="33" y="58" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="46" fill="#111110">F</text>
+              <!-- O shell -->
+              <text x="57" y="58" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="46" fill="#111110">O</text>
+              <!-- UFO saucer replacing O interior -->
+              <ellipse cx="73" cy="30" rx="9" ry="4" fill="#f5f4f0" stroke="#111110" stroke-width="1.8"/>
+              <ellipse cx="73" cy="27" rx="5" ry="3.5" fill="#f5f4f0" stroke="#111110" stroke-width="1.4"/>
+              <!-- tractor beam -->
+              <polygon points="65,34 81,34 78,52 68,52" fill="#111110" opacity="0.12"/>
+              <!-- cow silhouette -->
+              <ellipse cx="73" cy="48" rx="4.5" ry="2.5" fill="#111110" opacity="0.5"/>
+              <line x1="70" y1="50" x2="69" y2="55" stroke="#111110" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/>
+              <line x1="72" y1="50" x2="71.5" y2="55" stroke="#111110" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/>
+              <line x1="74" y1="50" x2="74.5" y2="55" stroke="#111110" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/>
+              <line x1="76" y1="50" x2="77" y2="55" stroke="#111110" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/>
+              <!-- UFO wordmark to the right -->
+              <text x="100" y="53" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="46" fill="#f5f4f0" letter-spacing="-1">UFO</text>
+            </svg>
+          </div>
+          <div class="brand-tag">Marca propia — Marzo 2025</div>
+          <div class="brand-name">UFO</div>
+          <div class="brand-tagline">Experiencia gastronómica temática de alto impacto</div>
+          <p class="brand-detail">Restaurante temático único en su clase con 1.600 m² y capacidad para 250 personas. La propuesta combina gastronomía, entretenimiento y ambientación inmersiva, logrando una fuerte recordación de marca. Diseñado para escala, visibilidad y alto volumen operativo.</p>
+          <span class="brand-badge">Marca insignia</span>
+        </div>
+
+        <!-- ② LOS CONDENADOS -->
+        <div class="brand-card reveal">
+          <div class="brand-logo-area">
+            <svg viewBox="0 0 210 76" xmlns="http://www.w3.org/2000/svg">
+              <text x="105" y="14" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="11" fill="#f5f4f0" text-anchor="middle" opacity="0.75">el CLUB de</text>
+              <text x="105" y="42" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="21" fill="#f5f4f0" text-anchor="middle" letter-spacing="0.5">LOS CONDENADOS</text>
+              <line x1="18" y1="52" x2="56" y2="52" stroke="#f5f4f0" stroke-width="0.6" opacity="0.35"/>
+              <text x="105" y="60" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="9.5" fill="#f5f4f0" text-anchor="middle" opacity="0.55">Pizza Bar</text>
+              <line x1="154" y1="52" x2="192" y2="52" stroke="#f5f4f0" stroke-width="0.6" opacity="0.35"/>
+              <text x="66" y="73" font-family="Georgia,serif" font-size="8" fill="#f5f4f0" opacity="0.2">— — —</text>
+              <text x="128" y="73" font-family="Georgia,serif" font-size="8" fill="#f5f4f0" opacity="0.2">— — —</text>
+            </svg>
+          </div>
+          <div class="brand-tag">Marca propia — Dic. 2025</div>
+          <div class="brand-name">Los Condenados</div>
+          <div class="brand-tagline">Pizza bar · actitud y entretenimiento</div>
+          <p class="brand-detail">Pizza bar que combina pizzas de alta calidad, ambiente descontracturado y tragos innovadores. Pensada para consumo frecuente, con fuerte presencia nocturna y alta rotación en delivery. Plan de expansión 2026: 8 dark-kitchens para cobertura total del Gran Asunción.</p>
+          <span class="brand-badge">8 dark-kitchens proyectadas 2026</span>
+        </div>
+
+        <!-- ③ ROCCO -->
+        <div class="brand-card reveal">
+          <div class="brand-logo-area">
+            <svg viewBox="0 0 200 76" xmlns="http://www.w3.org/2000/svg">
+              <text x="8" y="58" font-family="Georgia,'Times New Roman',serif" font-weight="700" font-style="italic" font-size="52" fill="#f5f4f0" letter-spacing="-1">Rocco</text>
+              <text x="10" y="73" font-family="'Arial',sans-serif" font-weight="700" font-size="11" fill="#f5f4f0" letter-spacing="4" opacity="0.55">PASTA BAR</text>
+            </svg>
+          </div>
+          <div class="brand-tag">Marca propia — Oct. 2025</div>
+          <div class="brand-name">Rocco</div>
+          <div class="brand-tagline">Pasta Bar · moderno, rápido y escalable</div>
+          <p class="brand-detail">Pasta bar contemporáneo iniciado en el centro de Asunción. Foco en calidad, rapidez y eficiencia operativa. Pensada para potenciar el consumo vía plataformas y crecer bajo un modelo altamente replicable. Plan 2026: 8 dark-kitchens y posible apertura en Shopping Multiplaza.</p>
+          <span class="brand-badge">8 dark-kitchens proyectadas 2026</span>
+        </div>
+
+        <!-- ④ SAMMY'S -->
+        <div class="brand-card reveal">
+          <div class="brand-logo-area">
+            <svg viewBox="0 0 200 76" xmlns="http://www.w3.org/2000/svg">
+              <!-- Badge circle -->
+              <circle cx="38" cy="38" r="34" fill="none" stroke="#f5f4f0" stroke-width="2.2" opacity="0.85"/>
+              <circle cx="38" cy="38" r="26" fill="none" stroke="#f5f4f0" stroke-width="0.8" opacity="0.3"/>
+              <!-- pizza slice -->
+              <path d="M38 16 L50 36 L26 36 Z" fill="none" stroke="#f5f4f0" stroke-width="1.6" opacity="0.8"/>
+              <circle cx="34.5" cy="28" r="1.8" fill="#f5f4f0" opacity="0.7"/>
+              <circle cx="42" cy="26" r="1.8" fill="#f5f4f0" opacity="0.7"/>
+              <circle cx="38" cy="32" r="1.5" fill="#f5f4f0" opacity="0.7"/>
+              <!-- text in badge -->
+              <text x="38" y="48" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="9.5" fill="#f5f4f0" text-anchor="middle" letter-spacing="1.5">SAMMY'S</text>
+              <text x="38" y="60" font-family="Arial,sans-serif" font-size="6.5" fill="#f5f4f0" text-anchor="middle" letter-spacing="1" opacity="0.6">EXPRESS PIZZA</text>
+              <!-- wordmark -->
+              <text x="86" y="40" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="26" fill="#f5f4f0" letter-spacing="-0.3">SAMMY'S</text>
+              <text x="88" y="57" font-family="Arial,sans-serif" font-size="10.5" fill="#f5f4f0" opacity="0.5" letter-spacing="2.5">EXPRESS PIZZA</text>
+            </svg>
+          </div>
+          <div class="brand-tag">Adquirida e integrada — Ene. 2026</div>
+          <div class="brand-name">Sammy's</div>
+          <div class="brand-tagline">Express Pizza · 11 años de trayectoria</div>
+          <p class="brand-detail">Segunda cadena de pizza más grande del país, con 15 locales activos en el Gran Asunción. Integrada al portafolio de Omniprise el 1 de enero de 2026 bajo una estructura orientada a expansión, estandarización y crecimiento acelerado.</p>
+          <span class="brand-badge">15 locales activos</span>
+        </div>
+
+        <!-- ⑤ PASTABOX -->
+        <div class="brand-card reveal">
+          <div class="brand-logo-area">
+            <svg viewBox="0 0 200 76" xmlns="http://www.w3.org/2000/svg">
+              <!-- Yellow square badge -->
+              <rect x="0" y="4" width="70" height="68" rx="7" fill="#f0c020"/>
+              <!-- Pasta script on yellow -->
+              <text x="35" y="38" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-weight="700" font-size="20" fill="#111110" text-anchor="middle">Pasta</text>
+              <!-- BOX bold on yellow -->
+              <text x="35" y="60" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="21" fill="#111110" text-anchor="middle" letter-spacing="1">BOX</text>
+              <!-- small icon on yellow -->
+              <line x1="27" y1="17" x2="27" y2="26" stroke="#111110" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <line x1="32" y1="14" x2="32" y2="26" stroke="#111110" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <line x1="37" y1="16" x2="37" y2="26" stroke="#111110" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <line x1="42" y1="15" x2="42" y2="26" stroke="#111110" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <!-- wordmark next to badge -->
+              <text x="84" y="37" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-weight="700" font-size="25" fill="#f5f4f0">Pasta</text>
+              <text x="84" y="63" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="25" fill="#f0c020" letter-spacing="1">BOX</text>
+            </svg>
+          </div>
+          <div class="brand-tag">Adquirida e integrada — Ene. 2026</div>
+          <div class="brand-name">PastaBox</div>
+          <div class="brand-tagline">Cocina oculta · en operación desde 2021</div>
+          <p class="brand-detail">Opera desde 2021 bajo el modelo de dark-kitchen, con 8 cocinas activas. Adquirida e integrada al ecosistema operativo de Omniprise el 01/01/2026. Durante 2026 continuará bajo su formato actual, evaluando hacia fin de año una posible fusión estratégica con Rocco.</p>
+          <span class="brand-badge">8 cocinas activas</span>
+        </div>
+
+        <!-- ⑥ MR. CHOW -->
+        <div class="brand-card reveal">
+          <div class="brand-logo-area">
+            <svg viewBox="0 0 200 76" xmlns="http://www.w3.org/2000/svg">
+              <!-- Character circle -->
+              <circle cx="38" cy="42" r="28" fill="none" stroke="#f5f4f0" stroke-width="1.4" opacity="0.5"/>
+              <!-- Conical hat -->
+              <path d="M26 34 L38 8 L50 34 Z" fill="none" stroke="#f5f4f0" stroke-width="1.8" stroke-linejoin="round" opacity="0.9"/>
+              <line x1="24" y1="34" x2="52" y2="34" stroke="#f5f4f0" stroke-width="1.4" opacity="0.8"/>
+              <!-- Face circle -->
+              <circle cx="38" cy="44" r="11" fill="none" stroke="#f5f4f0" stroke-width="1.3" opacity="0.75"/>
+              <!-- Eyes (closed, stylised) -->
+              <line x1="33" y1="42" x2="36" y2="42" stroke="#f5f4f0" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="40" y1="42" x2="43" y2="42" stroke="#f5f4f0" stroke-width="1.8" stroke-linecap="round"/>
+              <!-- Moustache/beard strands -->
+              <line x1="35" y1="49" x2="33" y2="57" stroke="#f5f4f0" stroke-width="1.1" stroke-linecap="round" opacity="0.65"/>
+              <line x1="38" y1="50" x2="38" y2="58" stroke="#f5f4f0" stroke-width="1.1" stroke-linecap="round" opacity="0.65"/>
+              <line x1="41" y1="49" x2="43" y2="57" stroke="#f5f4f0" stroke-width="1.1" stroke-linecap="round" opacity="0.65"/>
+              <!-- wordmark -->
+              <text x="78" y="34" font-family="Arial,sans-serif" font-weight="700" font-size="11" fill="#f5f4f0" opacity="0.55" letter-spacing="2.5">MR.</text>
+              <text x="76" y="62" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="30" fill="#f5f4f0" letter-spacing="0.5">CHOW</text>
+            </svg>
+          </div>
+          <div class="brand-tag">Adquirida e integrada — Ene. 2026</div>
+          <div class="brand-name">Mr. Chow</div>
+          <div class="brand-tagline">Gastronomía oriental · en operación desde 2021</div>
+          <p class="brand-detail">Opera con 1 dark-kitchen en Mburucuyá y 1 local en Shopping Multiplaza. Incorporada a Omniprise el 01/01/2026, integrada a una plataforma preparada para escalar y profesionalizar su crecimiento. Plan 2026: 4 nuevas dark-kitchens y 2 locales físicos en Asunción.</p>
+          <span class="brand-badge">Expansión 2026: 4 nuevas cocinas</span>
+        </div>
+
+        <!-- ⑦ BARRIO PIZZERO — full width -->
+        <div class="brand-card brand-card--wide reveal">
+          <div class="brand-inner-grid">
+            <div>
+              <div class="brand-logo-area" style="height:120px;">
+                <svg viewBox="0 0 130 120" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Outer badge ring -->
+                  <circle cx="65" cy="60" r="56" fill="none" stroke="#f5f4f0" stroke-width="2" opacity="0.85"/>
+                  <!-- Checkerboard strip (top arc area) -->
+                  <rect x="13" y="10" width="10" height="10" fill="#f5f4f0" opacity="0.85" rx="1"/>
+                  <rect x="33" y="10" width="10" height="10" fill="#f5f4f0" opacity="0.85" rx="1"/>
+                  <rect x="53" y="10" width="10" height="10" fill="#f5f4f0" opacity="0.85" rx="1"/>
+                  <rect x="73" y="10" width="10" height="10" fill="#f5f4f0" opacity="0.85" rx="1"/>
+                  <rect x="93" y="10" width="10" height="10" fill="#f5f4f0" opacity="0.85" rx="1"/>
+                  <rect x="23" y="20" width="10" height="10" fill="#f5f4f0" opacity="0.65" rx="1"/>
+                  <rect x="43" y="20" width="10" height="10" fill="#f5f4f0" opacity="0.65" rx="1"/>
+                  <rect x="63" y="20" width="10" height="10" fill="#f5f4f0" opacity="0.65" rx="1"/>
+                  <rect x="83" y="20" width="10" height="10" fill="#f5f4f0" opacity="0.65" rx="1"/>
+                  <!-- Pizza slice icon -->
+                  <path d="M65 32 L82 68 L48 68 Z" fill="none" stroke="#f5f4f0" stroke-width="1.8" stroke-linejoin="round" opacity="0.85"/>
+                  <circle cx="61" cy="54" r="2.5" fill="#f5f4f0" opacity="0.6"/>
+                  <circle cx="70" cy="60" r="2.5" fill="#f5f4f0" opacity="0.6"/>
+                  <circle cx="65" cy="47" r="2" fill="#f5f4f0" opacity="0.6"/>
+                  <!-- BARRIO text -->
+                  <text x="65" y="86" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="12" fill="#f5f4f0" text-anchor="middle" letter-spacing="2.5">BARRIO</text>
+                  <!-- PIZZERO text -->
+                  <text x="65" y="103" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="12" fill="#f5f4f0" text-anchor="middle" letter-spacing="1.5">PIZZERO</text>
+                </svg>
+              </div>
+              <div class="brand-tag">Adquirida e integrada — Ene. 2026</div>
+              <div class="brand-name">Barrio Pizzero</div>
+              <div class="brand-tagline">Enfoque barrial · alta rotación en envío a domicilio</div>
+              <span class="brand-badge">Orientada al envío a domicilio</span>
+            </div>
+            <div style="padding-top:32px;">
+              <p class="brand-detail" style="font-size:15px;line-height:1.9;">Incorporada al portafolio de Omniprise el 01/01/2026, Barrio Pizzero complementa el segmento pizza con un enfoque barrial, accesible y de alta rotación. Especialmente orientada al envío a domicilio para cubrir los segmentos de precio que las otras marcas no alcanzan, generando volumen recurrente en zonas residenciales de todo el Gran Asunción.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="vision" id="vision">
+    <div class="vision-inner">
+      <p class="vision-year reveal">Visión 2026 — 2027</p>
+      <h2 class="vision-headline reveal">Construir uno de los ecosistemas gastronómicos<br/>más relevantes del país.</h2>
+      <p class="vision-body reveal">Marcas líderes en sus categorías y una red operativa capaz de generar <strong>volumen, rotación y visibilidad constante</strong> para nuestros socios estratégicos.</p>
+    </div>
+  </section>
+
+  <section class="partners" id="contacto">
+    <div class="partners-inner">
+      <div class="partners-left">
+        <p class="section-label reveal">Socios y proveedores</p>
+        <h2 class="partners-headline reveal">Socios<br/>que crecen<br/>con nosotros.</h2>
+        <p class="partners-body reveal">Omniprise no busca proveedores transaccionales. Busca <strong>socios que crezcan junto a una plataforma en expansión</strong>, con volumen creciente, visibilidad constante y proyección real.</p>
+        <a href="mailto:info@omniprise.com.py" class="btn-primary reveal">Contactar ahora</a>
+      </div>
+      <div class="partners-right">
+        <div class="contact-block reveal"><p class="contact-label">Correo electrónico</p><p class="contact-value">info@omniprise.com.py</p></div>
+        <div class="contact-block reveal"><p class="contact-label">Sede</p><p class="contact-value">Asunción, Paraguay</p></div>
+        <div class="contact-block reveal"><p class="contact-label">Fundación</p><p class="contact-value">2024</p></div>
+        <div class="contact-block reveal"><p class="contact-label">Operaciones en</p><p class="contact-value">6 ciudades</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FRANCHISE SECTION -->
+  <section class="franchise" id="franquicia">
+    <div class="franchise-inner">
+      <div class="franchise-content reveal">
+        <p class="franchise-eyebrow">Únete al ecosistema</p>
+        <h2 class="franchise-title">Conviértete en<br/><em>Socio de Omniprise</em></h2>
+        <p class="franchise-sub">
+          ¿Tienes una marca gastronómica con potencial de escala? Únete a nuestra plataforma y benefíciate de nuestra infraestructura, tecnología y know-how operativo.
+        </p>
+        <div class="franchise-benefits">
+          <div class="franchise-benefit">
+            <div class="benefit-icon">📈</div>
+            <h3>Escala Rápida</h3>
+            <p>Infraestructura lista para expandir tu marca en múltiples ciudades</p>
+          </div>
+          <div class="franchise-benefit">
+            <div class="benefit-icon">🔧</div>
+            <h3>Tecnología Integrada</h3>
+            <p>Sistemas POS, inventario y analytics centralizados</p>
+          </div>
+          <div class="franchise-benefit">
+            <div class="benefit-icon">💼</div>
+            <h3>Soporte Operativo</h3>
+            <p>Capacitación, marketing y gestión de talento</p>
+          </div>
+        </div>
+        <div class="franchise-cta">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScd placeholder/VIEW" target="_blank" rel="noopener" class="btn-franchise">
+            <span class="btn-franchise-text">Solicitar Información</span>
+            <span class="btn-franchise-arrow">→</span>
+          </a>
+          <p class="franchise-note">Complete el formulario en menos de 5 minutos. Responderemos en 24 horas.</p>
+        </div>
+      </div>
+      <div class="franchise-visual reveal">
+        <div class="franchise-card">
+          <div class="franchise-card-header">
+            <h4>Proceso de Integración</h4>
+          </div>
+          <div class="franchise-card-body">
+            <div class="franchise-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h5>Solicitar</h5>
+                <p>Complete el formulario inicial con información de su marca</p>
+              </div>
+            </div>
+            <div class="franchise-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h5>Evaluación</h5>
+                <p>Analizamos el potencial de integración y sinergia</p>
+              </div>
+            </div>
+            <div class="franchise-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h5>Propuesta</h5>
+                <p>Reciba una propuesta personalizada basada en su marca</p>
+              </div>
+            </div>
+            <div class="franchise-step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h5>Integración</h5>
+                <p>Únase al ecosistema y comience a escalar</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-logo"><img src="/logos/omniprise-logo.jpg" alt="Omniprise" /></span>
+    <ul class="footer-links">
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#marcas">Marcas</a></li>
+      <li><a href="#vision">Visión</a></li>
+      <li><a href="#franquicia" style="color: var(--white);">Franquicia</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 Omniprise. Asunción, Paraguay.</span>
+  </footer>
+
+  <!-- MODAL: Trabajemos Juntos -->
+  <div class="modal-overlay" id="trabajemos-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+    <div class="modal-box">
+      <button class="modal-close" id="modal-close-btn" aria-label="Cerrar">&#x2715;</button>
+      <p class="modal-eyebrow">Únete al equipo</p>
+      <h2 class="modal-title" id="modal-title-text">Trabajemos<br/>juntos.</h2>
+      <p class="modal-body">¿Querés ser parte de una plataforma gastronómica en plena expansión? Envianos tu currículum actualizado y te contactaremos cuando surja una oportunidad que se ajuste a tu perfil.</p>
+      <div class="modal-email-block">
+        <p class="modal-email-label">Enviá tu currículum a</p>
+        <p class="modal-email-value">rrhh@omniprise.com.py</p>
+      </div>
+      <ul class="modal-steps">
+        <li data-n="01">Asunto del correo: <strong>Tu nombre completo + cargo al que aplicás</strong></li>
+        <li data-n="02">Adjuntá tu currículum en formato PDF</li>
+        <li data-n="03">Podés incluir una breve presentación en el cuerpo del correo</li>
+        <li data-n="04">Nuestro equipo de RRHH revisará tu perfil y se pondrá en contacto</li>
+      </ul>
+      <button class="modal-btn-close" id="modal-close-btn-2">Entendido</button>
+    </div>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const counters = document.querySelectorAll('[data-target]');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseInt(el.dataset.target);
+        const duration = 1400;
+        const start = performance.now();
+        const tick = (now) => {
+          const p = Math.min((now - start) / duration, 1);
+          el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target);
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+        counterObserver.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(c => counterObserver.observe(c));
+
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.style.background = window.scrollY > 80 ? 'rgba(17,17,16,0.97)' : 'rgba(22,22,20,0.88)';
+    }, { passive: true });
+
+    // Modal logic
+    const modal = document.getElementById('trabajemos-modal');
+    const openBtn = document.getElementById('nav-cta-btn');
+    const closeBtn = document.getElementById('modal-close-btn');
+    const closeBtn2 = document.getElementById('modal-close-btn-2');
+    const empleadosBtn = document.getElementById('nav-empleados-btn');
+
+    function openModal() {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    openBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+    closeBtn.addEventListener('click', closeModal);
+    closeBtn2.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // Empleados — placeholder redirect (URL to be configured)
+    empleadosBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // TODO: Replace '#' with the actual dashboard URL when ready
+      const dashboardUrl = empleadosBtn.dataset.href || '#';
+      if (dashboardUrl !== '#') window.location.href = dashboardUrl;
+      else alert('Portal de empleados próximamente disponible.');
+    });
+  </script>
+</body>
+</html>
