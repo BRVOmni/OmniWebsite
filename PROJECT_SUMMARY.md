@@ -57,30 +57,41 @@ This document provides a comprehensive overview of all Omniprise projects, their
 
 ## 🌐 WEBSITE PROJECT STATUS
 
-### **Status: ✅ WEBSITE LIVE (FRANCHISE CTA COMPLETE)**
-- **Current Version:** v1.4 (Franchise CTA Complete)
-- **Target Version:** v2.0 (Production-Ready)
-- **Current URL:** Deployed to Vercel (live and operational)
+### **Status: ✅ WEBSITE LIVE & FULLY OPERATIONAL (v1.5)**
+- **Current Version:** v1.5 (Franchise Features Complete & Deployment Fixed)
+- **Target Version:** v2.0 (Next.js Migration)
+- **Current URL:** https://www.omniprise.com.py ✅ LIVE & WORKING
+- **Deployment Status:** Vercel production operational
 - **Estimated Migration:** 6 weeks
 
-### Recent Progress (v1.4):
-- ✅ **Logo Fix Complete** - Base64 extracted to proper asset file
-- ✅ **File Size Reduced** - 45KB HTML (down from 80KB, 44% reduction)
-- ✅ **Proper Asset Management** - Logo now at `/public/logos/omniprise-logo.jpg`
-- ✅ **Browser Caching** - Separate logo file enables better caching
-- ✅ **Deployment Complete** - Website live on Vercel
-- ✅ **Franchise CTA Added** - "Conviértete en Franquiciado" button added to hero
-- ✅ **Franchise Section Created** - Omniprise selling franchises to entrepreneurs with comprehensive landing
-- ✅ **Header Navigation Updated** - Added franchise link to header navigation
-- ✅ **Footer Navigation Updated** - Added franchise link to footer navigation
-- ⚠️ **Action Required:** Replace Google Form placeholder with actual form URL
+### Recent Progress (v1.5):
+- ✅ **Logo Assets Present** - Logo files in public/logos/ directory
+- ✅ **File Size Optimized** - ~52KB HTML with efficient structure
+- ✅ **Proper Asset Management** - Logo files managed as separate assets
+- ✅ **Browser Caching** - Separate logo files enable better caching
+- ✅ **Deployment Working** - Vercel production deployment fixed and operational
+- ✅ **Franchise Features Complete** - Full franchise selling section with correct perspective
+- ✅ **Navigation Enhanced** - Franchise links in both header and footer
+- ✅ **All Text Fixes Applied** - dark-kitchens, proper phrasing, percentage display
+
+### Completed Features:
+- ✅ **Franchise Section** - "Dueño de una Marca Omniprise" (Omniprise selling franchises)
+- ✅ **Franchise Benefits** - Marcas Probadas, Soporte Integral, Modelo Rentable
+- ✅ **Franchise Process** - Postulación → Evaluación → Propuesta → Apertura
+- ✅ **Hero CTA Button** - "Conviértete en Franquiciado →"
+- ✅ **Header Navigation** - Franchise link between Marcas and Visión
+- ✅ **Footer Navigation** - Franchise link accessible
+- ✅ **Text Corrections** - All "cocinas ocultas" → "dark-kitchens"
+- ✅ **Phrasing Updates** - "con mucha trayectoria en el mercado"
+- ✅ **Stats Section** - "30%" properly displayed
 
 ### Remaining Issues:
-1. ❌ **Design Mismatch** - Monochromatic vs dashboard's colorful design
-2. ❌ **Architecture** - Single 52KB HTML file (improved but still not ideal)
-3. ⚠️ **Google Form** - Placeholder URL needs to be replaced with actual form
-4. ❌ **No Analytics** - No tracking or metrics
-5. ❌ **Single Language** - Spanish only
+- ⚠️ **Logo Files** - Need proper high-quality logo assets (currently using placeholder)
+- ⚠️ **Google Form** - Replace placeholder URL with actual franchise application form
+- ⚠️ **Design Style** - Monochromatic design differs from colorful dashboard aesthetic
+- ⚠️ **Architecture** - Single HTML file (not ideal for long-term maintenance)
+- ⚠️ **No Analytics** - No tracking or metrics in place
+- ⚠️ **Single Language** - Spanish only (English translation needed)
 
 ### Migration Plan Summary:
 

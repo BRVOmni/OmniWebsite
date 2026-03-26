@@ -460,16 +460,23 @@ These have been completed on the current HTML site:
    - ✅ Removed 35KB of base64 bloat
    - ✅ **Result:** 44% HTML file size reduction, better performance
 
-2. ✅ **Add Franchise CTA (COMPLETED - v1.4)**
+2. ✅ **Add Franchise CTA (COMPLETED - v1.5)**
    - ✅ Added "Conviértete en Franquiciado" button to hero section
    - ✅ Created comprehensive franchise section (Omniprise selling franchises to entrepreneurs)
    - ✅ Added 3 key benefit cards (Proven Brands, Integral Support, Profitable Model)
-   - ✅ Implemented 4-step franchise process (Application → Evaluation → Proposal → Opening)
+   - ✅ Implemented 4-step franchise process (Postulación → Evaluación → Propuesta → Apertura)
    - ✅ Added Google Form integration (placeholder - needs actual URL)
    - ✅ Updated header navigation with franchise link
    - ✅ Updated footer navigation with franchise link
    - ✅ Responsive design for all devices
    - ✅ **Result:** Complete franchise lead capture ready for Google Form integration
+
+3. ✅ **Fix Vercel Deployment (COMPLETED - v1.5)**
+   - ✅ Fixed vercel.json outputDirectory configuration
+   - ✅ Changed from "public" to "." for correct deployment
+   - ✅ Deployed new production version with all fixes
+   - ✅ Updated Vercel alias to point www.omniprise.com.py to correct deployment
+   - ✅ **Result:** All website changes now live at production URL
 
 ## 🚨 NEXT QUICK WINS (Week 1)
 
@@ -477,6 +484,14 @@ These can be done immediately on the current HTML site:
 
 1. **Setup Google Form**
    - Replace placeholder URL with actual Google Form
+   - Create form with required fields from FRANCHISE_FEATURE_ROADMAP.md
+   - Configure email notifications
+   - Test form submission workflow
+
+2. **Fix Logo Assets**
+   - Replace placeholder/logo files with proper high-quality Omniprise logos
+   - Ensure proper formats (.jpg, .svg, dark theme versions)
+   - Test logo display across all devices
    - Create form with required fields from FRANCHISE_FEATURE_ROADMAP.md
    - Configure email notifications
    - Test form submission workflow
