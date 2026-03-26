@@ -3,7 +3,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "buildCommand": "echo 'No build needed for static HTML'",
-  "outputDirectory": "public",
+  "outputDirectory": ".",
   "headers": [
     {
       "source": "/(.*)",
