@@ -8,16 +8,23 @@
 
 **Current State:** Single HTML file (45KB) with embedded CSS/JS, Apple-inspired dark monochromatic design
 
-**Recent Progress (v1.3):**
+**Recent Progress (v1.4):**
 - ✅ Logo fix complete - base64 extracted to proper asset
 - ✅ File size reduced from 80KB to 45KB (44% reduction)
 - ✅ Proper asset management at `/public/logos/omniprise-logo.jpg`
+- ✅ Franchise CTA added to hero section with animated button
+- ✅ Comprehensive franchise section created with:
+  - Value proposition and benefits cards
+  - 4-step process visualization
+  - Google Form integration (placeholder - needs actual URL)
+  - Responsive design for all devices
+- ✅ Footer navigation updated with franchise link
 
 **Remaining Issues:**
+- ⚠️ Google Form placeholder needs actual URL
 - ❌ Design mismatch with dashboard (monochromatic vs modern/colorful)
 - ❌ No component structure or build process
-- ❌ Missing franchise feature
-- ❌ Poor UX/Conversion flow
+- ❌ No analytics tracking or metrics
 - ❌ Single language (Spanish only)
 
 **Target State:** Modern, premium Next.js website aligned with dashboard design system, with comprehensive franchise lead capture
@@ -453,15 +460,25 @@ These have been completed on the current HTML site:
    - ✅ Removed 35KB of base64 bloat
    - ✅ **Result:** 44% HTML file size reduction, better performance
 
+2. ✅ **Add Franchise CTA (COMPLETED - v1.4)**
+   - ✅ Added "Conviértete en Socio" button to hero section
+   - ✅ Created comprehensive franchise section with benefits and process
+   - ✅ Added 3 key benefit cards (Scale, Technology, Support)
+   - ✅ Implemented 4-step process visualization
+   - ✅ Added Google Form integration (placeholder - needs actual URL)
+   - ✅ Updated footer navigation with franchise link
+   - ✅ Responsive design for all devices
+   - ✅ **Result:** Complete franchise lead capture ready for Google Form integration
+
 ## 🚨 NEXT QUICK WINS (Week 1)
 
 These can be done immediately on the current HTML site:
 
-2. **Add Franchise CTA**
-
-2. **Add Franchise CTA**
-   - Add "Conviértete en Socio" button to hero
-   - Link to simple Google Form as temporary solution
+1. **Setup Google Form**
+   - Replace placeholder URL with actual Google Form
+   - Create form with required fields from FRANCHISE_FEATURE_ROADMAP.md
+   - Configure email notifications
+   - Test form submission workflow
 
 3. **Improve Navigation**
    - Add language switcher (visual only for now)

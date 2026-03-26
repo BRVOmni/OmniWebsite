@@ -1129,14 +1129,17 @@ The Grupo Omniprise Dashboard is now **100% complete** with all 15 modules fully
 - **OPERATIONAL_SUPERVISION_COMPREHENSIVE.md** - Supervision module details
 
 ### Website Progress (March 2026)
-- **Status:** Quick wins in progress for temporary website implementation
-- **Version:** v1.3 (Logo Fix Complete ✅)
+- **Status:** Quick wins complete for temporary website implementation
+- **Version:** v1.4 (Franchise CTA Complete ✅)
 - **Progress:**
   - ✅ **Logo Fix Complete** - Base64 extracted to proper asset at `/public/logos/omniprise-logo.jpg`
   - ✅ **File Size Reduction** - HTML reduced from 80KB to 45KB (44% reduction)
   - ✅ **Proper Asset Management** - Logo now managed as separate file for better caching
-  - ⏳ **Next: Franchise CTA** - Add "Conviértete en Socio" button to hero section
-- **Roadmap:** See `WEBSITE_ROADMAP.md` for complete migration plan (v1.3 → v2.0)
+  - ✅ **Franchise CTA Complete** - Added "Conviértete en Socio" button to hero section
+  - ✅ **Comprehensive Franchise Section** - Created landing page with benefits, process, and Google Form integration
+  - ✅ **Responsive Design** - Optimized for mobile, tablet, and desktop
+  - ⚠️ **Action Required:** Replace Google Form placeholder with actual URL
+- **Roadmap:** See `WEBSITE_ROADMAP.md` for complete migration plan (v1.4 → v2.0)
 
 ### New Roadmaps (March 2026)
 - **WEBSITE_ROADMAP.md** - Complete website migration and improvement plan (v1.3 → v2.0)

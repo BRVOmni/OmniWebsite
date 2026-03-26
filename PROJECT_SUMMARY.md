@@ -57,25 +57,27 @@ This document provides a comprehensive overview of all Omniprise projects, their
 
 ## 🌐 WEBSITE PROJECT STATUS
 
-### **Status: 🚨 WEBSITE LIVE (WITH ERRORS)**
-- **Current Version:** v1.3 (Quick Wins Complete)
+### **Status: ✅ WEBSITE LIVE (FRANCHISE CTA COMPLETE)**
+- **Current Version:** v1.4 (Franchise CTA Complete)
 - **Target Version:** v2.0 (Production-Ready)
-- **Current URL:** Deployed to Vercel (live but has errors)
+- **Current URL:** Deployed to Vercel (live and operational)
 - **Estimated Migration:** 6 weeks
 
-### Recent Progress (v1.3):
+### Recent Progress (v1.4):
 - ✅ **Logo Fix Complete** - Base64 extracted to proper asset file
 - ✅ **File Size Reduced** - 45KB HTML (down from 80KB, 44% reduction)
 - ✅ **Proper Asset Management** - Logo now at `/public/logos/omniprise-logo.jpg`
 - ✅ **Browser Caching** - Separate logo file enables better caching
 - ✅ **Deployment Complete** - Website live on Vercel
-- ⚠️ **Current Issue:** Website deployed but experiencing errors
-- ⏳ **Next:** Investigate and fix website errors
+- ✅ **Franchise CTA Added** - "Conviértete en Socio" button added to hero
+- ✅ **Franchise Section Created** - Comprehensive franchise landing with benefits and process
+- ✅ **Footer Navigation Updated** - Added franchise link to footer navigation
+- ⚠️ **Action Required:** Replace Google Form placeholder with actual form URL
 
 ### Remaining Issues:
 1. ❌ **Design Mismatch** - Monochromatic vs dashboard's colorful design
-2. ❌ **Architecture** - Single 45KB HTML file (improved but still not ideal)
-3. ❌ **Missing Feature** - No franchise lead capture
+2. ❌ **Architecture** - Single 52KB HTML file (improved but still not ideal)
+3. ⚠️ **Google Form** - Placeholder URL needs to be replaced with actual form
 4. ❌ **No Analytics** - No tracking or metrics
 5. ❌ **Single Language** - Spanish only
 

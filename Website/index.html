@@ -238,6 +238,49 @@
       .footer-links { flex-wrap: wrap; justify-content: center; }
       .brand-card { padding: 40px 28px; }
     }
+
+    /* FRANCHISE */
+    .franchise { padding: 140px 48px; background: var(--black); border-top: 0.5px solid var(--border); }
+    .franchise-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .franchise-eyebrow { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white-hint); font-weight: 500; margin-bottom: 24px; }
+    .franchise-title { font-family: var(--font-display); font-weight: 900; font-size: clamp(40px, 6vw, 64px); line-height: 0.95; text-transform: uppercase; letter-spacing: 0.01em; margin-bottom: 32px; }
+    .franchise-title em { font-style: normal; color: var(--white-hint); }
+    .franchise-sub { font-size: 16px; color: var(--white-dim); line-height: 1.8; margin-bottom: 48px; max-width: 520px; }
+    .franchise-sub strong { color: var(--white); font-weight: 500; }
+    .franchise-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px; }
+    .franchise-benefit { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+    .benefit-icon { font-size: 32px; line-height: 1; }
+    .franchise-benefit h3 { font-family: var(--font-display); font-weight: 700; font-size: 16px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); }
+    .franchise-benefit p { font-size: 13px; color: var(--white-dim); line-height: 1.6; }
+    .franchise-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+    .btn-franchise { display: inline-flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 500; color: var(--off-black); background: var(--white); text-decoration: none; padding: 16px 36px; border-radius: 100px; letter-spacing: 0.02em; transition: all 0.3s ease; }
+    .btn-franchise:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,255,255,0.15); }
+    .btn-franchise-text { display: inline; }
+    .btn-franchise-arrow { font-size: 18px; transition: transform 0.3s ease; }
+    .btn-franchise:hover .btn-franchise-arrow { transform: translateX(4px); }
+    .franchise-note { font-size: 13px; color: var(--white-hint); line-height: 1.6; }
+    .franchise-visual { display: flex; justify-content: center; }
+    .franchise-card { background: var(--off-black); border: 0.5px solid var(--border-strong); border-radius: 24px; padding: 48px; max-width: 480px; }
+    .franchise-card-header { margin-bottom: 32px; }
+    .franchise-card-header h4 { font-family: var(--font-display); font-weight: 700; font-size: 18px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); }
+    .franchise-card-body { display: flex; flex-direction: column; gap: 32px; }
+    .franchise-step { display: flex; gap: 20px; align-items: flex-start; }
+    .step-number { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: var(--white); color: var(--off-black); font-family: var(--font-display); font-weight: 900; font-size: 18px; border-radius: 50%; flex-shrink: 0; }
+    .step-content h5 { font-family: var(--font-display); font-weight: 700; font-size: 15px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); margin-bottom: 8px; }
+    .step-content p { font-size: 14px; color: var(--white-dim); line-height: 1.6; }
+
+    @media (max-width: 1024px) {
+      .franchise-inner { grid-template-columns: 1fr; gap: 60px; }
+      .franchise-visual { order: -1; }
+    }
+
+    @media (max-width: 768px) {
+      .franchise-benefits { grid-template-columns: 1fr; }
+      .franchise-card { padding: 32px 24px; }
+      .franchise-step { gap: 16px; }
+      .step-number { width: 40px; height: 40px; font-size: 16px; }
+    }
+
     @media (max-width: 600px) {
       .stats-inner { grid-template-columns: repeat(2, 1fr); }
       .hero-actions { flex-direction: column; align-items: center; }
@@ -267,7 +310,8 @@
     <p class="hero-sub">Somos una <strong>plataforma de marcas gastronómicas</strong> con foco en escala, eficiencia y crecimiento sostenido.</p>
     <div class="hero-actions">
       <a href="#marcas" class="btn-primary">Nuestras marcas</a>
-      <a href="#nosotros" class="btn-secondary">Conocer más</a>
+      <a href="#franquicia" class="btn-secondary">Conviértete en Socio →</a>
+      <a href="#nosotros" class="btn-secondary" style="border: 0.5px solid var(--border);">Conocer más</a>
     </div>
     <div class="hero-scroll"><span>Bajar</span><div class="scroll-line"></div></div>
   </section>
@@ -542,12 +586,87 @@
     </div>
   </section>
 
+  <!-- FRANCHISE SECTION -->
+  <section class="franchise" id="franquicia">
+    <div class="franchise-inner">
+      <div class="franchise-content reveal">
+        <p class="franchise-eyebrow">Únete al ecosistema</p>
+        <h2 class="franchise-title">Conviértete en<br/><em>Socio de Omniprise</em></h2>
+        <p class="franchise-sub">
+          ¿Tienes una marca gastronómica con potencial de escala? Únete a nuestra plataforma y benefíciate de nuestra infraestructura, tecnología y know-how operativo.
+        </p>
+        <div class="franchise-benefits">
+          <div class="franchise-benefit">
+            <div class="benefit-icon">📈</div>
+            <h3>Escala Rápida</h3>
+            <p>Infraestructura lista para expandir tu marca en múltiples ciudades</p>
+          </div>
+          <div class="franchise-benefit">
+            <div class="benefit-icon">🔧</div>
+            <h3>Tecnología Integrada</h3>
+            <p>Sistemas POS, inventario y analytics centralizados</p>
+          </div>
+          <div class="franchise-benefit">
+            <div class="benefit-icon">💼</div>
+            <h3>Soporte Operativo</h3>
+            <p>Capacitación, marketing y gestión de talento</p>
+          </div>
+        </div>
+        <div class="franchise-cta">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScd placeholder/VIEW" target="_blank" rel="noopener" class="btn-franchise">
+            <span class="btn-franchise-text">Solicitar Información</span>
+            <span class="btn-franchise-arrow">→</span>
+          </a>
+          <p class="franchise-note">Complete el formulario en menos de 5 minutos. Responderemos en 24 horas.</p>
+        </div>
+      </div>
+      <div class="franchise-visual reveal">
+        <div class="franchise-card">
+          <div class="franchise-card-header">
+            <h4>Proceso de Integración</h4>
+          </div>
+          <div class="franchise-card-body">
+            <div class="franchise-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h5>Solicitar</h5>
+                <p>Complete el formulario inicial con información de su marca</p>
+              </div>
+            </div>
+            <div class="franchise-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h5>Evaluación</h5>
+                <p>Analizamos el potencial de integración y sinergia</p>
+              </div>
+            </div>
+            <div class="franchise-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h5>Propuesta</h5>
+                <p>Reciba una propuesta personalizada basada en su marca</p>
+              </div>
+            </div>
+            <div class="franchise-step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h5>Integración</h5>
+                <p>Únase al ecosistema y comience a escalar</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <span class="footer-logo"><img src="/logos/omniprise-logo.jpg" alt="Omniprise" /></span>
     <ul class="footer-links">
       <li><a href="#nosotros">Nosotros</a></li>
       <li><a href="#marcas">Marcas</a></li>
       <li><a href="#vision">Visión</a></li>
+      <li><a href="#franquicia" style="color: var(--white);">Franquicia</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
     <span class="footer-copy">© 2026 Omniprise. Asunción, Paraguay.</span>
