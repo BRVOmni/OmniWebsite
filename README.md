@@ -1128,6 +1128,32 @@ The Grupo Omniprise Dashboard is now **100% complete** with all 15 modules fully
 - **SUPABASE_SETUP.md** - Supabase configuration guide
 - **OPERATIONAL_SUPERVISION_COMPREHENSIVE.md** - Supervision module details
 
+### Website Progress (March 2026)
+- **Status:** Quick wins in progress for temporary website implementation
+- **Version:** v1.3 (Logo Fix Complete ✅)
+- **Progress:**
+  - ✅ **Logo Fix Complete** - Base64 extracted to proper asset at `/public/logos/omniprise-logo.jpg`
+  - ✅ **File Size Reduction** - HTML reduced from 80KB to 45KB (44% reduction)
+  - ✅ **Proper Asset Management** - Logo now managed as separate file for better caching
+  - ⏳ **Next: Franchise CTA** - Add "Conviértete en Socio" button to hero section
+- **Roadmap:** See `WEBSITE_ROADMAP.md` for complete migration plan (v1.3 → v2.0)
+
+### New Roadmaps (March 2026)
+- **WEBSITE_ROADMAP.md** - Complete website migration and improvement plan (v1.3 → v2.0)
+  - ✅ **Logo Fix Complete** - Base64 extracted to proper asset, 44% file size reduction
+  - Design alignment with dashboard
+  - Next.js migration from single HTML
+  - Franchise landing page
+  - Multi-language support (EN/ES)
+  - SEO and performance optimization
+
+- **FRANCHISE_FEATURE_ROADMAP.md** - Comprehensive franchise lead management system
+  - Multi-step application form (<5 min to complete)
+  - Lead scoring algorithm (90%+ success target)
+  - Dashboard integration module
+  - Automated proposal generator
+  - Complete database schema
+
 ### Quick Links
 - 🌐 **Live Dashboard:** https://dashboard.omniprise.com.py
 - 🚀 **Vercel Deployment:** See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md)
