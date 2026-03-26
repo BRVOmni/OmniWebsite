@@ -69,8 +69,9 @@ This document provides a comprehensive overview of all Omniprise projects, their
 - ✅ **Proper Asset Management** - Logo now at `/public/logos/omniprise-logo.jpg`
 - ✅ **Browser Caching** - Separate logo file enables better caching
 - ✅ **Deployment Complete** - Website live on Vercel
-- ✅ **Franchise CTA Added** - "Conviértete en Socio" button added to hero
-- ✅ **Franchise Section Created** - Comprehensive franchise landing with benefits and process
+- ✅ **Franchise CTA Added** - "Conviértete en Franquiciado" button added to hero
+- ✅ **Franchise Section Created** - Omniprise selling franchises to entrepreneurs with comprehensive landing
+- ✅ **Header Navigation Updated** - Added franchise link to header navigation
 - ✅ **Footer Navigation Updated** - Added franchise link to footer navigation
 - ⚠️ **Action Required:** Replace Google Form placeholder with actual form URL
 

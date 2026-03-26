@@ -461,11 +461,12 @@ These have been completed on the current HTML site:
    - ✅ **Result:** 44% HTML file size reduction, better performance
 
 2. ✅ **Add Franchise CTA (COMPLETED - v1.4)**
-   - ✅ Added "Conviértete en Socio" button to hero section
-   - ✅ Created comprehensive franchise section with benefits and process
-   - ✅ Added 3 key benefit cards (Scale, Technology, Support)
-   - ✅ Implemented 4-step process visualization
+   - ✅ Added "Conviértete en Franquiciado" button to hero section
+   - ✅ Created comprehensive franchise section (Omniprise selling franchises to entrepreneurs)
+   - ✅ Added 3 key benefit cards (Proven Brands, Integral Support, Profitable Model)
+   - ✅ Implemented 4-step franchise process (Application → Evaluation → Proposal → Opening)
    - ✅ Added Google Form integration (placeholder - needs actual URL)
+   - ✅ Updated header navigation with franchise link
    - ✅ Updated footer navigation with franchise link
    - ✅ Responsive design for all devices
    - ✅ **Result:** Complete franchise lead capture ready for Google Form integration
