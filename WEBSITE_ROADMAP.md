@@ -28,9 +28,10 @@
 **Remaining Work:**
 - ✅ ~~Google Form~~ — Replaced with custom multi-step form at `/franchise/apply`
 - ✅ ~~No favicon~~ — Favicon, manifest.json, sitemap.xml, robots.txt, JSON-LD added
-- ⚠️ No analytics tracking or metrics (Google Analytics 4 pending)
+- ✅ ~~No analytics~~ — Vercel Analytics installed and active
+- ✅ ~~Franchise form backend~~ — Now POSTs to Formspree (real submissions)
 - ⚠️ Single language (Spanish only)
-- ⚠️ Franchise form backend needs Supabase integration
+- ⚠️ No brand detail pages yet
 
 **Target State:** Modern, premium Next.js website aligned with dashboard design system, with comprehensive franchise lead capture
 
@@ -187,22 +188,23 @@ Consistent → Aligned with dashboard design system
 - [x] Implement progress indicator (4-step visual)
 - [x] Create confirmation/success page
 - [x] Add step-by-step validation
+- [x] Wire form to Formspree backend (real submissions)
+- [x] Add `franquicias@omniprise.com.py` direct email fallback
 
 **Pending:**
 - [ ] Add Zod schema validation
 - [ ] Add auto-save functionality
-- [ ] Add email notifications
-- [ ] Implement lead capture API (Supabase)
+- [ ] Implement lead capture API (Supabase for dashboard integration)
 
 **Deliverables:**
 - ✅ Multi-step application form
 - ✅ Step validation
-- ⚠️ Lead capture backend (pending Supabase integration)
-- ⚠️ Email notifications (pending)
+- ✅ Lead capture backend (Formspree — real submissions arriving via email)
+- ⚠️ Dashboard CRM integration (pending Supabase)
 
 ---
 
-### Phase 5: Performance & SEO — PARTIAL (March 28, 2026)
+### Phase 5: Performance & SEO — ✅ COMPLETE (March 28, 2026)
 **Goal:** Optimize for search engines and performance
 
 **Completed:**
@@ -214,10 +216,17 @@ Consistent → Aligned with dashboard design system
 - [x] robots.txt present
 - [x] Add Favicon (16x16, 32x32, 180x180, 192x192, 512x512)
 - [x] Add manifest.json (PWA)
+- [x] Enable Next.js image optimization (removed `unoptimized: true`)
+- [x] Convert 8 brand PNGs to WebP (84% size reduction)
+- [x] Replace `<a>` with `<Link>` for client-side routing
+- [x] Fix `href="#"` to `href="/"` on logo links
+- [x] Install Vercel Analytics
 
-**Pending:**
-- [ ] Optimize Core Web Vitals
-- [ ] Add Google Analytics 4
+**Deliverables:**
+- ✅ SEO-optimized website
+- ✅ Optimized images (WebP, Vercel CDN auto-optimization)
+- ✅ Analytics tracking (Vercel Analytics)
+- ✅ Search engine visibility
 
 **Deliverables:**
 - ✅ SEO-optimized website
@@ -470,6 +479,20 @@ Website/
 - ✅ **SEO Assets** — favicon, manifest.json, sitemap.xml, robots.txt, JSON-LD, Twitter Cards
 - ✅ **Navigation Updates** — Navbar, Footer, Hero all link to `/franchise` and `/franchise/apply`
 
+### Sprint 2 & 3 Polish (v2.2.0 — March 28, 2026)
+- ✅ **Image Optimization** — WebP conversion (84% reduction), Vercel CDN optimization enabled
+- ✅ **Link Migration** — All internal `<a>` → `<Link>` for client-side routing
+- ✅ **Vercel Analytics** — Real visitor metrics via @vercel/analytics
+- ✅ **Custom 404 Page** — Branded not-found page
+- ✅ **Skip-to-content** — Accessibility link for keyboard users
+- ✅ **Counter Flash Fix** — Stats show target values during SSR
+- ✅ **WorkModal XSS Fix** — Replaced dangerouslySetInnerHTML with React elements
+- ✅ **Hero Button Alignment** — CTAs centered on page
+- ✅ **Back-to-Top Button** — Floating scroll-to-top after 600px
+- ✅ **Contact Form** — Working form in `#contacto` section with Formspree backend
+- ✅ **Franchise Form Backend** — Real Formspree submission (was previously fake/simulated)
+- ✅ **Franchise Email** — `franquicias@omniprise.com.py` as direct contact fallback
+
 ### Pre-v2.0 Quick Wins (Completed in v1.x)
 - ✅ **Logo Handling** — Base64 extracted to proper SVG/JPEG assets
 - ✅ **Franchise CTA** — Hero button and franchise section
@@ -477,11 +500,12 @@ Website/
 
 ## NEXT TASKS
 
-1. **Connect Franchise Form to Backend** — Create `/api/franchise/leads` route, integrate Supabase
-2. **Add Zod Validation** — Replace basic HTML validation with Zod schemas
-3. **Add Google Analytics 4** — GA4 tracking script
-4. **Core Web Vitals** — Optimize images, reduce bundle size
-5. **Start Phase 6** — Multi-language support with next-intl
+1. **Brand Detail Pages** — Create `/marcas/[slug]` routes for each of the 7 brands
+2. **Privacy Policy + Terms** — Legal pages required for production
+3. **Testimonials Section** — Social proof for franchise landing page
+4. **Zod Validation** — Replace basic HTML validation with Zod schemas on franchise form
+5. **Supabase CRM Integration** — Connect franchise leads to dashboard CRM module
+6. **Start Phase 6** — Multi-language support with next-intl
 
 ---
 
