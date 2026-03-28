@@ -12,6 +12,7 @@ interface Brand {
   description: string;
   badge: string;
   wide?: boolean;
+  invertLogo?: boolean;
 }
 
 const BRANDS: Brand[] = [
@@ -32,6 +33,7 @@ const BRANDS: Brand[] = [
     description:
       'Pizza bar que combina pizzas de alta calidad, ambiente descontracturado y tragos innovadores. Pensada para consumo frecuente, con fuerte presencia nocturna y alta rotación en delivery. Plan de expansión 2026: 8 dark-kitchens para cobertura total del Gran Asunción.',
     badge: '8 dark-kitchens proyectadas 2026',
+    invertLogo: true,
   },
   {
     name: 'Rocco',
@@ -68,6 +70,7 @@ const BRANDS: Brand[] = [
     description:
       'Opera con 1 dark-kitchen en Mburucuyá y 1 local en Shopping Multiplaza. Incorporada a Omniprise el 01/01/2026, integrada a una plataforma preparada para escalar y profesionalizar su crecimiento. Plan 2026: 4 nuevas dark-kitchens y 2 locales físicos en Asunción.',
     badge: 'Expansión 2026: 4 nuevas cocinas',
+    invertLogo: true,
   },
   {
     name: 'Barrio Pizzero',
@@ -101,6 +104,7 @@ function BrandCard({ brand, index, isVisible }: { brand: Brand; index: number; i
                 width={280}
                 height={120}
                 className="max-h-[96px] w-auto object-contain"
+                style={brand.invertLogo ? { filter: 'invert(1) brightness(0.9)' } : undefined}
               />
             </div>
             <div className="text-[10px] tracking-[0.18em] uppercase text-text-hint font-medium mb-3">
@@ -129,6 +133,7 @@ function BrandCard({ brand, index, isVisible }: { brand: Brand; index: number; i
               width={210}
               height={80}
               className="max-h-[80px] w-auto object-contain"
+                style={brand.invertLogo ? { filter: 'invert(1) brightness(0.9)' } : undefined}
             />
           </div>
           <div className="text-[10px] tracking-[0.18em] uppercase text-text-hint font-medium mb-3 shrink-0">
