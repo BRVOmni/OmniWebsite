@@ -2,13 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useReveal } from '@/lib/use-reveal';
-
-const CONTACT_BLOCKS = [
-  { label: 'Correo electrónico', value: 'info@omniprise.com.py' },
-  { label: 'Sede', value: 'Asunción, Paraguay' },
-  { label: 'Fundación', value: '2024' },
-  { label: 'Operaciones en', value: '6 ciudades' },
-];
+import { ContactForm } from './ContactForm';
 
 export function PartnersSection() {
   const { ref, isVisible } = useReveal();
@@ -45,7 +39,7 @@ export function PartnersSection() {
             initial={{ opacity: 0, y: 24 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.15 }}
-            className="text-base text-text-secondary leading-relaxed mb-12"
+            className="text-base text-text-secondary leading-relaxed mb-4"
           >
             Omniprise no busca proveedores transaccionales. Busca{' '}
             <strong className="text-text-primary font-medium">
@@ -54,36 +48,28 @@ export function PartnersSection() {
             , con volumen creciente, visibilidad constante y proyección real.
           </motion.p>
 
-          <motion.a
-            href="mailto:info@omniprise.com.py"
+          <motion.p
             initial={{ opacity: 0, y: 24 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="inline-flex text-[15px] font-medium text-surface-900 bg-omniprise-500 hover:bg-omniprise-400 px-8 py-3.5 rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5"
+            className="text-sm text-text-hint leading-relaxed"
           >
-            Contactar ahora
-          </motion.a>
+            También podés escribirnos directamente a{' '}
+            <a href="mailto:info@omniprise.com.py" className="text-text-secondary hover:text-text-primary transition-colors">
+              info@omniprise.com.py
+            </a>
+          </motion.p>
         </div>
 
-        {/* Right */}
-        <div className="md:border-l md:border-border-subtle md:pl-20">
-          {CONTACT_BLOCKS.map((block, i) => (
-            <motion.div
-              key={block.label}
-              initial={{ opacity: 0, y: 24 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 + i * 0.08 }}
-              className="mb-12 last:mb-0"
-            >
-              <p className="text-[10px] tracking-[0.2em] uppercase text-text-hint font-medium mb-2">
-                {block.label}
-              </p>
-              <p className="font-display font-bold text-xl uppercase tracking-[0.05em] text-text-primary">
-                {block.value}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+        {/* Right — Contact Form */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.25 }}
+          className="md:border-l md:border-border-subtle md:pl-16"
+        >
+          <ContactForm />
+        </motion.div>
       </div>
     </section>
   );
