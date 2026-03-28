@@ -419,11 +419,14 @@ function SuccessView() {
   );
 }
 
+const FRANCHISE_FORM_ACTION = 'https://formspree.io/f/2967703689361358019';
+
 export default function ApplyPage() {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<FormData>(INITIAL_DATA);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
   const totalSteps = 4;
 
@@ -456,11 +459,30 @@ export default function ApplyPage() {
 
   const handleSubmit = async () => {
     setSubmitting(true);
-    // Simulate submission - in production this would POST to /api/franchise/leads
-    await new Promise((r) => setTimeout(r, 1500));
-    console.log('Form submitted:', data);
-    setSubmitting(false);
-    setSubmitted(true);
+    setSubmitError(false);
+
+    try {
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (value) formData.append(key, value);
+      });
+
+      const res = await fetch(FRANCHISE_FORM_ACTION, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: formData,
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        setSubmitError(true);
+      }
+    } catch {
+      setSubmitError(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -482,6 +504,12 @@ export default function ApplyPage() {
             <p className="text-[14px] text-text-secondary mt-3">
               Completa el formulario en 4 pasos. Toma menos de 5 minutos.
             </p>
+            <p className="text-[13px] text-text-hint mt-2">
+              También podés escribirnos directamente a{' '}
+              <a href="mailto:franquicias@omniprise.com.py" className="text-text-secondary hover:text-text-primary transition-colors">
+                franquicias@omniprise.com.py
+              </a>
+            </p>
           </div>
         )}
 
@@ -502,6 +530,12 @@ export default function ApplyPage() {
               </AnimatePresence>
 
               {/* Navigation */}
+              {submitError && (
+                <p className="text-sm text-danger-500 mt-4">
+                  Hubo un error al enviar. Intentá de nuevo o escribinos a{' '}
+                  <a href="mailto:franquicias@omniprise.com.py" className="underline">franquicias@omniprise.com.py</a>
+                </p>
+              )}
               <div className="flex items-center justify-between mt-10 pt-6 border-t border-border-subtle">
                 <button
                   onClick={() => setStep((s) => s - 1)}
