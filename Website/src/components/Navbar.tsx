@@ -50,7 +50,7 @@ export function Navbar() {
             alt="Omniprise"
             width={140}
             height={40}
-            className="h-7 w-auto mix-blend-screen"
+            className="h-7 w-auto"
             priority
           />
         </a>

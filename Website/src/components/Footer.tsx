@@ -19,7 +19,7 @@ export function Footer() {
           alt="Omniprise"
           width={120}
           height={34}
-          className="h-5 w-auto mix-blend-screen"
+          className="h-5 w-auto"
         />
       </a>
 
