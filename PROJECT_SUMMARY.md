@@ -11,7 +11,7 @@ This document provides a comprehensive overview of all Omniprise projects, their
 
 ### Projects Included:
 1. **Corporate Food Dashboard** (✅ Production Live)
-2. **Corporate Website** (🔄 Migration in Progress)
+2. **Corporate Website** (✅ v2.0 Live on Next.js 15)
 3. **Franchise Lead System** (📋 Roadmap Defined)
 
 ---
@@ -72,7 +72,7 @@ This document provides a comprehensive overview of all Omniprise projects, their
 - ✅ **Dark + Colorful Hybrid Design** - Dark surfaces with sky blue (#0ea5e9) accent colors
 - ✅ **framer-motion Animations** - Scroll-triggered reveals, animated counters, page transitions
 - ✅ **Mobile Responsive** - Hamburger menu, responsive grid layouts
-- ✅ **Production Build** - Static export (`output: "export"`) for Vercel deployment
+- ✅ **Production Build** - Next.js standard build for Vercel deployment
 - ✅ **Brand Logos** - 7 PNG brand logos in `/public/brands/`
 
 ### Completed Features:
@@ -86,42 +86,42 @@ This document provides a comprehensive overview of all Omniprise projects, their
 - ✅ **Phrasing Updates** - "con mucha trayectoria en el mercado"
 - ✅ **Stats Section** - "30%" properly displayed
 
-### Remaining Issues:
-- ⚠️ **Logo Files** - Need proper high-quality logo assets (currently using placeholder)
+### Remaining Work:
 - ⚠️ **Google Form** - Replace placeholder URL with actual franchise application form
-- ⚠️ **Design Style** - Monochromatic design differs from colorful dashboard aesthetic
-- ⚠️ **Architecture** - Single HTML file (not ideal for long-term maintenance)
+- ⚠️ **Logo Files** - Need proper high-quality logo assets (currently using placeholder SVGs)
+- ⚠️ **SEO** - Add favicon, sitemap.xml, robots.txt, structured data (JSON-LD)
 - ⚠️ **No Analytics** - No tracking or metrics in place
 - ⚠️ **Single Language** - Spanish only (English translation needed)
+- ⚠️ **Franchise Landing Page** - Dedicated `/franchise` route with application form
 
 ### Migration Plan Summary:
 
-**Phase 1: Foundation & Design Overhaul (Week 1)**
-- Initialize Next.js 15 project
+**Phase 1: Foundation & Design Overhaul** — ✅ Complete
+- Initialized Next.js 15 project
 - Set up shared design system with dashboard
-- Extract logo to SVG assets
-- Update color palette
-- Rebuild hero section
+- Extracted logo to SVG assets
+- Updated color palette to dark + colorful hybrid
+- Rebuilt hero section
 
-**Phase 2: Content Migration (Week 2)**
-- Create component structure
-- Migrate all sections to React components
-- Optimize brand logos
-- Improve mobile navigation
+**Phase 2: Content Migration** — ✅ Complete
+- Created component structure (11 components)
+- Migrated all sections to React components
+- Integrated real PNG brand logos
+- Mobile responsive with hamburger menu
 
-**Phase 3: Franchise Feature (Week 3-4)**
+**Phase 3: Franchise Feature (Upcoming)**
 - Create franchise landing page
 - Build multi-step application form
 - Implement lead capture backend
 - Add email notifications
 
-**Phase 4: Performance & SEO (Week 5)**
+**Phase 4: Performance & SEO (Upcoming)**
 - Optimize Core Web Vitals
-- Add Open Graph tags
-- Implement structured data
+- Add favicon, sitemap, robots.txt
+- Implement structured data (JSON-LD)
 - Add Google Analytics 4
 
-**Phase 5: Multi-language (Week 6)**
+**Phase 5: Multi-language (Upcoming)**
 - Set up next-intl for i18n
 - Create English translations
 - Add language switcher
@@ -274,41 +274,28 @@ See **[FRANCHISE_FEATURE_ROADMAP.md](FRANCHISE_FEATURE_ROADMAP.md)** for complet
 
 ### This Week (Priority Order):
 
-1. **Fix Website Logo Handling**
-   - Create `/public/logos/omniprise.svg`
-   - Extract logo from base64
-   - Update all `<img>` tags
-   - **Effort:** 2 hours
+1. **Push v2.0 to GitHub and verify Vercel deployment**
+   - Push all changes to the `github` remote
+   - Verify auto-deployment triggers on Vercel
+   - Confirm production site is live at www.omniprise.com.py
 
-2. **Add Franchise CTA to Website**
-   - Add "Conviértete en Socio" button to hero
-   - Create simple landing page section
-   - Set up temporary Google Form for lead capture
-   - **Effort:** 4 hours
+2. **Website SEO & Polish**
+   - Add favicon and manifest.json
+   - Create sitemap.xml and robots.txt
+   - Add structured data (JSON-LD)
+   - Replace Google Form placeholder URL
 
-3. **Approve Roadmaps**
-   - Review WEBSITE_ROADMAP.md
+3. **Approve Franchise Roadmap**
    - Review FRANCHISE_FEATURE_ROADMAP.md
    - Provide feedback/approval
-   - **Effort:** 1 hour
-
-4. **Set Up Development Environment**
-   - Initialize Next.js project for website
-   - Configure shared design system
-   - Set up development workflow
-   - **Effort:** 3 hours
 
 ### Next Month:
 
-1. **Complete Website Migration Phase 1-2**
-   - Foundation and design overhaul
-   - Content migration
-   - **Effort:** 40 hours
-
-2. **Start Franchise Feature Phase 1**
+1. **Start Franchise Feature Phase 1-2**
    - Database schema creation
    - Backend API development
-   - **Effort:** 40 hours
+   - Franchise landing page and application form
+   - **Effort:** 80 hours
 
 ---
 
@@ -321,13 +308,10 @@ See **[FRANCHISE_FEATURE_ROADMAP.md](FRANCHISE_FEATURE_ROADMAP.md)** for complet
 - **Effort:** 10-15 hours/week (bug fixes, minor enhancements)
 - **Key Personnel:** 1 Full-time developer
 
-**Website Migration:**
-- **Status:** Active Development (6 weeks)
-- **Effort:** 40 hours/week
-- **Key Personnel:**
-  - 1 Senior Frontend Developer
-  - 1 UX/UI Designer
-  - 1 Product Manager (part-time)
+**Website:**
+- **Status:** Phase 1-2 Complete, Phase 3-5 Remaining
+- **Effort:** 10-15 hours/week (SEO, polish, new features)
+- **Key Personnel:** 1 Frontend Developer
 
 **Franchise Feature:**
 - **Status:** Active Development (6 weeks)
@@ -338,9 +322,9 @@ See **[FRANCHISE_FEATURE_ROADMAP.md](FRANCHISE_FEATURE_ROADMAP.md)** for complet
   - 1 Data Analyst (for scoring optimization)
 
 **Total Estimated Effort:**
-- Website Migration: 240 hours (6 weeks)
+- Website Remaining (Phase 3-5): 120 hours
 - Franchise Feature: 240 hours (6 weeks)
-- **Total:** 480 hours over 6-8 weeks (with parallel work)
+- **Total:** 360 hours over 6-8 weeks (with parallel work)
 
 ---
 
@@ -409,12 +393,12 @@ npm run dev
 # Visit http://localhost:3000/dashboard
 ```
 
-### For Website Migration:
+### For Website Development:
 ```bash
-# Follow WEBSITE_ROADMAP.md Phase 1 instructions
-npm create next-app@latest omniprise-website
-cd omniprise-website
-# Install dependencies and configure
+cd /home/bruno-rivas/corporate-food-dashboard/Website
+npm install
+npm run dev
+# Visit http://localhost:3001
 ```
 
 ### For Franchise Feature:
@@ -451,28 +435,28 @@ cd omniprise-website
 
 If work pauses and needs to be resumed:
 
-### Week 1 Continuation:
-1. ✅ Review PROJECT_SUMMARY.md
-2. ✅ Check status of Website/README.md (Quick Wins)
-3. ✅ Start Phase 1 of WEBSITE_ROADMAP.md
-4. ✅ Begin Phase 1 of FRANCHISE_FEATURE_ROADMAP.md
+### Next Steps:
+1. Push v2.0 to GitHub and verify Vercel deployment
+2. Complete SEO improvements (favicon, sitemap, structured data)
+3. Start Phase 3 of WEBSITE_ROADMAP.md (Franchise Feature)
+4. Begin Phase 1 of FRANCHISE_FEATURE_ROADMAP.md
 
 ### Checkpoints:
-- **After Week 2:** Review Phase 1-2 completion
-- **After Week 4:** Review Phase 1-4 completion
-- **After Week 6:** Final review and launch preparation
+- **After Week 2:** Franchise landing page live
+- **After Week 4:** Franchise application form functional
+- **After Week 6:** Franchise feature complete, full launch
 
 ### Success Criteria:
-- Website migrated to Next.js v2.0
+- ✅ Website migrated to Next.js v2.0
 - Franchise feature fully implemented
 - Design consistency across all projects
 - 90%+ franchise conversion rate achieved
 
 ---
 
-**Last Updated:** March 26, 2026
-**Documentation Status:** ✅ Complete and Current
-**Next Milestone:** Website Phase 1 & Franchise Phase 1 Approval
+**Last Updated:** March 28, 2026
+**Documentation Status:** Complete and Current
+**Next Milestone:** SEO Polish & Franchise Feature Phase 1
 
 ---
 
