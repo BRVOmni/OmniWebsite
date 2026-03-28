@@ -61,7 +61,7 @@ export function HeroSection() {
             Nuestras marcas
           </a>
           <a
-            href="#franquicia"
+            href="/franchise"
             className="text-[15px] font-normal text-text-secondary hover:text-text-primary px-8 py-3.5 rounded-full border border-border-medium tracking-wide transition-all duration-200 hover:-translate-y-0.5"
           >
             Conviértete en Franquiciado →

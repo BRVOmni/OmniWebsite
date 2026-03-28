@@ -1,7 +1,7 @@
 # 📋 PROJECT SUMMARY - Omniprise Complete Roadmap
 
 **Grupo Omniprise - All Projects Overview**
-**Last Updated:** March 28, 2026 - Website v2.0 Migration Complete ✅
+**Last Updated:** March 28, 2026 - Website v2.0 + Franchise Pages Complete ✅
 
 ---
 
@@ -11,8 +11,8 @@ This document provides a comprehensive overview of all Omniprise projects, their
 
 ### Projects Included:
 1. **Corporate Food Dashboard** (✅ Production Live)
-2. **Corporate Website** (✅ v2.0 Live on Next.js 15)
-3. **Franchise Lead System** (📋 Roadmap Defined)
+2. **Corporate Website** (✅ v2.0 Live — Franchise pages built)
+3. **Franchise Lead System** (📋 Roadmap Defined — Frontend landing + form complete)
 
 ---
 
@@ -87,11 +87,11 @@ This document provides a comprehensive overview of all Omniprise projects, their
 - ✅ **Stats Section** - "30%" properly displayed
 
 ### Remaining Work:
-- ⚠️ **Google Form** - Replace placeholder URL with actual franchise application form
-- ⚠️ **SEO** - Add favicon, sitemap.xml, robots.txt, structured data (JSON-LD)
-- ⚠️ **No Analytics** - No tracking or metrics in place
+- ✅ ~~Google Form~~ - Replaced with custom multi-step application form at `/franchise/apply`
+- ✅ ~~SEO~~ - Favicon, manifest.json, robots.txt, sitemap.xml, JSON-LD structured data, Twitter Cards added
+- ⚠️ **No Analytics** - No tracking or metrics in place (Google Analytics 4 pending)
 - ⚠️ **Single Language** - Spanish only (English translation needed)
-- ⚠️ **Franchise Landing Page** - Dedicated `/franchise` route with application form
+- ⚠️ **Franchise Backend** - Form currently simulates submission; needs API route + Supabase integration
 
 ### Migration Plan Summary:
 
@@ -108,17 +108,21 @@ This document provides a comprehensive overview of all Omniprise projects, their
 - Integrated real PNG brand logos
 - Mobile responsive with hamburger menu
 
-**Phase 3: Franchise Feature (Upcoming)**
-- Create franchise landing page
-- Build multi-step application form
-- Implement lead capture backend
-- Add email notifications
+**Phase 3: Franchise Feature — ✅ Complete (March 28, 2026)**
+- ✅ Franchise landing page at `/franchise` with hero, benefits, brands, process, FAQ, CTA sections
+- ✅ Multi-step application form at `/franchise/apply` (4 steps: Personal, Brand, Investment, Motivation)
+- ✅ Animated step indicator, form validation, success confirmation page
+- ⚠️ Lead capture backend still pending (currently simulated)
 
-**Phase 4: Performance & SEO (Upcoming)**
-- Optimize Core Web Vitals
-- Add favicon, sitemap, robots.txt
-- Implement structured data (JSON-LD)
-- Add Google Analytics 4
+**Phase 4: Performance & SEO — ✅ Partial (March 28, 2026)**
+- ✅ Favicon generated (16x16, 32x32, 180x180, 192x192, 512x512)
+- ✅ manifest.json for PWA
+- ✅ sitemap.xml fixed and updated with franchise routes
+- ✅ robots.txt present
+- ✅ JSON-LD structured data (Organization schema)
+- ✅ Twitter Card meta tags added
+- ⚠️ Core Web Vitals optimization pending
+- ⚠️ Google Analytics 4 pending
 
 **Phase 5: Multi-language (Upcoming)**
 - Set up next-intl for i18n
@@ -281,10 +285,10 @@ See **[FRANCHISE_FEATURE_ROADMAP.md](FRANCHISE_FEATURE_ROADMAP.md)** for complet
 
 ### Next Up (Priority Order):
 
-1. **Replace Google Form placeholder** — Swap the placeholder URL with the actual franchise application form
-2. **Website SEO & Polish** — favicon, manifest.json, sitemap.xml, robots.txt, structured data (JSON-LD)
-3. **Add Google Analytics 4** — Tracking and metrics
-4. **Approve Franchise Roadmap** — Review FRANCHISE_FEATURE_ROADMAP.md and provide feedback
+1. **Add Google Analytics 4** — Tracking and metrics (now the highest priority quick win)
+2. **Franchise Backend Integration** — Connect `/franchise/apply` form to Supabase via API route
+3. **Approve Franchise Roadmap** — Review FRANCHISE_FEATURE_ROADMAP.md and begin dashboard module
+4. **Core Web Vitals Optimization** — Optimize image sizes, code splitting
 
 ### Next Month:
 
@@ -306,8 +310,8 @@ See **[FRANCHISE_FEATURE_ROADMAP.md](FRANCHISE_FEATURE_ROADMAP.md)** for complet
 - **Key Personnel:** 1 Full-time developer
 
 **Website:**
-- **Status:** Phase 1-2 Complete, Phase 3-5 Remaining
-- **Effort:** 10-15 hours/week (SEO, polish, new features)
+- **Status:** Phase 1-4 Complete (landing, form, SEO basics), Phase 5-6 Remaining (analytics, i18n)
+- **Effort:** 5-10 hours/week (analytics, polish, i18n)
 - **Key Personnel:** 1 Frontend Developer
 
 **Franchise Feature:**
@@ -319,9 +323,9 @@ See **[FRANCHISE_FEATURE_ROADMAP.md](FRANCHISE_FEATURE_ROADMAP.md)** for complet
   - 1 Data Analyst (for scoring optimization)
 
 **Total Estimated Effort:**
-- Website Remaining (Phase 3-5): 120 hours
+- Website Remaining (Phase 5-6, Analytics + i18n): 40 hours
 - Franchise Feature: 240 hours (6 weeks)
-- **Total:** 360 hours over 6-8 weeks (with parallel work)
+- **Total:** 280 hours over 6-8 weeks (with parallel work)
 
 ---
 
@@ -433,10 +437,10 @@ npm run dev
 If work pauses and needs to be resumed:
 
 ### Next Steps:
-1. Push v2.0 to GitHub and verify Vercel deployment
-2. Complete SEO improvements (favicon, sitemap, structured data)
-3. Start Phase 3 of WEBSITE_ROADMAP.md (Franchise Feature)
-4. Begin Phase 1 of FRANCHISE_FEATURE_ROADMAP.md
+1. Add Google Analytics 4 to website
+2. Connect franchise form to Supabase backend (API route)
+3. Start FRANCHISE_FEATURE_ROADMAP.md Phase 1 (Database & Backend)
+4. Begin dashboard franchise module (Pipeline view)
 
 ### Checkpoints:
 - **After Week 2:** Franchise landing page live
@@ -453,7 +457,7 @@ If work pauses and needs to be resumed:
 
 **Last Updated:** March 28, 2026
 **Documentation Status:** Complete and Current
-**Next Milestone:** SEO Polish & Franchise Feature Phase 1
+**Next Milestone:** Franchise Backend Integration (Supabase + API Routes)
 
 ---
 

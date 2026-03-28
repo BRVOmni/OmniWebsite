@@ -10,7 +10,7 @@ import { WorkModal } from './WorkModal';
 const NAV_LINKS = [
   { label: 'Nosotros', href: '#nosotros' },
   { label: 'Marcas', href: '#marcas' },
-  { label: 'Franquicia', href: '#franquicia' },
+  { label: 'Franquicia', href: '/franchise' },
   { label: 'Visión', href: '#vision' },
   { label: 'Contacto', href: '#contacto' },
 ] as const;

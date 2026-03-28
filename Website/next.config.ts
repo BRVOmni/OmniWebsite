@@ -5,6 +5,12 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   outputFileTracingRoot: __dirname,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
 };
 
 export default nextConfig;

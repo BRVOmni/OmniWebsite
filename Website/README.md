@@ -2,6 +2,14 @@
 
 **Version 2.0.0 | Next.js 15 | March 2026**
 
+> **ACTION REQUIRED — Production Audit (March 28, 2026)**
+>
+> A full production audit was performed. There are **5 critical issues** and several important fixes to address.
+>
+> :page_facing_up: **Full audit with prioritized fix plan: [`AUDIT_2026-03-28.md`](./AUDIT_2026-03-28.md)**
+>
+> The dev team should start with the **Sprint 1: Production Fixes** section (estimated 1 hour total).
+
 ---
 
 ## Current Status
@@ -286,12 +294,32 @@ Search for `@omniprise.com.py` across components to find all email references.
 - [x] Vercel deployment pipeline
 - [x] Logo compression and dark logo fixes
 
-### Next Up
-- [ ] Replace Google Form placeholder with actual URL
-- [ ] Add favicon and manifest.json
-- [ ] Create sitemap.xml and robots.txt
-- [ ] Add Google Analytics 4
-- [ ] Implement structured data (JSON-LD)
+### Next Up (from audit — see [`AUDIT_2026-03-28.md`](./AUDIT_2026-03-28.md))
+
+**Sprint 1 — Production Fixes (Day 1):**
+- [ ] Fix malformed `sitemap.xml` (broken XML)
+- [ ] Push unpushed commit to GitHub (`06a846c`)
+- [ ] Commit `robots.txt` and `sitemap.xml` to git
+- [ ] Add favicon + apple-touch-icon
+- [ ] Fix ESLint config (broken — `@eslint/eslintrc` missing)
+
+**Sprint 2 — Polish (Week 1):**
+- [ ] Create and add Open Graph image for social sharing
+- [ ] Add Twitter/X Card metadata
+- [ ] Enable Next.js image optimization (remove `unoptimized: true`)
+- [ ] Convert large brand PNGs to WebP (660 KB -> ~50 KB)
+- [ ] Replace `dangerouslySetInnerHTML` in WorkModal.tsx
+- [ ] Fix counter hydration flash (shows "0" on SSR)
+- [ ] Remove `old-static/` from git
+- [ ] Add custom 404 page
+
+**Sprint 3 — Enhancements (Week 2-3):**
+- [ ] Add analytics (Vercel Analytics or Google Analytics)
+- [ ] Add contact form (replace mailto link)
+- [ ] Add "Back to Top" button
+- [ ] Add brand detail pages (`/marcas/[slug]`)
+- [ ] Add skip-to-content link for accessibility
+- [ ] Replace `<a>` with Next.js `<Link>` for internal nav
 
 ### Future Phases
 - [ ] Franchise landing page (`/franchise`)
@@ -299,6 +327,8 @@ Search for `@omniprise.com.py` across components to find all email references.
 - [ ] Lead capture API with Supabase
 - [ ] Multi-language support (next-intl)
 - [ ] Light/dark theme toggle
+- [ ] Privacy policy and terms pages
+- [ ] Blog/news section for SEO
 
 See [WEBSITE_ROADMAP.md](../WEBSITE_ROADMAP.md) for the complete migration plan.
 

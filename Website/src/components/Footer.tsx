@@ -6,7 +6,7 @@ const FOOTER_LINKS = [
   { label: 'Nosotros', href: '#nosotros' },
   { label: 'Marcas', href: '#marcas' },
   { label: 'Visión', href: '#vision' },
-  { label: 'Franquicia', href: '#franquicia', highlight: true },
+  { label: 'Franquicia', href: '/franchise', highlight: true },
   { label: 'Contacto', href: '#contacto' },
 ];
 

@@ -29,6 +29,14 @@ export const metadata: Metadata = {
     "delivery",
     "food service",
   ],
+  icons: {
+    icon: [
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/manifest.json",
   openGraph: {
     title: "Omniprise — Plataforma de Marcas Gastronómicas",
     description:
@@ -37,6 +45,12 @@ export const metadata: Metadata = {
     siteName: "Omniprise",
     locale: "es_PY",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Omniprise — Plataforma de Marcas Gastronómicas",
+    description:
+      "Operador gastronómico con 7 marcas, 17 locales y presencia en 6 ciudades en Paraguay.",
   },
 };
 

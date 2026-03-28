@@ -82,7 +82,7 @@ export function FranchiseSection() {
             className="flex flex-col items-start gap-4"
           >
             <a
-              href="#contacto"
+              href="/franchise/apply"
               className="inline-flex items-center gap-3 text-base font-medium text-surface-900 bg-omniprise-500 hover:bg-omniprise-400 px-9 py-4 rounded-full tracking-wide transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(14,165,233,0.25)]"
             >
               <span>Solicitar Franquicia</span>
