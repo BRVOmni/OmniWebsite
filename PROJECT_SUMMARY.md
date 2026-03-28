@@ -1,7 +1,7 @@
 # 📋 PROJECT SUMMARY - Omniprise Complete Roadmap
 
 **Grupo Omniprise - All Projects Overview**
-**Last Updated:** March 28, 2026 - Website v2.0 + Franchise Pages Complete ✅
+**Last Updated:** March 28, 2026 - Website v2.1.1 + Production Fixes Complete
 
 ---
 
@@ -57,12 +57,23 @@ This document provides a comprehensive overview of all Omniprise projects, their
 
 ## 🌐 WEBSITE PROJECT STATUS
 
-### **Status: ✅ WEBSITE v2.0 MIGRATION COMPLETE (v2.0.0)**
-- **Current Version:** v2.0.0 (Next.js 15 Migration Complete)
-- **Previous Version:** v1.5.2 (Static HTML)
+### **Status: ✅ WEBSITE v2.1.1 PRODUCTION FIXES COMPLETE**
+- **Current Version:** v2.1.1 (Production Fixes + Logo Fixes)
+- **Previous Version:** v2.1.0 (Franchise Pages)
 - **Current URL:** https://www.omniprise.com.py
 - **Deployment Status:** Vercel (Next.js framework)
 - **Migration Date:** March 28, 2026
+
+### v2.1.1 Production Fixes (March 28, 2026):
+- ✅ **Production Audit Complete** - All critical issues from audit resolved
+- ✅ **sitemap.xml** - Fixed malformed XML, added /franchise/apply route
+- ✅ **ESLint** - New flat config with typescript-eslint (0 errors, 4 warnings)
+- ✅ **OG + Twitter Images** - Added image references to metadata
+- ✅ **next.config.ts** - Removed eslint.ignoreDuringBuilds
+- ✅ **.gitignore** - Cleaned up root + Website files
+- ✅ **old-static/** - Removed from git tracking
+- ✅ **Los Condenados Logo** - Converted to white-on-transparent PNG, removed CSS invert filter
+- ✅ **Omniprise Logo** - Replaced SVG text element with real PNG (sharp negated)
 
 ### v2.0 Migration Complete (March 28, 2026):
 - ✅ **Next.js 15 Project** - Full React component architecture replacing single HTML file
@@ -114,18 +125,22 @@ This document provides a comprehensive overview of all Omniprise projects, their
 - ✅ Animated step indicator, form validation, success confirmation page
 - ⚠️ Lead capture backend still pending (currently simulated)
 
-**Phase 4: Performance & SEO — ✅ Partial (March 28, 2026)**
+**Phase 4: Performance & SEO — ✅ Complete (March 28, 2026)**
 - ✅ Favicon generated (16x16, 32x32, 180x180, 192x192, 512x512)
 - ✅ manifest.json for PWA
-- ✅ sitemap.xml fixed and updated with franchise routes
+- ✅ sitemap.xml fixed and updated with franchise routes (+ /franchise/apply)
 - ✅ robots.txt present
 - ✅ JSON-LD structured data (Organization schema)
-- ✅ Twitter Card meta tags added
-- ⚠️ Core Web Vitals optimization pending
+- ✅ Twitter Card + Open Graph meta tags with images
+- ✅ ESLint flat config (0 errors, typescript-eslint)
+- ✅ .gitignore cleaned up, old-static/ removed from tracking
+- ⚠️ Core Web Vitals optimization pending (image optimization)
 - ⚠️ Google Analytics 4 pending
 
 **Phase 5: Multi-language (Upcoming)**
 - Set up next-intl for i18n
+- Create English translations
+- add language switcher- Set up next-intl for i18n
 - Create English translations
 - Add language switcher
 

@@ -4,7 +4,33 @@
 
 ---
 
-## [1.21.0] - Supervision Module Phase 2 Complete - Photos & Analytics - 2026-03-25 📸✅
+## [2.1.1] - Website Production Fixes - 2026-03-28
+
+### Bug Fixes
+- **Omniprise Logo** - Replaced SVG `<text>` element (font rendering issues) with real brand PNG
+- **Los Condenados Logo** - Converted from CSS-inverted red (blue tint) to proper white-on-transparent PNG
+- **ESGLint** - Fixed peer dependency conflict (eslint@10 + eslint-plugin-react-hooks), New flat config
+ 0 errors)
+- **Sitemap** - Added missing `/franchise/apply` route
+- **OG + Twitter** - Added image references to metadata blocks
+- **next.config.ts** - Removed `eslint.ignoreDuringBuilds`
+- **.gitignore** - Cleaned up root + Website configs
+
+### Removed
+- **old-static/** directory - Removed from git tracking
+
+---
+
+## [2.1.0] - Franchise Landing Page & Application Form - 2026-03-28
+
+### New Features
+- **Franchise Landing Page** - `/franchise` route with hero, benefits, brands, process, FAQ, CTA
+- **Multi-step Application Form** - `/franchise/apply` with 4 steps, validation, success confirmation
+- **SEO Assets** - favicon, manifest, robots.txt, sitemap.xml, JSON-LD, Twitter Cards
+
+---
+
+## [1.21.0] - Supervision Module Phase 2 Complete - Photos & Analytics - 2026-03-25
 
 ### New Features
 - ✅ **Photo Upload System:** Complete photo management for findings and actions
