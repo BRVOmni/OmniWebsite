@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 
-const FORM_ACTION = 'https://formspree.io/f/xpwdjbkg';
+const FORM_ACTION = 'https://formspree.io/f/2967699696509779106';
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error';
 
