@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { WorkModal } from './WorkModal';
 
@@ -44,7 +45,7 @@ export function Navbar() {
         )}
       >
         {/* Logo */}
-        <a href="#" className="flex items-center">
+        <Link href="/" className="flex items-center">
           <Image
             src="/omniprise-logo.png"
             alt="Omniprise"
@@ -53,18 +54,27 @@ export function Navbar() {
             className="h-7 w-auto"
             priority
           />
-        </a>
+        </Link>
 
         {/* Desktop links */}
         <ul className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
-              <a
-                href={link.href}
-                className="text-[13px] font-normal tracking-wider text-text-secondary hover:text-text-primary transition-colors duration-200"
-              >
-                {link.label}
-              </a>
+              {link.href.startsWith('/') ? (
+                <Link
+                  href={link.href}
+                  className="text-[13px] font-normal tracking-wider text-text-secondary hover:text-text-primary transition-colors duration-200"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  href={link.href}
+                  className="text-[13px] font-normal tracking-wider text-text-secondary hover:text-text-primary transition-colors duration-200"
+                >
+                  {link.label}
+                </a>
+              )}
             </li>
           ))}
         </ul>

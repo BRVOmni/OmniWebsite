@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 const FOOTER_LINKS = [
   { label: 'Nosotros', href: '#nosotros' },
@@ -13,7 +14,7 @@ const FOOTER_LINKS = [
 export function Footer() {
   return (
     <footer className="px-6 md:px-12 py-12 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-6">
-      <a href="#" className="flex items-center">
+      <Link href="/" className="flex items-center">
         <Image
           src="/omniprise-logo.png"
           alt="Omniprise"
@@ -21,19 +22,30 @@ export function Footer() {
           height={34}
           className="h-5 w-auto"
         />
-      </a>
+      </Link>
 
       <ul className="flex flex-wrap justify-center gap-8">
         {FOOTER_LINKS.map((link) => (
           <li key={link.href}>
-            <a
-              href={link.href}
-              className={`text-xs tracking-[0.05em] transition-colors duration-200 ${
-                link.highlight ? 'text-text-primary' : 'text-text-hint hover:text-text-primary'
-              }`}
-            >
-              {link.label}
-            </a>
+            {link.href.startsWith('/') ? (
+              <Link
+                href={link.href}
+                className={`text-xs tracking-[0.05em] transition-colors duration-200 ${
+                  link.highlight ? 'text-text-primary' : 'text-text-hint hover:text-text-primary'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                href={link.href}
+                className={`text-xs tracking-[0.05em] transition-colors duration-200 ${
+                  link.highlight ? 'text-text-primary' : 'text-text-hint hover:text-text-primary'
+                }`}
+              >
+                {link.label}
+              </a>
+            )}
           </li>
         ))}
       </ul>

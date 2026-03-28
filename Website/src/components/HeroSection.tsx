@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import Link from 'next/link';
 
 export function HeroSection() {
   return (
@@ -60,12 +60,12 @@ export function HeroSection() {
           >
             Nuestras marcas
           </a>
-          <a
+          <Link
             href="/franchise"
             className="text-[15px] font-normal text-text-secondary hover:text-text-primary px-8 py-3.5 rounded-full border border-border-medium tracking-wide transition-all duration-200 hover:-translate-y-0.5"
           >
             Conviértete en Franquiciado →
-          </a>
+          </Link>
           <a
             href="#nosotros"
             className="hidden sm:inline-flex text-[15px] font-normal text-text-secondary hover:text-text-primary px-8 py-3.5 rounded-full border border-border-subtle tracking-wide transition-all duration-200 hover:-translate-y-0.5"

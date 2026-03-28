@@ -14,7 +14,7 @@ const jsonLd = {
   '@type': 'Organization',
   name: 'Omniprise',
   url: 'https://www.omniprise.com.py',
-  logo: 'https://www.omniprise.com.py/omniprise.svg',
+  logo: 'https://www.omniprise.com.py/omniprise-logo.png',
   description:
     'Omniprise es un operador gastronómico creado para desarrollar, operar e integrar marcas de alto impacto en Paraguay.',
   address: {

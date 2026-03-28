@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const barlowCondensed = Barlow_Condensed({
@@ -78,6 +79,7 @@ export default function RootLayout({
           Saltar al contenido
         </a>
         {children}
+        <Analytics />
       </body>
     </html>
   );
