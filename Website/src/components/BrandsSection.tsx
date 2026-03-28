@@ -33,7 +33,6 @@ const BRANDS: Brand[] = [
     description:
       'Pizza bar que combina pizzas de alta calidad, ambiente descontracturado y tragos innovadores. Pensada para consumo frecuente, con fuerte presencia nocturna y alta rotación en delivery. Plan de expansión 2026: 8 dark-kitchens para cobertura total del Gran Asunción.',
     badge: '8 dark-kitchens proyectadas 2026',
-    invertLogo: true,
   },
   {
     name: 'Rocco',
