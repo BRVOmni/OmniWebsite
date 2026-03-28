@@ -35,7 +35,7 @@ function AnimatedStat({ stat, isVisible }: { stat: typeof STATS[0]; isVisible: b
         ref={ref}
         className="font-display font-black text-[clamp(48px,6vw,80px)] leading-none text-text-primary tracking-tight block mb-3"
       >
-        {isVisible ? value : 0}{stat.suffix}
+        {isVisible ? value : stat.target}{stat.suffix}
       </span>
       <span className="text-xs font-normal tracking-[0.1em] uppercase text-text-hint">
         {stat.label}

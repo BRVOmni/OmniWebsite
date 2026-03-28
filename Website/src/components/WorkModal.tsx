@@ -86,7 +86,18 @@ export function WorkModal({ open, onClose }: WorkModalProps) {
                     <span className="font-display font-black text-[11px] tracking-[0.12em] text-text-hint min-w-[18px] pt-0.5">
                       {step.num}
                     </span>
-                    <span dangerouslySetInnerHTML={{ __html: step.text.replace(/Tu nombre completo \+ cargo al que aplicás/, '<strong class="text-text-primary font-medium">Tu nombre completo + cargo al que aplicás</strong>') }} />
+                    <span>
+                      {step.num === '01' ? (
+                        <>
+                          Asunto del correo:{' '}
+                          <strong className="text-text-primary font-medium">
+                            Tu nombre completo + cargo al que aplicás
+                          </strong>
+                        </>
+                      ) : (
+                        step.text
+                      )}
+                    </span>
                   </li>
                 ))}
               </ul>
