@@ -18,7 +18,7 @@ interface Brand {
 const BRANDS: Brand[] = [
   {
     name: 'UFO',
-    logo: '/brands/UFO.png',
+    logo: '/brands/UFO.webp',
     tag: 'Marca propia — Marzo 2025',
     tagline: 'Experiencia gastronómica temática de alto impacto',
     description:
@@ -27,7 +27,7 @@ const BRANDS: Brand[] = [
   },
   {
     name: 'Los Condenados',
-    logo: '/brands/El Club De Los Condenados.png',
+    logo: '/brands/El Club De Los Condenados.webp',
     tag: 'Marca propia — Dic. 2025',
     tagline: 'Pizza bar · actitud y entretenimiento',
     description:
@@ -36,7 +36,7 @@ const BRANDS: Brand[] = [
   },
   {
     name: 'Rocco',
-    logo: '/brands/Rocco.png',
+    logo: '/brands/Rocco.webp',
     tag: 'Marca propia — Oct. 2025',
     tagline: 'Pasta Bar · moderno, rápido y escalable',
     description:
@@ -45,7 +45,7 @@ const BRANDS: Brand[] = [
   },
   {
     name: "Sammy's",
-    logo: "/brands/Sammy's Express Pizza.png",
+    logo: "/brands/Sammy's Express Pizza.webp",
     tag: 'Adquirida e integrada — Ene. 2026',
     tagline: 'Express Pizza · 11 años de trayectoria',
     description:
@@ -54,7 +54,7 @@ const BRANDS: Brand[] = [
   },
   {
     name: 'PastaBox',
-    logo: '/brands/PastaBox.png',
+    logo: '/brands/PastaBox.webp',
     tag: 'Adquirida e integrada — Ene. 2026',
     tagline: 'Cocina oculta · en operación desde 2021',
     description:
@@ -63,7 +63,7 @@ const BRANDS: Brand[] = [
   },
   {
     name: 'Mr. Chow',
-    logo: '/brands/Mr. Chow.png',
+    logo: '/brands/Mr. Chow.webp',
     tag: 'Adquirida e integrada — Ene. 2026',
     tagline: 'Gastronomía oriental · en operación desde 2021',
     description:
@@ -73,7 +73,7 @@ const BRANDS: Brand[] = [
   },
   {
     name: 'Barrio Pizzero',
-    logo: '/brands/Barrio Pizzero.png',
+    logo: '/brands/Barrio Pizzero.webp',
     tag: 'Adquirida e integrada — Ene. 2026',
     tagline: 'Enfoque barrial · alta rotación en envío a domicilio',
     description:
