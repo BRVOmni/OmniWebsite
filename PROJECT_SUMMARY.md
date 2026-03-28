@@ -88,7 +88,6 @@ This document provides a comprehensive overview of all Omniprise projects, their
 
 ### Remaining Work:
 - ⚠️ **Google Form** - Replace placeholder URL with actual franchise application form
-- ⚠️ **Logo Files** - Need proper high-quality logo assets (currently using placeholder SVGs)
 - ⚠️ **SEO** - Add favicon, sitemap.xml, robots.txt, structured data (JSON-LD)
 - ⚠️ **No Analytics** - No tracking or metrics in place
 - ⚠️ **Single Language** - Spanish only (English translation needed)
@@ -272,22 +271,20 @@ See **[FRANCHISE_FEATURE_ROADMAP.md](FRANCHISE_FEATURE_ROADMAP.md)** for complet
 
 ## 🚨 IMMEDIATE ACTION ITEMS
 
-### This Week (Priority Order):
+### Deployment Pipeline — DONE
+- [x] Git remotes configured (origin = GitHub, gitlab = backup)
+- [x] Vercel Root Directory set to `Website`
+- [x] ESLint dependency added
+- [x] Brand logos compressed (18MB → 1.7MB)
+- [x] Dark logos fixed (Mr. Chow, Los Condenados)
+- [x] Auto-deployment verified: `git push origin main` → Vercel builds
 
-1. **Push v2.0 to GitHub and verify Vercel deployment**
-   - Push all changes to the `github` remote
-   - Verify auto-deployment triggers on Vercel
-   - Confirm production site is live at www.omniprise.com.py
+### Next Up (Priority Order):
 
-2. **Website SEO & Polish**
-   - Add favicon and manifest.json
-   - Create sitemap.xml and robots.txt
-   - Add structured data (JSON-LD)
-   - Replace Google Form placeholder URL
-
-3. **Approve Franchise Roadmap**
-   - Review FRANCHISE_FEATURE_ROADMAP.md
-   - Provide feedback/approval
+1. **Replace Google Form placeholder** — Swap the placeholder URL with the actual franchise application form
+2. **Website SEO & Polish** — favicon, manifest.json, sitemap.xml, robots.txt, structured data (JSON-LD)
+3. **Add Google Analytics 4** — Tracking and metrics
+4. **Approve Franchise Roadmap** — Review FRANCHISE_FEATURE_ROADMAP.md and provide feedback
 
 ### Next Month:
 
