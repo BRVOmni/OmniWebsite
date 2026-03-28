@@ -46,11 +46,11 @@ export function Navbar() {
         {/* Logo */}
         <a href="#" className="flex items-center">
           <Image
-            src="/omniprise.svg"
+            src="/omniprise-logo.png"
             alt="Omniprise"
             width={140}
             height={40}
-            className="h-7 w-auto"
+            className="h-7 w-auto mix-blend-screen"
             priority
           />
         </a>

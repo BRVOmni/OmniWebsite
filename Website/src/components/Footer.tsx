@@ -15,11 +15,11 @@ export function Footer() {
     <footer className="px-6 md:px-12 py-12 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-6">
       <a href="#" className="flex items-center">
         <Image
-          src="/omniprise.svg"
+          src="/omniprise-logo.png"
           alt="Omniprise"
           width={120}
           height={34}
-          className="h-5 w-auto"
+          className="h-5 w-auto mix-blend-screen"
         />
       </a>
 
