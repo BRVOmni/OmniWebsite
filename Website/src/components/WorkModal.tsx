@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 
@@ -15,13 +16,68 @@ const STEPS = [
   { num: '04', text: 'Nuestro equipo de RRHH revisará tu perfil y se pondrá en contacto' },
 ];
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
 export function WorkModal({ open, onClose }: WorkModalProps) {
+  const boxRef = useRef<HTMLDivElement>(null);
+
+  // Escape key closes modal
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+
+      // Focus trap: keep Tab cycling inside the modal
+      if (e.key === 'Tab' && boxRef.current) {
+        const focusable = boxRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    },
+    [onClose],
+  );
+
+  // Lock body scroll + attach keyboard listeners
+  useEffect(() => {
+    if (!open) return;
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Move focus into the modal
+    requestAnimationFrame(() => {
+      const closeBtn = boxRef.current?.querySelector<HTMLElement>('button[aria-label="Cerrar"]');
+      closeBtn?.focus();
+    });
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [open, handleKeyDown]);
+
   return (
     <AnimatePresence>
       {open && (
         <>
           {/* Overlay */}
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Trabajemos juntos"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -31,6 +87,7 @@ export function WorkModal({ open, onClose }: WorkModalProps) {
           >
             {/* Box */}
             <motion.div
+              ref={boxRef}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
