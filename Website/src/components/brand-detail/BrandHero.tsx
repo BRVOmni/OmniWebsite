@@ -37,17 +37,17 @@ export function BrandHero({ brand }: BrandHeroProps) {
 
         {/* Logo */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.7 }}
-          className="h-28 md:h-36 flex items-center justify-center mb-10"
+          className="h-40 md:h-52 flex items-center justify-center mb-10"
         >
           <Image
             src={brand.logo}
             alt={brand.name}
-            width={320}
-            height={140}
-            className="max-h-[120px] md:max-h-[140px] w-auto object-contain"
+            width={480}
+            height={220}
+            className="max-h-[200px] md:max-h-[260px] w-auto object-contain"
             style={brand.invertLogo ? { filter: 'invert(1) brightness(0.9)' } : undefined}
             priority
           />
