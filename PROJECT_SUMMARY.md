@@ -1,7 +1,7 @@
 # 📋 PROJECT SUMMARY - Omniprise Complete Roadmap
 
 **Grupo Omniprise - All Projects Overview**
-**Last Updated:** March 28, 2026 - Website v2.1.1 + Production Fixes Complete
+**Last Updated:** March 29, 2026 - Website v2.3.0 + Brand Detail Pages
 
 ---
 
@@ -11,7 +11,7 @@ This document provides a comprehensive overview of all Omniprise projects, their
 
 ### Projects Included:
 1. **Corporate Food Dashboard** (✅ Production Live)
-2. **Corporate Website** (✅ v2.0 Live — Franchise pages built)
+2. **Corporate Website** (✅ v2.3.0 Live — Brand detail pages built)
 3. **Franchise Lead System** (📋 Roadmap Defined — Frontend landing + form complete)
 
 ---
@@ -57,12 +57,40 @@ This document provides a comprehensive overview of all Omniprise projects, their
 
 ## 🌐 WEBSITE PROJECT STATUS
 
-### **Status: ✅ WEBSITE v2.1.1 PRODUCTION FIXES COMPLETE**
-- **Current Version:** v2.1.1 (Production Fixes + Logo Fixes)
-- **Previous Version:** v2.1.0 (Franchise Pages)
+### **Status: ✅ WEBSITE v2.3.0 — BRAND DETAIL PAGES COMPLETE**
+- **Current Version:** v2.3.0 (Brand Detail Pages)
+- **Previous Version:** v2.2.0 (Sprint 2 Complete + Contact Form + Franchise Backend)
 - **Current URL:** https://www.omniprise.com.py
 - **Deployment Status:** Vercel (Next.js framework)
 - **Migration Date:** March 28, 2026
+
+### v2.3.0 Brand Detail Pages (March 29, 2026):
+- ✅ **Brand Detail Pages** - Dynamic `/marcas/[slug]` routes for all 7 brands with 6 sub-components (Hero, Story, Stats, Gallery, Presence, CTA)
+- ✅ **Centralized Brand Data** - `src/lib/brands.ts` with typed `Brand` interface (slug, name, logo, tag, tagline, description, badge, story, stats, milestones, locations, deliveryPlatforms, model, galleryCount)
+- ✅ **Brand Navigation** - Brand cards on homepage now link to their detail pages via Next.js `<Link>`
+- ✅ **Per-Brand SEO** - Unique metadata (title, description, OpenGraph, Twitter Card) generated for each brand page
+- ✅ **JSON-LD Structured Data** - Restaurant schema with parentOrganization linkage on every brand page
+- ✅ **Static Generation** - `generateStaticParams()` pre-renders all 7 brand pages at build time
+- ✅ **Franchise CTA** - Each brand page links to `/franchise/apply?brand=<slug>` and `franquicias@omniprise.com.py`
+- ✅ **Sitemap Update** - 7 new brand URLs added to sitemap.xml with priority 0.7
+- ✅ **Placeholder Gallery** - Brand-specific color gradient gallery cards ready for real photos
+
+### v2.2.0 Sprint 2 & 3 Complete (March 28, 2026):
+- ✅ **Image Optimization** - Removed `unoptimized: true` from next.config.ts, Vercel handles WebP/AVIF at CDN
+- ✅ **WebP Conversion** - 8 brand PNGs converted to WebP (84% size reduction, 1.7MB → 286KB)
+- ✅ **Link Migration** - All internal `<a>` tags replaced with Next.js `<Link>` for client-side routing
+- ✅ **Logo Link Fix** - `href="#"` → `href="/"` on Navbar and Footer logos
+- ✅ **Vercel Analytics** - `@vercel/analytics` installed and active in root layout
+- ✅ **JSON-LD Fix** - Logo URL updated from .svg to .png in structured data
+- ✅ **Custom 404** - Branded not-found page with Omniprise design
+- ✅ **Skip-to-content** - Accessibility link for keyboard users
+- ✅ **Counter Flash Fix** - Stats show target values on SSR instead of "0"
+- ✅ **WorkModal XSS Fix** - Replaced `dangerouslySetInnerHTML` with safe React rendering
+- ✅ **Hero Button Alignment** - CTAs centered on page
+- ✅ **Back-to-Top Button** - Floating button appears after 600px scroll, smooth scroll to top
+- ✅ **Contact Form** - Working form in `#contacto` section with Formspree backend (info@omniprise.com.py)
+- ✅ **Franchise Form Backend** - `/franchise/apply` now POSTs to Formspree (franquicias@omniprise.com.py fallback)
+- ✅ **Franchise Email** - Added `franquicias@omniprise.com.py` as direct contact option on franchise apply page
 
 ### v2.1.1 Production Fixes (March 28, 2026):
 - ✅ **Production Audit Complete** - All critical issues from audit resolved
@@ -100,9 +128,11 @@ This document provides a comprehensive overview of all Omniprise projects, their
 ### Remaining Work:
 - ✅ ~~Google Form~~ - Replaced with custom multi-step application form at `/franchise/apply`
 - ✅ ~~SEO~~ - Favicon, manifest.json, robots.txt, sitemap.xml, JSON-LD structured data, Twitter Cards added
-- ⚠️ **No Analytics** - No tracking or metrics in place (Google Analytics 4 pending)
+- ✅ ~~No Analytics~~ - Vercel Analytics installed and active (`@vercel/analytics`)
+- ✅ ~~Contact Form~~ - Working Formspree-backed form in `#contacto` section
+- ✅ ~~Franchise Backend~~ - Form now POSTs to Formspree (was previously fake/simulated)
 - ⚠️ **Single Language** - Spanish only (English translation needed)
-- ⚠️ **Franchise Backend** - Form currently simulates submission; needs API route + Supabase integration
+- ⚠️ **Brand Detail Pages** - ✅ Complete — `/marcas/[slug]` pages live for all 7 brands (gallery images pending)
 
 ### Migration Plan Summary:
 
@@ -134,8 +164,8 @@ This document provides a comprehensive overview of all Omniprise projects, their
 - ✅ Twitter Card + Open Graph meta tags with images
 - ✅ ESLint flat config (0 errors, typescript-eslint)
 - ✅ .gitignore cleaned up, old-static/ removed from tracking
-- ⚠️ Core Web Vitals optimization pending (image optimization)
-- ⚠️ Google Analytics 4 pending
+- ✅ Image optimization enabled (removed `unoptimized: true`, WebP conversion 84% reduction)
+- ✅ Vercel Analytics installed and active
 
 **Phase 5: Multi-language (Upcoming)**
 - Set up next-intl for i18n
@@ -300,17 +330,19 @@ See **[FRANCHISE_FEATURE_ROADMAP.md](FRANCHISE_FEATURE_ROADMAP.md)** for complet
 
 ### Next Up (Priority Order):
 
-1. **Add Google Analytics 4** — Tracking and metrics (now the highest priority quick win)
-2. **Franchise Backend Integration** — Connect `/franchise/apply` form to Supabase via API route
-3. **Approve Franchise Roadmap** — Review FRANCHISE_FEATURE_ROADMAP.md and begin dashboard module
-4. **Core Web Vitals Optimization** — Optimize image sizes, code splitting
+1. ~~**Brand Detail Pages**~~ — ✅ Complete — `/marcas/[slug]` routes live for all 7 brands
+2. **Privacy Policy + Terms** — Legal pages required for production
+3. **Testimonials Section** — Social proof for franchise landing page
+4. **Brand Gallery Photos** — Replace placeholder gallery cards with real brand photography
+5. **Approve Franchise Roadmap** — Review FRANCHISE_FEATURE_ROADMAP.md and begin dashboard module
+6. **Lighthouse CI** — GitHub Actions quality gate
 
 ### Next Month:
 
 1. **Start Franchise Feature Phase 1-2**
-   - Database schema creation
-   - Backend API development
-   - Franchise landing page and application form
+   - Database schema creation (Supabase franchise_leads table)
+   - Lead scoring algorithm
+   - Dashboard franchise module (pipeline view)
    - **Effort:** 80 hours
 
 ---
@@ -452,10 +484,11 @@ npm run dev
 If work pauses and needs to be resumed:
 
 ### Next Steps:
-1. Add Google Analytics 4 to website
-2. Connect franchise form to Supabase backend (API route)
-3. Start FRANCHISE_FEATURE_ROADMAP.md Phase 1 (Database & Backend)
-4. Begin dashboard franchise module (Pipeline view)
+1. Add privacy policy + terms pages
+2. Add testimonials section
+3. Replace brand gallery placeholders with real photography
+4. Start FRANCHISE_FEATURE_ROADMAP.md Phase 1 (Database & Backend)
+5. Begin dashboard franchise module (Pipeline view)
 
 ### Checkpoints:
 - **After Week 2:** Franchise landing page live
@@ -470,9 +503,9 @@ If work pauses and needs to be resumed:
 
 ---
 
-**Last Updated:** March 28, 2026
+**Last Updated:** March 29, 2026
 **Documentation Status:** Complete and Current
-**Next Milestone:** Franchise Backend Integration (Supabase + API Routes)
+**Next Milestone:** Legal Pages + Brand Gallery Photos
 
 ---
 

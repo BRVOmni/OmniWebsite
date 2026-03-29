@@ -6,7 +6,7 @@
 
 ## 📋 OVERVIEW
 
-**Current State:** Next.js 15 project with TypeScript, Tailwind CSS 4, and 11 React components
+**Current State:** Next.js 15 project with TypeScript, Tailwind CSS 4, 11+ React components, and 7 brand detail pages
 
 **Completed (v2.0 - March 28, 2026):**
 - ✅ Full Next.js 15 migration from single HTML file
@@ -31,7 +31,7 @@
 - ✅ ~~No analytics~~ — Vercel Analytics installed and active
 - ✅ ~~Franchise form backend~~ — Now POSTs to Formspree (real submissions)
 - ⚠️ Single language (Spanish only)
-- ⚠️ No brand detail pages yet
+- ✅ ~~Brand detail pages~~ — `/marcas/[slug]` pages live for all 7 brands (gallery images pending)
 
 **Target State:** Modern, premium Next.js website aligned with dashboard design system, with comprehensive franchise lead capture
 
@@ -260,15 +260,16 @@ Consistent → Aligned with dashboard design system
 Website/
 ├── src/
 │   ├── app/
-│   │   ├── [lang]/              # Language routing (en, es)
-│   │   │   ├── page.tsx         # Home page
-│   │   │   ├── franchise/
-│   │   │   │   ├── page.tsx     # Franchise info
-│   │   │   │   └── apply/
-│   │   │   │       └── page.tsx # Application form
-│   │   │   ├── contact/
-│   │   │   │   └── page.tsx     # Contact page
-│   │   │   └── layout.tsx       # Root layout
+│   │   ├── page.tsx             # Home page
+│   │   ├── layout.tsx           # Root layout
+│   │   ├── not-found.tsx        # Custom 404
+│   │   ├── franchise/
+│   │   │   ├── page.tsx         # Franchise info
+│   │   │   └── apply/
+│   │   │       └── page.tsx     # Application form
+│   │   ├── marcas/
+│   │   │   └── [slug]/
+│   │   │       └── page.tsx     # Brand detail page (dynamic)
 │   │   └── api/
 │   │       └── franchise/
 │   │           └── leads/
@@ -276,73 +277,55 @@ Website/
 │   │               └── [id]/route.ts # GET/PUT - Lead details
 │   │
 │   ├── components/
-│   │   ├── layout/
-│   │   │   ├── navbar.tsx
-│   │   │   ├── footer.tsx
-│   │   │   └── mobile-nav.tsx
-│   │   ├── hero/
-│   │   │   ├── hero-section.tsx
-│   │   │   └── hero-stats.tsx
-│   │   ├── brands/
-│   │   │   ├── brands-grid.tsx
-│   │   │   └── brand-card.tsx
-│   │   ├── about/
-│   │   │   ├── statement.tsx
-│   │   │   └── pillars.tsx
-│   │   ├── franchise/
-│   │   │   ├── franchise-hero.tsx
-│   │   │   ├── benefits.tsx
-│   │   │   ├── process.tsx
-│   │   │   ├── testimonials.tsx
-│   │   │   └── faq.tsx
-│   │   ├── forms/
-│   │   │   ├── application-form.tsx
-│   │   │   ├── step-personal.tsx
-│   │   │   ├── step-brand.tsx
-│   │   │   └── step-expectations.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── Footer.tsx
+│   │   ├── HeroSection.tsx
+│   │   ├── Statement.tsx
+│   │   ├── StatsSection.tsx
+│   │   ├── Pillars.tsx
+│   │   ├── BrandsSection.tsx
+│   │   ├── VisionSection.tsx
+│   │   ├── PartnersSection.tsx
+│   │   ├── WorkModal.tsx
+│   │   ├── BackToTop.tsx
+│   │   ├── brand-detail/         # Brand page components
+│   │   │   ├── BrandHero.tsx
+│   │   │   ├── BrandStory.tsx
+│   │   │   ├── BrandStats.tsx
+│   │   │   ├── BrandGallery.tsx
+│   │   │   ├── BrandPresence.tsx
+│   │   │   └── BrandCTA.tsx
 │   │   └── ui/
-│   │       └── (shadcn/ui components)
+│   │       └── (shared utilities)
 │   │
 │   ├── lib/
+│   │   ├── brands.ts            # Brand data model + helpers
+│   │   ├── use-reveal.ts        # Scroll reveal hook
 │   │   ├── supabase/
-│   │   │   ├── client.ts      # Shared with dashboard
-│   │   │   └── types.ts      # Shared types
-│   │   ├── validations/
-│   │   │   ├── franchise.ts  # Zod schemas
-│   │   │   └── index.ts
+│   │   │   ├── client.ts
+│   │   │   └── types.ts
 │   │   └── utils.ts
 │   │
-│   ├── styles/
-│   │   └── globals.css
-│   │
-│   └── i18n/
-│       ├── en.json
-│       └── es.json
+│   └── styles/
+│       └── globals.css
 │
 ├── public/
-│   ├── logos/
-│   │   ├── omniprise.svg
-│   │   └── omniprise-dark.svg
-│   ├── brands/
-│   │   ├── ufo.svg
-│   │   ├── los-condenados.svg
-│   │   ├── rocco.svg
-│   │   ├── sammys.svg
-│   │   ├── pastabox.svg
-│   │   ├── mr-chow.svg
-│   │   └── barrio-pizzero.svg
-│   ├── images/
-│   │   ├── hero-bg.jpg
-│   │   └── team/
+│   ├── brands/                  # Brand logos (WebP)
+│   │   ├── UFO.webp
+│   │   ├── El Club De Los Condenados.webp
+│   │   ├── Rocco.webp
+│   │   ├── Sammy's Express Pizza.webp
+│   │   ├── PastaBox.webp
+│   │   ├── Mr. Chow.webp
+│   │   └── Barrio Pizzero.webp
 │   ├── favicon.ico
 │   ├── manifest.json
 │   ├── robots.txt
 │   └── sitemap.xml
 │
-├── components.json              # shadcn/ui config
-├── tailwind.config.ts
 ├── next.config.ts
 ├── tsconfig.json
+├── eslint.config.js
 └── package.json
 ```
 
@@ -493,6 +476,17 @@ Website/
 - ✅ **Franchise Form Backend** — Real Formspree submission (was previously fake/simulated)
 - ✅ **Franchise Email** — `franquicias@omniprise.com.py` as direct contact fallback
 
+### Sprint 4 — Brand Detail Pages (v2.3.0 — March 29, 2026)
+- ✅ **Brand Detail Pages** — Dynamic `/marcas/[slug]` routes for all 7 brands
+- ✅ **Centralized Brand Data** — `src/lib/brands.ts` with typed `Brand` interface and helper functions
+- ✅ **6 Brand Components** — BrandHero, BrandStory, BrandStats, BrandGallery, BrandPresence, BrandCTA
+- ✅ **Brand Navigation** — Homepage brand cards link to detail pages
+- ✅ **Per-Brand SEO** — Unique metadata + OpenGraph + Twitter Cards per brand
+- ✅ **JSON-LD Structured Data** — Restaurant schema with parentOrganization on every brand page
+- ✅ **Static Generation** — `generateStaticParams()` pre-renders all brand pages at build
+- ✅ **Franchise Integration** — Each brand page links to `/franchise/apply?brand=<slug>`
+- ✅ **Sitemap Update** — 7 new brand URLs added
+
 ### Pre-v2.0 Quick Wins (Completed in v1.x)
 - ✅ **Logo Handling** — Base64 extracted to proper SVG/JPEG assets
 - ✅ **Franchise CTA** — Hero button and franchise section
@@ -500,12 +494,13 @@ Website/
 
 ## NEXT TASKS
 
-1. **Brand Detail Pages** — Create `/marcas/[slug]` routes for each of the 7 brands
+1. ~~**Brand Detail Pages**~~ — ✅ Complete — `/marcas/[slug]` routes live for all 7 brands with Hero, Story, Stats, Gallery, Presence, and CTA components
 2. **Privacy Policy + Terms** — Legal pages required for production
 3. **Testimonials Section** — Social proof for franchise landing page
-4. **Zod Validation** — Replace basic HTML validation with Zod schemas on franchise form
-5. **Supabase CRM Integration** — Connect franchise leads to dashboard CRM module
-6. **Start Phase 6** — Multi-language support with next-intl
+4. **Brand Gallery Photos** — Replace placeholder gallery cards with real brand photography
+5. **Zod Validation** — Replace basic HTML validation with Zod schemas on franchise form
+6. **Supabase CRM Integration** — Connect franchise leads to dashboard CRM module
+7. **Start Phase 6** — Multi-language support with next-intl
 
 ---
 
@@ -520,10 +515,12 @@ Website/
 7. ✅ ~~Phase 2: Content Migration~~
 8. ✅ ~~Phase 3: Franchise Feature - Landing Page~~
 9. ✅ ~~Phase 4: Franchise Feature - Application Form~~
-10. ⏳ Phase 5: Performance & SEO (partial - analytics pending)
-11. ⏳ Phase 6: Multi-language Support
+10. ✅ ~~Phase 5: Performance & SEO~~
+11. ✅ ~~Brand Detail Pages (v2.3.0)~~
+12. ⏳ Phase 6: Multi-language Support
 
 ---
 
-**Last Updated:** March 28, 2026 - Phase 1-4 Complete, Phase 5 partial, Production fixes v2.1.1 applied**Status:** Phase 1-4 Complete | Phase 5 (partial) & 6 Remaining
-**Next Milestone:** Franchise Backend Integration (Supabase)
+**Last Updated:** March 29, 2026 - Phase 1-5 Complete, Brand Detail Pages live
+**Status:** Phase 1-5 Complete | Phase 6 (Multi-language) Remaining
+**Next Milestone:** Legal Pages + Brand Gallery Photos

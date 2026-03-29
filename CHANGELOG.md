@@ -4,6 +4,52 @@
 
 ---
 
+## [2.3.0] - Brand Detail Pages - 2026-03-29
+
+### New Features
+- **Brand Detail Pages** - Dynamic `/marcas/[slug]` routes for all 7 brands (UFO, Los Condenados, Rocco, Sammy's, PastaBox, Mr. Chow, Barrio Pizzero)
+- **Centralized Brand Data** - `src/lib/brands.ts` with typed `Brand` interface, `BRANDS` array, `getBrandBySlug()` and `getAllBrandSlugs()` helpers
+- **BrandHero Component** - Full-bleed hero with breadcrumb navigation, animated logo, tagline, and badge
+- **BrandStory Component** - Brand narrative paragraphs with milestones timeline sidebar
+- **BrandStats Component** - 4-stat grid with animated reveal cards
+- **BrandGallery Component** - Placeholder gallery grid with brand-specific color gradients (images coming soon)
+- **BrandPresence Component** - Locations, business model, and delivery platform cards
+- **BrandCTA Component** - Franchise CTA with "Solicitar Franquicia" button (links to `/franchise/apply?brand=...`) and email fallback
+- **JSON-LD Structured Data** - Each brand page includes Restaurant schema with parentOrganization linkage
+- **Per-Brand SEO** - `generateMetadata()` produces unique title, description, OpenGraph, and Twitter Card meta for each brand
+- **Static Generation** - `generateStaticParams()` pre-renders all 7 brand pages at build time
+
+### Changed
+- **BrandsSection** - Extracted inline brand data to `brands.ts`; each `BrandCard` now links to its detail page via `<Link href={/marcas/${brand.slug}}>`
+- **sitemap.xml** - Added 7 brand detail URLs (`/marcas/ufo`, `/marcas/los-condenados`, `/marcas/rocco`, `/marcas/sammys`, `/marcas/pastabox`, `/marcas/mr-chow`, `/marcas/barrio-pizzero`) with priority 0.7
+
+---
+
+## [2.2.0] - Website Sprint 2 Complete + Contact Form + Franchise Backend - 2026-03-28
+
+### New Features
+- **Contact Form** - Working contact form in `#contacto` section with Formspree backend (name, email, company, message)
+- **Franchise Form Backend** - Wired `/franchise/apply` multi-step form to Formspree (real submissions, no more fake console.log)
+- **Back-to-Top Button** - Floating button appears after 600px scroll, smooth scrolls to top, animated with framer-motion
+- **Vercel Analytics** - Added `@vercel/analytics` to root layout for real visitor metrics
+
+### Bug Fixes
+- **Image Optimization** - Removed `images: { unoptimized: true }` from next.config.ts; Vercel now auto-optimizes images at CDN
+- **Logo Navigation** - Fixed `href="#"` to `href="/"` on logo links (Navbar + Footer) using Next.js `<Link>`
+- **Client-Side Routing** - Replaced internal `<a>` tags with `<Link>` (Navbar, Footer, HeroSection franchise CTA)
+- **JSON-LD Logo** - Updated structured data logo URL from `.svg` to `.png`
+- **Brand Images** - Converted 8 brand PNGs to WebP (84% size reduction: 1,755KB to 286KB)
+- **UX Polish** - Fixed counter hydration flash, replaced `dangerouslySetInnerHTML` in WorkModal, added skip-to-content a11y link
+- **Custom 404** - Branded `not-found.tsx` page with Omniprise design language
+- **Hero CTA Alignment** - Centered hero buttons on page
+
+### Changed
+- **PartnersSection** - Replaced static contact info blocks with working contact form; added `mailto:` fallback
+- **Franchise Apply Page** - Added `franquicias@omniprise.com.py` email link as direct contact option
+- **Navbar/Footer** - Logo links now use `<Link href="/">` instead of `<a href="#">`
+
+---
+
 ## [2.1.1] - Website Production Fixes - 2026-03-28
 
 ### Bug Fixes
