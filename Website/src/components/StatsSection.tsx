@@ -9,7 +9,7 @@ const STATS = [
   { target: 30, suffix: '%', label: 'Crecimiento proyectado 2026', isStatic: true },
 ];
 
-function StatItem({ stat, isVisible }: { stat: typeof STATS[0]; isVisible: boolean }) {
+function StatItem({ stat }: { stat: typeof STATS[0] }) {
   if (stat.isStatic) {
     return (
       <div className="bg-surface-900 p-10 md:p-12 text-center group">
@@ -45,7 +45,7 @@ function AnimatedStat({ stat }: { stat: typeof STATS[0] }) {
 }
 
 export function StatsSection() {
-  const { ref, isVisible } = useReveal();
+  const { ref } = useReveal();
 
   return (
     <section
@@ -54,7 +54,7 @@ export function StatsSection() {
     >
       <div className="max-w-[1200px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-px bg-border-subtle">
         {STATS.map((stat) => (
-          <StatItem key={stat.label} stat={stat} isVisible={isVisible} />
+          <StatItem key={stat.label} stat={stat} />
         ))}
       </div>
     </section>

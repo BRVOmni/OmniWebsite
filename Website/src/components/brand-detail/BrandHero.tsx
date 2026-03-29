@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useReveal } from '@/lib/use-reveal';
 import type { Brand } from '@/lib/brands';
 
