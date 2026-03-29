@@ -140,7 +140,7 @@ function InputField({
 
 function RadioGroup({
   label,
-  name,
+  name: _name,
   options,
   value,
   onChange,

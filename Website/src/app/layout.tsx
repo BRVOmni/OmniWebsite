@@ -19,6 +19,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.omniprise.com.py"),
   title: "Omniprise — Plataforma de Marcas Gastronómicas",
   description:
     "Omniprise es un operador gastronómico creado para desarrollar, operar e integrar marcas de alto impacto en Paraguay.",

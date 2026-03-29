@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { BRANDS, getBrandBySlug, getAllBrandSlugs } from '@/lib/brands';
+import { getBrandBySlug, getAllBrandSlugs } from '@/lib/brands';
 import { BrandHero } from '@/components/brand-detail/BrandHero';
 import { BrandStory } from '@/components/brand-detail/BrandStory';
 import { BrandStats } from '@/components/brand-detail/BrandStats';

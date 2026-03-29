@@ -23,10 +23,10 @@ function StatItem({ stat, isVisible }: { stat: typeof STATS[0]; isVisible: boole
     );
   }
 
-  return <AnimatedStat stat={stat} isVisible={isVisible} />;
+  return <AnimatedStat stat={stat} />;
 }
 
-function AnimatedStat({ stat, isVisible }: { stat: typeof STATS[0]; isVisible: boolean }) {
+function AnimatedStat({ stat }: { stat: typeof STATS[0] }) {
   const { ref, value } = useAnimatedCounter(stat.target);
 
   return (
@@ -35,7 +35,7 @@ function AnimatedStat({ stat, isVisible }: { stat: typeof STATS[0]; isVisible: b
         ref={ref}
         className="font-display font-black text-[clamp(48px,6vw,80px)] leading-none text-text-primary tracking-tight block mb-3"
       >
-        {isVisible ? value : stat.target}{stat.suffix}
+        {value}{stat.suffix}
       </span>
       <span className="text-xs font-normal tracking-[0.1em] uppercase text-text-hint">
         {stat.label}

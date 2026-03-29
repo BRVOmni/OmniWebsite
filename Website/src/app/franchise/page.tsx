@@ -2,9 +2,8 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useReveal } from '@/lib/use-reveal';
-import { ArrowRight, CheckCircle, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 
 const BRANDS = [
   { name: 'UFO', desc: 'Experiencia gastronómica temática de alto impacto' },

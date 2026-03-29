@@ -28,7 +28,7 @@ export function useReveal(threshold = 0.08) {
 }
 
 export function useAnimatedCounter(target: number, duration = 1400) {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState<number | null>(null);
   const [started, setStarted] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
 
@@ -63,5 +63,7 @@ export function useAnimatedCounter(target: number, duration = 1400) {
     requestAnimationFrame(tick);
   }, [started, target, duration]);
 
-  return { ref, value };
+  // null = not yet started (SSR or pre-observation) → render target value
+  // number = animation in progress → render animated value
+  return { ref, value: value ?? target };
 }
