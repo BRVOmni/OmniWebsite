@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Send, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 interface FormData {
   // Step 1 - Personal
@@ -422,8 +423,14 @@ function SuccessView() {
 const FRANCHISE_FORM_ACTION = 'https://formspree.io/f/2967703689361358019';
 
 export default function ApplyPage() {
+  const searchParams = useSearchParams();
+  const brandParam = searchParams.get('brand');
+
   const [step, setStep] = useState(0);
-  const [data, setData] = useState<FormData>(INITIAL_DATA);
+  const [data, setData] = useState<FormData>({
+    ...INITIAL_DATA,
+    preferredBrand: brandParam || '',
+  });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
