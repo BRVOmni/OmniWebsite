@@ -1,6 +1,6 @@
 # Omniprise — Website Documentation
 
-**Version 2.0.0 | Next.js 15 | March 2026**
+**Version 2.5.0 | Next.js 15 | March 2026**
 
 > All audit issues resolved. See [`AUDIT_2026-03-28.md`](./AUDIT_2026-03-28.md) for the full history.
 
@@ -12,11 +12,17 @@
 
 **Current Implementation:**
 - Next.js 15 with TypeScript and Tailwind CSS 4
-- 11 React components with framer-motion animations
+- 15+ React components with framer-motion animations
 - Dark + colorful hybrid design (sky blue #0ea5e9 accents)
-- Real PNG brand logos for 7 brands
-- Franchise selling section with CTA
-- Open Graph meta tags for social sharing
+- Real WebP brand logos for 7 brands
+- Gallery with lightbox (35 photos, 5 per brand)
+- Franchise section with multi-step form (Zod-validated)
+- WhatsApp ordering CTA across all pages
+- Privacy policy page (Paraguay law compliant)
+- Dynamic sitemap generated from brand data
+- Open Graph meta tags + dynamic OG images
+- Vercel Analytics with custom event tracking
+- Scroll depth tracking (25%, 50%, 75%, 90%)
 - Vercel deployment from GitHub
 
 ---
@@ -139,6 +145,8 @@ SSL is handled automatically by Vercel.
 | framer-motion | 12.x | Animations |
 | lucide-react | 0.577 | Icons |
 | clsx + tailwind-merge | latest | Class utilities |
+| zod | 3.x | Form validation |
+| @vercel/analytics | latest | Analytics + custom events |
 
 ---
 
@@ -152,33 +160,44 @@ Website/
 │   │   ├── layout.tsx           # Root layout with metadata, fonts, reduced-motion
 │   │   ├── page.tsx             # Home page composing all sections
 │   │   ├── not-found.tsx        # Custom 404 page
+│   │   ├── sitemap.ts           # Dynamic sitemap (brand pages + static)
+│   │   ├── privacidad/          # Privacy policy (Paraguay law)
 │   │   ├── franchise/           # Franchise landing + apply form
 │   │   └── marcas/[slug]/       # Brand detail pages (SSG)
 │   ├── components/
-│   │   ├── Navbar.tsx           # Fixed nav with hamburger menu
+│   │   ├── Navbar.tsx           # Fixed nav with WhatsApp + work modal CTAs
 │   │   ├── HeroSection.tsx      # Hero with animated stats
 │   │   ├── StatementSection.tsx # "No somos un restaurante"
 │   │   ├── StatsSection.tsx     # Animated counter stats
 │   │   ├── PillarsSection.tsx   # 3 core pillars
-│   │   ├── BrandsSection.tsx    # Brand cards with WebP logos
+│   │   ├── BrandsSection.tsx    # Brand cards with logos + WhatsApp links
 │   │   ├── VisionSection.tsx    # Company vision statement
 │   │   ├── PartnersSection.tsx  # Partner/ecosystem section
-│   │   ├── FranchiseSection.tsx # Franchise selling section + CTA
+│   │   ├── FranchiseSection.tsx # Franchise CTA teaser
 │   │   ├── Footer.tsx           # Footer with navigation links
 │   │   ├── WorkModal.tsx        # "Trabajemos juntos" modal
 │   │   ├── BackToTop.tsx        # Scroll-to-top button
 │   │   ├── ContactForm.tsx      # Contact form (Formspree)
+│   │   ├── ScrollTracker.tsx    # Client wrapper for scroll depth tracking
 │   │   ├── ReducedMotionProvider.tsx # framer-motion reduced-motion wrapper
 │   │   └── brand-detail/        # Brand page sub-components
+│   │       ├── BrandHero.tsx    # Brand header with logo + badge
+│   │       ├── BrandStory.tsx   # Brand story + milestones
+│   │       ├── BrandStats.tsx   # Brand statistics grid
+│   │       ├── BrandGallery.tsx # Photo gallery with lightbox
+│   │       └── BrandCTA.tsx     # WhatsApp order + franchise CTA
 │   └── lib/
-│       ├── brands.ts            # Canonical brand data (7 brands)
-│       ├── utils.ts             # cn() utility
-│       └── use-reveal.ts        # Scroll-triggered reveal + counter hooks
+│       ├── brands.ts            # Canonical brand data (7 brands) + helpers
+│       ├── franchise-schema.ts  # Zod schemas for franchise form (4 steps)
+│       ├── use-reveal.ts        # Scroll-triggered reveal + counter hooks
+│       ├── use-scroll-depth.ts  # Scroll depth tracking hook
+│       └── utils.ts             # cn() utility
 ├── public/
 │   ├── brands/                  # 7 brand WebP logos
+│   │   └── gallery/             # 35 photos (5 per brand)
+│   ├── omniprise-logo.png       # Logo for navbar
 │   ├── omniprise.svg            # Logo (light, for dark backgrounds)
-│   ├── omniprise-dark.svg       # Logo (dark, for light backgrounds)
-│   └── omniprise-logo.jpg       # Logo (JPEG fallback)
+│   └── omniprise-dark.svg       # Logo (dark, for light backgrounds)
 ├── next.config.ts               # Next.js config (unoptimized images, tracing root)
 ├── tsconfig.json                # TypeScript config
 ├── postcss.config.mjs           # Tailwind PostCSS config
@@ -260,16 +279,27 @@ export function NewSection() {
 ### Adding a New Brand
 1. Compress the logo (target under 500KB) and add it to `public/brands/`
 2. Check if the logo is dark-colored (will be invisible on dark background)
-3. Update the `BRANDS` array in `src/components/BrandsSection.tsx`:
+3. Add 5 gallery photos to `public/brands/gallery/<slug>/` (named `1.jpeg`–`5.jpeg`)
+4. Update the `BRANDS` array in `src/lib/brands.ts`:
 ```tsx
 {
+  slug: "brand-name",
   name: "Brand Name",
+  logo: "/brands/brand-logo.webp",
+  tag: "Marca propia — Month Year",
   tagline: "Tagline here",
   description: "2-3 sentences about the brand",
-  tag: "Marca propia — Month Year",
   badge: "Badge text",
-  logo: "/brands/brand-logo.png",
   invertLogo: true,  // only if the logo is dark/black
+  story: "Full brand story...",
+  stats: [...],
+  milestones: [...],
+  locations: "Location info",
+  deliveryPlatforms: ["PedidosYa"],
+  model: "Business model",
+  galleryCount: 5,
+  galleryImages: ["/brands/gallery/<slug>/1.jpeg", ...],
+  instagram: "handle",
 }
 ```
 
@@ -286,22 +316,15 @@ Search for `@omniprise.com.py` across components to find all email references.
 ### Completed (v2.0)
 - [x] Next.js 15 project with TypeScript
 - [x] Tailwind CSS 4 with custom design tokens
-- [x] 11 React components with animations
+- [x] 15+ React components with animations
 - [x] Real brand logos (WebP)
 - [x] Franchise section with CTA
 - [x] Open Graph meta tags
 - [x] Mobile responsive with hamburger menu
 - [x] Vercel deployment pipeline
 - [x] Logo compression and dark logo fixes
-- [x] Fix malformed `sitemap.xml`
 - [x] Favicon + apple-touch-icon
 - [x] ESLint config (typescript-eslint flat config)
-- [x] Open Graph image for social sharing
-- [x] Twitter/X Card metadata
-- [x] Convert brand PNGs to WebP
-- [x] Replace `dangerouslySetInnerHTML` in WorkModal.tsx
-- [x] Fix counter hydration flash
-- [x] Remove `old-static/` from git
 - [x] Custom 404 page
 - [x] Analytics (Vercel Analytics)
 - [x] Contact form
@@ -315,16 +338,25 @@ Search for `@omniprise.com.py` across components to find all email references.
 - [x] Canonical brand data across all pages
 - [x] Proper OG social cards on brand detail pages
 
+### Completed (v2.5)
+- [x] Privacy policy page (`/privacidad`) — Paraguay law compliant
+- [x] Gallery with lightbox — 35 photos, keyboard nav (Arrow/Escape), image error fallbacks
+- [x] Dynamic sitemap generated from brand data (`src/app/sitemap.ts`)
+- [x] Zod validation for franchise form — Spanish error messages, 4-step schemas
+- [x] Scroll depth tracking — `scroll_depth` analytics events at 25/50/75/90%
+- [x] WhatsApp ordering CTA — navbar, brand pages, homepage cards
+- [x] Custom analytics events — `whatsapp_order`, `brand_card_clicked`, `franchise_cta`, `contact_form_submitted`, `scroll_depth`
+- [x] Replaced bloated FranchiseSection with lean CTA teaser
+- [x] Canonical brand data moved to `src/lib/brands.ts` (single source of truth)
+- [x] Cleaned up 17 dashboard-only docs from repo
+
 ### Next Up
 - [ ] Enable Next.js image optimization (remove `unoptimized: true`)
 - [ ] Lead capture API with Supabase
 - [ ] Multi-language support (next-intl)
 - [ ] Light/dark theme toggle
-- [ ] Privacy policy and terms pages
 - [ ] Blog/news section for SEO
 - [ ] CI/CD pipeline (GitHub Actions)
-
-See [WEBSITE_ROADMAP.md](../WEBSITE_ROADMAP.md) for the complete migration plan.
 
 ---
 
@@ -344,4 +376,4 @@ Before deploying to production:
 ---
 
 **Last Updated:** March 30, 2026
-**Version:** 2.0.0
+**Version:** 2.5.0
