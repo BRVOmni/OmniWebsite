@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'Franquicias — Omniprise',
@@ -20,5 +22,11 @@ export default function FranchiseLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <Navbar />
+      {children}
+      <Footer />
+    </>
+  );
 }
