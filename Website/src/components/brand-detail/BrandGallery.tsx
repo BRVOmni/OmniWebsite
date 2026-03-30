@@ -79,6 +79,7 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
   const { ref, isVisible } = useReveal();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const touchStartX = useRef<number>(0);
   const palette = BRAND_PALETTES[brand.slug] || DEFAULT_PALETTE;
   const hasImages = brand.galleryImages && brand.galleryImages.length > 0;
@@ -87,6 +88,15 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
 
   const handleImageError = useCallback((index: number) => {
     setFailedImages((prev) => {
+      if (prev.has(index)) return prev;
+      const next = new Set(prev);
+      next.add(index);
+      return next;
+    });
+  }, []);
+
+  const handleImageLoaded = useCallback((index: number) => {
+    setLoadedImages((prev) => {
       if (prev.has(index)) return prev;
       const next = new Set(prev);
       next.add(index);
@@ -216,12 +226,19 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
                   ) : (
                     /* Real image */
                     <>
+                      {/* Skeleton behind image */}
+                      {!loadedImages.has(i) && (
+                        <div className={`absolute inset-0 bg-gradient-to-br ${palette.gradient} animate-pulse`} />
+                      )}
                       <Image
                         src={imageSrc!}
                         alt={`${brand.name} — foto ${i + 1}`}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                        className={`object-cover transition-all duration-700 group-hover:scale-[1.04] ${
+                          loadedImages.has(i) ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        onLoad={() => handleImageLoaded(i)}
                         onError={() => handleImageError(i)}
                       />
                       <div className="absolute inset-0 bg-surface-950/0 group-hover:bg-surface-950/20 transition-colors duration-300" />
