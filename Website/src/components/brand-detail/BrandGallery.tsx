@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Instagram, X } from 'lucide-react';
@@ -79,6 +79,7 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
   const { ref, isVisible } = useReveal();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
+  const touchStartX = useRef<number>(0);
   const palette = BRAND_PALETTES[brand.slug] || DEFAULT_PALETTE;
   const hasImages = brand.galleryImages && brand.galleryImages.length > 0;
   const total = hasImages ? brand.galleryImages!.length : brand.galleryCount;
@@ -92,6 +93,22 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
       return next;
     });
   }, []);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(deltaX) < 50) return; // ignore short swipes
+    if (deltaX < 0) {
+      // swiped left → next
+      setLightboxIndex((prev) => prev !== null ? (prev >= maxIndex ? 0 : prev + 1) : null);
+    } else {
+      // swiped right → previous
+      setLightboxIndex((prev) => prev !== null ? (prev <= 0 ? maxIndex : prev - 1) : null);
+    }
+  }, [maxIndex]);
 
   // Lightbox keyboard navigation
   useEffect(() => {
@@ -242,6 +259,8 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-[100] bg-surface-950/95 backdrop-blur-xl flex items-center justify-center p-6"
             onClick={() => setLightboxIndex(null)}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
             {/* Close button */}
             <button
