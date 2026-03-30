@@ -1,6 +1,6 @@
 # Omniprise — Website Documentation
 
-**Version 2.5.0 | Next.js 15 | March 2026**
+**Version 2.6.0 | Next.js 15 | March 2026**
 
 > All audit issues resolved. See [`AUDIT_2026-03-28.md`](./AUDIT_2026-03-28.md) for the full history.
 
@@ -15,14 +15,16 @@
 - 15+ React components with framer-motion animations
 - Dark + colorful hybrid design (sky blue #0ea5e9 accents)
 - Real WebP brand logos for 7 brands
-- Gallery with lightbox (35 photos, 5 per brand)
+- Gallery with lightbox (35 photos, 5 per brand, touch swipe + keyboard nav)
 - Franchise section with multi-step form (Zod-validated)
+- Contact form with Zod validation (Spanish error messages)
 - WhatsApp ordering CTA across all pages
 - Privacy policy page (Paraguay law compliant)
-- Dynamic sitemap generated from brand data
+- Dynamic sitemap + robots.txt generated from brand data
 - Open Graph meta tags + dynamic OG images
 - Vercel Analytics with custom event tracking
 - Scroll depth tracking (25%, 50%, 75%, 90%)
+- Gallery skeleton loading with brand-colored placeholders
 - Vercel deployment from GitHub
 
 ---
@@ -161,6 +163,7 @@ Website/
 │   │   ├── page.tsx             # Home page composing all sections
 │   │   ├── not-found.tsx        # Custom 404 page
 │   │   ├── sitemap.ts           # Dynamic sitemap (brand pages + static)
+│   │   ├── robots.ts            # Dynamic robots.txt
 │   │   ├── privacidad/          # Privacy policy (Paraguay law)
 │   │   ├── franchise/           # Franchise landing + apply form
 │   │   └── marcas/[slug]/       # Brand detail pages (SSG)
@@ -188,16 +191,15 @@ Website/
 │   │       └── BrandCTA.tsx     # WhatsApp order + franchise CTA
 │   └── lib/
 │       ├── brands.ts            # Canonical brand data (7 brands) + helpers
-│       ├── franchise-schema.ts  # Zod schemas for franchise form (4 steps)
+│       ├── franchise-schema.ts  # Zod schemas for franchise (4 steps) + contact forms
 │       ├── use-reveal.ts        # Scroll-triggered reveal + counter hooks
 │       ├── use-scroll-depth.ts  # Scroll depth tracking hook
 │       └── utils.ts             # cn() utility
 ├── public/
 │   ├── brands/                  # 7 brand WebP logos
 │   │   └── gallery/             # 35 photos (5 per brand)
-│   ├── omniprise-logo.png       # Logo for navbar
-│   ├── omniprise.svg            # Logo (light, for dark backgrounds)
-│   └── omniprise-dark.svg       # Logo (dark, for light backgrounds)
+│   ├── omniprise-logo.png       # Logo for navbar/footer
+│   └── omniprise-logo.jpg       # Logo for OG/Twitter cards (1920x1080)
 ├── next.config.ts               # Next.js config (unoptimized images, tracing root)
 ├── tsconfig.json                # TypeScript config
 ├── postcss.config.mjs           # Tailwind PostCSS config
@@ -340,15 +342,17 @@ Search for `@omniprise.com.py` across components to find all email references.
 
 ### Completed (v2.5)
 - [x] Privacy policy page (`/privacidad`) — Paraguay law compliant
-- [x] Gallery with lightbox — 35 photos, keyboard nav (Arrow/Escape), image error fallbacks
-- [x] Dynamic sitemap generated from brand data (`src/app/sitemap.ts`)
-- [x] Zod validation for franchise form — Spanish error messages, 4-step schemas
+- [x] Gallery with lightbox — 35 photos, keyboard + touch swipe nav, image error fallbacks, skeleton loading
+- [x] Dynamic sitemap + robots.txt generated from brand data
+- [x] Zod validation for franchise form and contact form — Spanish error messages
 - [x] Scroll depth tracking — `scroll_depth` analytics events at 25/50/75/90%
 - [x] WhatsApp ordering CTA — navbar, brand pages, homepage cards
 - [x] Custom analytics events — `whatsapp_order`, `brand_card_clicked`, `franchise_cta`, `contact_form_submitted`, `scroll_depth`
 - [x] Replaced bloated FranchiseSection with lean CTA teaser
-- [x] Canonical brand data moved to `src/lib/brands.ts` (single source of truth)
-- [x] Cleaned up 17 dashboard-only docs from repo
+- [x] Canonical brand data centralized in `src/lib/brands.ts`
+- [x] All pages have Navbar + Footer + metadata via layouts
+- [x] Franchise page brand cards link to brand detail pages
+- [x] Cleaned up unused assets and dashboard-only docs
 
 ### Next Up
 - [ ] Enable Next.js image optimization (remove `unoptimized: true`)
@@ -366,14 +370,18 @@ Before deploying to production:
 - [ ] Run `npm run build` with no errors
 - [ ] Test on mobile (Chrome DevTools → iPhone 14)
 - [ ] Test on tablet (iPad landscape and portrait)
-- [ ] Verify all navigation links work
+- [ ] Verify all navigation links work (including franchise page brand cards)
 - [ ] Confirm contact email is correct
 - [ ] Verify stats are up to date
 - [ ] Check logos load correctly (dark logos should be inverted)
 - [ ] Test franchise CTA and modal
+- [ ] Test contact form Zod validation (submit empty, short message)
+- [ ] Test WhatsApp CTA buttons (navbar, brand cards, brand pages)
+- [ ] Test gallery lightbox (keyboard arrows, touch swipe, Escape to close)
 - [ ] Verify Open Graph tags (use opengraph.xyz)
+- [ ] Check `/robots.txt` and `/sitemap.xml` render correctly
 
 ---
 
 **Last Updated:** March 30, 2026
-**Version:** 2.5.0
+**Version:** 2.6.0

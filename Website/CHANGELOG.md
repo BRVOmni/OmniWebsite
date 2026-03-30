@@ -2,6 +2,22 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v2.6.0 — 2026-03-30
+
+### UX Polish
+- Contact form now has Zod validation with Spanish inline error messages
+- Gallery lightbox supports touch swipe navigation on mobile (>50px threshold)
+- Gallery images show brand-colored skeleton placeholder while loading, then fade in smoothly
+- Franchise page brand cards now link to brand detail pages (`/marcas/[slug]`)
+
+### SEO & Infrastructure
+- Dynamic `robots.txt` via `src/app/robots.ts` (removed stale `/api/*` and `/admin/` rules)
+- Removed unused `omniprise.svg` and `omniprise-dark.svg` assets
+
+### Bug Fixes
+- Franchise page: removed duplicate Navbar/Footer (already rendered by layout)
+- Apply page: added Navbar/Footer to its layout (was missing)
+
 ## v2.5.0 — 2026-03-30
 
 ### WhatsApp Ordering
