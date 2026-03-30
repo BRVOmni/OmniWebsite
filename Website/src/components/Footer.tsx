@@ -4,11 +4,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const FOOTER_LINKS = [
-  { label: 'Nosotros', href: '#nosotros' },
-  { label: 'Marcas', href: '#marcas' },
-  { label: 'Visión', href: '#vision' },
+  { label: 'Nosotros', href: '/#nosotros' },
+  { label: 'Marcas', href: '/#marcas' },
+  { label: 'Visión', href: '/#vision' },
   { label: 'Franquicia', href: '/franchise', highlight: true },
-  { label: 'Contacto', href: '#contacto' },
+  { label: 'Contacto', href: '/#contacto' },
 ];
 
 export function Footer() {
