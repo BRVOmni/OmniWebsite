@@ -240,6 +240,14 @@ export function getBrandBySlug(slug: string): Brand | undefined {
   return BRANDS.find((b) => b.slug === slug);
 }
 
+export function whatsappOrderUrl(brandName?: string): string {
+  const phone = '595992035000';
+  const text = brandName
+    ? `Hola! Me interesa ordenar de ${brandName}`
+    : 'Hola! Me interesa hacer un pedido';
+  return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+}
+
 export function getAllBrandSlugs(): string[] {
   return BRANDS.map((b) => b.slug);
 }

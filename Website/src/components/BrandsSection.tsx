@@ -6,8 +6,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { track } from '@vercel/analytics';
 import { useReveal } from '@/lib/use-reveal';
-import { BRANDS } from '@/lib/brands';
+import { BRANDS, whatsappOrderUrl } from '@/lib/brands';
 import type { Brand } from '@/lib/brands';
+import { MessageCircle } from 'lucide-react';
 
 function BrandCard({ brand, index, isVisible }: { brand: Brand; index: number; isVisible: boolean }) {
   const [logoError, setLogoError] = useState(false);
@@ -40,7 +41,19 @@ function BrandCard({ brand, index, isVisible }: { brand: Brand; index: number; i
         <p className="text-[10px] tracking-[0.15em] uppercase text-text-hint font-medium mb-2">{brand.tag}</p>
         <h3 className="font-display font-bold text-lg uppercase tracking-wide group-hover:text-omniprise-500 transition-colors mb-2">{brand.name}</h3>
         <p className="text-[13px] text-text-secondary leading-relaxed flex-1">{brand.tagline}</p>
-        <span className="mt-auto self-start text-[10px] tracking-[0.12em] uppercase font-medium text-omniprise-500 bg-omniprise-500/10 px-3 py-1 rounded-full">{brand.badge}</span>
+        <div className="mt-auto pt-4 flex items-center justify-between gap-3">
+          <span className="text-[10px] tracking-[0.12em] uppercase font-medium text-omniprise-500 bg-omniprise-500/10 px-3 py-1 rounded-full">{brand.badge}</span>
+          <a
+            href={whatsappOrderUrl(brand.name)}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => { e.stopPropagation(); track('whatsapp_order', { source: 'homepage', brand: brand.slug }); }}
+            className="inline-flex items-center gap-1.5 text-[11px] font-medium text-green-400 hover:text-green-300 transition-colors"
+          >
+            <MessageCircle className="w-3.5 h-3.5" />
+            Pedir por WhatsApp
+          </a>
+        </div>
       </motion.div>
     </Link>
   );

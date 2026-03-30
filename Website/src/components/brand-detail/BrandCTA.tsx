@@ -2,9 +2,10 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ArrowLeft, MessageCircle } from 'lucide-react';
 import { track } from '@vercel/analytics';
 import { useReveal } from '@/lib/use-reveal';
+import { whatsappOrderUrl } from '@/lib/brands';
 import type { Brand } from '@/lib/brands';
 
 interface BrandCTAProps {
@@ -58,20 +59,24 @@ export function BrandCTA({ brand }: BrandCTAProps) {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
+            <a
+              href={whatsappOrderUrl(brand.name)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => track('whatsapp_order', { source: 'brand_page', brand: brand.slug })}
+              className="inline-flex items-center gap-3 text-[15px] font-medium text-surface-900 bg-green-500 hover:bg-green-400 px-9 py-4 rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(34,197,94,0.25)]"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Probá nuestros platos
+            </a>
             <Link
               href={`/franchise/apply?brand=${brand.slug}`}
               onClick={() => track('franchise_cta', { source: 'brand_page', action: 'apply', brand: brand.slug })}
-              className="inline-flex items-center gap-3 text-[15px] font-medium text-surface-900 bg-omniprise-500 hover:bg-omniprise-400 px-9 py-4 rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(14,165,233,0.25)]"
+              className="text-[14px] text-text-secondary hover:text-text-primary px-8 py-3.5 rounded-full border border-border-medium tracking-wide transition-all duration-200 hover:-translate-y-0.5 inline-flex items-center gap-2"
             >
               Solicitar Franquicia
               <ArrowRight className="w-4 h-4" />
             </Link>
-            <a
-              href={`mailto:franquicias@omniprise.com.py?subject=Consulta sobre ${brand.name}`}
-              className="text-[14px] text-text-secondary hover:text-text-primary px-8 py-3.5 rounded-full border border-border-medium tracking-wide transition-all duration-200 hover:-translate-y-0.5"
-            >
-              Enviar email
-            </a>
           </motion.div>
         </motion.div>
 
