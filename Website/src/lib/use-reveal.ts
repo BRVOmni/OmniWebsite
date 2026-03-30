@@ -2,6 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+function prefersReducedMotion(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 export function useReveal(threshold = 0.08) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -9,6 +14,12 @@ export function useReveal(threshold = 0.08) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // Skip intersection observer if user prefers reduced motion — show immediately
+    if (prefersReducedMotion()) {
+      setIsVisible(true);
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -52,6 +63,12 @@ export function useAnimatedCounter(target: number, duration = 1400) {
 
   useEffect(() => {
     if (!started) return;
+
+    // Skip animation if user prefers reduced motion
+    if (prefersReducedMotion()) {
+      setValue(target);
+      return;
+    }
 
     const startTime = performance.now();
     const tick = (now: number) => {

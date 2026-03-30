@@ -2,13 +2,7 @@
 
 **Version 2.0.0 | Next.js 15 | March 2026**
 
-> **ACTION REQUIRED — Production Audit (March 28, 2026)**
->
-> A full production audit was performed. There are **5 critical issues** and several important fixes to address.
->
-> :page_facing_up: **Full audit with prioritized fix plan: [`AUDIT_2026-03-28.md`](./AUDIT_2026-03-28.md)**
->
-> The dev team should start with the **Sprint 1: Production Fixes** section (estimated 1 hour total).
+> All audit issues resolved. See [`AUDIT_2026-03-28.md`](./AUDIT_2026-03-28.md) for the full history.
 
 ---
 
@@ -144,7 +138,6 @@ SSL is handled automatically by Vercel.
 | Tailwind CSS | 4.x | Styling |
 | framer-motion | 12.x | Animations |
 | lucide-react | 0.577 | Icons |
-| class-variance-authority | 0.7 | Component variants |
 | clsx + tailwind-merge | latest | Class utilities |
 
 ---
@@ -156,30 +149,37 @@ Website/
 ├── src/
 │   ├── app/
 │   │   ├── globals.css          # Tailwind + custom theme tokens
-│   │   ├── layout.tsx           # Root layout with metadata and fonts
-│   │   └── page.tsx             # Home page composing all sections
+│   │   ├── layout.tsx           # Root layout with metadata, fonts, reduced-motion
+│   │   ├── page.tsx             # Home page composing all sections
+│   │   ├── not-found.tsx        # Custom 404 page
+│   │   ├── franchise/           # Franchise landing + apply form
+│   │   └── marcas/[slug]/       # Brand detail pages (SSG)
 │   ├── components/
 │   │   ├── Navbar.tsx           # Fixed nav with hamburger menu
 │   │   ├── HeroSection.tsx      # Hero with animated stats
 │   │   ├── StatementSection.tsx # "No somos un restaurante"
 │   │   ├── StatsSection.tsx     # Animated counter stats
 │   │   ├── PillarsSection.tsx   # 3 core pillars
-│   │   ├── BrandsSection.tsx    # Brand cards with real PNG logos
+│   │   ├── BrandsSection.tsx    # Brand cards with WebP logos
 │   │   ├── VisionSection.tsx    # Company vision statement
 │   │   ├── PartnersSection.tsx  # Partner/ecosystem section
 │   │   ├── FranchiseSection.tsx # Franchise selling section + CTA
 │   │   ├── Footer.tsx           # Footer with navigation links
-│   │   └── WorkModal.tsx        # "Trabajemos juntos" modal
+│   │   ├── WorkModal.tsx        # "Trabajemos juntos" modal
+│   │   ├── BackToTop.tsx        # Scroll-to-top button
+│   │   ├── ContactForm.tsx      # Contact form (Formspree)
+│   │   ├── ReducedMotionProvider.tsx # framer-motion reduced-motion wrapper
+│   │   └── brand-detail/        # Brand page sub-components
 │   └── lib/
+│       ├── brands.ts            # Canonical brand data (7 brands)
 │       ├── utils.ts             # cn() utility
-│       └── use-reveal.ts        # Scroll-triggered reveal hook
+│       └── use-reveal.ts        # Scroll-triggered reveal + counter hooks
 ├── public/
-│   ├── brands/                  # 7 brand PNG logos
+│   ├── brands/                  # 7 brand WebP logos
 │   ├── omniprise.svg            # Logo (light, for dark backgrounds)
 │   ├── omniprise-dark.svg       # Logo (dark, for light backgrounds)
 │   └── omniprise-logo.jpg       # Logo (JPEG fallback)
 ├── next.config.ts               # Next.js config (unoptimized images, tracing root)
-├── vercel.json                  # Vercel deployment config
 ├── tsconfig.json                # TypeScript config
 ├── postcss.config.mjs           # Tailwind PostCSS config
 └── package.json                 # Dependencies and scripts
@@ -287,48 +287,42 @@ Search for `@omniprise.com.py` across components to find all email references.
 - [x] Next.js 15 project with TypeScript
 - [x] Tailwind CSS 4 with custom design tokens
 - [x] 11 React components with animations
-- [x] Real brand logos (PNG)
+- [x] Real brand logos (WebP)
 - [x] Franchise section with CTA
 - [x] Open Graph meta tags
 - [x] Mobile responsive with hamburger menu
 - [x] Vercel deployment pipeline
 - [x] Logo compression and dark logo fixes
+- [x] Fix malformed `sitemap.xml`
+- [x] Favicon + apple-touch-icon
+- [x] ESLint config (typescript-eslint flat config)
+- [x] Open Graph image for social sharing
+- [x] Twitter/X Card metadata
+- [x] Convert brand PNGs to WebP
+- [x] Replace `dangerouslySetInnerHTML` in WorkModal.tsx
+- [x] Fix counter hydration flash
+- [x] Remove `old-static/` from git
+- [x] Custom 404 page
+- [x] Analytics (Vercel Analytics)
+- [x] Contact form
+- [x] "Back to Top" button
+- [x] Brand detail pages (`/marcas/[slug]`)
+- [x] Skip-to-content link for accessibility
+- [x] Internal nav uses Next.js `<Link>`
+- [x] Franchise landing page (`/franchise`)
+- [x] Multi-step franchise application form (`/franchise/apply`)
+- [x] `prefers-reduced-motion` support (CSS + framer-motion + JS animations)
+- [x] Canonical brand data across all pages
+- [x] Proper OG social cards on brand detail pages
 
-### Next Up (from audit — see [`AUDIT_2026-03-28.md`](./AUDIT_2026-03-28.md))
-
-**Sprint 1 — Production Fixes (Day 1):**
-- [ ] Fix malformed `sitemap.xml` (broken XML)
-- [ ] Push unpushed commit to GitHub (`06a846c`)
-- [ ] Commit `robots.txt` and `sitemap.xml` to git
-- [ ] Add favicon + apple-touch-icon
-- [ ] Fix ESLint config (broken — `@eslint/eslintrc` missing)
-
-**Sprint 2 — Polish (Week 1):**
-- [ ] Create and add Open Graph image for social sharing
-- [ ] Add Twitter/X Card metadata
+### Next Up
 - [ ] Enable Next.js image optimization (remove `unoptimized: true`)
-- [ ] Convert large brand PNGs to WebP (660 KB -> ~50 KB)
-- [ ] Replace `dangerouslySetInnerHTML` in WorkModal.tsx
-- [ ] Fix counter hydration flash (shows "0" on SSR)
-- [ ] Remove `old-static/` from git
-- [ ] Add custom 404 page
-
-**Sprint 3 — Enhancements (Week 2-3):**
-- [ ] Add analytics (Vercel Analytics or Google Analytics)
-- [ ] Add contact form (replace mailto link)
-- [ ] Add "Back to Top" button
-- [ ] Add brand detail pages (`/marcas/[slug]`)
-- [ ] Add skip-to-content link for accessibility
-- [ ] Replace `<a>` with Next.js `<Link>` for internal nav
-
-### Future Phases
-- [ ] Franchise landing page (`/franchise`)
-- [ ] Multi-step franchise application form
 - [ ] Lead capture API with Supabase
 - [ ] Multi-language support (next-intl)
 - [ ] Light/dark theme toggle
 - [ ] Privacy policy and terms pages
 - [ ] Blog/news section for SEO
+- [ ] CI/CD pipeline (GitHub Actions)
 
 See [WEBSITE_ROADMAP.md](../WEBSITE_ROADMAP.md) for the complete migration plan.
 
@@ -349,5 +343,5 @@ Before deploying to production:
 
 ---
 
-**Last Updated:** March 2026
+**Last Updated:** March 30, 2026
 **Version:** 2.0.0

@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
       type: 'website',
       images: [
         {
-          url: brand.logo,
+          url: '/omniprise-logo.jpg',
           width: 1200,
           height: 630,
           alt: `${brand.name} — Omniprise`,
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
       card: 'summary_large_image',
       title,
       description,
-      images: [brand.logo],
+      images: ['/omniprise-logo.jpg'],
     },
   };
 }
@@ -92,7 +92,7 @@ export default async function BrandPage({ params }: BrandPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Navbar />
-      <main>
+      <main id="main-content">
         <BrandHero brand={brand} />
         <BrandStory brand={brand} />
         <BrandStats brand={brand} />

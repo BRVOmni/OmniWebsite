@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Barlow_Condensed, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { BackToTop } from "@/components/BackToTop";
+import { ReducedMotionProvider } from "@/components/ReducedMotionProvider";
 import "./globals.css";
 
 const barlowCondensed = Barlow_Condensed({
@@ -74,15 +75,17 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${barlowCondensed.variable} ${inter.variable}`}>
       <body>
-        <a
-          href="#marcas"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-omniprise-500 focus:text-surface-900 focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-medium focus:outline-none"
-        >
-          Saltar al contenido
-        </a>
-        {children}
-        <BackToTop />
-        <Analytics />
+        <ReducedMotionProvider>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-omniprise-500 focus:text-surface-900 focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-medium focus:outline-none"
+          >
+            Saltar al contenido
+          </a>
+          {children}
+          <BackToTop />
+          <Analytics />
+        </ReducedMotionProvider>
       </body>
     </html>
   );

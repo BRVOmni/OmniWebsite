@@ -337,6 +337,9 @@ function FAQSection() {
               className="border border-border-subtle rounded-xl overflow-hidden"
             >
               <button
+                id={`faq-button-${i}`}
+                aria-expanded={openIndex === i}
+                aria-controls={`faq-panel-${i}`}
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 className="w-full flex items-center justify-between p-6 text-left hover:bg-surface-800/50 transition-colors cursor-pointer"
               >
@@ -350,6 +353,9 @@ function FAQSection() {
                 />
               </button>
               <div
+                id={`faq-panel-${i}`}
+                role="region"
+                aria-labelledby={`faq-button-${i}`}
                 className={`overflow-hidden transition-all duration-300 ${
                   openIndex === i ? 'max-h-60 pb-6' : 'max-h-0'
                 }`}
@@ -405,13 +411,13 @@ function CTASection() {
 
 export default function FranchisePage() {
   return (
-    <>
+    <main id="main-content">
       <FranchiseHero />
       <BenefitsSection />
       <BrandsSection />
       <ProcessSection />
       <FAQSection />
       <CTASection />
-    </>
+    </main>
   );
 }

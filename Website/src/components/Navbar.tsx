@@ -124,19 +124,36 @@ export function Navbar() {
               transition={{ delay: 0.1, duration: 0.3 }}
               className="flex flex-col gap-1"
             >
-              {NAV_LINKS.map((link, i) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 + i * 0.05 }}
-                  className="text-2xl font-display font-bold uppercase tracking-wider text-text-secondary hover:text-text-primary py-3 border-b border-border-subtle transition-colors"
-                >
-                  {link.label}
-                </motion.a>
-              ))}
+              {NAV_LINKS.map((link, i) => {
+                return link.href.startsWith('/') ? (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + i * 0.05 }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="block text-2xl font-display font-bold uppercase tracking-wider text-text-secondary hover:text-text-primary py-3 border-b border-border-subtle transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ) : (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + i * 0.05 }}
+                    className="block text-2xl font-display font-bold uppercase tracking-wider text-text-secondary hover:text-text-primary py-3 border-b border-border-subtle transition-colors"
+                  >
+                    {link.label}
+                  </motion.a>
+                );
+              })}
               <div className="flex flex-col gap-3 mt-6">
                 <a
                   href="https://dashboard.omniprise.com.py"

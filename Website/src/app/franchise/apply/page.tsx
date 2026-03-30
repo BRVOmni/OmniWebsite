@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Send, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { BRANDS } from '@/lib/brands';
 
 interface FormData {
   // Step 1 - Personal
@@ -49,16 +50,6 @@ const INITIAL_DATA: FormData = {
   howHeard: '',
   additionalInfo: '',
 };
-
-const BRANDS = [
-  'UFO',
-  'Mr. Chow',
-  'Rocco',
-  'PastaBox',
-  "Sammy's Express Pizza",
-  'Barrio Pizzero',
-  'Los Condenados',
-];
 
 const INVESTMENT_RANGES = [
   'Menos de ₲100M',
@@ -258,7 +249,7 @@ function Step2Brand({ data, onChange }: { data: FormData; onChange: (field: stri
         <RadioGroup
           label="Marca preferida"
           name="preferredBrand"
-          options={BRANDS}
+          options={BRANDS.map(b => b.name)}
           value={data.preferredBrand}
           onChange={(v) => onChange('preferredBrand', v)}
           required
@@ -493,7 +484,7 @@ export default function ApplyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-800 pt-24 pb-16 px-6 md:px-12">
+    <main id="main-content" className="min-h-screen bg-surface-800 pt-24 pb-16 px-6 md:px-12">
       <div className="max-w-[680px] mx-auto">
         {/* Header */}
         {!submitted && (
@@ -586,6 +577,6 @@ export default function ApplyPage() {
           </>
         )}
       </div>
-    </div>
+    </main>
   );
 }

@@ -26,7 +26,6 @@ const jsonLd = {
     '@type': 'QuantitativeValue',
     value: 135,
   },
-  sameAs: [],
 };
 
 export default function HomePage() {
@@ -37,7 +36,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Navbar />
-      <main>
+      <main id="main-content">
         <HeroSection />
         <StatementSection />
         <StatsSection />
