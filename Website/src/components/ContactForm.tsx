@@ -3,23 +3,82 @@
 import { useState, type FormEvent } from 'react';
 import { track } from '@vercel/analytics';
 import { motion } from 'framer-motion';
+import { validateContact, type StepErrors } from '@/lib/franchise-schema';
 
 const FORM_ACTION = 'https://formspree.io/f/2967699696509779106';
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error';
 
+function Field({
+  label,
+  name,
+  type = 'text',
+  placeholder,
+  required = false,
+  error,
+  rows,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  placeholder?: string;
+  required?: boolean;
+  error?: string;
+  rows?: number;
+}) {
+  const inputClass = `w-full bg-surface-800 border rounded-lg px-4 py-3 text-sm text-text-primary placeholder:text-text-hint/50 focus:outline-none focus:border-omniprise-500/50 focus:ring-1 focus:ring-omniprise-500/20 transition-all ${
+    error ? 'border-danger-500/60' : 'border-border-medium'
+  }`;
+
+  return (
+    <div>
+      <label htmlFor={name} className="block text-[10px] tracking-[0.18em] uppercase text-text-hint font-medium mb-2">
+        {label} {required && <span className="text-omniprise-500">*</span>}
+      </label>
+      {rows ? (
+        <textarea
+          id={name}
+          name={name}
+          placeholder={placeholder}
+          rows={rows}
+          className={`${inputClass} resize-none`}
+        />
+      ) : (
+        <input
+          id={name}
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          className={inputClass}
+        />
+      )}
+      {error && <p className="text-[12px] text-danger-400 mt-1.5">{error}</p>}
+    </div>
+  );
+}
+
 export function ContactForm() {
   const [state, setState] = useState<FormState>('idle');
+  const [errors, setErrors] = useState<StepErrors>({});
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+
+    const fieldErrors = validateContact(data);
+    if (Object.keys(fieldErrors).length > 0) {
+      setErrors(fieldErrors);
+      return;
+    }
+    setErrors({});
     setState('submitting');
 
     try {
       const res = await fetch(FORM_ACTION, {
         method: 'POST',
         headers: { Accept: 'application/json' },
-        body: new FormData(e.currentTarget),
+        body: new FormData(form),
       });
 
       if (res.ok) {
@@ -66,60 +125,13 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="name" className="block text-[10px] tracking-[0.18em] uppercase text-text-hint font-medium mb-2">
-            Nombre *
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            className="w-full bg-surface-800 border border-border-medium px-4 py-3 text-sm text-text-primary placeholder:text-text-hint/50 focus:outline-none focus:border-omniprise-500 transition-colors"
-            placeholder="Tu nombre"
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="block text-[10px] tracking-[0.18em] uppercase text-text-hint font-medium mb-2">
-            Email *
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            className="w-full bg-surface-800 border border-border-medium px-4 py-3 text-sm text-text-primary placeholder:text-text-hint/50 focus:outline-none focus:border-omniprise-500 transition-colors"
-            placeholder="tu@email.com"
-          />
-        </div>
+        <Field label="Nombre" name="name" placeholder="Tu nombre" required error={errors.name} />
+        <Field label="Email" name="email" type="email" placeholder="tu@email.com" required error={errors.email} />
       </div>
 
-      <div>
-        <label htmlFor="company" className="block text-[10px] tracking-[0.18em] uppercase text-text-hint font-medium mb-2">
-          Empresa
-        </label>
-        <input
-          id="company"
-          name="company"
-          type="text"
-          className="w-full bg-surface-800 border border-border-medium px-4 py-3 text-sm text-text-primary placeholder:text-text-hint/50 focus:outline-none focus:border-omniprise-500 transition-colors"
-          placeholder="Nombre de tu empresa (opcional)"
-        />
-      </div>
+      <Field label="Empresa" name="company" placeholder="Nombre de tu empresa (opcional)" />
 
-      <div>
-        <label htmlFor="message" className="block text-[10px] tracking-[0.18em] uppercase text-text-hint font-medium mb-2">
-          Mensaje *
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          required
-          rows={4}
-          className="w-full bg-surface-800 border border-border-medium px-4 py-3 text-sm text-text-primary placeholder:text-text-hint/50 focus:outline-none focus:border-omniprise-500 transition-colors resize-none"
-          placeholder="Contanos cómo podemos trabajar juntos..."
-        />
-      </div>
+      <Field label="Mensaje" name="message" placeholder="Contanos cómo podemos trabajar juntos..." required rows={4} error={errors.message} />
 
       {state === 'error' && (
         <p className="text-sm text-danger-500">

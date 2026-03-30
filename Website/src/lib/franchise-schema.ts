@@ -31,11 +31,29 @@ export const step4Schema = z.object({
   additionalInfo: z.string(),
 });
 
+export const contactSchema = z.object({
+  name: z.string().min(1, 'Ingresá tu nombre'),
+  email: z.string().min(1, 'Ingresá tu email').email('Ingresá un email válido'),
+  company: z.string(),
+  message: z.string().min(1, 'Escribí tu mensaje').min(10, 'El mensaje es muy corto'),
+});
+
 export type StepErrors = Partial<Record<string, string>>;
 
 export function validateStep(step: number, data: Record<string, string>): StepErrors {
   const schemas = [step1Schema, step2Schema, step3Schema, step4Schema];
   const result = schemas[step].safeParse(data);
+  if (result.success) return {};
+  const errors: StepErrors = {};
+  for (const issue of result.error.issues) {
+    const key = issue.path[0] as string;
+    if (!errors[key]) errors[key] = issue.message;
+  }
+  return errors;
+}
+
+export function validateContact(data: Record<string, string>): StepErrors {
+  const result = contactSchema.safeParse(data);
   if (result.success) return {};
   const errors: StepErrors = {};
   for (const issue of result.error.issues) {
