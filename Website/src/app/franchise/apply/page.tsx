@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { track } from '@vercel/analytics';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Send, Loader2 } from 'lucide-react';
 import Link from 'next/link';
@@ -428,6 +429,17 @@ export default function ApplyPage() {
 
   const totalSteps = 4;
 
+  const advanceStep = () => {
+    const nextStep = step + 1;
+    track('franchise_form_step', { step: nextStep + 1, from: step + 1 });
+    setStep(nextStep);
+  };
+
+  const goBackStep = () => {
+    track('franchise_form_back', { step: step + 1, to: step });
+    setStep((s) => s - 1);
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -472,11 +484,14 @@ export default function ApplyPage() {
       });
 
       if (res.ok) {
+        track('franchise_form_submitted', { status: 'success', brand: data.preferredBrand || 'none' });
         setSubmitted(true);
       } else {
+        track('franchise_form_submitted', { status: 'error', brand: data.preferredBrand || 'none' });
         setSubmitError(true);
       }
     } catch {
+      track('franchise_form_submitted', { status: 'error', brand: data.preferredBrand || 'none' });
       setSubmitError(true);
     } finally {
       setSubmitting(false);
@@ -536,7 +551,7 @@ export default function ApplyPage() {
               )}
               <div className="flex items-center justify-between mt-10 pt-6 border-t border-border-subtle">
                 <button
-                  onClick={() => setStep((s) => s - 1)}
+                  onClick={goBackStep}
                   disabled={step === 0}
                   className="inline-flex items-center gap-2 text-[14px] text-text-secondary hover:text-text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 >
@@ -546,7 +561,7 @@ export default function ApplyPage() {
 
                 {step < totalSteps - 1 ? (
                   <button
-                    onClick={() => setStep((s) => s + 1)}
+                    onClick={advanceStep}
                     disabled={!canProceed()}
                     className="inline-flex items-center gap-2 text-[14px] font-medium text-surface-900 bg-omniprise-500 hover:bg-omniprise-400 disabled:opacity-40 disabled:cursor-not-allowed px-6 py-3 rounded-full transition-all duration-200 cursor-pointer"
                   >

@@ -51,7 +51,10 @@ export function Footer() {
       </ul>
 
       <span className="text-xs text-text-hint tracking-[0.05em]">
-        © 2026 Omniprise. Asunción, Paraguay.
+        © 2026 Omniprise. Asunción, Paraguay.{' · '}
+        <Link href="/privacidad" className="hover:text-text-primary transition-colors">
+          Privacidad
+        </Link>
       </span>
     </footer>
   );

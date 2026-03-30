@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { track } from '@vercel/analytics';
 import { useReveal } from '@/lib/use-reveal';
 import type { Brand } from '@/lib/brands';
 
@@ -59,6 +60,7 @@ export function BrandCTA({ brand }: BrandCTAProps) {
           >
             <Link
               href={`/franchise/apply?brand=${brand.slug}`}
+              onClick={() => track('franchise_cta', { source: 'brand_page', action: 'apply', brand: brand.slug })}
               className="inline-flex items-center gap-3 text-[15px] font-medium text-surface-900 bg-omniprise-500 hover:bg-omniprise-400 px-9 py-4 rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(14,165,233,0.25)]"
             >
               Solicitar Franquicia

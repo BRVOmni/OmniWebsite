@@ -1,6 +1,30 @@
 # 📝 Change Log
 
-**Grupo Omniprise - Corporate Food Service Dashboard**
+**Grupo Omniprise - Corporate Website**
+
+---
+
+## [2.4.0] - Polish & Completeness - 2026-03-30
+
+### Changed
+- **FranchiseSection (homepage)** — Replaced bloated duplicate of `/franchise` page with a lean CTA teaser (headline + two buttons linking to `/franchise` and `/franchise/apply`). Removes content duplication across homepage and franchise page.
+- **Sitemap** — Converted static `sitemap.xml` to dynamic `src/app/sitemap.ts` generated from `getAllBrandSlugs()`. Auto-updates when brands are added/removed.
+- **Footer** — Added "Privacidad" link to `/privacidad`.
+
+### New Features
+- **Privacy Policy page** (`/privacidad`) — Spanish-language privacy policy covering data collection (contact form + franchise form), Formspree processing, user rights (access, rectification, deletion, opposition), and Paraguay legal framework (Constitución Art. 33, Ley 4868/2013).
+- **Custom analytics events** — Tracked across all key user actions:
+  - `contact_form_submitted` (success/error)
+  - `franchise_form_step` (step progression for funnel analysis)
+  - `franchise_form_submitted` (success/error + brand preference)
+  - `franchise_cta` (source: homepage, franchise page, brand page)
+  - `work_modal_opened` (navbar button)
+  - `brand_card_clicked` (which brand)
+- **Image error fallbacks** — Brand logos (homepage cards + brand detail hero) show text fallback on 404. Gallery images fall back to branded gradient placeholder.
+- **Gallery lightbox keyboard navigation** — ArrowLeft/ArrowRight to navigate, Escape to close. Added visible arrow buttons alongside dot indicators. Added `role="dialog"` and `aria-modal` for screen readers. Body scroll locked while open.
+
+### Removed
+- **17 dashboard-only documentation files** — Moved to dashboard repo. Rewrote README.md as Website-only documentation.
 
 ---
 

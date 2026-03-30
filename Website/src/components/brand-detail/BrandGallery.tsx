@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Instagram, X } from 'lucide-react';
@@ -78,9 +78,42 @@ function getCardStyle(index: number, total: number): string {
 export function BrandGallery({ brand }: BrandGalleryProps) {
   const { ref, isVisible } = useReveal();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
   const palette = BRAND_PALETTES[brand.slug] || DEFAULT_PALETTE;
   const hasImages = brand.galleryImages && brand.galleryImages.length > 0;
   const total = hasImages ? brand.galleryImages!.length : brand.galleryCount;
+  const maxIndex = hasImages ? brand.galleryImages!.length - 1 : 0;
+
+  const handleImageError = useCallback((index: number) => {
+    setFailedImages((prev) => {
+      if (prev.has(index)) return prev;
+      const next = new Set(prev);
+      next.add(index);
+      return next;
+    });
+  }, []);
+
+  // Lightbox keyboard navigation
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setLightboxIndex(null);
+      } else if (e.key === 'ArrowRight') {
+        setLightboxIndex((prev) => prev !== null ? (prev >= maxIndex ? 0 : prev + 1) : null);
+      } else if (e.key === 'ArrowLeft') {
+        setLightboxIndex((prev) => prev !== null ? (prev <= 0 ? maxIndex : prev - 1) : null);
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [lightboxIndex, maxIndex]);
 
   return (
     <>
@@ -138,6 +171,8 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 auto-rows-auto">
             {Array.from({ length: total }).map((_, i) => {
               const imageSrc = hasImages ? brand.galleryImages![i] : null;
+              const hasFailed = failedImages.has(i);
+              const showPlaceholder = !imageSrc || hasFailed;
               const cardClass = getCardStyle(i, total);
 
               return (
@@ -147,18 +182,9 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
                   animate={isVisible ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.6, delay: 0.15 + i * 0.08 }}
                   className={`relative rounded-2xl overflow-hidden border border-border-subtle group cursor-pointer ${cardClass}`}
-                  onClick={() => hasImages ? setLightboxIndex(i) : undefined}
+                  onClick={() => (hasImages && !hasFailed) ? setLightboxIndex(i) : undefined}
                 >
-                  {imageSrc ? (
-                    /* Real image */
-                    <Image
-                      src={imageSrc}
-                      alt={`${brand.name} — foto ${i + 1}`}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    />
-                  ) : (
+                  {showPlaceholder ? (
                     /* Artistic placeholder */
                     <div className={`absolute inset-0 bg-gradient-to-br ${palette.gradient}`}>
                       {/* Subtle radial glow */}
@@ -170,11 +196,19 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
                       {/* Subtle bottom gradient overlay */}
                       <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface-950/40 to-transparent" />
                     </div>
-                  )}
-
-                  {/* Hover overlay for real images */}
-                  {imageSrc && (
-                    <div className="absolute inset-0 bg-surface-950/0 group-hover:bg-surface-950/20 transition-colors duration-300" />
+                  ) : (
+                    /* Real image */
+                    <>
+                      <Image
+                        src={imageSrc!}
+                        alt={`${brand.name} — foto ${i + 1}`}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                        onError={() => handleImageError(i)}
+                      />
+                      <div className="absolute inset-0 bg-surface-950/0 group-hover:bg-surface-950/20 transition-colors duration-300" />
+                    </>
                   )}
                 </motion.div>
               );
@@ -199,6 +233,9 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
       <AnimatePresence>
         {lightboxIndex !== null && hasImages && (
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Galería de ${brand.name} — foto ${lightboxIndex + 1} de ${brand.galleryImages!.length}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -239,18 +276,36 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
               />
             </motion.div>
 
-            {/* Navigation arrows */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3">
-              {brand.galleryImages!.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }}
-                  className={`w-2 h-2 rounded-full transition-all duration-200 cursor-pointer ${
-                    i === lightboxIndex ? 'bg-omniprise-500 w-6' : 'bg-white/20 hover:bg-white/40'
-                  }`}
-                  aria-label={`Ir a foto ${i + 1}`}
-                />
-              ))}
+            {/* Navigation — arrows + dots */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4">
+              <button
+                onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex <= 0 ? maxIndex : lightboxIndex - 1); }}
+                className="p-2 rounded-full bg-surface-800/80 border border-border-subtle text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
+                aria-label="Foto anterior"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+              </button>
+
+              <div className="flex items-center gap-2">
+                {brand.galleryImages!.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }}
+                    className={`w-2 h-2 rounded-full transition-all duration-200 cursor-pointer ${
+                      i === lightboxIndex ? 'bg-omniprise-500 w-6' : 'bg-white/20 hover:bg-white/40'
+                    }`}
+                    aria-label={`Ir a foto ${i + 1}`}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex >= maxIndex ? 0 : lightboxIndex + 1); }}
+                className="p-2 rounded-full bg-surface-800/80 border border-border-subtle text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
+                aria-label="Foto siguiente"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+              </button>
             </div>
           </motion.div>
         )}

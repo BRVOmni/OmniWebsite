@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import { track } from '@vercel/analytics';
 import { motion } from 'framer-motion';
 
 const FORM_ACTION = 'https://formspree.io/f/2967699696509779106';
@@ -22,11 +23,14 @@ export function ContactForm() {
       });
 
       if (res.ok) {
+        track('contact_form_submitted', { status: 'success' });
         setState('success');
       } else {
+        track('contact_form_submitted', { status: 'error' });
         setState('error');
       }
     } catch {
+      track('contact_form_submitted', { status: 'error' });
       setState('error');
     }
   }

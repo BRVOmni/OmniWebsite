@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useReveal } from '@/lib/use-reveal';
@@ -11,6 +12,7 @@ interface BrandHeroProps {
 
 export function BrandHero({ brand }: BrandHeroProps) {
   const { ref, isVisible } = useReveal();
+  const [logoError, setLogoError] = useState(false);
 
   return (
     <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-6 md:px-12 overflow-hidden">
@@ -25,15 +27,22 @@ export function BrandHero({ brand }: BrandHeroProps) {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-[420px] w-full flex items-center justify-center"
         >
-          <Image
-            src={brand.logo}
-            alt={brand.name}
-            width={420}
-            height={180}
-            className="max-h-[160px] w-auto object-contain"
-            style={brand.invertLogo ? { filter: 'invert(1) brightness(0.9)' } : undefined}
-            priority
-          />
+          {logoError ? (
+            <span className="font-display font-black text-[clamp(40px,7vw,72px)] uppercase text-text-primary tracking-wide">
+              {brand.name}
+            </span>
+          ) : (
+            <Image
+              src={brand.logo}
+              alt={brand.name}
+              width={420}
+              height={180}
+              className="max-h-[160px] w-auto object-contain"
+              style={brand.invertLogo ? { filter: 'invert(1) brightness(0.9)' } : undefined}
+              priority
+              onError={() => setLogoError(true)}
+            />
+          )}
         </motion.div>
 
         {/* Tag line */}

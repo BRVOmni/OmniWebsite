@@ -1,15 +1,19 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { track } from '@vercel/analytics';
 import { useReveal } from '@/lib/use-reveal';
 import { BRANDS } from '@/lib/brands';
 import type { Brand } from '@/lib/brands';
 
 function BrandCard({ brand, index, isVisible }: { brand: Brand; index: number; isVisible: boolean }) {
+  const [logoError, setLogoError] = useState(false);
+
   return (
-    <Link href={`/marcas/${brand.slug}`} className="block group">
+    <Link href={`/marcas/${brand.slug}`} onClick={() => track('brand_card_clicked', { brand: brand.slug })} className="block group">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -17,14 +21,21 @@ function BrandCard({ brand, index, isVisible }: { brand: Brand; index: number; i
         className="bg-surface-900 border border-border-subtle rounded-xl p-8 hover:border-omniprise-500/30 hover:bg-surface-700 transition-all duration-300 flex flex-col"
       >
         <div className="h-16 flex items-center mb-4 shrink-0">
-          <Image
-            src={brand.logo}
-            alt={brand.name}
-            width={160}
-            height={60}
-            className="max-h-[56px] w-auto object-contain"
-            style={brand.invertLogo ?{ filter: 'invert(1) brightness(0.9)' } : undefined}
-          />
+          {logoError ? (
+            <span className="font-display font-bold text-2xl uppercase text-text-primary tracking-wide">
+              {brand.name}
+            </span>
+          ) : (
+            <Image
+              src={brand.logo}
+              alt={brand.name}
+              width={160}
+              height={60}
+              className="max-h-[56px] w-auto object-contain"
+              style={brand.invertLogo ? { filter: 'invert(1) brightness(0.9)' } : undefined}
+              onError={() => setLogoError(true)}
+            />
+          )}
         </div>
         <p className="text-[10px] tracking-[0.15em] uppercase text-text-hint font-medium mb-2">{brand.tag}</p>
         <h3 className="font-display font-bold text-lg uppercase tracking-wide group-hover:text-omniprise-500 transition-colors mb-2">{brand.name}</h3>

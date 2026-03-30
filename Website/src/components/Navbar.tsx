@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { track } from '@vercel/analytics';
 import { Menu, X, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -91,7 +92,7 @@ export function Navbar() {
             <ExternalLink className="w-3 h-3" />
           </a>
           <button
-            onClick={() => setModalOpen(true)}
+            onClick={() => { track('work_modal_opened'); setModalOpen(true); }}
             className="hidden sm:inline-flex text-[13px] font-medium text-surface-900 bg-text-primary hover:bg-omniprise-50 px-5 py-2 rounded-full tracking-wider transition-all duration-200 cursor-pointer"
           >
             Trabajemos juntos
@@ -164,7 +165,7 @@ export function Navbar() {
                   Empleados
                 </a>
                 <button
-                  onClick={() => { setMobileOpen(false); setModalOpen(true); }}
+                  onClick={() => { setMobileOpen(false); track('work_modal_opened'); setModalOpen(true); }}
                   className="text-center text-sm font-medium text-surface-900 bg-text-primary py-3 rounded-full"
                 >
                   Trabajemos juntos
