@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useReveal } from '@/lib/use-reveal';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { BRANDS as CANONICAL_BRANDS } from '@/lib/brands';
+import { useScrollDepth } from '@/lib/use-scroll-depth';
 
 const FRANCHISE_BRANDS = CANONICAL_BRANDS.map((b) => ({
   name: b.name,
@@ -413,6 +414,7 @@ function CTASection() {
 }
 
 export default function FranchisePage() {
+  useScrollDepth('franchise');
   return (
     <main id="main-content">
       <FranchiseHero />

@@ -8,6 +8,7 @@ import { VisionSection } from '@/components/VisionSection';
 import { PartnersSection } from '@/components/PartnersSection';
 import { FranchiseSection } from '@/components/FranchiseSection';
 import { Footer } from '@/components/Footer';
+import { ScrollTracker } from '@/components/ScrollTracker';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -36,6 +37,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Navbar />
+      <ScrollTracker page="homepage" />
       <main id="main-content">
         <HeroSection />
         <StatementSection />

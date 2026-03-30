@@ -27,7 +27,7 @@ export interface Brand {
   galleryCount: number;
   /** @handle without the @ — displayed as reference for users to search */
   instagram: string;
-  /** Relative paths under /public — e.g. /brands/gallery/ufo/1.webp */
+  /** Relative paths under /public — e.g. /brands/gallery/ufo/1.jpeg */
   galleryImages?: string[];
 }
 
@@ -57,6 +57,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['Presencial directa'],
     model: 'Restaurante temático',
     galleryCount: 5,
+    galleryImages: ['/brands/gallery/ufo/1.jpeg', '/brands/gallery/ufo/2.jpeg', '/brands/gallery/ufo/3.jpeg', '/brands/gallery/ufo/4.jpeg', '/brands/gallery/ufo/5.jpeg'],
     instagram: 'ufo.py',
   },
   {
@@ -83,7 +84,8 @@ export const BRANDS: Brand[] = [
     locations: '1 local físico + 8 dark-kitchens proyectadas en Gran Asunción',
     deliveryPlatforms: ['PedidosYa', 'Monchis'],
     model: 'Pizza bar + dark-kitchen',
-    galleryCount: 4,
+    galleryCount: 5,
+    galleryImages: ['/brands/gallery/los-condenados/1.jpeg', '/brands/gallery/los-condenados/2.jpeg', '/brands/gallery/los-condenados/3.jpeg', '/brands/gallery/los-condenados/4.jpeg', '/brands/gallery/los-condenados/5.jpeg'],
     instagram: 'elclubdeloscondenados',
   },
   {
@@ -110,7 +112,8 @@ export const BRANDS: Brand[] = [
     locations: '1 local en centro de Asunción + 8 dark-kitchens proyectadas',
     deliveryPlatforms: ['PedidosYa', 'Monchis', 'Uber Eats'],
     model: 'Pasta bar + dark-kitchen',
-    galleryCount: 4,
+    galleryCount: 5,
+    galleryImages: ['/brands/gallery/rocco/1.jpeg', '/brands/gallery/rocco/2.jpeg', '/brands/gallery/rocco/3.jpeg', '/brands/gallery/rocco/4.jpeg', '/brands/gallery/rocco/5.jpeg'],
     instagram: 'rocco.com.py',
   },
   {
@@ -139,6 +142,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis', 'WhatsApp Directo'],
     model: 'Express pizza — locales físicos',
     galleryCount: 5,
+    galleryImages: ['/brands/gallery/sammys/1.jpeg', '/brands/gallery/sammys/2.jpeg', '/brands/gallery/sammys/3.jpeg', '/brands/gallery/sammys/4.jpeg', '/brands/gallery/sammys/5.jpeg'],
     instagram: 'sammysexpresspizza',
   },
   {
@@ -166,7 +170,8 @@ export const BRANDS: Brand[] = [
     locations: '8 dark-kitchens activas en Gran Asunción',
     deliveryPlatforms: ['PedidosYa', 'Monchis', 'Uber Eats'],
     model: 'Dark-kitchen — 100% delivery',
-    galleryCount: 3,
+    galleryCount: 5,
+    galleryImages: ['/brands/gallery/pastabox/1.jpeg', '/brands/gallery/pastabox/2.jpeg', '/brands/gallery/pastabox/3.jpeg', '/brands/gallery/pastabox/4.jpeg', '/brands/gallery/pastabox/5.jpeg'],
     instagram: 'pastaboxpy',
   },
   {
@@ -196,7 +201,8 @@ export const BRANDS: Brand[] = [
     locations: '1 dark-kitchen (Mburucuyá) + 1 local (Shopping Multiplaza)',
     deliveryPlatforms: ['PedidosYa', 'Monchis'],
     model: 'Híbrido — dark-kitchen + local físico',
-    galleryCount: 4,
+    galleryCount: 5,
+    galleryImages: ['/brands/gallery/mr-chow/1.jpeg', '/brands/gallery/mr-chow/2.jpeg', '/brands/gallery/mr-chow/3.jpeg', '/brands/gallery/mr-chow/4.jpeg', '/brands/gallery/mr-chow/5.jpeg'],
     instagram: 'mrchowpy',
   },
   {
@@ -224,7 +230,8 @@ export const BRANDS: Brand[] = [
     locations: 'Cobertura de envío a domicilio en todo el Gran Asunción',
     deliveryPlatforms: ['PedidosYa', 'Monchis', 'WhatsApp Directo'],
     model: 'Delivery-first — cocina centralizada',
-    galleryCount: 3,
+    galleryCount: 5,
+    galleryImages: ['/brands/gallery/barrio-pizzero/1.jpeg', '/brands/gallery/barrio-pizzero/2.jpeg', '/brands/gallery/barrio-pizzero/3.jpeg', '/brands/gallery/barrio-pizzero/4.jpeg', '/brands/gallery/barrio-pizzero/5.jpeg'],
     instagram: 'barriopizzero',
   },
 ];

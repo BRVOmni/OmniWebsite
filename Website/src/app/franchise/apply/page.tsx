@@ -7,6 +7,8 @@ import { ArrowRight, ArrowLeft, Check, Send, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { BRANDS } from '@/lib/brands';
+import { useScrollDepth } from '@/lib/use-scroll-depth';
+import { validateStep, type StepErrors } from '@/lib/franchise-schema';
 
 interface FormData {
   // Step 1 - Personal
@@ -104,6 +106,7 @@ function InputField({
   onChange,
   placeholder,
   required = false,
+  error,
 }: {
   label: string;
   name: string;
@@ -112,6 +115,7 @@ function InputField({
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   placeholder?: string;
   required?: boolean;
+  error?: string;
 }) {
   return (
     <div>
@@ -125,8 +129,11 @@ function InputField({
         onChange={onChange}
         placeholder={placeholder}
         required={required}
-        className="w-full bg-surface-700 border border-border-subtle rounded-lg px-4 py-3 text-sm text-text-primary placeholder:text-text-hint focus:outline-none focus:border-omniprise-500/50 focus:ring-1 focus:ring-omniprise-500/20 transition-all"
+        className={`w-full bg-surface-700 border rounded-lg px-4 py-3 text-sm text-text-primary placeholder:text-text-hint focus:outline-none focus:border-omniprise-500/50 focus:ring-1 focus:ring-omniprise-500/20 transition-all ${
+          error ? 'border-danger-500/60' : 'border-border-subtle'
+        }`}
       />
+      {error && <p className="text-[12px] text-danger-400 mt-1.5">{error}</p>}
     </div>
   );
 }
@@ -138,6 +145,7 @@ function RadioGroup({
   value,
   onChange,
   required = false,
+  error,
 }: {
   label: string;
   name: string;
@@ -145,6 +153,7 @@ function RadioGroup({
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
+  error?: string;
 }) {
   return (
     <div>
@@ -160,13 +169,16 @@ function RadioGroup({
             className={`px-4 py-2 rounded-lg text-[13px] transition-all duration-200 cursor-pointer ${
               value === opt
                 ? 'bg-omniprise-500/20 text-omniprise-400 border border-omniprise-500/40'
-                : 'bg-surface-700 text-text-secondary border border-border-subtle hover:border-border-medium'
+                : error
+                  ? 'bg-surface-700 text-text-secondary border border-danger-500/30 hover:border-danger-500/50'
+                  : 'bg-surface-700 text-text-secondary border border-border-subtle hover:border-border-medium'
             }`}
           >
             {opt}
           </button>
         ))}
       </div>
+      {error && <p className="text-[12px] text-danger-400 mt-1.5">{error}</p>}
     </div>
   );
 }
@@ -179,6 +191,7 @@ function TextArea({
   placeholder,
   rows = 4,
   required = false,
+  error,
 }: {
   label: string;
   name: string;
@@ -187,6 +200,7 @@ function TextArea({
   placeholder?: string;
   rows?: number;
   required?: boolean;
+  error?: string;
 }) {
   return (
     <div>
@@ -200,13 +214,16 @@ function TextArea({
         placeholder={placeholder}
         rows={rows}
         required={required}
-        className="w-full bg-surface-700 border border-border-subtle rounded-lg px-4 py-3 text-sm text-text-primary placeholder:text-text-hint focus:outline-none focus:border-omniprise-500/50 focus:ring-1 focus:ring-omniprise-500/20 transition-all resize-none"
+        className={`w-full bg-surface-700 border rounded-lg px-4 py-3 text-sm text-text-primary placeholder:text-text-hint focus:outline-none focus:border-omniprise-500/50 focus:ring-1 focus:ring-omniprise-500/20 transition-all resize-none ${
+          error ? 'border-danger-500/60' : 'border-border-subtle'
+        }`}
       />
+      {error && <p className="text-[12px] text-danger-400 mt-1.5">{error}</p>}
     </div>
   );
 }
 
-function Step1Personal({ data, onChange }: { data: FormData; onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void }) {
+function Step1Personal({ data, onChange, errors }: { data: FormData; onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void; errors: StepErrors }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -221,18 +238,18 @@ function Step1Personal({ data, onChange }: { data: FormData; onChange: (e: React
         Cuéntanos sobre ti para que podamos contactarte.
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <InputField label="Nombre" name="firstName" value={data.firstName} onChange={onChange} placeholder="Juan" required />
-        <InputField label="Apellido" name="lastName" value={data.lastName} onChange={onChange} placeholder="Pérez" required />
-        <InputField label="Email" name="email" type="email" value={data.email} onChange={onChange} placeholder="juan@email.com" required />
-        <InputField label="Teléfono" name="phone" type="tel" value={data.phone} onChange={onChange} placeholder="+595 991 123456" required />
-        <InputField label="Ciudad" name="city" value={data.city} onChange={onChange} placeholder="Asunción" required />
+        <InputField label="Nombre" name="firstName" value={data.firstName} onChange={onChange} placeholder="Juan" required error={errors.firstName} />
+        <InputField label="Apellido" name="lastName" value={data.lastName} onChange={onChange} placeholder="Pérez" required error={errors.lastName} />
+        <InputField label="Email" name="email" type="email" value={data.email} onChange={onChange} placeholder="juan@email.com" required error={errors.email} />
+        <InputField label="Teléfono" name="phone" type="tel" value={data.phone} onChange={onChange} placeholder="+595 991 123456" required error={errors.phone} />
+        <InputField label="Ciudad" name="city" value={data.city} onChange={onChange} placeholder="Asunción" required error={errors.city} />
         <InputField label="País" name="country" value={data.country} onChange={onChange} placeholder="Paraguay" />
       </div>
     </motion.div>
   );
 }
 
-function Step2Brand({ data, onChange }: { data: FormData; onChange: (field: string, value: string) => void }) {
+function Step2Brand({ data, onChange, errors }: { data: FormData; onChange: (field: string, value: string) => void; errors: StepErrors }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -254,6 +271,7 @@ function Step2Brand({ data, onChange }: { data: FormData; onChange: (field: stri
           value={data.preferredBrand}
           onChange={(v) => onChange('preferredBrand', v)}
           required
+          error={errors.preferredBrand}
         />
         <RadioGroup
           label="¿Tienes experiencia en gastronomía?"
@@ -262,6 +280,7 @@ function Step2Brand({ data, onChange }: { data: FormData; onChange: (field: stri
           value={data.hasExperience}
           onChange={(v) => onChange('hasExperience', v)}
           required
+          error={errors.hasExperience}
         />
         <InputField
           label="Negocio actual (si tienes uno)"
@@ -282,7 +301,7 @@ function Step2Brand({ data, onChange }: { data: FormData; onChange: (field: stri
   );
 }
 
-function Step3Investment({ data, onChange }: { data: FormData; onChange: (field: string, value: string) => void }) {
+function Step3Investment({ data, onChange, errors }: { data: FormData; onChange: (field: string, value: string) => void; errors: StepErrors }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -304,6 +323,7 @@ function Step3Investment({ data, onChange }: { data: FormData; onChange: (field:
           value={data.investmentRange}
           onChange={(v) => onChange('investmentRange', v)}
           required
+          error={errors.investmentRange}
         />
         <RadioGroup
           label="¿Ya tienes un local o terreno?"
@@ -312,6 +332,7 @@ function Step3Investment({ data, onChange }: { data: FormData; onChange: (field:
           value={data.hasLocation}
           onChange={(v) => onChange('hasLocation', v)}
           required
+          error={errors.hasLocation}
         />
         {data.hasLocation && data.hasLocation !== 'No, necesito ayuda' && (
           <InputField
@@ -329,13 +350,14 @@ function Step3Investment({ data, onChange }: { data: FormData; onChange: (field:
           value={data.timeline}
           onChange={(v) => onChange('timeline', v)}
           required
+          error={errors.timeline}
         />
       </div>
     </motion.div>
   );
 }
 
-function Step4Motivation({ data, onTextChange, onFieldChange }: { data: FormData; onTextChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; onFieldChange: (field: string, value: string) => void }) {
+function Step4Motivation({ data, onTextChange, onFieldChange, errors }: { data: FormData; onTextChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; onFieldChange: (field: string, value: string) => void; errors: StepErrors }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -358,6 +380,7 @@ function Step4Motivation({ data, onTextChange, onFieldChange }: { data: FormData
           placeholder="Cuéntanos tu visión y por qué crees que encajas con nuestro modelo..."
           rows={4}
           required
+          error={errors.motivation}
         />
         <RadioGroup
           label="¿Cómo nos conociste?"
@@ -366,6 +389,7 @@ function Step4Motivation({ data, onTextChange, onFieldChange }: { data: FormData
           value={data.howHeard}
           onChange={(v) => onFieldChange('howHeard', v)}
           required
+          error={errors.howHeard}
         />
         <TextArea
           label="Información adicional (opcional)"
@@ -416,6 +440,7 @@ const FRANCHISE_FORM_ACTION = 'https://formspree.io/f/2967703689361358019';
 
 export default function ApplyPage() {
   const searchParams = useSearchParams();
+  useScrollDepth('franchise_apply');
   const brandParam = searchParams.get('brand');
 
   const [step, setStep] = useState(0);
@@ -426,48 +451,54 @@ export default function ApplyPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const [errors, setErrors] = useState<StepErrors>({});
 
   const totalSteps = 4;
 
   const advanceStep = () => {
+    const stepErrors = validateStep(step, data as unknown as Record<string, string>);
+    if (Object.keys(stepErrors).length > 0) {
+      setErrors(stepErrors);
+      return;
+    }
+    setErrors({});
     const nextStep = step + 1;
     track('franchise_form_step', { step: nextStep + 1, from: step + 1 });
     setStep(nextStep);
   };
 
   const goBackStep = () => {
+    setErrors({});
     track('franchise_form_back', { step: step + 1, to: step });
     setStep((s) => s - 1);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    if (errors[e.target.name]) setErrors((prev) => { const next = { ...prev }; delete next[e.target.name]; return next; });
   };
 
   const handleFieldChange = (field: string, value: string) => {
     setData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) setErrors((prev) => { const next = { ...prev }; delete next[field]; return next; });
   };
 
   const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    if (errors[e.target.name]) setErrors((prev) => { const next = { ...prev }; delete next[e.target.name]; return next; });
   };
 
   const canProceed = () => {
-    switch (step) {
-      case 0:
-        return !!(data.firstName && data.lastName && data.email && data.phone && data.city);
-      case 1:
-        return !!(data.preferredBrand && data.hasExperience);
-      case 2:
-        return !!(data.investmentRange && data.hasLocation && data.timeline);
-      case 3:
-        return !!data.motivation;
-      default:
-        return false;
-    }
+    const stepErrors = validateStep(step, data as unknown as Record<string, string>);
+    return Object.keys(stepErrors).length === 0;
   };
 
   const handleSubmit = async () => {
+    const stepErrors = validateStep(step, data as unknown as Record<string, string>);
+    if (Object.keys(stepErrors).length > 0) {
+      setErrors(stepErrors);
+      return;
+    }
     setSubmitting(true);
     setSubmitError(false);
 
@@ -534,11 +565,11 @@ export default function ApplyPage() {
 
             <div className="bg-surface-900 border border-border-subtle rounded-2xl p-6 md:p-10">
               <AnimatePresence mode="wait">
-                {step === 0 && <Step1Personal data={data} onChange={handleInputChange} />}
-                {step === 1 && <Step2Brand data={data} onChange={handleFieldChange} />}
-                {step === 2 && <Step3Investment data={data} onChange={handleFieldChange} />}
+                {step === 0 && <Step1Personal data={data} onChange={handleInputChange} errors={errors} />}
+                {step === 1 && <Step2Brand data={data} onChange={handleFieldChange} errors={errors} />}
+                {step === 2 && <Step3Investment data={data} onChange={handleFieldChange} errors={errors} />}
                 {step === 3 && (
-                  <Step4Motivation data={data} onTextChange={handleTextAreaChange} onFieldChange={handleFieldChange} />
+                  <Step4Motivation data={data} onTextChange={handleTextAreaChange} onFieldChange={handleFieldChange} errors={errors} />
                 )}
               </AnimatePresence>
 
