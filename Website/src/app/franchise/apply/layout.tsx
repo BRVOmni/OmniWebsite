@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'Solicitar Franquicia — Omniprise',
@@ -20,5 +22,11 @@ export default function ApplyLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <Suspense>{children}</Suspense>;
+  return (
+    <>
+      <Navbar />
+      <Suspense>{children}</Suspense>
+      <Footer />
+    </>
+  );
 }
