@@ -11,6 +11,7 @@ import { useScrollDepth } from '@/lib/use-scroll-depth';
 
 const FRANCHISE_BRANDS = CANONICAL_BRANDS.map((b) => ({
   name: b.name,
+  slug: b.slug,
   desc: b.tagline,
 }));
 
@@ -231,17 +232,21 @@ function BrandsSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.1 + i * 0.06 }}
-              className="bg-surface-800 border border-border-subtle rounded-xl p-6 hover:border-omniprise-500/30 transition-colors duration-300 group"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-omniprise-500/10 flex items-center justify-center text-omniprise-500 font-display font-bold text-sm">
-                  {b.name.charAt(0)}
+              <Link
+                href={`/marcas/${b.slug}`}
+                className="block bg-surface-800 border border-border-subtle rounded-xl p-6 hover:border-omniprise-500/30 transition-colors duration-300 group"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-omniprise-500/10 flex items-center justify-center text-omniprise-500 font-display font-bold text-sm">
+                    {b.name.charAt(0)}
+                  </div>
+                  <h3 className="font-display font-bold text-sm uppercase tracking-[0.04em] text-text-primary group-hover:text-omniprise-400 transition-colors">
+                    {b.name}
+                  </h3>
                 </div>
-                <h3 className="font-display font-bold text-sm uppercase tracking-[0.04em] text-text-primary group-hover:text-omniprise-400 transition-colors">
-                  {b.name}
-                </h3>
-              </div>
-              <p className="text-[13px] text-text-secondary leading-relaxed">{b.desc}</p>
+                <p className="text-[13px] text-text-secondary leading-relaxed">{b.desc}</p>
+              </Link>
             </motion.div>
           ))}
         </div>
