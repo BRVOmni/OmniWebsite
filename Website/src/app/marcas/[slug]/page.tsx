@@ -28,6 +28,9 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
 
   const title = `${brand.name} — Omniprise`;
   const description = brand.description;
+  const ogImage = brand.galleryImages?.[0]
+    ? `https://www.omniprise.com.py${brand.galleryImages[0]}`
+    : `https://www.omniprise.com.py${brand.logo}`;
 
   return {
     title,
@@ -41,7 +44,7 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
       type: 'website',
       images: [
         {
-          url: '/omniprise-logo.jpg',
+          url: ogImage,
           width: 1200,
           height: 630,
           alt: `${brand.name} — Omniprise`,
@@ -52,7 +55,7 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
       card: 'summary_large_image',
       title,
       description,
-      images: ['/omniprise-logo.jpg'],
+      images: [ogImage],
     },
   };
 }

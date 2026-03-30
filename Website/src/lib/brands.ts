@@ -25,6 +25,10 @@ export interface Brand {
   deliveryPlatforms: string[];
   model: string;
   galleryCount: number;
+  /** @handle without the @ — displayed as reference for users to search */
+  instagram: string;
+  /** Relative paths under /public — e.g. /brands/gallery/ufo/1.webp */
+  galleryImages?: string[];
 }
 
 export const BRANDS: Brand[] = [
@@ -53,6 +57,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['Presencial directa'],
     model: 'Restaurante temático',
     galleryCount: 5,
+    instagram: 'ufo.py',
   },
   {
     slug: 'los-condenados',
@@ -79,6 +84,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis'],
     model: 'Pizza bar + dark-kitchen',
     galleryCount: 4,
+    instagram: 'elclubdeloscondenados',
   },
   {
     slug: 'rocco',
@@ -105,6 +111,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis', 'Uber Eats'],
     model: 'Pasta bar + dark-kitchen',
     galleryCount: 4,
+    instagram: 'rocco.com.py',
   },
   {
     slug: 'sammys',
@@ -132,6 +139,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis', 'WhatsApp Directo'],
     model: 'Express pizza — locales físicos',
     galleryCount: 5,
+    instagram: 'sammysexpresspizza',
   },
   {
     slug: 'pastabox',
@@ -159,6 +167,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis', 'Uber Eats'],
     model: 'Dark-kitchen — 100% delivery',
     galleryCount: 3,
+    instagram: 'pastaboxpy',
   },
   {
     slug: 'mr-chow',
@@ -188,6 +197,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis'],
     model: 'Híbrido — dark-kitchen + local físico',
     galleryCount: 4,
+    instagram: 'mrchowpy',
   },
   {
     slug: 'barrio-pizzero',
@@ -215,6 +225,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis', 'WhatsApp Directo'],
     model: 'Delivery-first — cocina centralizada',
     galleryCount: 3,
+    instagram: 'barriopizzero',
   },
 ];
 
