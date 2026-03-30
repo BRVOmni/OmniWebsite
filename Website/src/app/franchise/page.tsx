@@ -1,19 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useReveal } from '@/lib/use-reveal';
 import { ArrowRight, ChevronDown } from 'lucide-react';
+import { BRANDS as CANONICAL_BRANDS } from '@/lib/brands';
 
-const BRANDS = [
-  { name: 'UFO', desc: 'Experiencia gastronómica temática de alto impacto' },
-  { name: 'Mr. Chow', desc: 'Cocina asiática fusión con identidad propia' },
-  { name: 'Rocco', desc: 'Hamburguesas artesanales premium' },
-  { name: 'PastaBox', desc: 'Pasta fresca rápida y accesible' },
-  { name: "Sammy's Express Pizza", desc: 'Pizza rápida de alta calidad' },
-  { name: 'Barrio Pizzero', desc: 'Pizzería de barrio con alma artesanal' },
-  { name: 'Los Condenados', desc: 'Sándwiches y street food con actitud' },
-];
+const FRANCHISE_BRANDS = CANONICAL_BRANDS.map((b) => ({
+  name: b.name,
+  desc: b.tagline,
+}));
 
 const BENEFITS = [
   {
@@ -225,7 +222,7 @@ function BrandsSection() {
         </motion.h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {BRANDS.map((b, i) => (
+          {FRANCHISE_BRANDS.map((b, i) => (
             <motion.div
               key={b.name}
               initial={{ opacity: 0, y: 20 }}
@@ -366,8 +363,6 @@ function FAQSection() {
     </section>
   );
 }
-
-import { useState } from 'react';
 
 function CTASection() {
   const { ref, isVisible } = useReveal();
