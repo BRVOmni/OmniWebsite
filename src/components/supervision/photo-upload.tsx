@@ -210,7 +210,7 @@ export function PhotoUpload({
               </p>
             </div>
 
-            <Button type="button" variant="secondary" size="sm" disabled={disabled || isUploading}>
+            <Button type="button" variant="outline" size="sm" disabled={disabled || isUploading}>
               <Upload className="h-4 w-4 mr-2" />
               {t('browse')}
             </Button>
@@ -286,8 +286,8 @@ export function PhotoGallery({ photos, onRemove, disabled }: PhotoGalleryProps) 
             {!disabled && onRemove && (
               <Button
                 type="button"
-                variant="destructive"
-                size="icon"
+                variant="outline"
+                size="sm"
                 className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
                 onClick={() => onRemove(index)}
               >

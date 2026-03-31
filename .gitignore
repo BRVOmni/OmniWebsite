@@ -6,3 +6,5 @@ old-static/
 out/
 .env.local
 .env*.local
+next-env.d.ts
+tsconfig.tsbuildinfo

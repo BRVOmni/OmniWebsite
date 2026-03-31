@@ -103,7 +103,7 @@ export function ChannelBreakdown({ data }: ChannelBreakdownProps) {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percentage }) => `${name} (${percentage}%)`}
+                label={({ name, percentage }: any) => `${name} (${percentage}%)`}
                 outerRadius={80}
                 innerRadius={50}
                 fill="#8884d8"

@@ -101,7 +101,7 @@ export function SalesChart({ data }: SalesChartProps) {
               padding: '12px',
               boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
             }}
-            formatter={(value: number) => [`₲${Math.round(value).toLocaleString()}`, 'Sales']}
+            formatter={(value: any) => [`₲${Math.round(value).toLocaleString()}`, 'Sales']}
             labelStyle={{ color: '#9ca3af', marginBottom: '4px' }}
             itemStyle={{ padding: '4px 0' }}
             cursor={{ stroke: '#3b82f6', strokeWidth: 2, strokeDasharray: '5 5' }}
@@ -173,7 +173,6 @@ function ChartSkeleton() {
             <Skeleton
               className="w-full"
               style={{ height: `${40 + Math.random() * 60}%` }}
-              variant="default"
             />
           </div>
         ))}

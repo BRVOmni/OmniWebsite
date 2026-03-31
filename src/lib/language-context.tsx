@@ -12,7 +12,7 @@ import { translations, Language, TranslationKey } from '@/lib/translations'
 type LanguageContextType = {
   language: Language
   setLanguage: (lang: Language) => void
-  t: (key: TranslationKey) => string
+  t: (key: string) => string
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
@@ -20,8 +20,10 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>('en')
 
-  const t = (key: TranslationKey): string => {
-    return translations[language][key] || translations.en[key] || key
+  const t = (key: string): string => {
+    const dict = translations[language] as unknown as Record<string, string>
+    const fallback = translations.en as unknown as Record<string, string>
+    return dict[key] || fallback[key] || key
   }
 
   return (

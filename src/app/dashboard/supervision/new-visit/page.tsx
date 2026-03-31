@@ -68,6 +68,7 @@ interface ChecklistResult {
   item_id: string
   compliant: boolean | null
   notes: string
+  is_critical?: boolean
 }
 
 interface Finding {
@@ -278,35 +279,6 @@ function NewVisitForm() {
     )
   }, [checklistItems, stepCategories])
 
-  // Calculate 5 key questions (auto-calculated based on category scores)
-  const keyQuestions = useMemo(() => {
-    const categoryScores = scores.categoryScores
-
-    // Operations: liderazgo + orden combined score >= 70%
-    const operationsScore = (categoryScores['Liderazgo'] || 0 + categoryScores['Orden'] || 0) / 2
-
-    // Money: caja score >= 70
-    const moneyScore = categoryScores['Caja'] || 0
-
-    // Product: stock score >= 70
-    const productScore = categoryScores['Stock'] || 0
-
-    // Customer experience: limpieza + equipos combined score >= 70%
-    const customerScore = (categoryScores['Limpieza'] || 0 + categoryScores['Equipos'] || 0) / 2
-
-    // Manager control: liderazgo >= 70 AND manager marked as in control
-    const managerScore = categoryScores['Liderazgo'] || 0
-    const managerInControl = visitData.manager_in_control === true
-
-    return {
-      operations_functioning: operationsScore >= 70,
-      money_controlled: moneyScore >= 70,
-      product_managed: productScore >= 70,
-      customer_experience_adequate: customerScore >= 70,
-      manager_team_control: managerScore >= 70 && managerInControl
-    }
-  }, [scores.categoryScores, visitData.manager_in_control])
-
   const checklistResultsByCategory = (categoryName: string) => {
     return Object.values(checklistResults).filter(result => {
       const item = checklistItems.find(i => i.id === result.item_id)
@@ -368,6 +340,35 @@ function NewVisitForm() {
 
     return { categoryScores, avgScore, score_operacion }
   }, [checklistResults, categories])
+
+  // Calculate 5 key questions (auto-calculated based on category scores)
+  const keyQuestions = useMemo(() => {
+    const categoryScores = scores.categoryScores
+
+    // Operations: liderazgo + orden combined score >= 70%
+    const operationsScore = (categoryScores['Liderazgo'] || 0 + categoryScores['Orden'] || 0) / 2
+
+    // Money: caja score >= 70
+    const moneyScore = categoryScores['Caja'] || 0
+
+    // Product: stock score >= 70
+    const productScore = categoryScores['Stock'] || 0
+
+    // Customer experience: limpieza + equipos combined score >= 70%
+    const customerScore = (categoryScores['Limpieza'] || 0 + categoryScores['Equipos'] || 0) / 2
+
+    // Manager control: liderazgo >= 70 AND manager marked as in control
+    const managerScore = categoryScores['Liderazgo'] || 0
+    const managerInControl = visitData.manager_in_control === true
+
+    return {
+      operations_functioning: operationsScore >= 70,
+      money_controlled: moneyScore >= 70,
+      product_managed: productScore >= 70,
+      customer_experience_adequate: customerScore >= 70,
+      manager_team_control: managerScore >= 70 && managerInControl
+    }
+  }, [scores.categoryScores, visitData.manager_in_control])
 
   const handleChecklistChange = (itemId: string, compliant: boolean | null, notes: string) => {
     setChecklistResults(prev => ({
@@ -643,8 +644,8 @@ function NewVisitForm() {
 
         {/* Progress Stepper */}
         <ProgressStepper
-          completedSteps={completedSteps}
-          currentStep={currentStep}
+          completedSteps={completedSteps as any}
+          currentStep={currentStep as any}
           orientation="horizontal"
           showTime={false}
           showDescriptions={false}
@@ -861,7 +862,7 @@ function NewVisitForm() {
                   name={item.name}
                   nameEs={item.name_es}
                   description={item.description}
-                  compliant={checklistResults[item.id]?.compliant}
+                  compliant={checklistResults[item.id]?.compliant ?? undefined}
                   notes={checklistResults[item.id]?.notes || ''}
                   isCritical={item.is_critical}
                   onCompliantChange={(compliant) => handleChecklistChange(item.id, compliant, checklistResults[item.id]?.notes || '')}

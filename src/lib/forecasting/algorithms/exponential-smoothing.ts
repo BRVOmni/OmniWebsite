@@ -261,7 +261,7 @@ export function tripleExponentialSmoothing(
     .reduce((sum, d) => sum + d.value, 0) / period
 
   let level = firstSeasonAvg
-  const trend = (secondSeasonAvg - firstSeasonAvg) / period
+  let trend = (secondSeasonAvg - firstSeasonAvg) / period
 
   // Initialize seasonal indices
   const seasonalIndices = seasons[0].map(v => v - firstSeasonAvg)

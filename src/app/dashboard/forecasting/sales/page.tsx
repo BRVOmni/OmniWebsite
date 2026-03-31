@@ -34,7 +34,7 @@ export default function SalesForecastingPage() {
   const [loading, setLoading] = useState(true)
   const [generating, setGenerating] = useState(false)
   const [salesData, setSalesData] = useState<any[]>([])
-  const [forecast, setForecast] = useState<ForecastResult | null>(null)
+  const [forecast, setForecast] = useState<any>(null)
   const [kpis, setKpis] = useState<SalesForecastData | null>(null)
   const [dateRange, setDateRange] = useState({ startDate: '', endDate: '' })
 
@@ -150,7 +150,7 @@ export default function SalesForecastingPage() {
     amount: Number(sale.net_amount)
   }))
 
-  const forecastData = forecast ? forecast.data.map((point, index) => ({
+  const forecastData = forecast ? forecast.data.map((point: any, index: number) => ({
     date: point.date,
     amount: point.value,
     upper: forecast.upperBound?.[index],
@@ -173,9 +173,7 @@ export default function SalesForecastingPage() {
         {/* Date Range Filter & Export */}
         <div className="flex gap-4">
           <DateRangeFilter
-            startDate={dateRange.startDate}
-            endDate={dateRange.endDate}
-            onRangeChange={setDateRange}
+            onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}
           />
           <button
             onClick={handleExport}

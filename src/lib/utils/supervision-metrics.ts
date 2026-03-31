@@ -398,7 +398,7 @@ export async function calculateLocationMetrics(
   return {
     location_id: locationId,
     location_name: location.name,
-    city: location.cities?.name || 'Unknown',
+    city: (location.cities as any)?.name || 'Unknown',
     total_visits: totalVisits,
     days_since_last_visit: daysSinceLastVisit,
     average_score: averageScore,
@@ -410,7 +410,7 @@ export async function calculateLocationMetrics(
     open_actions: openActions,
     overdue_actions: overdueActions,
     compliance_level,
-    visit_frequency_score,
+    visit_frequency_score: visitFrequencyScore,
     performance_trend,
     health_status
   }
@@ -625,7 +625,7 @@ export async function calculateActionMetrics(days: number = 90): Promise<ActionC
     } else {
       locationMap.set(action.location_id, {
         location_id: action.location_id,
-        location_name,
+        location_name: locationName,
         overdue: action.is_overdue ? 1 : 0,
         pending: action.status === 'pending' ? 1 : 0
       })
@@ -646,7 +646,7 @@ export async function calculateActionMetrics(days: number = 90): Promise<ActionC
     completion_rate: completionRate,
     average_completion_days: avgCompletionDays,
     by_priority: byPriority,
-    by_location
+    by_location: byLocation
   }
 }
 
@@ -697,7 +697,7 @@ export async function generateHeatMapData(): Promise<HeatMapData[]> {
       return {
         location_id: location.id,
         location_name: location.name,
-        city: location.cities?.name || 'Unknown',
+        city: (location.cities as any)?.name || 'Unknown',
         lat: location.latitude,
         lng: location.longitude,
         last_visit_date: metrics.total_visits > 0

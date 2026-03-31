@@ -360,7 +360,7 @@ export default function LocationDetailPage() {
                     </div>
                     <ScoreCard
                       score={visit.score_total || 0}
-                      classification={visit.classification}
+                      classification={visit.classification as any}
                       size="sm"
                     />
                   </div>

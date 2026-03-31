@@ -169,7 +169,7 @@ export default function UsersPage() {
       .eq('is_active', true)
       .order('name')
 
-    setLocations(data as LocationData[])
+    setLocations(data as unknown as LocationData[])
   }
 
   const loadBrands = async () => {
@@ -713,7 +713,7 @@ export default function UsersPage() {
                     <label key={module.key} className="flex items-center gap-2 p-2 border rounded-lg hover:bg-gray-50 cursor-pointer">
                       <input
                         type="checkbox"
-                        checked={selectedUserPermissions[module.key as keyof UserPermissions] || false}
+                        checked={!!selectedUserPermissions[module.key as keyof UserPermissions]}
                         onChange={(e) => setSelectedUserPermissions({
                           ...selectedUserPermissions,
                           [module.key]: e.target.checked

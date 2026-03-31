@@ -213,7 +213,7 @@ export async function getVisits(filters: {
     return []
   }
 
-  return data || []
+  return (data || []) as any
 }
 
 /**
@@ -266,7 +266,7 @@ export async function getVisitById(visitId: string): Promise<VisitDetails | null
     return null
   }
 
-  return data
+  return data as any
 }
 
 /**
@@ -334,7 +334,7 @@ export async function getFindings(filters: {
     return []
   }
 
-  return data || []
+  return (data || []) as any
 }
 
 /**
@@ -403,7 +403,7 @@ export async function getActions(filters: {
     return []
   }
 
-  return data || []
+  return (data || []) as any
 }
 
 /**
@@ -466,7 +466,7 @@ export async function getScheduledVisits(filters: {
     return []
   }
 
-  return data || []
+  return (data || []) as any
 }
 
 // ============================================================================
@@ -489,9 +489,9 @@ export async function getLocationsSummary(): Promise<LocationSummary[]> {
   const summaries = await Promise.all(
     locations.map(async (location) => {
       const [visits, findings, actions] = await Promise.all([
-        getVisits({ locationId, limit: 100 }),
-        getFindings({ locationId, limit: 100 }),
-        getActions({ locationId, status: 'pending', limit: 100 })
+        getVisits({ locationId: location.id, limit: 100 }),
+        getFindings({ locationId: location.id, limit: 100 }),
+        getActions({ locationId: location.id, status: 'pending', limit: 100 })
       ])
 
       const completedVisits = visits.filter(v => v.status === 'completed')
@@ -500,7 +500,7 @@ export async function getLocationsSummary(): Promise<LocationSummary[]> {
       return {
         id: location.id,
         name: location.name,
-        city: location.cities?.name || 'Unknown',
+        city: (location.cities as any)?.name || 'Unknown',
         total_visits: visits.length,
         last_visit_date: lastVisit?.visit_date || null,
         average_score: completedVisits.length > 0

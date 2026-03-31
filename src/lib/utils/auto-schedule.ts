@@ -396,7 +396,7 @@ export async function generateSchedule(
     // Create a map of existing visits by location and date
     const existingVisitsMap = new Map<string, ExistingVisit[]>()
     existingVisits.forEach(visit => {
-      const key = `${visit.location_id}-${visit.planned_date || visit.scheduled_date}`
+      const key = `${visit.location_id}-${(visit as any).planned_date || visit.scheduled_date}`
       if (!existingVisitsMap.has(key)) {
         existingVisitsMap.set(key, [])
       }

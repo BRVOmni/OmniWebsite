@@ -187,8 +187,8 @@ export default function SupervisorsPage() {
     const performance: SupervisorPerformance[] = (supervisorsData as unknown as SupervisorInfo[]).map(supervisor => {
       const supervisorVisits = (visitsData || []).filter((v: VisitData) => v.supervisor_id === supervisor.id)
       const supervisorSchedules = (schedulesData || []).filter((s: ScheduleData) => s.supervisor_id === supervisor.id)
-      const supervisorFindings = (findingsData || []).filter((f: FindingData) => f.supervision_visits?.supervisor_id === supervisor.id)
-      const supervisorActions = (actionsData || []).filter((a: ActionData) => a.corrective_actions?.supervisor_id === supervisor.id)
+      const supervisorFindings = (findingsData || []).filter((f: any) => f.supervision_visits?.supervisor_id === supervisor.id || (Array.isArray(f.supervision_visits) && f.supervision_visits[0]?.supervisor_id === supervisor.id))
+      const supervisorActions = (actionsData || []).filter((a: any) => a.corrective_actions?.supervisor_id === supervisor.id || (Array.isArray(a.corrective_actions) && a.corrective_actions[0]?.supervisor_id === supervisor.id))
 
       const visitsScheduled = supervisorSchedules.length
       const visitsCompleted = supervisorVisits.length
@@ -222,10 +222,10 @@ export default function SupervisorsPage() {
       }
 
       const findingsPerVisit = supervisorVisits.length > 0 ? supervisorFindings.length / supervisorVisits.length : 0
-      const criticalFindings = supervisorFindings.filter((f: FindingData) => f.severity === 'critical').length
+      const criticalFindings = supervisorFindings.filter((f: any) => f.severity === 'critical').length
 
-      const actionsCompleted = supervisorActions.filter((a: ActionData) => a.status === 'completed').length
-      const actionsCompletedOnTime = supervisorActions.filter((a: ActionData) => {
+      const actionsCompleted = supervisorActions.filter((a: any) => a.status === 'completed').length
+      const actionsCompletedOnTime = supervisorActions.filter((a: any) => {
         return a.status === 'completed' && a.actual_completion_date && a.actual_completion_date <= a.committed_date
       }).length
 

@@ -322,8 +322,8 @@ export async function runSupervisionAlertChecks(): Promise<{
             location_id: visit.location_id,
             scheduled_date: visit.scheduled_date,
             scheduled_shift: visit.scheduled_shift,
-            supervisor_name: visit.supervisors?.name,
-            location_name: visit.locations?.name
+            supervisor_name: (visit.supervisors as any)?.name,
+            location_name: (visit.locations as any)?.name
           })
 
           if (result.success) {

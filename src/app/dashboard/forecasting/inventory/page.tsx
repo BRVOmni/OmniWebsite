@@ -33,7 +33,7 @@ export default function InventoryForecastingPage() {
   const [loading, setLoading] = useState(true)
   const [generating, setGenerating] = useState(false)
   const [productForecasts, setProductForecasts] = useState<ProductForecast[]>([])
-  const [forecast, setForecast] = useState<ForecastResult | null>(null)
+  const [forecast, setForecast] = useState<any>(null)
   const [summary, setSummary] = useState<{
     total_products: number
     high_risk_count: number

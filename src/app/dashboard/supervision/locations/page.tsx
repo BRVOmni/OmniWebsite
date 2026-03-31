@@ -146,7 +146,7 @@ export default function SupervisionLocationsPage() {
     // Combine data for each location
     const locationData: LocationSupervisionData[] = (locationsData as unknown as LocationInfo[]).map(location => {
       const locationVisits = (visitsData || []).filter(v => v.location_id === location.id)
-      const locationFindings = (findingsData || []).filter(f => f.supervision_visits?.location_id === location.id)
+      const locationFindings = (findingsData || []).filter((f: any) => f.supervision_visits?.location_id === location.id || (Array.isArray(f.supervision_visits) && f.supervision_visits[0]?.location_id === location.id))
       const locationActions = (actionsData || []).filter(a => a.location_id === location.id)
 
       const lastVisit = locationVisits[0]
@@ -171,7 +171,7 @@ export default function SupervisionLocationsPage() {
         riskLevel = 'critical'
       } else if (overdueActions > 0 || avgScore < 70) {
         riskLevel = 'high'
-      } else if (openFindings > 2 || daysSinceLastVisit > 14) {
+      } else if (openFindings > 2 || (daysSinceLastVisit ?? 0) > 14) {
         riskLevel = 'medium'
       }
 
@@ -409,14 +409,14 @@ export default function SupervisionLocationsPage() {
                 {/* Score */}
                 <ScoreCard
                   score={locData.avgScore}
-                  classification={locData.classification}
+                  classification={locData.classification as any}
                   size="sm"
                 />
 
                 {/* Visit Info */}
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-500">{t('lastVisit')}:</span>
-                  <span className={locData.daysSinceLastVisit > 7 ? 'text-red-600 font-medium' : 'text-gray-900'}>
+                  <span className={(locData.daysSinceLastVisit ?? 0) > 7 ? 'text-red-600 font-medium' : 'text-gray-900'}>
                     {locData.lastVisitDate ? new Date(locData.lastVisitDate).toLocaleDateString() : t('never')}
                   </span>
                 </div>

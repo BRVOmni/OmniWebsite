@@ -114,7 +114,7 @@ export default function ProductsPage() {
 
     const queryResult = await query
     if (!queryResult.error && queryResult.data) {
-      setAllSales(queryResult.data as SalesData[])
+      setAllSales(queryResult.data as unknown as SalesData[])
     }
   }
 

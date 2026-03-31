@@ -39,6 +39,7 @@ interface ActionCardProps {
 }
 
 export function ActionCard({
+  id,
   description,
   status,
   priority,
@@ -50,6 +51,9 @@ export function ActionCard({
   daysOverdue = 0,
   hasBeforePhoto = false,
   hasAfterPhoto = false,
+  beforePhotoUrl,
+  afterPhotoUrl,
+  onPhotoUploaded,
   onClick,
   className,
 }: ActionCardProps) {

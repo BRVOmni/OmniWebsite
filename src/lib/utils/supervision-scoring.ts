@@ -193,7 +193,7 @@ export async function calculateVisitScores(
     manager_team_control: fiveKeyQuestions.manager_team_control,
     category_scores: categoryScores,
     total_findings: findings.length,
-    critical_findings
+    critical_findings: criticalFindings
   }
 }
 
@@ -531,7 +531,7 @@ export async function calculateSupervisorMetrics(
   return {
     visitsCompleted: visits.length,
     averageScore: Math.round(avgScore),
-    averageScoreByCategory,
+    averageScoreByCategory: avgScoreByCategory,
     classificationDistribution,
     trend
   }

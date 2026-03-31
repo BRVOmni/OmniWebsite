@@ -32,7 +32,7 @@ export default function SeasonalForecastingPage() {
   const [loading, setLoading] = useState(true)
   const [generating, setGenerating] = useState(false)
   const [seasonalData, setSeasonalData] = useState<SeasonalData[]>([])
-  const [forecast, setForecast] = useState<ForecastResult | null>(null)
+  const [forecast, setForecast] = useState<any>(null)
   const [trend, setTrend] = useState<{
     direction: string
     strength: number
@@ -333,7 +333,7 @@ export default function SeasonalForecastingPage() {
               {t('fourWeekForecast') || '4-Week Seasonal Forecast'}
             </h2>
             <ForecastChart
-              data={forecast.data.map((value, index) => ({
+              data={forecast.data.map((value: any, index: number) => ({
                 date: [`Week ${Math.floor(index / 7) + 1}`, seasonalData[index % 7].period].join(' '),
                 amount: value,
                 upper: forecast.upperBound?.[index],

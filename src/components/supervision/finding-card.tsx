@@ -36,6 +36,7 @@ interface FindingCardProps {
 }
 
 export function FindingCard({
+  id,
   title,
   description,
   severity,
@@ -45,6 +46,8 @@ export function FindingCard({
   date,
   isRecurring = false,
   recurrenceCount = 0,
+  photos,
+  onPhotoUploaded,
   onClick,
   className,
 }: FindingCardProps) {

@@ -31,7 +31,7 @@ export default function StaffingForecastingPage() {
   const [loading, setLoading] = useState(true)
   const [generating, setGenerating] = useState(false)
   const [hourlyPatterns, setHourlyPatterns] = useState<HourlyPattern[]>([])
-  const [forecast, setForecast] = useState<ForecastResult | null>(null)
+  const [forecast, setForecast] = useState<any>(null)
   const [summary, setSummary] = useState<{
     peak_hour: number
     peak_sales: number
@@ -97,8 +97,8 @@ export default function StaffingForecastingPage() {
 
       // Create forecast data for chart
       const forecastData = patterns.map(p => ({
-        date: p.time_label,
-        amount: p.expected_sales
+        date: `${p.hour}:00`,
+        amount: p.avg_sales
       }))
 
       setForecast({

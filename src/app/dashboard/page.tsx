@@ -93,7 +93,7 @@ export default function DashboardPage() {
           .lte('date', end),
         supabase
           .from('cash_closings')
-          .select('cash_difference, bancard_difference, upay_difference')
+          .select('cash_difference, bancard_difference, upay_difference, petty_cash_rendered')
           .gte('date', start)
           .lte('date', end),
         supabase
@@ -209,7 +209,7 @@ export default function DashboardPage() {
 
         const brands = Object.values(brandRankings).sort((a, b) => b.totalSales - a.totalSales)
         const maxSales = brands[0]?.totalSales || 1
-        const brandsWithStatus = brands.map((brand) => ({
+        const brandsWithStatus: Ranking[] = brands.map((brand) => ({
           ...brand,
           status: brand.totalSales >= maxSales * 0.8 ? 'success' : brand.totalSales >= maxSales * 0.5 ? 'warning' : 'danger',
         }))
@@ -229,12 +229,12 @@ export default function DashboardPage() {
       if (!alertsError && alertsData) {
         setAlerts(alertsData)
         // Update KPIs with actual alert count
-        setKpis(prev => ({ ...prev, activeAlerts: alertsData.length }))
+        setKpis(prev => prev ? { ...prev, activeAlerts: alertsData.length } : null)
         console.log('Alerts loaded:', alertsData.length, 'alerts')
       } else if (alertsError) {
         console.log('No alerts table yet, setting empty array')
         setAlerts([])
-        setKpis(prev => ({ ...prev, activeAlerts: 0 }))
+        setKpis(prev => prev ? { ...prev, activeAlerts: 0 } : null)
       }
 
       console.log('Dashboard data loaded successfully')
@@ -367,7 +367,7 @@ export default function DashboardPage() {
               title={t('foodCostPercent')}
               value={`${kpis?.foodCostPercent || 0}%`}
               icon={TrendingUp}
-              status={kpis && kpis.foodCostPercent < 30 ? 'success' : kpis?.foodCostPercent < 35 ? 'warning' : 'danger'}
+              status={kpis ? (kpis.foodCostPercent < 30 ? 'success' : kpis.foodCostPercent < 35 ? 'warning' : 'danger') : undefined}
               tooltip={t('foodCostPercentTooltip')}
             />
             <KPICard
@@ -388,7 +388,7 @@ export default function DashboardPage() {
               title={t('cashDifference')}
               value={kpis?.totalCashDifference || 0}
               icon={CreditCard}
-              status={kpis && kpis.totalCashDifference < 0 ? 'danger' : kpis?.totalCashDifference > 0 ? 'warning' : 'success'}
+              status={kpis ? (kpis.totalCashDifference < 0 ? 'danger' : kpis.totalCashDifference > 0 ? 'warning' : 'success') : undefined}
               prefix="₲"
               tooltip={t('cashDifferenceTooltip')}
             />

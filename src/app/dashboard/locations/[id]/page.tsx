@@ -106,7 +106,7 @@ export default function LocationDetailPage() {
       .single()
 
     if (locationData) {
-      setLocation(locationData as LocationInfo)
+      setLocation(locationData as unknown as LocationInfo)
     }
 
     // Load sales data (last 30 days)
@@ -197,7 +197,7 @@ export default function LocationDetailPage() {
     return Object.entries(salesByDate)
       .map(([date, amount]) => ({
         date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        sales: amount,
+        amount,
       }))
       .slice(-30)
   }, [sales])

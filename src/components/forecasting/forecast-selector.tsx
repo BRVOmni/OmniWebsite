@@ -23,6 +23,7 @@ interface ForecastSelectorProps {
   availableLocations?: Array<{ id: string; name: string }>
   availableBrands?: Array<{ id: string; name: string }>
   availableChannels?: Array<{ id: string; name: string }>
+  dimensions?: Array<{ value: string; label: string }>
 }
 
 export function ForecastSelector({
@@ -42,7 +43,7 @@ export function ForecastSelector({
   const [confidence, setConfidence] = useState(0.95)
 
   // Get algorithm info
-  const algoInfo = algorithmInfo[method]
+  const algoInfo = (algorithmInfo as unknown as Record<string, typeof algorithmInfo['simple-moving-average']>)[method]
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">

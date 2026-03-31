@@ -105,7 +105,7 @@ export default function LocationsPage() {
 
     const queryResult = await query
     if (!queryResult.error && queryResult.data) {
-      setAllLocations(queryResult.data as LocationData[])
+      setAllLocations(queryResult.data as unknown as LocationData[])
     }
   }
 

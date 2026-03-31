@@ -54,7 +54,7 @@ export function PhotoUploader({
 
     // Check max photos limit
     if (photos.length + files.length > maxPhotos) {
-      setUploadError(t('photoLimitError', { max: maxPhotos }))
+      setUploadError(`${t('photoLimitError')} ${maxPhotos}`)
       return
     }
 
@@ -69,7 +69,7 @@ export function PhotoUploader({
 
       // Check file size
       if (file.size > maxSizeMB * 1024 * 1024) {
-        setUploadError(t('photoSizeError', { max: maxSizeMB }))
+        setUploadError(`${t('photoSizeError')} ${maxSizeMB}MB`)
         return
       }
 
@@ -207,7 +207,7 @@ export function PhotoUploader({
                 {isDragging ? t('dropPhotos') : t('uploadPhotos')}
               </p>
               <p className="text-gray-500 mt-1">
-                {t('uploadInstructions', { max: maxSizeMB })}
+                {t('uploadInstructions')} {maxSizeMB}MB
               </p>
             </div>
             <span className="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700 transition-colors">

@@ -90,7 +90,7 @@ export function generateForecast(
   )
 
   // Get the algorithm function
-  const algorithm = algorithms[request.method]
+  const algorithm = (algorithms as Record<string, typeof simpleMovingAverage>)[request.method]
 
   if (!algorithm) {
     throw new Error(

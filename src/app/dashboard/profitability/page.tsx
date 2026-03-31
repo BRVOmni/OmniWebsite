@@ -109,7 +109,7 @@ export default function ProfitabilityPage() {
 
     const queryResult = await query
     if (!queryResult.error && queryResult.data) {
-      setAllSales(queryResult.data as SalesData[])
+      setAllSales(queryResult.data as unknown as SalesData[])
     }
   }
 
@@ -124,7 +124,7 @@ export default function ProfitabilityPage() {
 
     const queryResult = await query
     if (!queryResult.error && queryResult.data) {
-      setAllPurchases(queryResult.data as PurchaseData[])
+      setAllPurchases(queryResult.data as unknown as PurchaseData[])
     }
   }
 
@@ -139,7 +139,7 @@ export default function ProfitabilityPage() {
 
     const queryResult = await query
     if (!queryResult.error && queryResult.data) {
-      setAllPayments(queryResult.data as PaymentData[])
+      setAllPayments(queryResult.data as unknown as PaymentData[])
     }
   }
 
@@ -153,7 +153,7 @@ export default function ProfitabilityPage() {
 
     const queryResult = await query
     if (!queryResult.error && queryResult.data) {
-      setAllCashClosings(queryResult.data as CashClosingData[])
+      setAllCashClosings(queryResult.data as unknown as CashClosingData[])
     }
   }
 

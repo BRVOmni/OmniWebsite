@@ -135,7 +135,7 @@ export function ForecastChart({
         forecast: showForecastProp ? d.amount : null,
         lowerBound: d.lower ?? null,
         upperBound: d.upper ?? null,
-        type: (showForecastProp ? 'forecast' : 'historical') as const
+        type: showForecastProp ? 'forecast' as const : 'historical' as const
       }))
     }
 

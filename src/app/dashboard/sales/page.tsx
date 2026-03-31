@@ -109,7 +109,7 @@ export default function SalesAnalyticsPage() {
     const queryResult = await query
 
     if (!queryResult.error && queryResult.data) {
-      setAllSales(queryResult.data as Sale[])
+      setAllSales(queryResult.data as unknown as Sale[])
       console.log('Sales loaded:', queryResult.data.length, 'records')
     }
   }

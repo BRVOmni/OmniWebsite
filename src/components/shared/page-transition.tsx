@@ -95,9 +95,11 @@ export function StaggeredChildren({
 export function Skeleton({
   className,
   variant = 'default',
+  style,
 }: {
   className?: string
   variant?: 'default' | 'card' | 'text' | 'circular'
+  style?: React.CSSProperties
 }) {
   const variantStyles = {
     default: 'rounded',
@@ -115,6 +117,7 @@ export function Skeleton({
         variantStyles[variant],
         className
       )}
+      style={style}
     />
   )
 }

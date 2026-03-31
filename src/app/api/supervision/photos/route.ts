@@ -65,9 +65,9 @@ export async function POST(request: Request) {
     // Attach to entity
     let attachResult
     if (entityType === 'finding') {
-      attachResult = await attachPhotoToFinding(entityId, result.url, photoType)
+      attachResult = await attachPhotoToFinding(entityId, result.url, photoType as 'before' | 'after' | 'additional')
     } else if (entityType === 'action') {
-      attachResult = await attachPhotoToAction(entityId, result.url, photoType)
+      attachResult = await attachPhotoToAction(entityId, result.url, photoType as 'before' | 'after' | 'verification')
     }
 
     if (attachResult && !attachResult.success) {
