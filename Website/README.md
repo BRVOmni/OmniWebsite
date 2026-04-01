@@ -1,6 +1,6 @@
 # Omniprise — Website Documentation
 
-**Version 2.6.0 | Next.js 15 | March 2026**
+**Version 2.6.0 | Next.js 15 | April 2026**
 
 > All audit issues resolved. See [`AUDIT_2026-03-28.md`](./AUDIT_2026-03-28.md) for the full history.
 
@@ -29,9 +29,104 @@
 
 ---
 
+## Git Workflow — READ THIS FIRST
+
+This website lives inside `Website/` in a monorepo. Only the `Website/` directory is deployed.
+
+```
+Remote:  github.com:BRVOmni/OmniWebsite.git (origin)
+Branch:  main
+Deploy:  Vercel auto-deploys on push to main
+```
+
+### Every time you make changes:
+
+```bash
+# 1. Make your edits inside Website/
+
+# 2. Test locally
+cd Website
+npm install        # first time or after dependency changes
+npm run build      # MUST pass before committing
+
+# 3. Go to repo root and commit
+cd ..
+git status                        # see what changed
+git diff                          # review your changes
+git add Website/<changed-files>   # stage specific files
+git commit -m "type: description"
+
+# 4. Push to GitHub (this triggers Vercel deploy)
+git push origin main
+
+# 5. Verify on Vercel
+# Go to https://vercel.com and check the deploy succeeded
+```
+
+### Commit message format
+
+```
+feat: add testimonials section
+fix: broken gallery on mobile
+chore: update dependencies
+docs: update README
+style: fix spacing in hero
+refactor: extract shared component
+```
+
+### Before pushing — checklist
+
+- [ ] `npm run build` passes inside `Website/`
+- [ ] `git status` shows only the files you intended to change
+- [ ] No secrets or `.env` files in the diff
+- [ ] Commit message describes the change clearly
+
+### Local backup — protect your work
+
+Pushing to GitHub IS your backup. If you have uncommitted local work, it exists nowhere else. To avoid losing work:
+
+1. **Commit often.** Small commits are fine.
+2. **Push after every commit.** `git push origin main` takes 5 seconds.
+3. **Never leave uncommitted changes at the end of a session.** Even if work is half-done, commit it on a branch:
+   ```bash
+   git checkout -b wip/my-feature
+   git add -A
+   git commit -m "wip: in-progress feature"
+   git push origin wip/my-feature
+   ```
+4. **Verify your push.** After pushing, run `git status` — it should say `Your branch is up to date with 'origin/main'`.
+
+### Emergency: recovering from a lost local copy
+
+```bash
+git clone git@github.com:BRVOmni/OmniWebsite.git
+cd OmniWebsite/Website
+npm install
+npm run dev
+```
+
+### Adding a GitLab backup mirror
+
+If you want an extra backup (the docs reference `gitlab.com:sbrv-group/omniprise`):
+
+```bash
+git remote add gitlab git@gitlab.com:sbrv-group/omniprise.git
+git push gitlab main           # push once
+git push gitlab main --mirror  # or mirror everything
+```
+
+To push to both remotes every time:
+```bash
+git remote set-url --add --push origin git@github.com:BRVOmni/OmniWebsite.git
+git remote set-url --add --push origin git@gitlab.com:sbrv-group/omniprise.git
+# Now `git push origin main` pushes to both GitHub and GitLab
+```
+
+---
+
 ## Path to Production
 
-This section documents the exact deployment pipeline. Follow it carefully to avoid the issues we hit during the v2.0 launch.
+This section documents the exact deployment pipeline.
 
 ### Architecture
 
@@ -39,87 +134,24 @@ This section documents the exact deployment pipeline. Follow it carefully to avo
 Local (Website/)  ──git push──>  GitHub (main)  ──webhook──>  Vercel (auto-build)
 ```
 
-### Git Remotes
-
-```
-origin  = github.com:BRVOmni/OmniWebsite.git   ← Vercel reads from here
-gitlab  = gitlab.com:sbrv-group/omniprise       ← Backup mirror
-```
-
-**Important:** Only `origin` (GitHub) triggers Vercel. Pushing to `gitlab` does nothing.
-
-### Deployment Checklist
-
-Every time you make changes and want them live:
-
-```bash
-# 1. Make your changes in Website/
-
-# 2. Verify the build passes locally
-cd Website
-npm run build
-
-# 3. If build passes, commit and push
-git add <changed-files>
-git commit -m "description of change"
-git push origin main
-
-# 4. Vercel auto-deploys. Check https://vercel.com for build status.
-```
-
 ### Vercel Configuration
-
-These settings are in the Vercel dashboard and must be correct:
 
 | Setting | Value | Why |
 |---|---|---|
-| **Framework** | Next.js | Set via `vercel.json` |
-| **Root Directory** | `Website` | This repo is a monorepo. Vercel must build inside `Website/`, not the repo root |
-| **Build Command** | `next build` | Default, no override needed |
-| **Output Directory** | Default | Next.js handles this |
+| **Framework** | Next.js | Auto-detected |
+| **Root Directory** | `Website` | Monorepo — Vercel must build inside `Website/` |
+| **Build Command** | `next build` | Default |
 | **Branch** | `main` | Only pushes to `main` trigger production deploys |
 
 ### Known Pitfalls
 
-These are the exact issues we hit. Don't repeat them:
-
-#### 1. Wrong Root Directory
-**Problem:** Vercel was building from the repo root (the dashboard project) instead of `Website/`. The build used the wrong `package.json` and failed or deployed the wrong app.
-
-**Fix:** Set Root Directory to `Website` in Vercel dashboard → Settings → General.
-
-**Verification:** Check the Vercel build logs — the first line should say `Running "next build"` inside the `Website/` directory.
-
-#### 2. Invalid vercel.json
-**Problem:** A trailing comma in `vercel.json` (`{"framework": "nextjs",}`) caused a JSON parse error and the build failed silently.
-
-**Rule:** `vercel.json` must be strict JSON. No trailing commas, no comments.
-
-#### 3. Missing ESLint
-**Problem:** Next.js 15 requires ESLint as a devDependency for production builds. Without it, `next build` fails.
-
-**Fix:** ESLint is in `devDependencies`. If you ever run `npm install --production`, you'll need to add it back.
-
-#### 4. Multiple lockfiles
-**Problem:** The monorepo root has its own `package-lock.json` (for the dashboard). Vercel detected both and warned about it.
-
-**Fix:** `next.config.ts` includes `outputFileTracingRoot: __dirname` to tell Next.js where the project boundary is.
-
-#### 5. Large image files
-**Problem:** Brand logos were uploaded at full camera resolution (up to 15MB each). This caused slow builds and wasted bandwidth.
-
-**Rule:** Before adding logos to `public/brands/`, compress them. Target under 500KB per logo. Use `sharp` or any image tool.
-
-#### 6. Dark logos on dark background
-**Problem:** Some brand logos (Mr. Chow, Los Condenados) are dark/black and invisible on the dark website background.
-
-**Fix:** These brands have `invertLogo: true` in `BrandsSection.tsx`, which applies `filter: invert(1) brightness(0.9)` via inline styles.
-
-**When adding new logos:** Check if the logo is dark. If so, add `invertLogo: true` to the brand entry.
+1. **Wrong Root Directory** — Vercel must build from `Website/`, not repo root. Check Vercel dashboard Settings.
+2. **Invalid vercel.json** — Must be strict JSON. No trailing commas, no comments.
+3. **Missing ESLint** — Next.js 15 requires ESLint as devDependency for production builds.
+4. **Large image files** — Compress logos before adding to `public/brands/`. Target under 500KB.
+5. **Dark logos on dark background** — Dark logos need `invertLogo: true` in `brands.ts`.
 
 ### Manual Deploy (Emergency)
-
-If Vercel auto-deploy fails and you need to push manually:
 
 ```bash
 cd Website
@@ -131,8 +163,6 @@ npx vercel --prod
 
 - **Type A:** `@` → `76.76.21.21`
 - **Type CNAME:** `www` → `cname.vercel-dns.com`
-
-SSL is handled automatically by Vercel.
 
 ---
 
@@ -159,8 +189,9 @@ Website/
 ├── src/
 │   ├── app/
 │   │   ├── globals.css          # Tailwind + custom theme tokens
-│   │   ├── layout.tsx           # Root layout with metadata, fonts, reduced-motion
+│   │   ├── layout.tsx           # Root layout (Navbar + Footer + fonts + metadata)
 │   │   ├── page.tsx             # Home page composing all sections
+│   │   ├── error.tsx            # Custom error page
 │   │   ├── not-found.tsx        # Custom 404 page
 │   │   ├── sitemap.ts           # Dynamic sitemap (brand pages + static)
 │   │   ├── robots.ts            # Dynamic robots.txt
@@ -188,6 +219,7 @@ Website/
 │   │       ├── BrandStory.tsx   # Brand story + milestones
 │   │       ├── BrandStats.tsx   # Brand statistics grid
 │   │       ├── BrandGallery.tsx # Photo gallery with lightbox
+│   │       ├── BrandPresence.tsx # Brand locations + platforms
 │   │       └── BrandCTA.tsx     # WhatsApp order + franchise CTA
 │   └── lib/
 │       ├── brands.ts            # Canonical brand data (7 brands) + helpers
@@ -200,7 +232,7 @@ Website/
 │   │   └── gallery/             # 35 photos (5 per brand)
 │   ├── omniprise-logo.png       # Logo for navbar/footer
 │   └── omniprise-logo.jpg       # Logo for OG/Twitter cards (1920x1080)
-├── next.config.ts               # Next.js config (unoptimized images, tracing root)
+├── next.config.ts               # Next.js config
 ├── tsconfig.json                # TypeScript config
 ├── postcss.config.mjs           # Tailwind PostCSS config
 └── package.json                 # Dependencies and scripts
@@ -224,6 +256,7 @@ npm run dev
 
 ### Build for Production
 ```bash
+cd Website
 npm run build
 ```
 
@@ -342,17 +375,20 @@ Search for `@omniprise.com.py` across components to find all email references.
 
 ### Completed (v2.5)
 - [x] Privacy policy page (`/privacidad`) — Paraguay law compliant
-- [x] Gallery with lightbox — 35 photos, keyboard + touch swipe nav, image error fallbacks, skeleton loading
+- [x] Gallery with lightbox — 35 photos, keyboard + touch swipe nav
 - [x] Dynamic sitemap + robots.txt generated from brand data
 - [x] Zod validation for franchise form and contact form — Spanish error messages
 - [x] Scroll depth tracking — `scroll_depth` analytics events at 25/50/75/90%
 - [x] WhatsApp ordering CTA — navbar, brand pages, homepage cards
-- [x] Custom analytics events — `whatsapp_order`, `brand_card_clicked`, `franchise_cta`, `contact_form_submitted`, `scroll_depth`
+- [x] Custom analytics events
 - [x] Replaced bloated FranchiseSection with lean CTA teaser
 - [x] Canonical brand data centralized in `src/lib/brands.ts`
-- [x] All pages have Navbar + Footer + metadata via layouts
-- [x] Franchise page brand cards link to brand detail pages
-- [x] Cleaned up unused assets and dashboard-only docs
+
+### Completed (v2.6)
+- [x] Centralized layout — Navbar + Footer in root layout only
+- [x] Removed duplicate Navbar/Footer from all page files
+- [x] Custom error page (`error.tsx`)
+- [x] Updated README with git workflow and backup instructions
 
 ### Next Up
 - [ ] Enable Next.js image optimization (remove `unoptimized: true`)
@@ -368,14 +404,13 @@ Search for `@omniprise.com.py` across components to find all email references.
 
 Before deploying to production:
 - [ ] Run `npm run build` with no errors
-- [ ] Test on mobile (Chrome DevTools → iPhone 14)
-- [ ] Test on tablet (iPad landscape and portrait)
-- [ ] Verify all navigation links work (including franchise page brand cards)
+- [ ] Test on mobile (Chrome DevTools iPhone)
+- [ ] Verify all navigation links work
 - [ ] Confirm contact email is correct
 - [ ] Verify stats are up to date
 - [ ] Check logos load correctly (dark logos should be inverted)
 - [ ] Test franchise CTA and modal
-- [ ] Test contact form Zod validation (submit empty, short message)
+- [ ] Test contact form Zod validation
 - [ ] Test WhatsApp CTA buttons (navbar, brand cards, brand pages)
 - [ ] Test gallery lightbox (keyboard arrows, touch swipe, Escape to close)
 - [ ] Verify Open Graph tags (use opengraph.xyz)
@@ -383,5 +418,5 @@ Before deploying to production:
 
 ---
 
-**Last Updated:** March 30, 2026
+**Last Updated:** April 1, 2026
 **Version:** 2.6.0

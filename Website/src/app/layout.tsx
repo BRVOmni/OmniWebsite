@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { BackToTop } from "@/components/BackToTop";
 import { ReducedMotionProvider } from "@/components/ReducedMotionProvider";
 import "./globals.css";
@@ -82,7 +84,9 @@ export default function RootLayout({
           >
             Saltar al contenido
           </a>
-          {children}
+          <Navbar />
+          <main id="main-content">{children}</main>
+          <Footer />
           <BackToTop />
           <Analytics />
         </ReducedMotionProvider>

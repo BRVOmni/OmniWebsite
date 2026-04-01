@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getBrandBySlug, getAllBrandSlugs } from '@/lib/brands';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
 import { BrandHero } from '@/components/brand-detail/BrandHero';
 import { BrandStory } from '@/components/brand-detail/BrandStory';
 import { BrandStats } from '@/components/brand-detail/BrandStats';
@@ -95,17 +93,13 @@ export default async function BrandPage({ params }: BrandPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar />
       <ScrollTracker page={`brand_${brand.slug}`} />
-      <main id="main-content">
-        <BrandHero brand={brand} />
-        <BrandStory brand={brand} />
-        <BrandStats brand={brand} />
-        <BrandGallery brand={brand} />
-        <BrandPresence brand={brand} />
-        <BrandCTA brand={brand} />
-      </main>
-      <Footer />
+      <BrandHero brand={brand} />
+      <BrandStory brand={brand} />
+      <BrandStats brand={brand} />
+      <BrandGallery brand={brand} />
+      <BrandPresence brand={brand} />
+      <BrandCTA brand={brand} />
     </>
   );
 }

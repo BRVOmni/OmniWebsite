@@ -2,7 +2,15 @@
 
 All notable changes to the Omniprise corporate website.
 
-## v2.6.0 — 2026-03-30
+## v2.6.0 — 2026-04-01
+
+### Layout Architecture
+- Root layout (`src/app/layout.tsx`) now renders Navbar + Footer globally
+- Removed duplicate Navbar/Footer from individual page files (home, privacidad, franchise, brand detail)
+- Removed redundant `<main>` wrappers — root layout now provides `<main id="main-content">`
+- Franchise layouts simplified to `<Suspense>` wrappers only (no more Navbar/Footer imports)
+- Added custom error page (`src/app/error.tsx`) with branded styling
+- Removed `outputFileTracingRoot: __dirname` from `next.config.ts` (no longer needed)
 
 ### UX Polish
 - Contact form now has Zod validation with Spanish inline error messages

@@ -1,4 +1,3 @@
-import { Navbar } from '@/components/Navbar';
 import { HeroSection } from '@/components/HeroSection';
 import { StatementSection } from '@/components/StatementSection';
 import { StatsSection } from '@/components/StatsSection';
@@ -7,7 +6,6 @@ import { BrandsSection } from '@/components/BrandsSection';
 import { VisionSection } from '@/components/VisionSection';
 import { PartnersSection } from '@/components/PartnersSection';
 import { FranchiseSection } from '@/components/FranchiseSection';
-import { Footer } from '@/components/Footer';
 import { ScrollTracker } from '@/components/ScrollTracker';
 
 const jsonLd = {
@@ -36,19 +34,15 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar />
       <ScrollTracker page="homepage" />
-      <main id="main-content">
-        <HeroSection />
-        <StatementSection />
-        <StatsSection />
-        <PillarsSection />
-        <BrandsSection />
-        <VisionSection />
-        <PartnersSection />
-        <FranchiseSection />
-      </main>
-      <Footer />
+      <HeroSection />
+      <StatementSection />
+      <StatsSection />
+      <PillarsSection />
+      <BrandsSection />
+      <VisionSection />
+      <PartnersSection />
+      <FranchiseSection />
     </>
   );
 }

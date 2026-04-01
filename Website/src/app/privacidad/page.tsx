@@ -1,6 +1,4 @@
 import { Metadata } from 'next';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'Política de Privacidad — Omniprise',
@@ -9,10 +7,8 @@ export const metadata: Metadata = {
 
 export default function PrivacidadPage() {
   return (
-    <>
-      <Navbar />
-      <main id="main-content" className="min-h-screen bg-surface-800 pt-28 pb-20 px-6 md:px-12">
-        <article className="max-w-[760px] mx-auto">
+    <div className="min-h-screen bg-surface-800 pt-28 pb-20 px-6 md:px-12">
+      <article className="max-w-[760px] mx-auto">
           {/* Header */}
           <header className="mb-16">
             <p className="text-[10px] tracking-[0.2em] uppercase text-text-hint font-medium mb-4">
@@ -186,8 +182,6 @@ export default function PrivacidadPage() {
             </section>
           </div>
         </article>
-      </main>
-      <Footer />
-    </>
+    </div>
   );
 }
