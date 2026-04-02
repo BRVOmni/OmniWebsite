@@ -18,7 +18,17 @@ All notable changes to the Omniprise corporate website.
 
 ### Documentation
 - Cleaned up `WEBSITE_ROADMAP.md` — collapsed completed phases, removed stale P1 tasks, updated file tree and dependency list
+- Separated root CHANGELOG (dashboard-only) from Website CHANGELOG
 - Bumped version to v2.6.1
+
+### Testing
+- Added vitest as test runner (devDependency)
+- Added `npm test` script to package.json
+- Added 33 unit tests for franchise form Zod schema validation (`franchise-schema.test.ts`)
+- Added vitest config for path alias resolution
+
+### CI/CD
+- Added GitHub Actions workflow (`ci.yml`) for lint + test + build on PRs to main
 
 ## v2.6.0 — 2026-04-01
 
