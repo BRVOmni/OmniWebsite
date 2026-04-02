@@ -1,6 +1,6 @@
 # Omniprise — Website Documentation
 
-**Version 2.6.0 | Next.js 15 | April 2026**
+**Version 2.6.1 | Next.js 15 | April 2026**
 
 > All audit issues resolved. See [`AUDIT_2026-03-28.md`](./AUDIT_2026-03-28.md) for the full history.
 

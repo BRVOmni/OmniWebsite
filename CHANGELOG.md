@@ -4,6 +4,14 @@
 
 ---
 
+## [2.6.1] - Accessibility Fixes - 2026-04-02
+
+### Fixed
+- **text-text-hint contrast** — Raised opacity from 0.25 (~1.5:1) to 0.45 (~5.2:1) to pass WCAG AA (4.5:1) on all hint text site-wide
+- **BrandCard nested link** — Replaced inner `<a>` WhatsApp link with `<button>` + `window.open()` to eliminate invalid nested interactive elements (`<a>` inside `<Link>`)
+
+---
+
 ## [2.4.0] - Polish & Completeness - 2026-03-30
 
 ### Changed

@@ -2,6 +2,12 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v2.6.1 — 2026-04-02
+
+### Accessibility
+- Raised `--color-text-hint` opacity from 0.25 to 0.45 (~1.5:1 → ~5.2:1 contrast) to pass WCAG AA (4.5:1)
+- Fixed invalid nested `<a>` inside `<Link>` in BrandCard WhatsApp button — replaced inner `<a>` with `<button>` + `window.open()`
+
 ## v2.6.0 — 2026-04-01
 
 ### Layout Architecture
