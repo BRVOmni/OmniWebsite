@@ -4,11 +4,20 @@
 
 ---
 
-## [2.6.1] - Accessibility Fixes - 2026-04-02
+## [2.6.1] - Accessibility & Security - 2026-04-02
 
 ### Fixed
 - **text-text-hint contrast** — Raised opacity from 0.25 (~1.5:1) to 0.45 (~5.2:1) to pass WCAG AA (4.5:1) on all hint text site-wide
 - **BrandCard nested link** — Replaced inner `<a>` WhatsApp link with `<button>` + `window.open()` to eliminate invalid nested interactive elements (`<a>` inside `<Link>`)
+- **Focus-visible ring** — Added global `:focus-visible` outline (2px sky-blue ring) for keyboard navigation; suppresses outline on mouse focus
+
+### Security
+- **Content-Security-Policy** — Added CSP header allowing scripts (self + Vercel Analytics), styles (self + Google Fonts), fonts (self + G static), images (self + data + blob), connections (self + Formspree + Vercel)
+- **Permissions-Policy** — Denied camera, microphone, geolocation
+- **Security headers** — Added X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy to Website vercel.json
+
+### Documentation
+- Cleaned up WEBSITE_ROADMAP.md — collapsed completed phases, removed stale P1 tasks, updated dependencies and file paths
 
 ---
 

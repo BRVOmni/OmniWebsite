@@ -6,7 +6,19 @@ All notable changes to the Omniprise corporate website.
 
 ### Accessibility
 - Raised `--color-text-hint` opacity from 0.25 to 0.45 (~1.5:1 → ~5.2:1 contrast) to pass WCAG AA (4.5:1)
-- Fixed invalid nested `<a>` inside `<Link>` in BrandCard WhatsApp button — replaced inner `<a>` with `<button>` + `window.open()`
+- Fixed invalid nested `<a>` inside `<Link>` in BrandCard WhatsApp button — replaced with `<button>` + `window.open()`
+- Added global `:focus-visible` ring style (sky-blue 2px outline) for keyboard navigation
+- Removed outline on mouse focus via `:focus:not(:focus-visible)` for all links/buttons
+
+### Security
+- Added `Content-Security-Policy` header to `vercel.json` (restricts scripts, styles, fonts, images, connections to known origins)
+- Added `Permissions-Policy` header (camera, microphone, geolocation denied)
+- Added `X-Content-Type-Options`, `X-Frame-Options`, `X-XSS-Protection`, `Referrer-Policy` headers
+- Added immutable cache header for `/fonts/*`
+
+### Documentation
+- Cleaned up `WEBSITE_ROADMAP.md` — collapsed completed phases, removed stale P1 tasks, updated file tree and dependency list
+- Bumped version to v2.6.1
 
 ## v2.6.0 — 2026-04-01
 
