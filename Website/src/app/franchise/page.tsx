@@ -421,13 +421,13 @@ function CTASection() {
 export default function FranchisePage() {
   useScrollDepth('franchise');
   return (
-    <main id="main-content">
+    <>
       <FranchiseHero />
       <BenefitsSection />
       <BrandsSection />
       <ProcessSection />
       <FAQSection />
       <CTASection />
-    </main>
+    </>
   );
 }
