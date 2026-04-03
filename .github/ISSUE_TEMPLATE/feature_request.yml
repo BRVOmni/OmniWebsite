@@ -1,0 +1,54 @@
+name: Feature Request
+description: Suggest a new feature or improvement
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Motivation
+      description: What problem does this solve? What's missing?
+      placeholder: "e.g. Franchise applicants can't save progress and lose data on accidental refresh"
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: What do you suggest building?
+      placeholder: "e.g. Auto-save form progress to localStorage on each step change"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Website — Homepage
+        - Website — Brand pages
+        - Website — Franchise
+        - Website — Contact form
+        - Website — Gallery
+        - Website — Navigation
+        - Dashboard
+        - CI/CD
+        - Documentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Any other approaches you thought about?
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional Context
+      description: Screenshots, references, links, or anything else
+    validations:
+      required: false

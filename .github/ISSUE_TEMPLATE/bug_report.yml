@@ -1,0 +1,60 @@
+name: Bug Report
+description: Report something that is broken or not working as expected
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened? What did you expect to happen?
+      placeholder: "e.g. The gallery lightbox doesn't close on Escape key press"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this?
+      placeholder: |
+        1. Go to /marcas/chajá
+        2. Click on a gallery photo
+        3. Press Escape
+        4. Lightbox stays open
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Where is the issue?
+      options:
+        - Website — Homepage
+        - Website — Brand pages
+        - Website — Franchise
+        - Website — Contact form
+        - Website — Gallery
+        - Website — Navigation
+        - Dashboard
+        - CI/CD
+        - Documentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, device, or relevant context
+      placeholder: "e.g. Chrome 122 on Android 14, or Node 22 on Ubuntu"
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots / Additional Context
+      description: Any screenshots, logs, or other relevant information
+    validations:
+      required: false

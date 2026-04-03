@@ -1,7 +1,16 @@
 {
   "name": "omniprise-website",
-  "version": "2.6.1",
+  "version": "2.7.1",
+
   "private": true,
+  "license": "UNLICENSED",
+  "description": "Corporate marketing website for Grupo Omniprise — 7 food brands across Paraguay",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BRVOmni/OmniWebsite.git",
+    "directory": "Website"
+  },
+  "homepage": "https://www.omniprise.com.py",
   "scripts": {
     "dev": "next dev --port 3001",
     "build": "next build",

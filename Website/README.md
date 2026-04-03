@@ -2,7 +2,7 @@
 
 **Version 2.6.1 | Next.js 15 | April 2026**
 
-> All audit issues resolved. See [`AUDIT_2026-03-28.md`](./AUDIT_2026-03-28.md) for the full history.
+> All audit issues resolved. See [`docs/audits/AUDIT_2026-03-28.md`](../docs/audits/AUDIT_2026-03-28.md) for the full history.
 
 ---
 
@@ -396,7 +396,6 @@ Search for `@omniprise.com.py` across components to find all email references.
 - [ ] Multi-language support (next-intl)
 - [ ] Light/dark theme toggle
 - [ ] Blog/news section for SEO
-- [ ] CI/CD pipeline (GitHub Actions)
 
 ---
 
@@ -418,5 +417,5 @@ Before deploying to production:
 
 ---
 
-**Last Updated:** April 1, 2026
-**Version:** 2.6.0
+**Last Updated:** April 2, 2026
+**Version:** 2.6.1

@@ -110,7 +110,7 @@ Website/
 
 ### P3 -- Infrastructure
 - [ ] **Supabase CRM Integration** -- Connect franchise leads to dashboard CRM module
-- [ ] **CI/CD Pipeline** -- GitHub Actions for lint + build on PRs
+- [x] **CI/CD Pipeline** -- GitHub Actions for lint + build on PRs (`ci.yml`)
 - [ ] **Blog/news section** for SEO
 
 ### Phase 6 -- Multi-language Support
@@ -143,5 +143,5 @@ Website/
 
 ---
 
-*Last Updated:* April 2, 2026 -- v2.6.1
+*Last Updated:* April 3, 2026 -- v2.7.0
 *Next Milestone:* Gallery photos + testimonials (P2), then multi-language (Phase 6)

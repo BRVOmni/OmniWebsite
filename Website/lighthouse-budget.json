@@ -1,0 +1,26 @@
+[
+  {
+    "path": "/*",
+    "options": {
+      "firstPartyHostnames": []
+    },
+    "budgets": [
+      {
+        "resourceType": "script",
+        "budget": 300
+      },
+      {
+        "resourceType": "stylesheet",
+        "budget": 100
+      },
+      {
+        "resourceType": "image",
+        "budget": 1500
+      },
+      {
+        "resourceType": "total",
+        "budget": 2000
+      }
+    ]
+  }
+]

@@ -2,6 +2,34 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v2.7.0 — 2026-04-03
+
+### Documentation
+- Added `LICENSE` (proprietary, all rights reserved)
+- Added `SECURITY.md` with vulnerability reporting policy
+- Added `CONTRIBUTING.md` with development workflow and code style, and PR process
+- Added `CODE_OF_CONDUCT.md` (Contributor Covenant v2.1)
+- Added `CLAUDE.md` for AI assistant project context
+- Added GitHub issue templates (bug report, feature request, config)
+- Added GitHub pull request template
+- Created `docs/` directory with:
+  - Architecture Decision Records (4 ADRs)
+  - Deployment runbook
+  - Analytics events reference
+  - Testing strategy
+  - Accessibility statement and testing procedure
+- Archived `AUDIT_2026-03-28.md` to `docs/audits/`
+- Added `Website/.env.example` documenting hardcoded config values
+- Added `Website/lighthouse-budget.json` for CI performance budgets
+- Deduplicated root `README.md` (now links to `Website/README.md`)
+- Fixed stale roadmap items (CI/CD marked as done, version footer updated)
+- Added `package.json` metadata (description, repository, homepage, license) both root and Website)
+
+### CI/CD
+- Enhanced `ci.yml` with parallel jobs (lint, test, build) and Lighthouse CI
+
+## v2.6.1 — 2026-04-02
+
 ## v2.6.1 — 2026-04-02
 
 ### Accessibility

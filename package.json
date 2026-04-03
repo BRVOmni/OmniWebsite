@@ -2,6 +2,13 @@
   "name": "omniprise-dashboard",
   "version": "1.21.0",
   "private": true,
+  "license": "UNLICENSED",
+  "description": "Internal operations dashboard for Grupo Omniprise",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BRVOmni/OmniWebsite.git"
+  },
+  "homepage": "https://www.omniprise.com.py",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
