@@ -2,6 +2,11 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v2.7.1 — 2026-04-03
+
+### Bug Fixes
+- Removed duplicate `<main id="main-content">` tag from franchise page (root layout already provides it)
+
 ## v2.7.0 — 2026-04-03
 
 ### Documentation
@@ -27,8 +32,6 @@ All notable changes to the Omniprise corporate website.
 
 ### CI/CD
 - Enhanced `ci.yml` with parallel jobs (lint, test, build) and Lighthouse CI
-
-## v2.6.1 — 2026-04-02
 
 ## v2.6.1 — 2026-04-02
 

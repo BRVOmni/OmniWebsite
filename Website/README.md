@@ -1,6 +1,6 @@
 # Omniprise — Website Documentation
 
-**Version 2.6.1 | Next.js 15 | April 2026**
+**Version 2.7.1 | Next.js 15 | April 2026**
 
 > All audit issues resolved. See [`docs/audits/AUDIT_2026-03-28.md`](../docs/audits/AUDIT_2026-03-28.md) for the full history.
 
@@ -177,7 +177,7 @@ npx vercel --prod
 | framer-motion | 12.x | Animations |
 | lucide-react | 0.577 | Icons |
 | clsx + tailwind-merge | latest | Class utilities |
-| zod | 3.x | Form validation |
+| zod | 4.x | Form validation |
 | @vercel/analytics | latest | Analytics + custom events |
 
 ---
@@ -390,6 +390,14 @@ Search for `@omniprise.com.py` across components to find all email references.
 - [x] Custom error page (`error.tsx`)
 - [x] Updated README with git workflow and backup instructions
 
+### Completed (v2.7)
+- [x] Project documentation (CLAUDE.md, ADRs, deployment runbook, testing strategy, accessibility guide)
+- [x] Community files (LICENSE, SECURITY.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md)
+- [x] GitHub issue/PR templates
+- [x] Enhanced CI workflow (parallel lint/test/build + Lighthouse CI)
+- [x] `.env.example` and `lighthouse-budget.json`
+- [x] Removed duplicate `<main>` tag from franchise page
+
 ### Next Up
 - [ ] Enable Next.js image optimization (remove `unoptimized: true`)
 - [ ] Lead capture API with Supabase
@@ -417,5 +425,5 @@ Before deploying to production:
 
 ---
 
-**Last Updated:** April 2, 2026
-**Version:** 2.6.1
+**Last Updated:** April 4, 2026
+**Version:** 2.7.1
