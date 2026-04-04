@@ -13,7 +13,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "website:dev": "cd Website && npm run dev",
+    "website:build": "cd Website && npm run build",
+    "website:lint": "cd Website && npm run lint",
+    "website:test": "cd Website && npm run test"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",

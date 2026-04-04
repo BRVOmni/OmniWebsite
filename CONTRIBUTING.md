@@ -1,19 +1,8 @@
-# Contributing to Omniprise
+# Contributing to the Omniprise Website
 
-Thank you for contributing to the Grupo Omniprise website and dashboard. This guide covers everything you need to get started.
+Thank you for contributing to the Grupo Omniprise corporate website.
 
----
-
-## Project Structure
-
-This is a monorepo with two independent Next.js apps:
-
-| Directory | App | Deploy |
-|---|---|---|
-| `Website/` | Public corporate website | Vercel (auto-deploys from `main`) |
-| `src/` (root) | Internal operations dashboard | Separate deployment |
-
-**Most contributions will be in `Website/`.**
+**All website work happens inside `Website/`.** Always `cd Website` first.
 
 ---
 
@@ -21,28 +10,36 @@ This is a monorepo with two independent Next.js apps:
 
 ### Prerequisites
 
-- Node.js 18+
-- npm
+- **Node.js:** 22.x recommended (CI uses 22; 18+ minimum for local dev)
+- **npm** (comes with Node.js)
 
 ### Install & Run
 
 ```bash
-# Website
 cd Website
 npm install
 npm run dev        # http://localhost:3001
-
-# Dashboard (root)
-npm install
-npm run dev        # http://localhost:3000
 ```
 
-### Useful Commands
+No `.env` file needed for local development. See `Website/.env.example` for reference on configurable values.
+
+### Commands
+
+From inside `Website/`:
 
 ```bash
 npm run build      # Production build — MUST pass before committing
 npm run lint       # ESLint check
-npm run test       # Run tests (vitest)
+npm run test       # Run tests (Vitest)
+```
+
+From the **repo root** (convenience scripts):
+
+```bash
+npm run website:build    # Build website for production
+npm run website:lint     # Lint website code
+npm run website:test     # Run website tests
+npm run website:dev      # Start website dev server
 ```
 
 ---
@@ -76,12 +73,32 @@ test: add contact form validation tests
 
 ### Before Pushing
 
+1. **Build the website** — this is the most important check:
+
+```bash
+cd Website
+npm run build
+```
+
+2. **Run the full checklist:**
+
 - [ ] `npm run build` passes inside `Website/`
 - [ ] `npm run lint` passes with no errors
 - [ ] `npm run test` passes
 - [ ] `git status` shows only the files you intended to change
 - [ ] No secrets or `.env` files in the diff
 - [ ] Commit message follows the format above
+
+3. **Push from the repo root:**
+
+```bash
+cd ..                           # back to repo root
+git add Website/<changed-files>
+git commit -m "type: description"
+git push origin main
+```
+
+Pushing to `main` triggers an automatic Vercel deployment.
 
 ---
 
@@ -105,12 +122,13 @@ Keep PRs small and focused. One feature or fix per PR. Large PRs take longer to 
 ## Code Style
 
 - **TypeScript** — Strict mode, no `any` types
-- **Components** — Functional React components with named exports
-- **Styling** — Tailwind CSS utility classes; avoid inline styles
+- **Components** — Functional React components with named exports (no default exports)
+- **Styling** — Tailwind CSS utility classes; no inline styles
 - **Imports** — Use `@/` path aliases (`@/components/`, `@/lib/`)
 - **Brand data** — Always use the canonical `BRANDS` array from `@/lib/brands.ts`
 - **Animations** — Use the `useReveal` hook for scroll-triggered animations
 - **Forms** — Validate with Zod schemas; Spanish error messages for user-facing forms
+- **Tests** — Use named imports matching component exports
 
 ---
 
@@ -120,6 +138,19 @@ Keep PRs small and focused. One feature or fix per PR. Large PRs take longer to 
 2. Add 5 gallery photos to `Website/public/brands/gallery/<slug>/`
 3. Update the `BRANDS` array in `Website/src/lib/brands.ts`
 4. Set `invertLogo: true` if the logo is dark (invisible on dark background)
+
+---
+
+## Documentation
+
+| File | Purpose |
+|---|---|
+| `Website/README.md` | Full technical docs — project structure, components, design system, QA checklist |
+| `docs/deployment-runbook.md` | Deployment and rollback procedures |
+| `docs/testing-strategy.md` | Testing approach and priorities |
+| `docs/analytics-events.md` | Custom analytics event reference |
+| `docs/accessibility.md` | Accessibility statement and testing |
+| `docs/adr/` | Architecture Decision Records |
 
 ---
 

@@ -63,6 +63,17 @@ git push origin main
 # Go to https://vercel.com and check the deploy succeeded
 ```
 
+### Convenience scripts from repo root
+
+You can also run website commands from the repo root without `cd`-ing:
+
+```bash
+npm run website:dev      # Start dev server
+npm run website:build    # Production build
+npm run website:lint     # ESLint
+npm run website:test     # Vitest
+```
+
 ### Commit message format
 
 ```
@@ -234,6 +245,7 @@ Website/
 │   └── omniprise-logo.jpg       # Logo for OG/Twitter cards (1920x1080)
 ├── next.config.ts               # Next.js config
 ├── tsconfig.json                # TypeScript config
+├── vitest.config.ts             # Vitest config with @/ path alias
 ├── postcss.config.mjs           # Tailwind PostCSS config
 └── package.json                 # Dependencies and scripts
 ```
@@ -243,7 +255,7 @@ Website/
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+
+- Node.js 22.x recommended (CI uses 22; 18+ minimum for local dev)
 - npm
 
 ### Install & Run

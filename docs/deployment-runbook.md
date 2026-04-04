@@ -77,7 +77,7 @@ DNS changes propagate in up to 24 hours. Do not change these without confirming 
 
 ### Build fails on Vercel but passes locally
 
-1. Check Node.js version matches (project uses Node 22 in CI)
+1. Check Node.js version matches (CI uses Node 22; local should be 22.x)
 2. Check `package-lock.json` is committed
 3. Check for missing devDependencies used at build time
 

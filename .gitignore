@@ -1,9 +1,8 @@
 .vercel
 node_modules/
-out/
 .next/
-old-static/
 out/
+old-static/
 .env.local
 .env*.local
 next-env.d.ts

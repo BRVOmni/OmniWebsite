@@ -8,7 +8,7 @@
 | Integration | — | None |
 | E2E | — | None |
 | Visual | — | None |
-| Accessibility | axe-core (via eslint-plugin-jsx-a11y) | Lint-time only |
+| Accessibility | Lighthouse (CI) | Per-page audit in `ci.yml` Lighthouse job |
 
 ## Testing Pyramid
 
@@ -39,11 +39,19 @@ npm run test
 
 **Recommended tools:** Vitest + React Testing Library
 
+**Prerequisites:**
+```bash
+cd Website
+npm install -D @testing-library/react @testing-library/jest-dom jsdom
+```
+
+Update `vitest.config.ts` to add `environment: 'jsdom'` for component tests.
+
 **Example:**
 ```tsx
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import ContactForm from '@/components/ContactForm';
+import { ContactForm } from '@/components/ContactForm';
 
 describe('ContactForm', () => {
   it('renders all fields', () => {
@@ -81,9 +89,10 @@ npx playwright install
 
 ### Accessibility Tests (Priority: Medium)
 
-**Current:** Static analysis via `eslint-plugin-jsx-a11y` at lint time.
+**Current:** Lighthouse accessibility audit runs in CI via the Lighthouse job in `.github/workflows/ci.yml`.
 
 **Recommended additions:**
+- `eslint-plugin-jsx-a11y` for static analysis at lint time
 - `axe-core` in Playwright E2E tests (automated per-page audits)
 - Manual screen reader testing with NVDA/VoiceOver before major releases
 
@@ -93,15 +102,16 @@ npx playwright install
 
 ## CI Integration
 
-Tests run on every PR via `.github/workflows/ci.yml`:
+Tests run on every PR and push to `main` via `.github/workflows/ci.yml`:
 
-```yaml
-- run: npm run lint
-- run: npm run test
-- run: npm run build
-```
+- **Lint job:** `npm run lint`
+- **Test job:** `npm run test`
+- **Build job:** `npm run build`
+- **Lighthouse job:** Runs after build — audits `/` and `/franchise` against `lighthouse-budget.json`
+
+All four jobs run in parallel (Lighthouse depends on Build).
 
 **Future additions:**
 - Coverage reporting (codecov or similar)
 - Playwright E2E in CI (separate job)
-- Lighthouse CI for performance budgets
+- `eslint-plugin-jsx-a11y` for accessibility linting

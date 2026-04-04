@@ -6,13 +6,14 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 
 - **Live:** https://www.omniprise.com.py
 - **Repo:** github.com:BRVOmni/OmniWebsite.git
-- **Monorepo:** `Website/` is the website (primary). Root `src/` is a separate internal dashboard.
+- **Source:** `Website/` directory (the only directory you should be working in)
+- **Node.js:** 22.x (CI pinned to 22; 18+ minimum for local dev)
 
 ## Tech Stack
 
 - Next.js 15 (App Router) + TypeScript 5
 - React 19
-- Tailwind CSS 4 (no `tailwind.config` — uses CSS-first config in `globals.css`)
+- Tailwind CSS 4 (CSS-first config in `globals.css`)
 - Framer Motion 12 (animations)
 - Zod 4 (form validation)
 - Vitest (testing)
@@ -41,6 +42,7 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 - Conventional Commits: `feat:`, `fix:`, `docs:`, `chore:`, `style:`, `refactor:`
 - Build MUST pass before committing: `cd Website && npm run build`
 - Push to `main` triggers Vercel deploy
+- Convenience scripts from repo root: `npm run website:build`, `website:dev`, `website:lint`, `website:test`
 
 ## Important Files
 
@@ -53,6 +55,7 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 | `Website/src/app/globals.css` | Tailwind config, design tokens, custom animations |
 | `Website/next.config.ts` | Next.js config |
 | `Website/vercel.json` | Security headers (CSP, Permissions-Policy, etc.) |
+| `Website/vitest.config.ts` | Vitest config with `@/` path alias resolution |
 
 ## Routes
 
@@ -66,13 +69,14 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 
 ## Testing
 
-- Runner: Vitest (`npm run test`)
+- Runner: Vitest (`cd Website && npm run test`)
+- Config: `Website/vitest.config.ts` (includes `@/` path alias)
 - Tests live in `Website/src/__tests__/`
 - Only schema tests exist so far — expand coverage for components and utilities
 
 ## Do NOT
 
-- Do not create a `tailwind.config.js` — project uses CSS-first Tailwind 4
+- Do not create a `tailwind.config.js` or `tailwind.config.ts` inside `Website/` — uses CSS-first Tailwind 4
 - Do not hardcode brand data outside of `brands.ts`
 - Do not add default exports
 - Do not use `any` types
