@@ -2,6 +2,32 @@
 
 /* ─── Omniprise Website v2.0 ─── Dark + Colorful Hybrid ─── */
 
+/* ─── Light Theme ─── */
+
+[data-theme="light"] {
+  --color-surface-950: #ffffff;
+  --color-surface-900: #f8f8f7;
+  --color-surface-800: #f0f0ee;
+  --color-surface-700: #e5e5e3;
+  --color-surface-600: #d4d4d2;
+  --color-surface-500: #b0b0ae;
+  --color-text-primary: #18181b;
+  --color-text-secondary: rgba(24, 24, 27, 0.6);
+  --color-text-hint: rgba(24, 24, 27, 0.45);
+  --color-text-accent: #0284c7;
+  --color-border-subtle: rgba(0, 0, 0, 0.06);
+  --color-border-medium: rgba(0, 0, 0, 0.12);
+  --color-border-strong: rgba(0, 0, 0, 0.20);
+  --color-danger-500: #dc2626;
+  --color-danger-600: #b91c1c;
+}
+
+/* ─── Theme Transition ─── */
+
+[data-theme-transitioning] * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
 @theme {
   /* Brand Colors */
   --color-omniprise-50: #f0f9ff;
@@ -136,7 +162,15 @@ h1, h2, h3, h4, h5, h6 {
 /* Selection */
 ::selection {
   background: rgba(14, 165, 233, 0.3);
+}
+
+[data-theme="dark"] ::selection,
+::selection {
   color: white;
+}
+
+[data-theme="light"] ::selection {
+  color: #18181b;
 }
 
 /* ─── Focus Visible (keyboard accessibility) ─── */

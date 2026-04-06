@@ -8,6 +8,9 @@ All notable changes to the Omniprise corporate website.
 - Auto-save franchise application form to localStorage — draft persists across page refreshes with 7-day expiry
 - Restored draft shows "Borrador recuperado" banner with option to discard
 - Draft is cleared automatically on successful form submission
+- Light/dark theme toggle with smooth transitions — Sun/Moon button in navbar
+- Theme preference persisted in localStorage, respects system preference on first visit
+- Inline script prevents flash of wrong theme on page load
 
 ### Bug Fixes
 - Fixed hero scroll indicator ("Bajar") overlapping CTA buttons on mobile

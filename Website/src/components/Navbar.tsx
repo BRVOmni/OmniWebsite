@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { WorkModal } from './WorkModal';
+import { ThemeToggle } from './ThemeToggle';
 import { whatsappOrderUrl } from '@/lib/brands';
 
 const NAV_LINKS = [
@@ -109,6 +110,8 @@ export function Navbar() {
             Trabajemos juntos
           </button>
 
+          <ThemeToggle />
+
           {/* Mobile menu toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -191,6 +194,10 @@ export function Navbar() {
                 >
                   Trabajemos juntos
                 </button>
+                <div className="flex items-center justify-center gap-2 pt-2 text-text-hint text-sm">
+                  <ThemeToggle />
+                  <span>{typeof window !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'light' ? 'Modo claro' : 'Modo oscuro'}</span>
+                </div>
               </div>
             </motion.div>
           </motion.div>

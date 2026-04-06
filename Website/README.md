@@ -411,10 +411,10 @@ Search for `@omniprise.com.py` across components to find all email references.
 - [x] Removed duplicate `<main>` tag from franchise page
 
 ### Next Up
-- [ ] Enable Next.js image optimization (remove `unoptimized: true`)
+- [x] Enable Next.js image optimization (already enabled — no `unoptimized` flag)
+- [x] Light/dark theme toggle
 - [ ] Lead capture API with Supabase
 - [ ] Multi-language support (next-intl)
-- [ ] Light/dark theme toggle
 - [ ] Blog/news section for SEO
 
 ---
