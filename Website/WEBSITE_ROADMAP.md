@@ -107,9 +107,9 @@ Website/
 ## Remaining Work
 
 ### P2 -- High Impact UX
-- [ ] **Testimonials Section** -- Social proof for franchise landing page
-- [ ] **Brand Gallery Photos** -- Replace placeholder gallery cards with real brand photography (awaiting manual assets)
-- [ ] **Add auto-save** to franchise application form
+- [ ] ~~**Testimonials Section**~~ -- Skipped for now
+- [x] **Brand Gallery Photos** -- Real brand photography added
+- [x] **Add auto-save** to franchise application form
 
 ### P3 -- Infrastructure
 - [ ] **Supabase CRM Integration** -- Connect franchise leads to dashboard CRM module

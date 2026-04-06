@@ -4,6 +4,11 @@ All notable changes to the Omniprise corporate website.
 
 ## v2.7.2 — 2026-04-06
 
+### Features
+- Auto-save franchise application form to localStorage — draft persists across page refreshes with 7-day expiry
+- Restored draft shows "Borrador recuperado" banner with option to discard
+- Draft is cleared automatically on successful form submission
+
 ### Bug Fixes
 - Fixed hero scroll indicator ("Bajar") overlapping CTA buttons on mobile
 

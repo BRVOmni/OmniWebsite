@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { track } from '@vercel/analytics';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Send, Loader2 } from 'lucide-react';
@@ -68,6 +68,47 @@ const TIMELINES = [
   'Mediano plazo (6-12 meses)',
   'Explorando opciones',
 ];
+
+const DRAFT_KEY = 'omniprise_franchise_draft';
+const DRAFT_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+interface Draft {
+  data: FormData;
+  step: number;
+  savedAt: number;
+}
+
+function loadDraft(): Draft | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return null;
+    const draft: Draft = JSON.parse(raw);
+    if (Date.now() - draft.savedAt > DRAFT_MAX_AGE) {
+      localStorage.removeItem(DRAFT_KEY);
+      return null;
+    }
+    return draft;
+  } catch {
+    return null;
+  }
+}
+
+function saveDraft(data: FormData, step: number) {
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify({ data, step, savedAt: Date.now() }));
+  } catch {
+    // localStorage full or unavailable — silently ignore
+  }
+}
+
+function clearDraft() {
+  try {
+    localStorage.removeItem(DRAFT_KEY);
+  } catch {
+    // ignore
+  }
+}
 
 function StepIndicator({ current, total }: { current: number; total: number }) {
   return (
@@ -443,15 +484,38 @@ export default function ApplyPage() {
   useScrollDepth('franchise_apply');
   const brandParam = searchParams.get('brand');
 
-  const [step, setStep] = useState(0);
-  const [data, setData] = useState<FormData>({
-    ...INITIAL_DATA,
-    preferredBrand: brandParam || '',
+  const [draftRestored, setDraftRestored] = useState(false);
+  const [step, setStep] = useState(() => {
+    if (typeof window === 'undefined') return 0;
+    const draft = loadDraft();
+    return draft ? draft.step : 0;
+  });
+  const [data, setData] = useState<FormData>(() => {
+    if (typeof window === 'undefined') return { ...INITIAL_DATA, preferredBrand: brandParam || '' };
+    const draft = loadDraft();
+    if (draft) {
+      setDraftRestored(true);
+      return { ...draft.data, preferredBrand: brandParam || draft.data.preferredBrand };
+    }
+    return { ...INITIAL_DATA, preferredBrand: brandParam || '' };
   });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const [errors, setErrors] = useState<StepErrors>({});
+
+  // Auto-save on every change
+  useEffect(() => {
+    if (!submitted) saveDraft(data, step);
+  }, [data, step, submitted]);
+
+  const discardDraft = useCallback(() => {
+    clearDraft();
+    setData({ ...INITIAL_DATA, preferredBrand: brandParam || '' });
+    setStep(0);
+    setDraftRestored(false);
+    setErrors({});
+  }, [brandParam]);
 
   const totalSteps = 4;
 
@@ -516,6 +580,7 @@ export default function ApplyPage() {
 
       if (res.ok) {
         track('franchise_form_submitted', { status: 'success', brand: data.preferredBrand || 'none' });
+        clearDraft();
         setSubmitted(true);
       } else {
         track('franchise_form_submitted', { status: 'error', brand: data.preferredBrand || 'none' });
@@ -561,6 +626,20 @@ export default function ApplyPage() {
           <SuccessView />
         ) : (
           <>
+            {draftRestored && (
+              <div className="flex items-center justify-between bg-omniprise-500/10 border border-omniprise-500/20 rounded-xl px-5 py-3 mb-6">
+                <p className="text-[13px] text-omniprise-400">
+                  Borrador recuperado — tus datos fueron guardados automáticamente.
+                </p>
+                <button
+                  type="button"
+                  onClick={discardDraft}
+                  className="text-[12px] font-medium text-text-secondary hover:text-text-primary transition-colors cursor-pointer ml-4"
+                >
+                  Descartar
+                </button>
+              </div>
+            )}
             <StepIndicator current={step} total={totalSteps} />
 
             <div className="bg-surface-900 border border-border-subtle rounded-2xl p-6 md:p-10">
