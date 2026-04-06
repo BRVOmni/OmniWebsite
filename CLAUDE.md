@@ -15,6 +15,7 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 - React 19
 - Tailwind CSS 4 (CSS-first config in `globals.css`)
 - Framer Motion 12 (animations)
+- next-intl (i18n — Spanish default at `/`, English at `/en`)
 - Zod 4 (form validation)
 - Vitest (testing)
 - Vercel (deployment, auto-deploys from `main`)
@@ -26,7 +27,9 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 - Path aliases: `@/components/`, `@/lib/`
 - All brand data lives in `Website/src/lib/brands.ts` — single source of truth
 - Forms validated with Zod schemas (`franchise-schema.ts`)
-- User-facing error messages in Spanish
+- User-facing error messages in Spanish (default locale)
+- Use `useTranslations('namespace')` for all user-facing strings — never hardcode text
+- Translation files: `Website/src/messages/es.json`, `Website/src/messages/en.json`
 
 ### Styling
 - Dark theme with sky blue accent (#0ea5e9)
@@ -50,22 +53,30 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 |---|---|
 | `Website/src/lib/brands.ts` | All brand data, WhatsApp URL helper, brand slugs |
 | `Website/src/lib/franchise-schema.ts` | Zod schemas for 4-step franchise form |
-| `Website/src/app/layout.tsx` | Root layout with Navbar + Footer |
-| `Website/src/app/page.tsx` | Homepage composing all sections |
+| `Website/src/app/layout.tsx` | Root layout (fonts, theme script, ReducedMotionProvider) |
+| `Website/src/app/[locale]/layout.tsx` | Locale layout (NextIntlClientProvider, Navbar, Footer) |
+| `Website/src/app/[locale]/page.tsx` | Homepage composing all sections |
 | `Website/src/app/globals.css` | Tailwind config, design tokens, custom animations |
-| `Website/next.config.ts` | Next.js config |
+| `Website/src/messages/es.json` | Spanish translations (~400 strings) |
+| `Website/src/messages/en.json` | English translations (~400 strings) |
+| `Website/src/i18n/routing.ts` | Locale config (es, en) and routing |
+| `Website/src/i18n/request.ts` | Server-side message loading |
+| `Website/src/middleware.ts` | Locale detection and cookie persistence |
+| `Website/next.config.ts` | Next.js config with next-intl plugin |
 | `Website/vercel.json` | Security headers (CSP, Permissions-Policy, etc.) |
 | `Website/vitest.config.ts` | Vitest config with `@/` path alias resolution |
 
 ## Routes
 
+Spanish (default, no prefix) and English (`/en` prefix). All routes exist in both locales.
+
 | Route | Type | Description |
 |---|---|---|
-| `/` | SSR | Homepage |
-| `/marcas/[slug]` | SSG | 7 brand detail pages |
-| `/franchise` | SSR | Franchise landing |
-| `/franchise/apply` | Client | 4-step application form |
-| `/privacidad` | SSR | Privacy policy |
+| `/` and `/en` | SSR | Homepage |
+| `/marcas/[slug]` and `/en/marcas/[slug]` | SSG | 7 brand detail pages |
+| `/franchise` and `/en/franchise` | SSR | Franchise landing |
+| `/franchise/apply` and `/en/franchise/apply` | Client | 4-step application form |
+| `/privacidad` and `/en/privacidad` | SSR | Privacy policy |
 
 ## Testing
 
@@ -77,6 +88,7 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 ## Do NOT
 
 - Do not create a `tailwind.config.js` or `tailwind.config.ts` inside `Website/` — uses CSS-first Tailwind 4
+- Do not hardcode user-facing text in components — use `useTranslations()` instead
 - Do not hardcode brand data outside of `brands.ts`
 - Do not add default exports
 - Do not use `any` types
