@@ -1,43 +1,21 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { useReveal } from '@/lib/use-reveal';
-
-const PILLARS = [
-  {
-    num: '01',
-    title: 'Marcas propias desde cero',
-    desc: 'Desarrollamos conceptos gastronómicos con identidad fuerte, pensados para escalar desde el primer día.',
-  },
-  {
-    num: '02',
-    title: 'Adquisición e integración',
-    desc: 'Incorporamos marcas con tracción comprobada y las integramos a nuestra plataforma operativa para acelerar su crecimiento.',
-  },
-  {
-    num: '03',
-    title: 'Expansión híbrida',
-    desc: 'Crecemos con locales físicos y dark-kitchens, combinando presencia territorial y cobertura de entrega masiva.',
-  },
-  {
-    num: '04',
-    title: 'Entrega y consumo recurrente',
-    desc: 'Fuerte orientación a plataformas digitales y consumo frecuente, generando volumen y previsibilidad.',
-  },
-  {
-    num: '05',
-    title: 'Comercio gastronómico masivo',
-    desc: 'Proyección hacia canales de consumo masivo: supermercados, tiendas de conveniencia y locales deportivos.',
-  },
-  {
-    num: '06',
-    title: 'Operaciones centralizadas',
-    desc: 'Centralización de compras, procesos y estándares para generar volumen, eficiencia y relaciones de largo plazo.',
-  },
-];
 
 export function PillarsSection() {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('pillars');
+
+  const PILLARS = [
+    { num: '01', title: t('title1'), desc: t('desc1') },
+    { num: '02', title: t('title2'), desc: t('desc2') },
+    { num: '03', title: t('title3'), desc: t('desc3') },
+    { num: '04', title: t('title4'), desc: t('desc4') },
+    { num: '05', title: t('title5'), desc: t('desc5') },
+    { num: '06', title: t('title6'), desc: t('desc6') },
+  ];
 
   return (
     <section className="py-24 md:py-36 px-6 md:px-12 max-w-[1200px] mx-auto">
@@ -50,7 +28,7 @@ export function PillarsSection() {
         >
           <span className="w-8 h-px bg-border-strong" />
           <span className="text-[10px] tracking-[0.22em] uppercase text-text-hint font-medium">
-            Nuestra lógica
+            {t('eyebrow')}
           </span>
         </motion.div>
 
@@ -60,9 +38,9 @@ export function PillarsSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="font-display font-black text-[clamp(40px,6vw,76px)] leading-[0.95] uppercase tracking-wide mb-20"
         >
-          Cómo<br />
-          crece<br />
-          <span className="text-omniprise-500">Omniprise.</span>
+          {t('heading1')}<br />
+          {t('heading2')}<br />
+          <span className="text-omniprise-500">{t('heading3')}</span>
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border-subtle border border-border-subtle">

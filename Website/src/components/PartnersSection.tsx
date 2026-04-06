@@ -1,11 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { useReveal } from '@/lib/use-reveal';
 import { ContactForm } from './ContactForm';
 
 export function PartnersSection() {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('partners');
 
   return (
     <section id="contacto" className="py-24 md:py-36 px-6 md:px-12 bg-surface-900 border-t border-border-subtle">
@@ -20,7 +22,7 @@ export function PartnersSection() {
           >
             <span className="w-8 h-px bg-border-strong" />
             <span className="text-[10px] tracking-[0.22em] uppercase text-text-hint font-medium">
-              Socios y proveedores
+              {t('eyebrow')}
             </span>
           </motion.div>
 
@@ -30,9 +32,9 @@ export function PartnersSection() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="font-display font-black text-[clamp(40px,5.5vw,68px)] leading-[0.95] uppercase tracking-wide mb-8"
           >
-            Socios<br />
-            que crecen<br />
-            <span className="text-omniprise-500">con nosotros.</span>
+            {t('heading1')}<br />
+            {t('heading2')}<br />
+            <span className="text-omniprise-500">{t('heading3')}</span>
           </motion.h2>
 
           <motion.p
@@ -41,11 +43,11 @@ export function PartnersSection() {
             transition={{ duration: 0.8, delay: 0.15 }}
             className="text-base text-text-secondary leading-relaxed mb-4"
           >
-            Omniprise no busca proveedores transaccionales. Busca{' '}
+            {t('paragraphPrefix')}
             <strong className="text-text-primary font-medium">
-              socios que crezcan junto a una plataforma en expansión
+              {t('paragraphBold')}
             </strong>
-            , con volumen creciente, visibilidad constante y proyección real.
+            {t('paragraphSuffix')}
           </motion.p>
 
           <motion.p
@@ -54,7 +56,7 @@ export function PartnersSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-sm text-text-hint leading-relaxed"
           >
-            También podés escribirnos directamente a{' '}
+            {t('emailPrefix')}{' '}
             <a href="mailto:info@omniprise.com.py" className="text-text-secondary hover:text-text-primary transition-colors">
               info@omniprise.com.py
             </a>

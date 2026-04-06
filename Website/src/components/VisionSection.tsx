@@ -1,10 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { useReveal } from '@/lib/use-reveal';
 
 export function VisionSection() {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('vision');
 
   return (
     <section id="vision" className="relative py-32 md:py-40 px-6 md:px-12 text-center overflow-hidden">
@@ -20,7 +22,7 @@ export function VisionSection() {
           transition={{ duration: 0.8 }}
           className="font-display font-black text-[13px] tracking-[0.2em] uppercase text-text-hint mb-10"
         >
-          Visión 2026 — 2027
+          {t('eyebrow')}
         </motion.p>
 
         <motion.h2
@@ -29,9 +31,9 @@ export function VisionSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="font-display font-extrabold text-[clamp(36px,5.5vw,72px)] leading-[1.05] uppercase tracking-wide mb-10"
         >
-          Construir uno de los ecosistemas gastronómicos
+          {t('heading1')}
           <br />
-          <span className="text-omniprise-500">más relevantes del país.</span>
+          <span className="text-omniprise-500">{t('heading2')}</span>
         </motion.h2>
 
         <motion.p
@@ -40,9 +42,9 @@ export function VisionSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-[clamp(16px,2vw,20px)] text-text-secondary leading-relaxed max-w-[680px] mx-auto"
         >
-          Marcas líderes en sus categorías y una red operativa capaz de generar{' '}
-          <strong className="text-text-primary font-medium">volumen, rotación y visibilidad constante</strong>{' '}
-          para nuestros socios estratégicos.
+          {t('paragraphPrefix')}
+          <strong className="text-text-primary font-medium">{t('paragraphBold')}</strong>{' '}
+          {t('paragraphSuffix')}
         </motion.p>
       </div>
     </section>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useCallback, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 
@@ -9,18 +10,12 @@ interface WorkModalProps {
   onClose: () => void;
 }
 
-const STEPS = [
-  { num: '01', text: 'Asunto del correo: Tu nombre completo + cargo al que aplicás' },
-  { num: '02', text: 'Adjuntá tu currículum en formato PDF' },
-  { num: '03', text: 'Podés incluir una breve presentación en el cuerpo del correo' },
-  { num: '04', text: 'Nuestro equipo de RRHH revisará tu perfil y se pondrá en contacto' },
-];
-
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
 export function WorkModal({ open, onClose }: WorkModalProps) {
   const boxRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations('workModal');
 
   // Escape key closes modal
   const handleKeyDown = useCallback(
@@ -59,7 +54,7 @@ export function WorkModal({ open, onClose }: WorkModalProps) {
 
     // Move focus into the modal
     requestAnimationFrame(() => {
-      const closeBtn = boxRef.current?.querySelector<HTMLElement>('button[aria-label="Cerrar"]');
+      const closeBtn = boxRef.current?.querySelector<HTMLElement>(`button[aria-label="${t('close')}"]`);
       closeBtn?.focus();
     });
 
@@ -67,7 +62,14 @@ export function WorkModal({ open, onClose }: WorkModalProps) {
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [open, handleKeyDown]);
+  }, [open, handleKeyDown, t]);
+
+  const steps = [
+    { num: '01', content: <>{t('step1Prefix')} <strong className="text-text-primary font-medium">{t('step1Bold')}</strong></> },
+    { num: '02', content: <>{t('step2')}</> },
+    { num: '03', content: <>{t('step3')}</> },
+    { num: '04', content: <>{t('step4')}</> },
+  ];
 
   return (
     <AnimatePresence>
@@ -77,7 +79,7 @@ export function WorkModal({ open, onClose }: WorkModalProps) {
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label="Trabajemos juntos"
+            aria-label={t('ariaLabel')}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -99,7 +101,7 @@ export function WorkModal({ open, onClose }: WorkModalProps) {
               <button
                 onClick={onClose}
                 className="absolute top-5 right-6 text-text-hint hover:text-text-primary transition-colors p-1 cursor-pointer"
-                aria-label="Cerrar"
+                aria-label={t('close')}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -108,25 +110,24 @@ export function WorkModal({ open, onClose }: WorkModalProps) {
               <div className="flex items-center gap-3 mb-6">
                 <span className="w-6 h-px bg-border-strong" />
                 <span className="text-[10px] tracking-[0.2em] uppercase text-text-hint font-medium">
-                  Únete al equipo
+                  {t('eyebrow')}
                 </span>
               </div>
 
               {/* Title */}
               <h2 className="font-display font-black text-[clamp(28px,4vw,42px)] uppercase tracking-wide leading-none text-text-primary mb-7">
-                Trabajemos<br />juntos.
+                {t('titleLine1')}<br />{t('titleLine2')}
               </h2>
 
               {/* Body */}
               <p className="text-[15px] text-text-secondary leading-relaxed mb-9">
-                ¿Querés ser parte de una plataforma gastronómica en plena expansión? Envianos tu currículum
-                actualizado y te contactaremos cuando surja una oportunidad que se ajuste a tu perfil.
+                {t('body')}
               </p>
 
               {/* Email block */}
               <div className="border border-border-medium p-5 mb-8">
                 <p className="text-[10px] tracking-[0.18em] uppercase text-text-hint font-medium mb-2">
-                  Enviá tu currículum a
+                  {t('emailLabel')}
                 </p>
                 <p className="font-display font-bold text-xl tracking-wider text-text-primary">
                   rrhh@omniprise.com.py
@@ -135,7 +136,7 @@ export function WorkModal({ open, onClose }: WorkModalProps) {
 
               {/* Steps */}
               <ul className="space-y-0">
-                {STEPS.map((step) => (
+                {steps.map((step) => (
                   <li
                     key={step.num}
                     className="text-sm text-text-secondary py-3 border-b border-border-subtle flex gap-4 leading-relaxed"
@@ -143,18 +144,7 @@ export function WorkModal({ open, onClose }: WorkModalProps) {
                     <span className="font-display font-black text-[11px] tracking-[0.12em] text-text-hint min-w-[18px] pt-0.5">
                       {step.num}
                     </span>
-                    <span>
-                      {step.num === '01' ? (
-                        <>
-                          Asunto del correo:{' '}
-                          <strong className="text-text-primary font-medium">
-                            Tu nombre completo + cargo al que aplicás
-                          </strong>
-                        </>
-                      ) : (
-                        step.text
-                      )}
-                    </span>
+                    <span>{step.content}</span>
                   </li>
                 ))}
               </ul>
@@ -164,7 +154,7 @@ export function WorkModal({ open, onClose }: WorkModalProps) {
                 onClick={onClose}
                 className="mt-8 text-sm font-medium text-surface-900 bg-text-primary hover:bg-omniprise-50 px-7 py-3 rounded-full transition-all duration-200 cursor-pointer"
               >
-                Entendido
+                {t('closeButton')}
               </button>
             </motion.div>
           </motion.div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import { useTranslations } from 'next-intl';
 import { track } from '@vercel/analytics';
 import { motion } from 'framer-motion';
 import { validateContact, type StepErrors } from '@/lib/franchise-schema';
@@ -60,6 +61,7 @@ function Field({
 export function ContactForm() {
   const [state, setState] = useState<FormState>('idle');
   const [errors, setErrors] = useState<StepErrors>({});
+  const t = useTranslations('contact');
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -107,16 +109,16 @@ export function ContactForm() {
           </svg>
         </div>
         <p className="font-display font-bold text-lg uppercase tracking-wide text-text-primary mb-2">
-          Mensaje enviado
+          {t('successTitle')}
         </p>
         <p className="text-sm text-text-secondary leading-relaxed">
-          Nos pondremos en contacto a la brevedad.
+          {t('successMessage')}
         </p>
         <button
           onClick={() => setState('idle')}
           className="mt-6 text-sm text-text-hint hover:text-text-primary transition-colors cursor-pointer"
         >
-          Enviar otro mensaje
+          {t('successReset')}
         </button>
       </motion.div>
     );
@@ -125,17 +127,17 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <Field label="Nombre" name="name" placeholder="Tu nombre" required error={errors.name} />
-        <Field label="Email" name="email" type="email" placeholder="tu@email.com" required error={errors.email} />
+        <Field label={t('nameLabel')} name="name" placeholder={t('namePlaceholder')} required error={errors.name} />
+        <Field label={t('emailLabel')} name="email" type="email" placeholder={t('emailPlaceholder')} required error={errors.email} />
       </div>
 
-      <Field label="Empresa" name="company" placeholder="Nombre de tu empresa (opcional)" />
+      <Field label={t('companyLabel')} name="company" placeholder={t('companyPlaceholder')} />
 
-      <Field label="Mensaje" name="message" placeholder="Contanos cómo podemos trabajar juntos..." required rows={4} error={errors.message} />
+      <Field label={t('messageLabel')} name="message" placeholder={t('messagePlaceholder')} required rows={4} error={errors.message} />
 
       {state === 'error' && (
         <p className="text-sm text-danger-500">
-          Hubo un error al enviar. Intentá de nuevo o escribinos a info@omniprise.com.py
+          {t('error')}
         </p>
       )}
 
@@ -144,7 +146,7 @@ export function ContactForm() {
         disabled={state === 'submitting'}
         className="self-start text-[15px] font-medium text-surface-900 bg-omniprise-500 hover:bg-omniprise-400 disabled:opacity-50 disabled:cursor-not-allowed px-8 py-3.5 rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
       >
-        {state === 'submitting' ? 'Enviando...' : 'Enviar mensaje'}
+        {state === 'submitting' ? t('submitting') : t('submit')}
       </button>
     </form>
   );

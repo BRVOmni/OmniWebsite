@@ -28,12 +28,12 @@ export default function NotFound() {
 
         {/* Headline */}
         <h1 className="font-display font-black text-[clamp(32px,5vw,52px)] uppercase tracking-wide leading-none text-text-primary mb-6">
-          Página no<br />encontrada.
+          Page not<br />found.
         </h1>
 
         {/* Description */}
         <p className="text-[15px] text-text-secondary leading-relaxed mb-10">
-          Lo que buscabas ya no existe o se movió a otra ubicación.
+          What you&apos;re looking for no longer exists or has moved.
         </p>
 
         {/* CTA */}
@@ -41,7 +41,7 @@ export default function NotFound() {
           href="/"
           className="inline-flex items-center gap-2 text-[14px] font-medium text-surface-900 bg-omniprise-500 hover:bg-omniprise-400 px-8 py-3.5 rounded-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(14,165,233,0.25)]"
         >
-          Volver al inicio
+          Back to home
         </Link>
       </motion.div>
     </div>

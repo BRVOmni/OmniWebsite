@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { useReveal } from '@/lib/use-reveal';
 import type { Brand } from '@/lib/brands';
 
@@ -10,6 +11,7 @@ interface BrandStoryProps {
 
 export function BrandStory({ brand }: BrandStoryProps) {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('brandDetail');
 
   const paragraphs = brand.story.split('\n\n').filter(Boolean);
 
@@ -22,7 +24,7 @@ export function BrandStory({ brand }: BrandStoryProps) {
           transition={{ duration: 0.8 }}
           className="text-[10px] tracking-[0.2em] uppercase text-text-hint font-medium mb-4"
         >
-          Historia
+          {t('storyEyebrow')}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
@@ -30,7 +32,7 @@ export function BrandStory({ brand }: BrandStoryProps) {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="font-display font-black text-[clamp(36px,5vw,56px)] leading-[0.95] uppercase tracking-wide mb-16"
         >
-          Sobre <span className="text-omniprise-500">{brand.name}</span>
+          {t('storyHeading')} <span className="text-omniprise-500">{brand.name}</span>
         </motion.h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-16 items-start">
@@ -58,7 +60,7 @@ export function BrandStory({ brand }: BrandStoryProps) {
               className="bg-surface-900 border border-border-subtle rounded-2xl p-8"
             >
               <h3 className="font-display font-bold text-sm uppercase tracking-[0.1em] text-text-primary mb-6">
-                Hitos
+                {t('milestonesTitle')}
               </h3>
               <div className="space-y-5">
                 {brand.milestones.map((m, i) => (

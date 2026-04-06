@@ -1,9 +1,5 @@
-import type { Metadata } from "next";
 import { Barlow_Condensed, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import { BackToTop } from "@/components/BackToTop";
 import { ReducedMotionProvider } from "@/components/ReducedMotionProvider";
 import "./globals.css";
 
@@ -21,61 +17,13 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://www.omniprise.com.py"),
-  title: "Omniprise — Plataforma de Marcas Gastronómicas",
-  description:
-    "Omniprise es un operador gastronómico creado para desarrollar, operar e integrar marcas de alto impacto en Paraguay.",
-  keywords: [
-    "Omniprise",
-    "gastronomía",
-    "Paraguay",
-    "franquicia",
-    "restaurantes",
-    "delivery",
-    "food service",
-  ],
-  icons: {
-    icon: [
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-    ],
-    apple: "/apple-touch-icon.png",
-  },
-  manifest: "/manifest.json",
-  openGraph: {
-    title: "Omniprise — Plataforma de Marcas Gastronómicas",
-    description:
-      "Operador gastronómico con 7 marcas, 17 locales y presencia en 6 ciudades.",
-    url: "https://www.omniprise.com.py",
-    siteName: "Omniprise",
-    locale: "es_PY",
-    type: "website",
-    images: [
-      {
-        url: "/omniprise-logo.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Omniprise — Plataforma de Marcas Gastronómicas",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Omniprise — Plataforma de Marcas Gastronómicas",
-    description:
-      "Operador gastronómico con 7 marcas, 17 locales y presencia en 6 ciudades en Paraguay.",
-    images: ["/omniprise-logo.jpg"],
-  },
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" data-theme="dark" className={`${barlowCondensed.variable} ${inter.variable}`}>
+    <html data-theme="dark" className={`${barlowCondensed.variable} ${inter.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -85,18 +33,9 @@ export default function RootLayout({
       </head>
       <body>
         <ReducedMotionProvider>
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-omniprise-500 focus:text-surface-900 focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-medium focus:outline-none"
-          >
-            Saltar al contenido
-          </a>
-          <Navbar />
-          <main id="main-content">{children}</main>
-          <Footer />
-          <BackToTop />
-          <Analytics />
+          {children}
         </ReducedMotionProvider>
+        <Analytics />
       </body>
     </html>
   );

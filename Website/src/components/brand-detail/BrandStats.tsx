@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { useReveal } from '@/lib/use-reveal';
 import type { Brand } from '@/lib/brands';
 
@@ -10,6 +11,7 @@ interface BrandStatsProps {
 
 export function BrandStats({ brand }: BrandStatsProps) {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('brandDetail');
 
   return (
     <section className="py-24 md:py-32 px-6 md:px-12 bg-surface-900 border-t border-border-subtle">
@@ -20,7 +22,7 @@ export function BrandStats({ brand }: BrandStatsProps) {
           transition={{ duration: 0.8 }}
           className="text-[10px] tracking-[0.2em] uppercase text-text-hint font-medium mb-4 text-center"
         >
-          En números
+          {t('statsEyebrow')}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
@@ -28,7 +30,7 @@ export function BrandStats({ brand }: BrandStatsProps) {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="font-display font-black text-[clamp(36px,5vw,56px)] leading-[0.95] uppercase tracking-wide mb-16 text-center"
         >
-          Datos <span className="text-omniprise-500">clave</span>
+          {t('statsHeadingPrefix')} <span className="text-omniprise-500">{t('statsHeadingHighlight')}</span>
         </motion.h2>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

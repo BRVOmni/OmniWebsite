@@ -1,17 +1,20 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const FOOTER_LINKS = [
-  { label: 'Nosotros', href: '/#nosotros' },
-  { label: 'Marcas', href: '/#marcas' },
-  { label: 'Visión', href: '/#vision' },
-  { label: 'Franquicia', href: '/franchise', highlight: true },
-  { label: 'Contacto', href: '/#contacto' },
-];
-
 export function Footer() {
+  const t = useTranslations('footer');
+
+  const FOOTER_LINKS = [
+    { label: t('nosotros'), href: '/#nosotros' },
+    { label: t('marcas'), href: '/#marcas' },
+    { label: t('vision'), href: '/#vision' },
+    { label: t('franquicia'), href: '/franchise', highlight: true },
+    { label: t('contacto'), href: '/#contacto' },
+  ];
+
   return (
     <footer className="px-6 md:px-12 py-12 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-6">
       <Link href="/" className="flex items-center">
@@ -51,9 +54,9 @@ export function Footer() {
       </ul>
 
       <span className="text-xs text-text-hint tracking-[0.05em]">
-        © 2026 Omniprise. Asunción, Paraguay.{' · '}
+        {t('copyright')}{' · '}
         <Link href="/privacidad" className="hover:text-text-primary transition-colors">
-          Privacidad
+          {t('privacy')}
         </Link>
       </span>
     </footer>

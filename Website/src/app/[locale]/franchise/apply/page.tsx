@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { track } from '@vercel/analytics';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Send, Loader2 } from 'lucide-react';
@@ -11,24 +12,20 @@ import { useScrollDepth } from '@/lib/use-scroll-depth';
 import { validateStep, type StepErrors } from '@/lib/franchise-schema';
 
 interface FormData {
-  // Step 1 - Personal
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
   city: string;
   country: string;
-  // Step 2 - Brand
   preferredBrand: string;
   hasExperience: string;
   currentBusiness: string;
   yearsExperience: string;
-  // Step 3 - Investment
   investmentRange: string;
   hasLocation: string;
   locationCity: string;
   timeline: string;
-  // Step 4 - Motivation
   motivation: string;
   howHeard: string;
   additionalInfo: string;
@@ -53,21 +50,6 @@ const INITIAL_DATA: FormData = {
   howHeard: '',
   additionalInfo: '',
 };
-
-const INVESTMENT_RANGES = [
-  'Menos de ₲100M',
-  '₲100M - ₲300M',
-  '₲300M - ₲500M',
-  '₲500M - ₲1.000M',
-  'Más de ₲1.000M',
-];
-
-const TIMELINES = [
-  'Inmediato (0-3 meses)',
-  'Corto plazo (3-6 meses)',
-  'Mediano plazo (6-12 meses)',
-  'Explorando opciones',
-];
 
 const DRAFT_KEY = 'omniprise_franchise_draft';
 const DRAFT_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
@@ -264,7 +246,7 @@ function TextArea({
   );
 }
 
-function Step1Personal({ data, onChange, errors }: { data: FormData; onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void; errors: StepErrors }) {
+function Step1Personal({ data, onChange, errors, t }: { data: FormData; onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void; errors: StepErrors; t: ReturnType<typeof useTranslations<'franchiseApply'>> }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -273,24 +255,24 @@ function Step1Personal({ data, onChange, errors }: { data: FormData; onChange: (
       transition={{ duration: 0.3 }}
     >
       <h2 className="font-display font-bold text-2xl uppercase tracking-wide text-text-primary mb-2">
-        Información Personal
+        {t('step1Title')}
       </h2>
       <p className="text-[14px] text-text-secondary mb-8">
-        Cuéntanos sobre ti para que podamos contactarte.
+        {t('step1Subtitle')}
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <InputField label="Nombre" name="firstName" value={data.firstName} onChange={onChange} placeholder="Juan" required error={errors.firstName} />
-        <InputField label="Apellido" name="lastName" value={data.lastName} onChange={onChange} placeholder="Pérez" required error={errors.lastName} />
-        <InputField label="Email" name="email" type="email" value={data.email} onChange={onChange} placeholder="juan@email.com" required error={errors.email} />
-        <InputField label="Teléfono" name="phone" type="tel" value={data.phone} onChange={onChange} placeholder="+595 991 123456" required error={errors.phone} />
-        <InputField label="Ciudad" name="city" value={data.city} onChange={onChange} placeholder="Asunción" required error={errors.city} />
-        <InputField label="País" name="country" value={data.country} onChange={onChange} placeholder="Paraguay" />
+        <InputField label={t('firstNameLabel')} name="firstName" value={data.firstName} onChange={onChange} placeholder={t('firstNamePlaceholder')} required error={errors.firstName} />
+        <InputField label={t('lastNameLabel')} name="lastName" value={data.lastName} onChange={onChange} placeholder={t('lastNamePlaceholder')} required error={errors.lastName} />
+        <InputField label={t('emailLabel')} name="email" type="email" value={data.email} onChange={onChange} placeholder={t('emailPlaceholder')} required error={errors.email} />
+        <InputField label={t('phoneLabel')} name="phone" type="tel" value={data.phone} onChange={onChange} placeholder={t('phonePlaceholder')} required error={errors.phone} />
+        <InputField label={t('cityLabel')} name="city" value={data.city} onChange={onChange} placeholder={t('cityPlaceholder')} required error={errors.city} />
+        <InputField label={t('countryLabel')} name="country" value={data.country} onChange={onChange} placeholder={t('countryPlaceholder')} />
       </div>
     </motion.div>
   );
 }
 
-function Step2Brand({ data, onChange, errors }: { data: FormData; onChange: (field: string, value: string) => void; errors: StepErrors }) {
+function Step2Brand({ data, onChange, errors, t }: { data: FormData; onChange: (field: string, value: string) => void; errors: StepErrors; t: ReturnType<typeof useTranslations<'franchiseApply'>> }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -299,14 +281,14 @@ function Step2Brand({ data, onChange, errors }: { data: FormData; onChange: (fie
       transition={{ duration: 0.3 }}
     >
       <h2 className="font-display font-bold text-2xl uppercase tracking-wide text-text-primary mb-2">
-        Tu Marca
+        {t('step2Title')}
       </h2>
       <p className="text-[14px] text-text-secondary mb-8">
-        ¿Qué marca te interesa y cuál es tu experiencia?
+        {t('step2Subtitle')}
       </p>
       <div className="flex flex-col gap-6">
         <RadioGroup
-          label="Marca preferida"
+          label={t('preferredBrandLabel')}
           name="preferredBrand"
           options={BRANDS.map(b => b.name)}
           value={data.preferredBrand}
@@ -315,34 +297,54 @@ function Step2Brand({ data, onChange, errors }: { data: FormData; onChange: (fie
           error={errors.preferredBrand}
         />
         <RadioGroup
-          label="¿Tienes experiencia en gastronomía?"
+          label={t('experienceLabel')}
           name="hasExperience"
-          options={['Sí', 'No']}
+          options={[t('experienceYes'), t('experienceNo')]}
           value={data.hasExperience}
           onChange={(v) => onChange('hasExperience', v)}
           required
           error={errors.hasExperience}
         />
         <InputField
-          label="Negocio actual (si tienes uno)"
+          label={t('currentBusinessLabel')}
           name="currentBusiness"
           value={data.currentBusiness}
           onChange={(e) => onChange('currentBusiness', (e.target as HTMLInputElement).value)}
-          placeholder="Nombre de tu negocio o empresa"
+          placeholder={t('currentBusinessPlaceholder')}
         />
         <InputField
-          label="Años de experiencia"
+          label={t('yearsLabel')}
           name="yearsExperience"
           value={data.yearsExperience}
           onChange={(e) => onChange('yearsExperience', (e.target as HTMLInputElement).value)}
-          placeholder="Ej: 5 años"
+          placeholder={t('yearsPlaceholder')}
         />
       </div>
     </motion.div>
   );
 }
 
-function Step3Investment({ data, onChange, errors }: { data: FormData; onChange: (field: string, value: string) => void; errors: StepErrors }) {
+function Step3Investment({ data, onChange, errors, t }: { data: FormData; onChange: (field: string, value: string) => void; errors: StepErrors; t: ReturnType<typeof useTranslations<'franchiseApply'>> }) {
+  const INVESTMENT_RANGES = [
+    t('investment1'),
+    t('investment2'),
+    t('investment3'),
+    t('investment4'),
+    t('investment5'),
+  ];
+  const LOCATIONS = [
+    t('location1'),
+    t('location2'),
+    t('location3'),
+    t('location4'),
+  ];
+  const TIMELINES = [
+    t('timeline1'),
+    t('timeline2'),
+    t('timeline3'),
+    t('timeline4'),
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -351,14 +353,14 @@ function Step3Investment({ data, onChange, errors }: { data: FormData; onChange:
       transition={{ duration: 0.3 }}
     >
       <h2 className="font-display font-bold text-2xl uppercase tracking-wide text-text-primary mb-2">
-        Inversión y Ubicación
+        {t('step3Title')}
       </h2>
       <p className="text-[14px] text-text-secondary mb-8">
-        Ayúdanos a entender tu capacidad de inversión y planes.
+        {t('step3Subtitle')}
       </p>
       <div className="flex flex-col gap-6">
         <RadioGroup
-          label="Rango de inversión"
+          label={t('investmentLabel')}
           name="investmentRange"
           options={INVESTMENT_RANGES}
           value={data.investmentRange}
@@ -367,25 +369,25 @@ function Step3Investment({ data, onChange, errors }: { data: FormData; onChange:
           error={errors.investmentRange}
         />
         <RadioGroup
-          label="¿Ya tienes un local o terreno?"
+          label={t('locationLabel')}
           name="hasLocation"
-          options={['Sí, tengo local', 'Sí, tengo terreno', 'No, necesito ayuda', 'No, pero tengo ubicación en mente']}
+          options={LOCATIONS}
           value={data.hasLocation}
           onChange={(v) => onChange('hasLocation', v)}
           required
           error={errors.hasLocation}
         />
-        {data.hasLocation && data.hasLocation !== 'No, necesito ayuda' && (
+        {data.hasLocation && data.hasLocation !== t('location3') && (
           <InputField
-            label="Ciudad de la ubicación"
+            label={t('locationCityLabel')}
             name="locationCity"
             value={data.locationCity}
             onChange={(e) => onChange('locationCity', (e.target as HTMLInputElement).value)}
-            placeholder="Asunción, Ciudad del Este, etc."
+            placeholder={t('locationCityPlaceholder')}
           />
         )}
         <RadioGroup
-          label="Timeline para apertura"
+          label={t('timelineLabel')}
           name="timeline"
           options={TIMELINES}
           value={data.timeline}
@@ -398,7 +400,7 @@ function Step3Investment({ data, onChange, errors }: { data: FormData; onChange:
   );
 }
 
-function Step4Motivation({ data, onTextChange, onFieldChange, errors }: { data: FormData; onTextChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; onFieldChange: (field: string, value: string) => void; errors: StepErrors }) {
+function Step4Motivation({ data, onTextChange, onFieldChange, errors, t }: { data: FormData; onTextChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; onFieldChange: (field: string, value: string) => void; errors: StepErrors; t: ReturnType<typeof useTranslations<'franchiseApply'>> }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -407,24 +409,24 @@ function Step4Motivation({ data, onTextChange, onFieldChange, errors }: { data: 
       transition={{ duration: 0.3 }}
     >
       <h2 className="font-display font-bold text-2xl uppercase tracking-wide text-text-primary mb-2">
-        Motivación
+        {t('step4Title')}
       </h2>
       <p className="text-[14px] text-text-secondary mb-8">
-        Cuéntanos por qué quieres ser parte de Omniprise.
+        {t('step4Subtitle')}
       </p>
       <div className="flex flex-col gap-6">
         <TextArea
-          label="¿Por qué te interesa una franquicia Omniprise?"
+          label={t('motivationLabel')}
           name="motivation"
           value={data.motivation}
           onChange={onTextChange}
-          placeholder="Cuéntanos tu visión y por qué crees que encajas con nuestro modelo..."
+          placeholder={t('motivationPlaceholder')}
           rows={4}
           required
           error={errors.motivation}
         />
         <RadioGroup
-          label="¿Cómo nos conociste?"
+          label={t('howHeardLabel')}
           name="howHeard"
           options={['Instagram', 'Facebook', 'Google', 'Referido', 'Evento', 'Otro']}
           value={data.howHeard}
@@ -433,11 +435,11 @@ function Step4Motivation({ data, onTextChange, onFieldChange, errors }: { data: 
           error={errors.howHeard}
         />
         <TextArea
-          label="Información adicional (opcional)"
+          label={t('additionalLabel')}
           name="additionalInfo"
           value={data.additionalInfo}
           onChange={onTextChange}
-          placeholder="Cualquier otro detalle que quieras compartir..."
+          placeholder={t('additionalPlaceholder')}
           rows={3}
         />
       </div>
@@ -445,7 +447,7 @@ function Step4Motivation({ data, onTextChange, onFieldChange, errors }: { data: 
   );
 }
 
-function SuccessView() {
+function SuccessView({ t }: { t: ReturnType<typeof useTranslations<'franchiseApply'>> }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -457,21 +459,21 @@ function SuccessView() {
         <Check className="w-10 h-10 text-omniprise-500" />
       </div>
       <h2 className="font-display font-black text-3xl uppercase tracking-wide text-text-primary mb-4">
-        ¡Solicitud Enviada!
+        {t('successTitle')}
       </h2>
       <p className="text-base text-text-secondary max-w-md mx-auto leading-relaxed mb-8">
-        Gracias por tu interés en Omniprise. Nuestro equipo revisará tu solicitud y te contactará en las próximas 24 horas hábiles.
+        {t('successMessage')}
       </p>
       <div className="bg-surface-700 border border-border-subtle rounded-xl p-6 max-w-sm mx-auto mb-10">
-        <p className="text-[12px] tracking-[0.08em] uppercase text-text-hint mb-2">Próximo paso</p>
-        <p className="text-[14px] text-text-primary">Revisaremos tu perfil y te enviaremos opciones de marca y condiciones.</p>
+        <p className="text-[12px] tracking-[0.08em] uppercase text-text-hint mb-2">{t('successNextLabel')}</p>
+        <p className="text-[14px] text-text-primary">{t('successNextText')}</p>
       </div>
       <Link
         href="/"
         className="inline-flex items-center gap-2 text-[15px] font-medium text-text-secondary hover:text-text-primary px-8 py-3 rounded-full border border-border-medium tracking-wide transition-all duration-200"
       >
         <ArrowLeft className="w-4 h-4" />
-        Volver al inicio
+        {t('successBackHome')}
       </Link>
     </motion.div>
   );
@@ -482,6 +484,7 @@ const FRANCHISE_FORM_ACTION = 'https://formspree.io/f/2967703689361358019';
 export default function ApplyPage() {
   const searchParams = useSearchParams();
   useScrollDepth('franchise_apply');
+  const t = useTranslations('franchiseApply');
   const brandParam = searchParams.get('brand');
 
   const [draftRestored, setDraftRestored] = useState(false);
@@ -605,16 +608,16 @@ export default function ApplyPage() {
               className="inline-flex items-center gap-2 text-[13px] text-text-secondary hover:text-text-primary transition-colors mb-6"
             >
               <ArrowLeft className="w-4 h-4" />
-              Volver a Franquicias
+              {t('backLink')}
             </Link>
             <h1 className="font-display font-black text-[clamp(32px,5vw,48px)] leading-[0.95] uppercase tracking-wide">
-              Solicitud de <span className="text-omniprise-500">Franquicia</span>
+              {t('heading1')} <span className="text-omniprise-500">{t('headingHighlight')}</span>
             </h1>
             <p className="text-[14px] text-text-secondary mt-3">
-              Completa el formulario en 4 pasos. Toma menos de 5 minutos.
+              {t('description')}
             </p>
             <p className="text-[13px] text-text-hint mt-2">
-              También podés escribirnos directamente a{' '}
+              {t('alsoEmail')}{' '}
               <a href="mailto:franquicias@omniprise.com.py" className="text-text-secondary hover:text-text-primary transition-colors">
                 franquicias@omniprise.com.py
               </a>
@@ -623,20 +626,20 @@ export default function ApplyPage() {
         )}
 
         {submitted ? (
-          <SuccessView />
+          <SuccessView t={t} />
         ) : (
           <>
             {draftRestored && (
               <div className="flex items-center justify-between bg-omniprise-500/10 border border-omniprise-500/20 rounded-xl px-5 py-3 mb-6">
                 <p className="text-[13px] text-omniprise-400">
-                  Borrador recuperado — tus datos fueron guardados automáticamente.
+                  {t('draftRestored')}
                 </p>
                 <button
                   type="button"
                   onClick={discardDraft}
                   className="text-[12px] font-medium text-text-secondary hover:text-text-primary transition-colors cursor-pointer ml-4"
                 >
-                  Descartar
+                  {t('discardDraft')}
                 </button>
               </div>
             )}
@@ -644,19 +647,18 @@ export default function ApplyPage() {
 
             <div className="bg-surface-900 border border-border-subtle rounded-2xl p-6 md:p-10">
               <AnimatePresence mode="wait">
-                {step === 0 && <Step1Personal data={data} onChange={handleInputChange} errors={errors} />}
-                {step === 1 && <Step2Brand data={data} onChange={handleFieldChange} errors={errors} />}
-                {step === 2 && <Step3Investment data={data} onChange={handleFieldChange} errors={errors} />}
+                {step === 0 && <Step1Personal data={data} onChange={handleInputChange} errors={errors} t={t} />}
+                {step === 1 && <Step2Brand data={data} onChange={handleFieldChange} errors={errors} t={t} />}
+                {step === 2 && <Step3Investment data={data} onChange={handleFieldChange} errors={errors} t={t} />}
                 {step === 3 && (
-                  <Step4Motivation data={data} onTextChange={handleTextAreaChange} onFieldChange={handleFieldChange} errors={errors} />
+                  <Step4Motivation data={data} onTextChange={handleTextAreaChange} onFieldChange={handleFieldChange} errors={errors} t={t} />
                 )}
               </AnimatePresence>
 
               {/* Navigation */}
               {submitError && (
                 <p className="text-sm text-danger-500 mt-4">
-                  Hubo un error al enviar. Intentá de nuevo o escribinos a{' '}
-                  <a href="mailto:franquicias@omniprise.com.py" className="underline">franquicias@omniprise.com.py</a>
+                  {t('submitError')}
                 </p>
               )}
               <div className="flex items-center justify-between mt-10 pt-6 border-t border-border-subtle">
@@ -666,7 +668,7 @@ export default function ApplyPage() {
                   className="inline-flex items-center gap-2 text-[14px] text-text-secondary hover:text-text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  Anterior
+                  {t('previous')}
                 </button>
 
                 {step < totalSteps - 1 ? (
@@ -675,7 +677,7 @@ export default function ApplyPage() {
                     disabled={!canProceed()}
                     className="inline-flex items-center gap-2 text-[14px] font-medium text-surface-900 bg-omniprise-500 hover:bg-omniprise-400 disabled:opacity-40 disabled:cursor-not-allowed px-6 py-3 rounded-full transition-all duration-200 cursor-pointer"
                   >
-                    Siguiente
+                    {t('next')}
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 ) : (
@@ -687,12 +689,12 @@ export default function ApplyPage() {
                     {submitting ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Enviando...
+                        {t('submitting')}
                       </>
                     ) : (
                       <>
                         <Send className="w-4 h-4" />
-                        Enviar Solicitud
+                        {t('submit')}
                       </>
                     )}
                   </button>

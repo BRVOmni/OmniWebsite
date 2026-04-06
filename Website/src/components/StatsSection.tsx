@@ -1,15 +1,16 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useAnimatedCounter, useReveal } from '@/lib/use-reveal';
 
-const STATS = [
-  { target: 7, suffix: '', label: 'Marcas en portafolio' },
-  { target: 17, suffix: '', label: 'Locales físicos activos' },
-  { target: 135, suffix: '', label: 'Colaboradores' },
-  { target: 30, suffix: '%', label: 'Crecimiento proyectado 2026', isStatic: true },
-];
+interface StatData {
+  target: number;
+  suffix: string;
+  label: string;
+  isStatic?: boolean;
+}
 
-function StatItem({ stat }: { stat: typeof STATS[0] }) {
+function StatItem({ stat }: { stat: StatData }) {
   if (stat.isStatic) {
     return (
       <div className="bg-surface-900 p-10 md:p-12 text-center group">
@@ -26,7 +27,7 @@ function StatItem({ stat }: { stat: typeof STATS[0] }) {
   return <AnimatedStat stat={stat} />;
 }
 
-function AnimatedStat({ stat }: { stat: typeof STATS[0] }) {
+function AnimatedStat({ stat }: { stat: StatData }) {
   const { ref, value } = useAnimatedCounter(stat.target);
 
   return (
@@ -46,6 +47,14 @@ function AnimatedStat({ stat }: { stat: typeof STATS[0] }) {
 
 export function StatsSection() {
   const { ref } = useReveal();
+  const t = useTranslations('stats');
+
+  const STATS: StatData[] = [
+    { target: 7, suffix: '', label: t('brands') },
+    { target: 17, suffix: '', label: t('locations') },
+    { target: 135, suffix: '', label: t('team') },
+    { target: 30, suffix: '%', label: t('growth'), isStatic: true },
+  ];
 
   return (
     <section

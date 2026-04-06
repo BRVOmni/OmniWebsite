@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { MapPin, Truck, Store, TrendingUp } from 'lucide-react';
 import { useReveal } from '@/lib/use-reveal';
 import type { Brand } from '@/lib/brands';
@@ -11,6 +12,7 @@ interface BrandPresenceProps {
 
 export function BrandPresence({ brand }: BrandPresenceProps) {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('brandDetail');
 
   return (
     <section className="py-24 md:py-32 px-6 md:px-12 bg-surface-900 border-t border-border-subtle">
@@ -21,7 +23,7 @@ export function BrandPresence({ brand }: BrandPresenceProps) {
           transition={{ duration: 0.8 }}
           className="text-[10px] tracking-[0.2em] uppercase text-text-hint font-medium mb-4 text-center"
         >
-          Presencia
+          {t('presenceEyebrow')}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
@@ -29,7 +31,7 @@ export function BrandPresence({ brand }: BrandPresenceProps) {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="font-display font-black text-[clamp(36px,5vw,56px)] leading-[0.95] uppercase tracking-wide mb-16 text-center"
         >
-          Dónde <span className="text-omniprise-500">operamos</span>
+          {t('presenceHeadingPrefix')} <span className="text-omniprise-500">{t('presenceHeadingHighlight')}</span>
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -42,7 +44,7 @@ export function BrandPresence({ brand }: BrandPresenceProps) {
           >
             <MapPin className="w-6 h-6 text-omniprise-500 mb-4" />
             <h3 className="font-display font-bold text-sm uppercase tracking-[0.1em] text-text-primary mb-3">
-              Locales
+              {t('presenceLocations')}
             </h3>
             <p className="text-[14px] text-text-secondary leading-relaxed">
               {brand.locations}
@@ -58,7 +60,7 @@ export function BrandPresence({ brand }: BrandPresenceProps) {
           >
             <Store className="w-6 h-6 text-omniprise-500 mb-4" />
             <h3 className="font-display font-bold text-sm uppercase tracking-[0.1em] text-text-primary mb-3">
-              Modelo
+              {t('presenceModel')}
             </h3>
             <p className="text-[14px] text-text-secondary leading-relaxed mb-4">
               {brand.model}
@@ -77,7 +79,7 @@ export function BrandPresence({ brand }: BrandPresenceProps) {
           >
             <Truck className="w-6 h-6 text-omniprise-500 mb-4" />
             <h3 className="font-display font-bold text-sm uppercase tracking-[0.1em] text-text-primary mb-3">
-              Delivery
+              {t('presenceDelivery')}
             </h3>
             <div className="flex flex-wrap gap-2">
               {brand.deliveryPlatforms.map((platform) => (
@@ -101,7 +103,7 @@ export function BrandPresence({ brand }: BrandPresenceProps) {
         >
           <TrendingUp className="w-4 h-4 text-success-500" />
           <span>
-            Plan de expansión 2026 activo — más información próximamente
+            {t('presenceExpansion')}
           </span>
         </motion.div>
       </div>

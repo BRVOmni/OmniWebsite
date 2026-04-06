@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ArrowRight, ArrowLeft, MessageCircle } from 'lucide-react';
 import { track } from '@vercel/analytics';
@@ -14,6 +15,7 @@ interface BrandCTAProps {
 
 export function BrandCTA({ brand }: BrandCTAProps) {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('brandDetail');
 
   return (
     <section className="py-24 md:py-36 px-6 md:px-12 border-t border-border-subtle">
@@ -31,7 +33,7 @@ export function BrandCTA({ brand }: BrandCTAProps) {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="text-[10px] tracking-[0.2em] uppercase text-omniprise-500 font-medium mb-6"
           >
-            ¿Te interesa esta marca?
+            {t('ctaEyebrow')}
           </motion.p>
 
           <motion.h2
@@ -40,7 +42,7 @@ export function BrandCTA({ brand }: BrandCTAProps) {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="font-display font-black text-[clamp(28px,4vw,44px)] leading-[0.95] uppercase tracking-wide mb-4"
           >
-            Sé parte de<br />
+            {t('ctaHeading')}<br />
             <span className="text-omniprise-500">{brand.name}</span>
           </motion.h2>
 
@@ -50,7 +52,7 @@ export function BrandCTA({ brand }: BrandCTAProps) {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-[15px] text-text-secondary leading-relaxed mb-10 max-w-[480px] mx-auto"
           >
-            Opera {brand.name} bajo el respaldo completo de Omniprise. Tecnología, capacitación, marketing y supply chain desde el día uno.
+            {t('ctaDescription', { brandName: brand.name })}
           </motion.p>
 
           <motion.div
@@ -67,14 +69,14 @@ export function BrandCTA({ brand }: BrandCTAProps) {
               className="inline-flex items-center gap-3 text-[15px] font-medium text-surface-900 bg-green-500 hover:bg-green-400 px-9 py-4 rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(34,197,94,0.25)]"
             >
               <MessageCircle className="w-4 h-4" />
-              Probá nuestros platos
+              {t('ctaWhatsApp')}
             </a>
             <Link
               href={`/franchise/apply?brand=${brand.slug}`}
               onClick={() => track('franchise_cta', { source: 'brand_page', action: 'apply', brand: brand.slug })}
               className="text-[14px] text-text-secondary hover:text-text-primary px-8 py-3.5 rounded-full border border-border-medium tracking-wide transition-all duration-200 hover:-translate-y-0.5 inline-flex items-center gap-2"
             >
-              Solicitar Franquicia
+              {t('ctaFranchise')}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
@@ -92,7 +94,7 @@ export function BrandCTA({ brand }: BrandCTAProps) {
             className="inline-flex items-center gap-2 text-[13px] text-text-hint hover:text-text-secondary tracking-wide transition-colors duration-200"
           >
             <ArrowLeft className="w-4 h-4" />
-            Ver todas las marcas
+            {t('ctaBackToBrands')}
           </Link>
         </motion.div>
       </div>

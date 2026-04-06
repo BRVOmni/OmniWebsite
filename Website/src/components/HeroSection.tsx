@@ -1,9 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 export function HeroSection() {
+  const t = useTranslations('hero');
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 md:px-12 pt-28 pb-20 overflow-hidden">
       {/* Background gradient with sky blue accent */}
@@ -19,7 +22,7 @@ export function HeroSection() {
           transition={{ delay: 0.2, duration: 0.8 }}
           className="text-[11px] font-medium tracking-[0.2em] uppercase text-text-hint mb-8"
         >
-          Asunción, Paraguay — Est. 2024
+          {t('eyebrow')}
         </motion.p>
 
         {/* Title */}
@@ -29,8 +32,8 @@ export function HeroSection() {
           transition={{ delay: 0.35, duration: 0.9 }}
           className="font-display font-black text-[clamp(64px,12vw,160px)] leading-[0.92] tracking-tight uppercase text-text-primary mb-10"
         >
-          No somos<br />
-          <span className="text-text-hint">un</span> restaurante.
+          {t('titleLine1')}<br />
+          <span className="text-text-hint">{t('titleLine2Prefix')}</span>{t('titleLine2Suffix')}
         </motion.h1>
 
         {/* Subtitle */}
@@ -40,11 +43,11 @@ export function HeroSection() {
           transition={{ delay: 0.5, duration: 0.9 }}
           className="text-[clamp(16px,2.2vw,21px)] font-light text-text-secondary max-w-[640px] mx-auto leading-relaxed mb-14"
         >
-          Somos una{' '}
+          {t('subtitlePrefix')}
           <strong className="text-text-primary font-medium">
-            plataforma de marcas gastronómicas
+            {t('subtitleBold')}
           </strong>{' '}
-          con foco en escala, eficiencia y crecimiento sostenido.
+          {t('subtitleSuffix')}
         </motion.p>
 
         {/* CTAs */}
@@ -58,19 +61,19 @@ export function HeroSection() {
             href="#marcas"
             className="text-[15px] font-medium text-surface-900 bg-omniprise-500 hover:bg-omniprise-400 px-8 py-3.5 rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5"
           >
-            Nuestras marcas
+            {t('ctaBrands')}
           </a>
           <Link
             href="/franchise"
             className="text-[15px] font-normal text-text-secondary hover:text-text-primary px-8 py-3.5 rounded-full border border-border-medium tracking-wide transition-all duration-200 hover:-translate-y-0.5"
           >
-            Conviértete en Franquiciado →
+            {t('ctaFranchise')}
           </Link>
           <a
             href="#nosotros"
             className="hidden sm:inline-flex text-[15px] font-normal text-text-secondary hover:text-text-primary px-8 py-3.5 rounded-full border border-border-subtle tracking-wide transition-all duration-200 hover:-translate-y-0.5"
           >
-            Conocer más
+            {t('ctaKnowMore')}
           </a>
         </motion.div>
       </div>
@@ -82,7 +85,7 @@ export function HeroSection() {
         transition={{ delay: 1.2, duration: 1 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="text-[10px] tracking-[0.18em] uppercase text-text-hint">Bajar</span>
+        <span className="text-[10px] tracking-[0.18em] uppercase text-text-hint">{t('scrollDown')}</span>
         <div className="w-px h-10 bg-gradient-to-b from-text-hint to-transparent animate-scroll-pulse" />
       </motion.div>
     </section>

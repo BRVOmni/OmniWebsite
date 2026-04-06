@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Instagram, X } from 'lucide-react';
 import { useReveal } from '@/lib/use-reveal';
@@ -77,6 +78,7 @@ function getCardStyle(index: number, total: number): string {
 
 export function BrandGallery({ brand }: BrandGalleryProps) {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('brandDetail');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
@@ -155,7 +157,7 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
                 transition={{ duration: 0.8 }}
                 className="text-[10px] tracking-[0.2em] uppercase text-text-hint font-medium mb-4"
               >
-                Galeria
+                {t('galleryEyebrow')}
               </motion.p>
               <motion.h2
                 initial={{ opacity: 0, y: 24 }}
@@ -165,11 +167,11 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
               >
                 {hasImages ? (
                   <>
-                    Mir&aacute; <span className="text-omniprise-500">{brand.name}</span>
+                    {t('galleryHeadingWithImagesPrefix')} <span className="text-omniprise-500">{brand.name}</span>
                   </>
                 ) : (
                   <>
-                    <span className="text-omniprise-500">{brand.name}</span> en im&aacute;genes
+                    <span className="text-omniprise-500">{brand.name}</span> {t('galleryHeadingWithoutImagesSuffix')}
                   </>
                 )}
               </motion.h2>
@@ -185,7 +187,7 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
               <Instagram className="w-4 h-4 text-text-hint" />
               <div className="flex flex-col">
                 <span className="text-[10px] tracking-[0.15em] uppercase text-text-hint font-medium leading-none mb-1">
-                  Buscanos en Instagram
+                  {t('galleryInstagramLabel')}
                 </span>
                 <span className="text-[14px] font-medium text-text-primary tracking-wide">
                   @{brand.instagram}
@@ -257,7 +259,7 @@ export function BrandGallery({ brand }: BrandGalleryProps) {
               transition={{ duration: 0.6, delay: 0.6 }}
               className="text-center text-[12px] tracking-[0.1em] uppercase text-text-hint mt-10"
             >
-              Fotografias profesionales próximamente — mientras tanto, buscá @{brand.instagram} en Instagram
+              {t('galleryComingSoon', { instagram: brand.instagram })}
             </motion.p>
           )}
         </div>

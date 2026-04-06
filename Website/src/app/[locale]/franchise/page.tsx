@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { track } from '@vercel/analytics';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -15,74 +16,15 @@ const FRANCHISE_BRANDS = CANONICAL_BRANDS.map((b) => ({
   desc: b.tagline,
 }));
 
-const BENEFITS = [
-  {
-    icon: '🏗️',
-    title: 'Modelo Probado',
-    desc: 'Cada marca ya opera con éxito. No estás experimentando, estás replicando un sistema que funciona.',
-  },
-  {
-    icon: '📊',
-    title: 'Data-Driven',
-    desc: 'Acceso a nuestro dashboard con métricas en tiempo real. Decisiones basadas en datos, no intuición.',
-  },
-  {
-    icon: '🎓',
-    title: 'Capacitación Total',
-    desc: 'Entrenamiento operativo, gastronómico y de servicio. Tu equipo arranca con conocimiento real.',
-  },
-  {
-    icon: '🛒',
-    title: 'Supply Chain',
-    desc: 'Red de proveedores optimizada. Mejores precios, mejor calidad, sin dolores de cabeza.',
-  },
-  {
-    icon: '📱',
-    title: 'Tecnología',
-    desc: 'POS, inventario, reporting y más. Todo integrado desde el día uno.',
-  },
-  {
-    icon: '📣',
-    title: 'Marketing',
-    desc: 'Estrategia de marketing centralizada con contenido, campañas y presencia digital incluidos.',
-  },
-];
-
-const FAQ_ITEMS = [
-  {
-    q: '¿Qué tipo de marcas ofrecen en franquicia?',
-    a: 'Ofrecemos 7 marcas gastronómicas probadas: UFO, Mr. Chow, Rocco, PastaBox, Sammy\'s Express Pizza, Barrio Pizzero y Los Condenados. Cada una tiene un concepto único y un modelo operativo validado.',
-  },
-  {
-    q: '¿Cuál es la inversión inicial?',
-    a: 'La inversión varía según la marca y la ubicación. Incluye fee de franquicia, equipamiento, capacitación y capital de trabajo. Te presentamos proyecciones detalladas durante el proceso de evaluación.',
-  },
-  {
-    q: '¿Necesito experiencia en gastronomía?',
-    a: 'No es obligatorio. Nuestro programa de capacitación cubre todo lo necesario. Lo que sí buscamos son perfiles emprendedores, comprometidos con la excelencia operativa.',
-  },
-  {
-    q: '¿Cuánto tiempo toma abrir un local?',
-    a: 'Desde la firma del acuerdo, el proceso toma entre 60 y 90 días. Incluye capacitación, adecuación del local y lanzamiento operativo.',
-  },
-  {
-    q: '¿Qué soporte recibo como franquiciado?',
-    a: 'Soporte integral: capacitación continua, tecnología (POS, dashboard, inventario), marketing, supply chain, y un equipo dedicado de supervisión operativa.',
-  },
-  {
-    q: '¿Puedo operar más de una marca?',
-    a: 'Sí. Muchos de nuestros socios operan múltiples marcas. Evaluamos cada caso para asegurar la viabilidad y el enfoque necesario.',
-  },
-];
-
-const STATS = [
-  { value: '7', label: 'Marcas' },
-  { value: '17', label: 'Locales' },
-  { value: '135', label: 'Colaboradores' },
-  { value: '6', label: 'Ciudades' },
-];
-
 function FranchiseHero() {
+  const t = useTranslations('franchisePage');
+  const STATS = [
+    { value: '7', label: t('heroStatsBrands') },
+    { value: '17', label: t('heroStatsLocations') },
+    { value: '135', label: t('heroStatsTeam') },
+    { value: '6', label: t('heroStatsCities') },
+  ];
+
   return (
     <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-6 md:px-12 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-surface-900 via-surface-800 to-surface-800" />
@@ -95,7 +37,7 @@ function FranchiseHero() {
           transition={{ delay: 0.2, duration: 0.8 }}
           className="text-[11px] font-medium tracking-[0.2em] uppercase text-omniprise-500 mb-8"
         >
-          Franquicias Omniprise
+          {t('heroEyebrow')}
         </motion.p>
 
         <motion.h1
@@ -104,9 +46,9 @@ function FranchiseHero() {
           transition={{ delay: 0.35, duration: 0.9 }}
           className="font-display font-black text-[clamp(48px,10vw,120px)] leading-[0.92] tracking-tight uppercase text-text-primary mb-8"
         >
-          Tu propio
+          {t('heroHeading1')}
           <br />
-          <span className="text-omniprise-500">Negocio.</span>
+          <span className="text-omniprise-500">{t('heroHeading2')}</span>
         </motion.h1>
 
         <motion.p
@@ -115,7 +57,7 @@ function FranchiseHero() {
           transition={{ delay: 0.5, duration: 0.9 }}
           className="text-[clamp(16px,2vw,20px)] font-light text-text-secondary max-w-[580px] mx-auto leading-relaxed mb-12"
         >
-          Opera una marca gastronómica probada con respaldo total en operaciones, tecnología y marketing.
+          {t('heroDescription')}
         </motion.p>
 
         <motion.div
@@ -129,14 +71,14 @@ function FranchiseHero() {
             onClick={() => track('franchise_cta', { source: 'franchise_hero', action: 'apply' })}
             className="text-[15px] font-medium text-surface-900 bg-omniprise-500 hover:bg-omniprise-400 px-9 py-4 rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(14,165,233,0.25)] inline-flex items-center gap-2"
           >
-            Solicitar Franquicia
+            {t('heroCtaApply')}
             <ArrowRight className="w-4 h-4" />
           </Link>
           <a
             href="#beneficios"
             className="text-[15px] font-normal text-text-secondary hover:text-text-primary px-8 py-3.5 rounded-full border border-border-medium tracking-wide transition-all duration-200 hover:-translate-y-0.5"
           >
-            Conocer más
+            {t('heroCtaKnowMore')}
           </a>
         </motion.div>
 
@@ -161,6 +103,17 @@ function FranchiseHero() {
 
 function BenefitsSection() {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('franchisePage');
+
+  const BENEFITS = [
+    { icon: '🏗️', title: t('benefitTitle1'), desc: t('benefitDesc1') },
+    { icon: '📊', title: t('benefitTitle2'), desc: t('benefitDesc2') },
+    { icon: '🎓', title: t('benefitTitle3'), desc: t('benefitDesc3') },
+    { icon: '🛒', title: t('benefitTitle4'), desc: t('benefitDesc4') },
+    { icon: '📱', title: t('benefitTitle5'), desc: t('benefitDesc5') },
+    { icon: '📣', title: t('benefitTitle6'), desc: t('benefitDesc6') },
+  ];
+
   return (
     <section id="beneficios" className="py-24 md:py-36 px-6 md:px-12 border-t border-border-subtle">
       <div ref={ref} className="max-w-[1100px] mx-auto">
@@ -170,7 +123,7 @@ function BenefitsSection() {
           transition={{ duration: 0.8 }}
           className="text-[10px] tracking-[0.2em] uppercase text-text-hint font-medium mb-4 text-center"
         >
-          ¿Por qué Omniprise?
+          {t('benefitsEyebrow')}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
@@ -178,7 +131,7 @@ function BenefitsSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="font-display font-black text-[clamp(36px,5vw,56px)] leading-[0.95] uppercase tracking-wide mb-16 text-center"
         >
-          Todo lo que <span className="text-omniprise-500">necesitas</span>
+          {t('benefitsHeadingPrefix')} <span className="text-omniprise-500">{t('benefitsHeadingHighlight')}</span>
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -205,6 +158,8 @@ function BenefitsSection() {
 
 function BrandsSection() {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('franchisePage');
+
   return (
     <section className="py-24 md:py-32 px-6 md:px-12 bg-surface-900 border-t border-border-subtle">
       <div ref={ref} className="max-w-[1000px] mx-auto">
@@ -214,7 +169,7 @@ function BrandsSection() {
           transition={{ duration: 0.8 }}
           className="text-[10px] tracking-[0.2em] uppercase text-text-hint font-medium mb-4 text-center"
         >
-          Nuestro Portafolio
+          {t('brandsEyebrow')}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
@@ -222,7 +177,7 @@ function BrandsSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="font-display font-black text-[clamp(36px,5vw,56px)] leading-[0.95] uppercase tracking-wide mb-16 text-center"
         >
-          7 <span className="text-omniprise-500">marcas</span> probadas
+          {t('brandsHeading1')} <span className="text-omniprise-500">{t('brandsHeading2')}</span> {t('brandsHeading3')}
         </motion.h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -257,11 +212,13 @@ function BrandsSection() {
 
 function ProcessSection() {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('franchisePage');
+
   const steps = [
-    { num: '01', title: 'Postulación', desc: 'Complete el formulario con su información y preferencias de marca.', time: '5 min' },
-    { num: '02', title: 'Evaluación', desc: 'Analizamos su perfil, ubicación y compatibilidad con nuestras marcas.', time: '72 hrs' },
-    { num: '03', title: 'Propuesta', desc: 'Reciba opciones de marcas, condiciones comerciales y proyecciones financieras.', time: '1 semana' },
-    { num: '04', title: 'Apertura', desc: 'Lanzamiento del local con capacitación completa, tecnología y soporte operativo.', time: '60-90 días' },
+    { num: '01', title: t('process1Title'), desc: t('process1Desc'), time: t('process1Time') },
+    { num: '02', title: t('process2Title'), desc: t('process2Desc'), time: t('process2Time') },
+    { num: '03', title: t('process3Title'), desc: t('process3Desc'), time: t('process3Time') },
+    { num: '04', title: t('process4Title'), desc: t('process4Desc'), time: t('process4Time') },
   ];
 
   return (
@@ -273,7 +230,7 @@ function ProcessSection() {
           transition={{ duration: 0.8 }}
           className="text-[10px] tracking-[0.2em] uppercase text-text-hint font-medium mb-4 text-center"
         >
-          El Camino
+          {t('processEyebrow')}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
@@ -281,7 +238,7 @@ function ProcessSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="font-display font-black text-[clamp(36px,5vw,56px)] leading-[0.95] uppercase tracking-wide mb-16 text-center"
         >
-          De idea a <span className="text-omniprise-500">operación</span>
+          {t('processHeadingPrefix')} <span className="text-omniprise-500">{t('processHeadingHighlight')}</span>
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -314,6 +271,16 @@ function ProcessSection() {
 function FAQSection() {
   const { ref, isVisible } = useReveal();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const t = useTranslations('franchisePage');
+
+  const FAQ_ITEMS = [
+    { q: t('faq1Q'), a: t('faq1A') },
+    { q: t('faq2Q'), a: t('faq2A') },
+    { q: t('faq3Q'), a: t('faq3A') },
+    { q: t('faq4Q'), a: t('faq4A') },
+    { q: t('faq5Q'), a: t('faq5A') },
+    { q: t('faq6Q'), a: t('faq6A') },
+  ];
 
   return (
     <section className="py-24 md:py-36 px-6 md:px-12 bg-surface-900 border-t border-border-subtle">
@@ -324,7 +291,7 @@ function FAQSection() {
           transition={{ duration: 0.8 }}
           className="text-[10px] tracking-[0.2em] uppercase text-text-hint font-medium mb-4 text-center"
         >
-          Preguntas Frecuentes
+          {t('faqEyebrow')}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
@@ -332,7 +299,7 @@ function FAQSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="font-display font-black text-[clamp(36px,5vw,56px)] leading-[0.95] uppercase tracking-wide mb-16 text-center"
         >
-          Todo lo que <span className="text-omniprise-500">preguntan</span>
+          {t('faqHeadingPrefix')} <span className="text-omniprise-500">{t('faqHeadingHighlight')}</span>
         </motion.h2>
 
         <div className="flex flex-col gap-3">
@@ -380,6 +347,8 @@ function FAQSection() {
 
 function CTASection() {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('franchisePage');
+
   return (
     <section className="py-24 md:py-36 px-6 md:px-12 border-t border-border-subtle">
       <div ref={ref} className="max-w-[700px] mx-auto text-center">
@@ -389,7 +358,7 @@ function CTASection() {
           transition={{ duration: 0.8 }}
           className="font-display font-black text-[clamp(36px,5vw,56px)] leading-[0.95] uppercase tracking-wide mb-6"
         >
-          ¿Listo para <span className="text-omniprise-500">empezar</span>?
+          {t('ctaHeadingPrefix')} <span className="text-omniprise-500">{t('ctaHeadingHighlight')}</span>{t('ctaHeadingSuffix')}
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 24 }}
@@ -397,7 +366,7 @@ function CTASection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="text-base text-text-secondary leading-relaxed mb-10"
         >
-          Completa la solicitud en menos de 5 minutos. Nuestro equipo te contactará en 24 horas hábiles.
+          {t('ctaDescription')}
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -409,7 +378,7 @@ function CTASection() {
             onClick={() => track('franchise_cta', { source: 'franchise_page', action: 'apply' })}
             className="inline-flex items-center gap-3 text-base font-medium text-surface-900 bg-omniprise-500 hover:bg-omniprise-400 px-10 py-4 rounded-full tracking-wide transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(14,165,233,0.3)]"
           >
-            Comenzar Solicitud
+            {t('ctaButton')}
             <ArrowRight className="w-5 h-5" />
           </Link>
         </motion.div>

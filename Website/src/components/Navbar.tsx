@@ -1,25 +1,56 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { track } from '@vercel/analytics';
-import { Menu, X, ExternalLink, MessageCircle } from 'lucide-react';
+import { Menu, X, ExternalLink, MessageCircle,  } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { WorkModal } from './WorkModal';
 import { ThemeToggle } from './ThemeToggle';
 import { whatsappOrderUrl } from '@/lib/brands';
 
-const NAV_LINKS = [
-  { label: 'Nosotros', href: '/#nosotros' },
-  { label: 'Marcas', href: '/#marcas' },
-  { label: 'Franquicia', href: '/franchise' },
-  { label: 'Visión', href: '/#vision' },
-  { label: 'Contacto', href: '/#contacto' },
+export function LanguageSwitcher() {
+  const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const switchLocale = () => {
+    const next = locale === 'es' ? 'en' : 'es';
+    if (next === 'es') {
+      // Remove /en prefix
+      router.push(pathname.replace(/^\/en/, '') || '/');
+    } else {
+      // Add /en prefix
+      router.push(`/en${pathname}`);
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={switchLocale}
+      className="p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-surface-700 transition-colors duration-200 cursor-pointer text-[11px] font-bold tracking-wider uppercase"
+      aria-label={locale === 'es' ? 'Switch to English' : 'Cambiar a Español'}
+    >
+      {locale === 'es' ? 'EN' : 'ES'}
+    </button>
+  );
+}
+
+const NAV_LINK_KEYS = [
+  { key: 'nosotros', href: '/#nosotros' },
+  { key: 'marcas', href: '/#marcas' },
+  { key: 'franquicia', href: '/franchise' },
+  { key: 'vision', href: '/#vision' },
+  { key: 'contacto', href: '/#contacto' },
 ] as const;
 
 export function Navbar() {
+  const t = useTranslations('nav');
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -61,23 +92,14 @@ export function Navbar() {
 
         {/* Desktop links */}
         <ul className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              {link.href.startsWith('/') ? (
-                <Link
-                  href={link.href}
-                  className="text-[13px] font-normal tracking-wider text-text-secondary hover:text-text-primary transition-colors duration-200"
-                >
-                  {link.label}
-                </Link>
-              ) : (
-                <a
-                  href={link.href}
-                  className="text-[13px] font-normal tracking-wider text-text-secondary hover:text-text-primary transition-colors duration-200"
-                >
-                  {link.label}
-                </a>
-              )}
+          {NAV_LINK_KEYS.map((link) => (
+            <li key={link.key}>
+              <Link
+                href={link.href}
+                className="text-[13px] font-normal tracking-wider text-text-secondary hover:text-text-primary transition-colors duration-200"
+              >
+                {t(link.key)}
+              </Link>
             </li>
           ))}
         </ul>
@@ -90,7 +112,7 @@ export function Navbar() {
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-normal text-text-secondary hover:text-text-primary px-5 py-2 rounded-full border border-border-medium tracking-wider transition-all duration-200"
           >
-            Empleados
+            {t('employees')}
             <ExternalLink className="w-3 h-3" />
           </a>
           <a
@@ -101,15 +123,16 @@ export function Navbar() {
             className="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-medium text-surface-900 bg-green-500 hover:bg-green-400 px-5 py-2 rounded-full tracking-wider transition-all duration-200"
           >
             <MessageCircle className="w-3.5 h-3.5" />
-            Probá nuestros platos
+            {t('whatsappCta')}
           </a>
           <button
             onClick={() => { track('work_modal_opened'); setModalOpen(true); }}
             className="hidden sm:inline-flex text-[13px] font-medium text-surface-900 bg-text-primary hover:bg-omniprise-50 px-5 py-2 rounded-full tracking-wider transition-all duration-200 cursor-pointer"
           >
-            Trabajemos juntos
+            {t('workTogether')}
           </button>
 
+          <LanguageSwitcher />
           <ThemeToggle />
 
           {/* Mobile menu toggle */}
@@ -139,36 +162,22 @@ export function Navbar() {
               transition={{ delay: 0.1, duration: 0.3 }}
               className="flex flex-col gap-1"
             >
-              {NAV_LINKS.map((link, i) => {
-                return link.href.startsWith('/') ? (
-                  <motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + i * 0.05 }}
-                  >
-                    <Link
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="block text-2xl font-display font-bold uppercase tracking-wider text-text-secondary hover:text-text-primary py-3 border-b border-border-subtle transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </motion.div>
-                ) : (
-                  <motion.a
-                    key={link.href}
+              {NAV_LINK_KEYS.map((link, i) => (
+                <motion.div
+                  key={link.key}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.05 }}
+                >
+                  <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + i * 0.05 }}
                     className="block text-2xl font-display font-bold uppercase tracking-wider text-text-secondary hover:text-text-primary py-3 border-b border-border-subtle transition-colors"
                   >
-                    {link.label}
-                  </motion.a>
-                );
-              })}
+                    {t(link.key)}
+                  </Link>
+                </motion.div>
+              ))}
               <div className="flex flex-col gap-3 mt-6">
                 <a
                   href="https://dashboard.omniprise.com.py"
@@ -176,7 +185,7 @@ export function Navbar() {
                   rel="noopener noreferrer"
                   className="text-center text-sm text-text-secondary border border-border-medium py-3 rounded-full"
                 >
-                  Empleados
+                  {t('employees')}
                 </a>
                 <a
                   href={whatsappOrderUrl()}
@@ -186,17 +195,17 @@ export function Navbar() {
                   className="text-center text-sm font-medium text-surface-900 bg-green-500 hover:bg-green-400 py-3 rounded-full inline-flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  Probá nuestros platos
+                  {t('whatsappCta')}
                 </a>
                 <button
                   onClick={() => { setMobileOpen(false); track('work_modal_opened'); setModalOpen(true); }}
                   className="text-center text-sm font-medium text-surface-900 bg-text-primary py-3 rounded-full"
                 >
-                  Trabajemos juntos
+                  {t('workTogether')}
                 </button>
-                <div className="flex items-center justify-center gap-2 pt-2 text-text-hint text-sm">
+                <div className="flex items-center justify-center gap-3 pt-2">
+                  <LanguageSwitcher />
                   <ThemeToggle />
-                  <span>{typeof window !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'light' ? 'Modo claro' : 'Modo oscuro'}</span>
                 </div>
               </div>
             </motion.div>

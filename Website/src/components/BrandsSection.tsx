@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { track } from '@vercel/analytics';
@@ -10,7 +11,7 @@ import { BRANDS, whatsappOrderUrl } from '@/lib/brands';
 import type { Brand } from '@/lib/brands';
 import { MessageCircle } from 'lucide-react';
 
-function BrandCard({ brand, index, isVisible }: { brand: Brand; index: number; isVisible: boolean }) {
+function BrandCard({ brand, index, isVisible, orderLabel }: { brand: Brand; index: number; isVisible: boolean; orderLabel: string }) {
   const [logoError, setLogoError] = useState(false);
 
   return (
@@ -54,7 +55,7 @@ function BrandCard({ brand, index, isVisible }: { brand: Brand; index: number; i
             className="inline-flex items-center gap-1.5 text-[11px] font-medium text-green-400 hover:text-green-300 transition-colors cursor-pointer"
           >
             <MessageCircle className="w-3.5 h-3.5" />
-            Pedir por WhatsApp
+            {orderLabel}
           </button>
         </div>
       </motion.div>
@@ -64,6 +65,7 @@ function BrandCard({ brand, index, isVisible }: { brand: Brand; index: number; i
 
 export function BrandsSection() {
   const { ref, isVisible } = useReveal();
+  const t = useTranslations('brands');
 
   return (
     <section id="marcas" className="py-24 md:py-36 px-6 md:px-12 bg-surface-900 border-t border-border-subtle">
@@ -77,7 +79,7 @@ export function BrandsSection() {
               className="flex items-center gap-4 mb-14"
             >
               <span className="w-8 h-px bg-border-strong" />
-              <span className="text-[10px] tracking-[0.22em] uppercase text-text-hint font-medium">Portafolio</span>
+              <span className="text-[10px] tracking-[0.22em] uppercase text-text-hint font-medium">{t('eyebrow')}</span>
             </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 24 }}
@@ -85,8 +87,8 @@ export function BrandsSection() {
               transition={{ duration: 0.8, delay: 0.1 }}
               className="font-display font-black text-[clamp(40px,6vw,76px)] leading-[0.95] uppercase tracking-wide"
             >
-              Nuestras<br />
-              <span className="text-omniprise-500">Marcas.</span>
+              {t('heading1')}<br />
+              <span className="text-omniprise-500">{t('heading2')}</span>
             </motion.h2>
           </div>
           <motion.p
@@ -95,13 +97,13 @@ export function BrandsSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-sm text-text-secondary max-w-[320px] leading-relaxed"
           >
-            7 marcas activas en 6 ciudades. Desde experiencias temáticas de alto impacto hasta cocinas de alta rotación.
+            {t('description')}
           </motion.p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {BRANDS.map((brand, i) => (
-            <BrandCard key={brand.name} brand={brand} index={i} isVisible={isVisible} />
+            <BrandCard key={brand.name} brand={brand} index={i} isVisible={isVisible} orderLabel={t('orderWhatsApp')} />
           ))}
         </div>
       </div>
