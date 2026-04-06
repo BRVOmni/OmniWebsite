@@ -6,7 +6,7 @@
 
 ## OVERVIEW
 
-**Current Version:** v2.7.2
+**Current Version:** v2.8.0
 **Live:** https://www.omniprise.com.py
 **Tech Stack:** Next.js 15, React 19, TypeScript, Tailwind CSS 4, Framer Motion, Vercel Analytics
 
@@ -27,6 +27,7 @@
 | -- | v2.7.0 | Documentation, CI/CD, community files, env example | April 3 |
 | -- | v2.7.1 | Fix duplicate main tag on franchise page | April 3 |
 | -- | v2.7.2 | Fix hero scroll indicator overlapping CTA buttons on mobile | April 6 |
+| -- | v2.8.0 | Multi-language support (Spanish + English) with next-intl | April 6 |
 
 ---
 
@@ -48,20 +49,22 @@
 Website/
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx              # Root layout (Navbar + Footer + fonts + metadata)
-│   │   ├── page.tsx                # Homepage
-│   │   ├── error.tsx               # Custom error page
+│   │   ├── layout.tsx              # Root layout (fonts + theme script + ReducedMotionProvider)
+│   │   ├── error.tsx               # Custom error page (hardcoded English)
 │   │   ├── globals.css             # Design tokens, animations, focus styles
-│   │   ├── not-found.tsx           # Custom 404
-│   │   ├── sitemap.ts              # Dynamic sitemap (auto-generated from brands)
+│   │   ├── not-found.tsx           # Custom 404 (hardcoded English)
+│   │   ├── sitemap.ts              # Dynamic sitemap (both locales, hreflang alternates)
 │   │   ├── robots.ts               # Dynamic robots.txt
-│   │   ├── privacidad/page.tsx     # Privacy policy
-│   │   ├── franchise/
-│   │   │   ├── page.tsx            # Franchise landing
-│   │   │   └── apply/page.tsx      # Multi-step application form
-│   │   └── marcas/[slug]/page.tsx  # Brand detail pages (SSG)
+│   │   └── [locale]/
+│   │       ├── layout.tsx          # Locale layout (NextIntlClientProvider + Navbar + Footer)
+│   │       ├── page.tsx            # Homepage
+│   │       ├── privacidad/page.tsx # Privacy policy
+│   │       ├── franchise/
+│   │       │   ├── page.tsx        # Franchise landing
+│   │       │   └── apply/page.tsx  # Multi-step application form
+│   │       └── marcas/[slug]/page.tsx  # Brand detail pages (SSG)
 │   ├── components/
-│   │   ├── Navbar.tsx              # Fixed nav + mobile hamburger + work modal
+│   │   ├── Navbar.tsx              # Fixed nav + mobile hamburger + work modal + language switcher
 │   │   ├── HeroSection.tsx
 │   │   ├── StatementSection.tsx
 │   │   ├── StatsSection.tsx
@@ -73,6 +76,7 @@ Website/
 │   │   ├── ContactForm.tsx         # Formspree contact form
 │   │   ├── WorkModal.tsx
 │   │   ├── BackToTop.tsx
+│   │   ├── ThemeToggle.tsx         # Light/dark mode toggle
 │   │   ├── ReducedMotionProvider.tsx
 │   │   ├── ScrollTracker.tsx
 │   │   ├── Footer.tsx
@@ -83,6 +87,13 @@ Website/
 │   │       ├── BrandGallery.tsx    # Lightbox with keyboard + touch nav
 │   │       ├── BrandPresence.tsx
 │   │       └── BrandCTA.tsx
+│   ├── i18n/
+│   │   ├── routing.ts             # Locale config (es, en) and routing
+│   │   └── request.ts             # Server-side message loading
+│   ├── messages/
+│   │   ├── es.json                # Spanish translations (~400 strings)
+│   │   └── en.json                # English translations (~400 strings)
+│   ├── middleware.ts               # Locale detection + cookie persistence
 │   └── lib/
 │       ├── brands.ts               # Brand data + helpers (single source of truth)
 │       ├── franchise-schema.ts     # Zod schemas for franchise form
@@ -117,12 +128,12 @@ Website/
 - [ ] **Blog/news section** for SEO
 
 ### Phase 6 -- Multi-language Support
-- [ ] Set up next-intl for i18n
-- [ ] Create translation files (en.json, es.json)
-- [ ] Add language switcher to nav
-- [ ] Translate all content
-- [ ] Add URL structure for languages (`/en`, `/es`)
-- [ ] Implement language detection
+- [x] Set up next-intl for i18n
+- [x] Create translation files (en.json, es.json)
+- [x] Add language switcher to nav
+- [x] Translate all content
+- [x] Add URL structure for languages (`/en`, Spanish at `/`)
+- [x] Implement language detection
 
 ---
 
@@ -146,5 +157,5 @@ Website/
 
 ---
 
-*Last Updated:* April 6, 2026 -- v2.7.2
-*Next Milestone:* Gallery photos + testimonials (P2), then multi-language (Phase 6)
+*Last Updated:* April 6, 2026 -- v2.8.0
+*Next Milestone:* Blog/news section (P3), Supabase CRM integration (P3)

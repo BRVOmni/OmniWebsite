@@ -2,6 +2,27 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v2.8.0 — 2026-04-06
+
+### Features
+- Multi-language support (Spanish + English) via `next-intl`
+  - Spanish at `/` (default, no prefix), English at `/en`
+  - ~400 translated strings per language in `messages/es.json` and `messages/en.json`
+  - All 20+ components updated with `useTranslations()` hook
+  - Language switcher (ES/EN toggle) in navbar
+  - Locale-aware sitemap with `hreflang` alternates
+  - Locale detection middleware with cookie persistence
+- App directory restructured under `[locale]/` dynamic segment
+- Navbar, Footer, BackToTop moved into `[locale]/layout.tsx` (inside `NextIntlClientProvider`)
+
+### Architecture
+- Added `src/i18n/routing.ts` — locale config and routing
+- Added `src/i18n/request.ts` — server-side message loading
+- Added `src/middleware.ts` — locale detection and redirects
+- Updated `next.config.ts` with `createNextIntlPlugin()`
+- Root `layout.tsx` simplified to fonts + theme script + `ReducedMotionProvider` only
+- Error/not-found pages remain at root level with hardcoded English (outside provider)
+
 ## v2.7.2 — 2026-04-06
 
 ### Features
