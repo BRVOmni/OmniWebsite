@@ -6,7 +6,7 @@
 
 ## OVERVIEW
 
-**Current Version:** v2.7.1
+**Current Version:** v2.7.2
 **Live:** https://www.omniprise.com.py
 **Tech Stack:** Next.js 15, React 19, TypeScript, Tailwind CSS 4, Framer Motion, Vercel Analytics
 
@@ -26,6 +26,7 @@
 | -- | v2.6.1 | Accessibility fixes (contrast, nested links, CSP) | April 2 |
 | -- | v2.7.0 | Documentation, CI/CD, community files, env example | April 3 |
 | -- | v2.7.1 | Fix duplicate main tag on franchise page | April 3 |
+| -- | v2.7.2 | Fix hero scroll indicator overlapping CTA buttons on mobile | April 6 |
 
 ---
 
@@ -145,5 +146,5 @@ Website/
 
 ---
 
-*Last Updated:* April 4, 2026 -- v2.7.1
+*Last Updated:* April 6, 2026 -- v2.7.2
 *Next Milestone:* Gallery photos + testimonials (P2), then multi-language (Phase 6)

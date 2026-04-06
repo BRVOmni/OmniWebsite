@@ -2,6 +2,11 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v2.7.2 — 2026-04-06
+
+### Bug Fixes
+- Fixed hero scroll indicator ("Bajar") overlapping CTA buttons on mobile
+
 ## v2.7.1 — 2026-04-03
 
 ### Bug Fixes
