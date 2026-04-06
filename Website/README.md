@@ -1,6 +1,6 @@
 # Omniprise — Website Documentation
 
-**Version 2.7.2 | Next.js 15 | April 2026**
+**Version 2.8.0 | Next.js 15 | April 2026**
 
 > All audit issues resolved. See [`docs/audits/AUDIT_2026-03-28.md`](../docs/audits/AUDIT_2026-03-28.md) for the full history.
 
@@ -12,15 +12,16 @@
 
 **Current Implementation:**
 - Next.js 15 with TypeScript and Tailwind CSS 4
+- Multi-language support (Spanish default at `/`, English at `/en`) via next-intl
 - 15+ React components with framer-motion animations
-- Dark + colorful hybrid design (sky blue #0ea5e9 accents)
+- Dark + colorful hybrid design with light/dark theme toggle (sky blue #0ea5e9 accents)
 - Real WebP brand logos for 7 brands
 - Gallery with lightbox (35 photos, 5 per brand, touch swipe + keyboard nav)
-- Franchise section with multi-step form (Zod-validated)
+- Franchise section with multi-step form (Zod-validated, auto-save to localStorage)
 - Contact form with Zod validation (Spanish error messages)
 - WhatsApp ordering CTA across all pages
 - Privacy policy page (Paraguay law compliant)
-- Dynamic sitemap + robots.txt generated from brand data
+- Dynamic sitemap with hreflang alternates + robots.txt generated from brand data
 - Open Graph meta tags + dynamic OG images
 - Vercel Analytics with custom event tracking
 - Scroll depth tracking (25%, 50%, 75%, 90%)
@@ -186,6 +187,7 @@ npx vercel --prod
 | TypeScript | 5.x | Type safety |
 | Tailwind CSS | 4.x | Styling |
 | framer-motion | 12.x | Animations |
+| next-intl | 4.x | Internationalization (Spanish + English) |
 | lucide-react | 0.577 | Icons |
 | clsx + tailwind-merge | latest | Class utilities |
 | zod | 4.x | Form validation |
@@ -200,17 +202,19 @@ Website/
 ├── src/
 │   ├── app/
 │   │   ├── globals.css          # Tailwind + custom theme tokens
-│   │   ├── layout.tsx           # Root layout (Navbar + Footer + fonts + metadata)
-│   │   ├── page.tsx             # Home page composing all sections
+│   │   ├── layout.tsx           # Root layout (fonts + theme script + ReducedMotionProvider)
 │   │   ├── error.tsx            # Custom error page
 │   │   ├── not-found.tsx        # Custom 404 page
-│   │   ├── sitemap.ts           # Dynamic sitemap (brand pages + static)
+│   │   ├── sitemap.ts           # Dynamic sitemap (both locales, hreflang alternates)
 │   │   ├── robots.ts            # Dynamic robots.txt
-│   │   ├── privacidad/          # Privacy policy (Paraguay law)
-│   │   ├── franchise/           # Franchise landing + apply form
-│   │   └── marcas/[slug]/       # Brand detail pages (SSG)
+│   │   └── [locale]/
+│   │       ├── layout.tsx       # Locale layout (NextIntlClientProvider + Navbar + Footer)
+│   │       ├── page.tsx         # Home page composing all sections
+│   │       ├── privacidad/      # Privacy policy (Paraguay law)
+│   │       ├── franchise/       # Franchise landing + apply form
+│   │       └── marcas/[slug]/   # Brand detail pages (SSG)
 │   ├── components/
-│   │   ├── Navbar.tsx           # Fixed nav with WhatsApp + work modal CTAs
+│   │   ├── Navbar.tsx           # Fixed nav with WhatsApp + work modal + language switcher
 │   │   ├── HeroSection.tsx      # Hero with animated stats
 │   │   ├── StatementSection.tsx # "No somos un restaurante"
 │   │   ├── StatsSection.tsx     # Animated counter stats
@@ -222,6 +226,7 @@ Website/
 │   │   ├── Footer.tsx           # Footer with navigation links
 │   │   ├── WorkModal.tsx        # "Trabajemos juntos" modal
 │   │   ├── BackToTop.tsx        # Scroll-to-top button
+│   │   ├── ThemeToggle.tsx      # Light/dark mode toggle
 │   │   ├── ContactForm.tsx      # Contact form (Formspree)
 │   │   ├── ScrollTracker.tsx    # Client wrapper for scroll depth tracking
 │   │   ├── ReducedMotionProvider.tsx # framer-motion reduced-motion wrapper
@@ -232,6 +237,13 @@ Website/
 │   │       ├── BrandGallery.tsx # Photo gallery with lightbox
 │   │       ├── BrandPresence.tsx # Brand locations + platforms
 │   │       └── BrandCTA.tsx     # WhatsApp order + franchise CTA
+│   ├── i18n/
+│   │   ├── routing.ts           # Locale config (es, en) and routing
+│   │   └── request.ts           # Server-side message loading
+│   ├── messages/
+│   │   ├── es.json              # Spanish translations (~400 strings)
+│   │   └── en.json              # English translations (~400 strings)
+│   ├── middleware.ts             # Locale detection + cookie persistence
 │   └── lib/
 │       ├── brands.ts            # Canonical brand data (7 brands) + helpers
 │       ├── franchise-schema.ts  # Zod schemas for franchise (4 steps) + contact forms
@@ -243,7 +255,7 @@ Website/
 │   │   └── gallery/             # 35 photos (5 per brand)
 │   ├── omniprise-logo.png       # Logo for navbar/footer
 │   └── omniprise-logo.jpg       # Logo for OG/Twitter cards (1920x1080)
-├── next.config.ts               # Next.js config
+├── next.config.ts               # Next.js config with next-intl plugin
 ├── tsconfig.json                # TypeScript config
 ├── vitest.config.ts             # Vitest config with @/ path alias
 ├── postcss.config.mjs           # Tailwind PostCSS config
@@ -413,8 +425,8 @@ Search for `@omniprise.com.py` across components to find all email references.
 ### Next Up
 - [x] Enable Next.js image optimization (already enabled — no `unoptimized` flag)
 - [x] Light/dark theme toggle
+- [x] Multi-language support (Spanish + English) via next-intl
 - [ ] Lead capture API with Supabase
-- [ ] Multi-language support (next-intl)
 - [ ] Blog/news section for SEO
 
 ---
@@ -438,4 +450,4 @@ Before deploying to production:
 ---
 
 **Last Updated:** April 6, 2026
-**Version:** 2.7.2
+**Version:** 2.8.0
