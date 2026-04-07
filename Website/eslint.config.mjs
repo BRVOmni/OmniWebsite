@@ -1,10 +1,12 @@
 import tseslint from "typescript-eslint";
+import jsxA11y from "eslint-plugin-jsx-a11y";
 
 const eslintConfig = [
   {
     ignores: ["node_modules", ".next", "out", "old-static"],
   },
   ...tseslint.configs.recommended,
+  jsxA11y.flatConfigs.recommended,
   {
     files: ["**/*.{ts,tsx}"],
     rules: {
