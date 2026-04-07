@@ -10,7 +10,7 @@ import { BrandCTA } from '@/components/brand-detail/BrandCTA';
 import { ScrollTracker } from '@/components/ScrollTracker';
 
 interface BrandPageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -18,28 +18,38 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: BrandPageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const brand = getBrandBySlug(slug);
 
   if (!brand) {
-    return { title: 'Marca no encontrada — Omniprise' };
+    return { title: locale === 'en' ? 'Brand not found — Omniprise' : 'Marca no encontrada — Omniprise' };
   }
 
   const title = `${brand.name} — Omniprise`;
   const description = brand.description;
+  const isEn = locale === 'en';
+  const baseUrl = 'https://www.omniprise.com.py';
+  const pageUrl = isEn ? `${baseUrl}/en/marcas/${brand.slug}` : `${baseUrl}/marcas/${brand.slug}`;
   const ogImage = brand.galleryImages?.[0]
-    ? `https://www.omniprise.com.py${brand.galleryImages[0]}`
-    : `https://www.omniprise.com.py${brand.logo}`;
+    ? `${baseUrl}${brand.galleryImages[0]}`
+    : `${baseUrl}${brand.logo}`;
 
   return {
     title,
     description,
+    alternates: {
+      canonical: pageUrl,
+      languages: {
+        es: `${baseUrl}/marcas/${brand.slug}`,
+        en: `${baseUrl}/en/marcas/${brand.slug}`,
+      },
+    },
     openGraph: {
       title,
       description,
-      url: `https://www.omniprise.com.py/marcas/${brand.slug}`,
+      url: pageUrl,
       siteName: 'Omniprise',
-      locale: 'es_PY',
+      locale: isEn ? 'en_US' : 'es_PY',
       type: 'website',
       images: [
         {
@@ -60,20 +70,24 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
 }
 
 export default async function BrandPage({ params }: BrandPageProps) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const brand = getBrandBySlug(slug);
 
   if (!brand) {
     notFound();
   }
 
+  const isEn = locale === 'en';
+  const baseUrl = 'https://www.omniprise.com.py';
+  const pageUrl = isEn ? `${baseUrl}/en/marcas/${brand.slug}` : `${baseUrl}/marcas/${brand.slug}`;
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
     name: brand.name,
     description: brand.description,
-    url: `https://www.omniprise.com.py/marcas/${brand.slug}`,
-    image: `https://www.omniprise.com.py${brand.logo}`,
+    url: pageUrl,
+    image: `${baseUrl}${brand.logo}`,
     servesCuisine: brand.tagline,
     address: {
       '@type': 'PostalAddress',
@@ -83,7 +97,7 @@ export default async function BrandPage({ params }: BrandPageProps) {
     parentOrganization: {
       '@type': 'Organization',
       name: 'Omniprise',
-      url: 'https://www.omniprise.com.py',
+      url: baseUrl,
     },
   };
 

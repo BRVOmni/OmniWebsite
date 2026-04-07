@@ -16,6 +16,7 @@
       "description": "Completá la solicitud de franquicia en 4 pasos. Forma parte de la plataforma gastronómica con mayor crecimiento en Paraguay."
     },
     "brandDetail": {
+      "title": "{brandName} — Omniprise",
       "notFoundTitle": "Marca no encontrada — Omniprise"
     },
     "privacidad": {
