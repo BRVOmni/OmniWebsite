@@ -14,7 +14,7 @@ function StatItem({ stat }: { stat: StatData }) {
   if (stat.isStatic) {
     return (
       <div className="bg-surface-900 p-10 md:p-12 text-center group">
-        <span className="font-display font-black text-[clamp(48px,6vw,80px)] leading-none text-omniprise-500 tracking-tight block mb-3">
+        <span className="font-display font-black text-[clamp(48px,6vw,80px)] leading-none text-omniprise-600 tracking-tight block mb-3">
           {stat.target}{stat.suffix}
         </span>
         <span className="text-xs font-normal tracking-[0.1em] uppercase text-text-hint">

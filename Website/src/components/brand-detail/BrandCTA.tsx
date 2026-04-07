@@ -66,7 +66,7 @@ export function BrandCTA({ brand }: BrandCTAProps) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => track('whatsapp_order', { source: 'brand_page', brand: brand.slug })}
-              className="inline-flex items-center gap-3 text-[15px] font-medium text-surface-900 bg-green-500 hover:bg-green-400 px-9 py-4 rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(34,197,94,0.25)]"
+              className="inline-flex items-center gap-3 text-[15px] font-medium text-green-950 bg-green-500 hover:bg-green-400 px-9 py-4 rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(34,197,94,0.25)]"
             >
               <MessageCircle className="w-4 h-4" />
               {t('ctaWhatsApp')}

@@ -114,7 +114,7 @@ export function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => track('whatsapp_order', { source: 'navbar' })}
-            className="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-medium text-surface-900 bg-green-500 hover:bg-green-400 px-5 py-2 rounded-full tracking-wider transition-all duration-200"
+            className="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-medium text-green-950 bg-green-500 hover:bg-green-400 px-5 py-2 rounded-full tracking-wider transition-all duration-200"
           >
             <MessageCircle className="w-3.5 h-3.5" />
             {t('whatsappCta')}
@@ -186,7 +186,7 @@ export function Navbar() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => { setMobileOpen(false); track('whatsapp_order', { source: 'navbar_mobile' }); }}
-                  className="text-center text-sm font-medium text-surface-900 bg-green-500 hover:bg-green-400 py-3 rounded-full inline-flex items-center justify-center gap-2"
+                  className="text-center text-sm font-medium text-green-950 bg-green-500 hover:bg-green-400 py-3 rounded-full inline-flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-4 h-4" />
                   {t('whatsappCta')}
