@@ -6,8 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { track } from '@vercel/analytics';
 import { Menu, X, ExternalLink, MessageCircle,  } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { Link } from '@/i18n/routing';
+import { usePathname, useRouter } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 import { WorkModal } from './WorkModal';
 import { ThemeToggle } from './ThemeToggle';
@@ -20,13 +20,7 @@ export function LanguageSwitcher() {
 
   const switchLocale = () => {
     const next = locale === 'es' ? 'en' : 'es';
-    if (next === 'es') {
-      // Remove /en prefix
-      router.push(pathname.replace(/^\/en/, '') || '/');
-    } else {
-      // Add /en prefix
-      router.push(`/en${pathname}`);
-    }
+    router.replace(pathname, { locale: next });
   };
 
   return (
