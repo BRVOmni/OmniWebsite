@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { track } from '@vercel/analytics';
 import { useReveal } from '@/lib/use-reveal';
 import { BRANDS, whatsappOrderUrl } from '@/lib/brands';

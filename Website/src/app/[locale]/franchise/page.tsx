@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { track } from '@vercel/analytics';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { useReveal } from '@/lib/use-reveal';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { BRANDS as CANONICAL_BRANDS } from '@/lib/brands';

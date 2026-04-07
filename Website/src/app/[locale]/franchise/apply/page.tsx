@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { track } from '@vercel/analytics';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Send, Loader2 } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { useSearchParams } from 'next/navigation';
 import { BRANDS } from '@/lib/brands';
 import { useScrollDepth } from '@/lib/use-scroll-depth';
