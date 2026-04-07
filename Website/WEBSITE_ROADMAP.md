@@ -50,9 +50,9 @@ Website/
 ├── src/
 │   ├── app/
 │   │   ├── layout.tsx              # Root layout (fonts + theme script + ReducedMotionProvider)
-│   │   ├── error.tsx               # Custom error page (hardcoded English)
+│   │   ├── error.tsx               # Custom error page (hardcoded Spanish)
 │   │   ├── globals.css             # Design tokens, animations, focus styles
-│   │   ├── not-found.tsx           # Custom 404 (hardcoded English)
+│   │   ├── not-found.tsx           # Custom 404 (hardcoded Spanish)
 │   │   ├── sitemap.ts              # Dynamic sitemap (both locales, hreflang alternates)
 │   │   ├── robots.ts               # Dynamic robots.txt
 │   │   └── [locale]/

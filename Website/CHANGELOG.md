@@ -21,7 +21,7 @@ All notable changes to the Omniprise corporate website.
 - Added `src/middleware.ts` — locale detection and redirects
 - Updated `next.config.ts` with `createNextIntlPlugin()`
 - Root `layout.tsx` simplified to fonts + theme script + `ReducedMotionProvider` only
-- Error/not-found pages remain at root level with hardcoded English (outside provider)
+- Error/not-found pages remain at root level with hardcoded Spanish (outside provider)
 
 ## v2.7.2 — 2026-04-06
 

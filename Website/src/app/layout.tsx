@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html data-theme="dark" className={`${barlowCondensed.variable} ${inter.variable}`}>
+    <html lang="es" data-theme="dark" className={`${barlowCondensed.variable} ${inter.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
