@@ -4,114 +4,80 @@
 
 | Layer | Tool | Coverage |
 |---|---|---|
-| Unit | Vitest | Zod schema validation (33 tests in `src/__tests__/franchise-schema.test.ts`) |
-| Integration | — | None |
-| E2E | — | None |
-| Visual | — | None |
-| Accessibility | Lighthouse (CI) | Per-page audit in `ci.yml` Lighthouse job |
+| Unit | Vitest | Zod schema validation (28 tests), utility functions (18 tests) |
+| Component | Vitest + React Testing Library | ContactForm (6), WorkModal (8), ThemeToggle (6), BackToTop (4) |
+| E2E | Playwright (Chromium) | Homepage (4), brand pages (16), franchise form (5), navigation (4), accessibility (6) |
+| Accessibility | @axe-core/playwright | Automated WCAG audits on 5 pages (homepage, brand detail, franchise, apply, privacy) |
+| Visual Regression | — | Not yet implemented |
+| Lint | ESLint + jsx-a11y | Static accessibility analysis, 0 violations |
 
-## Testing Pyramid
+**Totals:** 70 unit/component tests + 40 E2E tests = **110 tests**
 
-### Unit Tests (Priority: High)
+## Test Files
 
-**What to test:**
-- Zod schemas (already covered)
-- Utility functions (`cn()`, `getWhatsAppUrl()`, brand helpers)
-- Data transformations and validation logic
+### Unit & Component (`Website/src/__tests__/`)
 
-**Where:** `Website/src/__tests__/`
-**Runner:** `vitest run`
-**Target:** 80% coverage on `src/lib/`
+| File | Tests | What it covers |
+|---|---|---|
+| `franchise-schema.test.ts` | 28 | Zod validation for all 4 form steps + contact schema |
+| `utils.test.ts` | 18 | `cn()`, `getBrandBySlug()`, `whatsappOrderUrl()`, `getAllBrandSlugs()`, BRANDS data integrity |
+| `contact-form.test.tsx` | 6 | ContactForm render, validation, submit, error states |
+| `work-modal.test.tsx` | 8 | WorkModal open/close, aria-modal, Escape key, overlay click |
+| `theme-toggle.test.tsx` | 6 | ThemeToggle dark/light toggle, aria-labels, localStorage persistence |
+| `back-to-top.test.tsx` | 4 | BackToTop visibility, scroll behavior, accessibility |
+
+### E2E (`Website/e2e/`)
+
+| File | Tests | What it covers |
+|---|---|---|
+| `homepage.spec.ts` | 4 | Hero section, brands grid, contact form, navigation |
+| `brand-pages.spec.ts` | 16 | All 7 brand detail pages, navigation from homepage, 404 |
+| `franchise-form.spec.ts` | 5 | Form render, disabled states, email link, step indicator |
+| `navigation.spec.ts` | 4 | Mobile menu, 404 page, WhatsApp wa.me link, language switcher |
+| `accessibility.spec.ts` | 6 | Skip link, lang attribute, validation errors, document title, alt text |
+| `accessibility-audit.spec.ts` | 5 | axe-core automated WCAG audits (logs violations, non-blocking) |
+
+## Running Tests
 
 ```bash
+# Unit & component tests
 cd Website
-npm run test
-```
+npm run test            # vitest run
+npm run test -- --watch # watch mode
 
-### Component Tests (Priority: Medium)
-
-**What to test:**
-- Form components render correctly with valid/invalid input
-- ContactForm submits to Formspree (mocked)
-- Franchise form step navigation
-- Brand gallery lightbox open/close/keyboard navigation
-- WorkModal focus trap and Escape key handling
-
-**Recommended tools:** Vitest + React Testing Library
-
-**Prerequisites:**
-```bash
+# E2E tests (requires dev server on port 3001)
 cd Website
-npm install -D @testing-library/react @testing-library/jest-dom jsdom
-```
+npm run test:e2e        # playwright test
+npm run test:e2e:ui     # interactive Playwright UI
 
-Update `vitest.config.ts` to add `environment: 'jsdom'` for component tests.
-
-**Example:**
-```tsx
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import { ContactForm } from '@/components/ContactForm';
-
-describe('ContactForm', () => {
-  it('renders all fields', () => {
-    render(<ContactForm />);
-    expect(screen.getByLabelText(/nombre/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/mensaje/i)).toBeInTheDocument();
-  });
-});
-```
-
-### E2E Tests (Priority: Medium)
-
-**Recommended tool:** Playwright
-
-**Critical user flows to cover:**
-
-| Flow | Steps |
-|---|---|
-| Homepage loads | Visit `/`, verify hero, brands grid, and contact form render |
-| Brand page navigation | Click brand card → verify brand detail page loads with correct name/logo |
-| Franchise form | Visit `/franchise/apply`, fill all 4 steps, verify submission |
-| Contact form validation | Submit empty form → verify Spanish error messages appear |
-| Gallery lightbox | Click gallery photo → verify lightbox opens → press Escape → verify it closes |
-| Mobile navigation | Open hamburger menu → verify all links present → close |
-| 404 page | Visit `/nonexistent` → verify custom 404 renders |
-| WhatsApp CTA | Click WhatsApp button → verify correct `wa.me` link |
-
-**Setup:**
-```bash
+# Lint
 cd Website
-npm install -D @playwright/test
-npx playwright install
+npm run lint            # eslint with typescript-eslint, jsx-a11y, @next/plugin
 ```
 
-### Accessibility Tests (Priority: Medium)
+## Test Setup
 
-**Current:** Lighthouse accessibility audit runs in CI via the Lighthouse job in `.github/workflows/ci.yml`.
-
-**Recommended additions:**
-- `eslint-plugin-jsx-a11y` for static analysis at lint time
-- `axe-core` in Playwright E2E tests (automated per-page audits)
-- Manual screen reader testing with NVDA/VoiceOver before major releases
-
-### Visual Regression (Priority: Low)
-
-**Recommended for later:** Playwright screenshots or Chromatic for component-level visual diffs.
+- **Vitest config:** `Website/vitest.config.ts` — jsdom environment, React plugin, `@/` path alias
+- **Setup file:** `Website/src/__tests__/setup.ts` — mocks for next-intl, framer-motion, lucide-react, next/image, @vercel/analytics
+- **Playwright config:** `Website/playwright.config.ts` — Chromium only, auto-starts dev server, 2 retries in CI
 
 ## CI Integration
 
 Tests run on every PR and push to `main` via `.github/workflows/ci.yml`:
 
-- **Lint job:** `npm run lint`
-- **Test job:** `npm run test`
-- **Build job:** `npm run build`
-- **Lighthouse job:** Runs after build — audits `/` and `/franchise` against `lighthouse-budget.json`
+| Job | Command | Notes |
+|---|---|---|
+| **Lint** | `npm run lint` | typescript-eslint + jsx-a11y + @next/plugin |
+| **Test** | `npm run test` | 70 unit/component tests |
+| **Build** | `npm run build` | Next.js production build |
+| **E2E** | `npx playwright test` | 40 tests against built app, depends on build |
+| **Lighthouse** | Lighthouse CI | Audits `/` and `/franchise` against budget |
 
-All four jobs run in parallel (Lighthouse depends on Build).
+Lint, test, and build run in parallel. E2E and Lighthouse run after build completes.
 
-**Future additions:**
-- Coverage reporting (codecov or similar)
-- Playwright E2E in CI (separate job)
-- `eslint-plugin-jsx-a11y` for accessibility linting
+## Future Additions
+
+- [ ] Coverage reporting (codecov or similar)
+- [ ] Visual regression tests (Playwright screenshots or Chromatic)
+- [ ] Add Firefox/WebKit to Playwright matrix
+- [ ] Screen reader testing with NVDA/VoiceOver before major releases

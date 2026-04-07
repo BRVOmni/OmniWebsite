@@ -17,7 +17,8 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 - Framer Motion 12 (animations)
 - next-intl (i18n — Spanish default at `/`, English at `/en`)
 - Zod 4 (form validation)
-- Vitest (testing)
+- Vitest + React Testing Library (unit/component tests)
+- Playwright + axe-core (E2E tests + accessibility audits)
 - Vercel (deployment, auto-deploys from `main`)
 
 ## Key Conventions
@@ -32,7 +33,8 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 - Translation files: `Website/src/messages/es.json`, `Website/src/messages/en.json`
 
 ### Styling
-- Dark theme with sky blue accent (#0ea5e9)
+- Dark/light theme system with sky blue accent (#0ea5e9 dark, #0369a1 light)
+- Theme toggle persists preference in localStorage, respects system preference
 - Use Tailwind utilities only — no inline styles
 - `cn()` utility from `@/lib/utils` for conditional classes (clsx + tailwind-merge)
 
@@ -56,7 +58,7 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 | `Website/src/app/layout.tsx` | Root layout (fonts, theme script, ReducedMotionProvider) |
 | `Website/src/app/[locale]/layout.tsx` | Locale layout (NextIntlClientProvider, Navbar, Footer) |
 | `Website/src/app/[locale]/page.tsx` | Homepage composing all sections |
-| `Website/src/app/globals.css` | Tailwind config, design tokens, custom animations |
+| `Website/src/app/globals.css` | Tailwind config, design tokens, custom animations, light/dark theme tokens |
 | `Website/src/messages/es.json` | Spanish translations (~400 strings) |
 | `Website/src/messages/en.json` | English translations (~400 strings) |
 | `Website/src/i18n/routing.ts` | Locale config (es, en) and routing |
@@ -64,7 +66,10 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 | `Website/src/middleware.ts` | Locale detection and cookie persistence |
 | `Website/next.config.ts` | Next.js config with next-intl plugin |
 | `Website/vercel.json` | Security headers (CSP, Permissions-Policy, etc.) |
-| `Website/vitest.config.ts` | Vitest config with `@/` path alias resolution |
+| `Website/vitest.config.ts` | Vitest config with jsdom, React plugin, `@/` path alias |
+| `Website/playwright.config.ts` | Playwright E2E config (Chromium, auto-start dev server) |
+| `Website/eslint.config.mjs` | ESLint flat config (typescript-eslint, jsx-a11y, @next/plugin) |
+| `Website/src/__tests__/setup.ts` | Test mocks (next-intl, framer-motion, lucide-react, next/image) |
 
 ## Routes
 
@@ -80,10 +85,22 @@ Spanish (default, no prefix) and English (`/en` prefix). All routes exist in bot
 
 ## Testing
 
+### Unit & Component Tests
 - Runner: Vitest (`cd Website && npm run test`)
-- Config: `Website/vitest.config.ts` (includes `@/` path alias)
+- Config: `Website/vitest.config.ts` (jsdom environment, React plugin, `@/` path alias)
 - Tests live in `Website/src/__tests__/`
-- Only schema tests exist so far — expand coverage for components and utilities
+- 70 tests across 6 files: schema validation (28), component tests (24), utilities (18)
+- Setup file: `Website/src/__tests__/setup.ts` (mocks for next-intl, framer-motion, lucide-react, next/image)
+
+### E2E Tests
+- Runner: Playwright (`cd Website && npm run test:e2e`)
+- Config: `Website/playwright.config.ts` (Chromium only, auto-starts dev server)
+- Tests live in `Website/e2e/`
+- 40 tests across 6 files: homepage, brand pages, franchise form, navigation, accessibility, axe-core audits
+
+### Linting
+- ESLint flat config with typescript-eslint, jsx-a11y, @next/eslint-plugin-next
+- 0 warnings, 0 errors
 
 ## Do NOT
 

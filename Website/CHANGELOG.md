@@ -2,6 +2,49 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v2.9.0 — 2026-04-07
+
+### Testing — Unit & Component
+- Rewrote franchise-schema tests from stub to 28 proper Zod validation tests
+- Added React Testing Library + jsdom + @vitejs/plugin-react for component tests
+- Added test setup file (`setup.ts`) with mocks for next-intl, framer-motion, lucide-react, next/image
+- Added component tests: ContactForm (6), WorkModal (8), ThemeToggle (6), BackToTop (4)
+- Added utility tests: `cn()`, `getBrandBySlug()`, `whatsappOrderUrl()`, `getAllBrandSlugs()`, BRANDS data integrity (18)
+- Updated `vitest.config.ts` with jsdom environment and React plugin
+
+### Testing — E2E
+- Added Playwright E2E test suite with Chromium
+- Homepage: hero section, brands grid, contact form, navigation (4 tests)
+- Brand pages: all 7 brands load, navigation from homepage, 404 for invalid slugs (16 tests)
+- Franchise form: renders fields, disabled states, email link, step indicator (5 tests)
+- Navigation: mobile menu, 404 page, WhatsApp link, language switcher (4 tests)
+- Accessibility: skip link, lang attribute, validation errors, document title, alt text (6 tests)
+- Added `@axe-core/playwright` automated accessibility audits on 5 pages (5 audits)
+- Added `test:e2e` and `test:e2e:ui` scripts to package.json
+- Added E2E job to CI workflow (`.github/workflows/ci.yml`)
+
+### Accessibility
+- Added `eslint-plugin-jsx-a11y` for static accessibility analysis (0 violations)
+- Added `@next/eslint-plugin-next` to resolve "Next.js plugin not detected" build warning
+- Fixed WCAG AA color-contrast violations found by axe-core:
+  - Light theme `--color-text-hint` opacity: 0.45 → 0.62
+  - Light theme `--color-text-secondary` opacity: 0.6 → 0.72
+  - Light theme `--color-omniprise-500` overridden to `#0369a1` (darker blue)
+  - Light theme `--color-text-accent` set to `#0369a1`
+- WhatsApp CTA buttons: changed from `text-surface-900` to `text-green-950` (visible in light theme)
+- Stats section: static stat changed from `text-omniprise-500` to `text-omniprise-600`
+- Zero color-contrast violations across all pages
+
+### Code Quality
+- Updated ESLint flat config (`eslint.config.mjs`) with jsx-a11y and @next/plugin
+- Eliminated all lint warnings (was 16 unused variable warnings in test stub)
+
+### Summary
+- 70 unit/component tests (6 files)
+- 40 E2E tests (6 spec files including axe-core audits)
+- 110 total tests
+- 0 lint warnings, 0 axe violations
+
 ## v2.8.0 — 2026-04-06
 
 ### Features
