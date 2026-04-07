@@ -1,5 +1,6 @@
 import tseslint from "typescript-eslint";
 import jsxA11y from "eslint-plugin-jsx-a11y";
+import nextPlugin from "@next/eslint-plugin-next";
 
 const eslintConfig = [
   {
@@ -7,6 +8,7 @@ const eslintConfig = [
   },
   ...tseslint.configs.recommended,
   jsxA11y.flatConfigs.recommended,
+  nextPlugin.flatConfig.recommended,
   {
     files: ["**/*.{ts,tsx}"],
     rules: {
