@@ -1,6 +1,7 @@
 import { Barlow_Condensed, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { ReducedMotionProvider } from "@/components/ReducedMotionProvider";
+import { getLocale } from "next-intl/server";
 import "./globals.css";
 
 const barlowCondensed = Barlow_Condensed({
@@ -17,13 +18,15 @@ const inter = Inter({
   display: "swap",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="es" data-theme="dark" className={`${barlowCondensed.variable} ${inter.variable}`}>
+    <html lang={locale} data-theme="dark" className={`${barlowCondensed.variable} ${inter.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
