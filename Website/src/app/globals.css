@@ -188,22 +188,8 @@ button:focus:not(:focus-visible) {
 
 /* ─── Theme-aware Logo Inversion ─── */
 
-/*
- * Brand logos come in two flavors:
- *   • White/light on transparent  → need inversion in light mode
- *   • Dark/black on transparent   → need inversion in dark mode
- *
- * Apply the appropriate class to each <Image> based on the logo's
- * native color. CSS handles the rest — no JS state needed.
- */
-
-/* Light logos: invert only in light mode (white → black) */
+/* White logos: invert only in light mode so they stay visible */
 [data-theme="light"] .logo-invert-light {
-  filter: invert(1);
-}
-
-/* Dark logos: invert only in dark mode (black → white) */
-[data-theme="dark"] .logo-invert-dark {
   filter: invert(1);
 }
 

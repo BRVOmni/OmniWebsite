@@ -40,7 +40,7 @@ export function BrandHero({ brand }: BrandHeroProps) {
               height={180}
               className={cn(
                 'max-h-[160px] w-auto object-contain',
-                brand.logoColor === 'light' ? 'logo-invert-light' : 'logo-invert-dark',
+                brand.logoColor === 'light' && 'logo-invert-light',
               )}
               priority
               onError={() => setLogoError(true)}
