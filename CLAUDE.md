@@ -17,6 +17,7 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 - Framer Motion 12 (animations)
 - next-intl (i18n — Spanish default at `/`, English at `/en`)
 - Zod 4 (form validation)
+- Resend (email delivery for contact and franchise forms)
 - Vitest + React Testing Library (unit/component tests)
 - Playwright + axe-core (E2E tests + accessibility audits)
 - Vercel (deployment, auto-deploys from `main`)
@@ -55,6 +56,8 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 |---|---|
 | `Website/src/lib/brands.ts` | All brand data, WhatsApp URL helper, brand slugs |
 | `Website/src/lib/franchise-schema.ts` | Zod schemas for 4-step franchise form |
+| `Website/src/app/api/contact/route.ts` | Contact form API route (Resend email) |
+| `Website/src/app/api/franchise/route.ts` | Franchise form API route (Resend email) |
 | `Website/src/app/layout.tsx` | Root layout (fonts, theme script, ReducedMotionProvider) |
 | `Website/src/app/[locale]/layout.tsx` | Locale layout (NextIntlClientProvider, Navbar, Footer) |
 | `Website/src/app/[locale]/page.tsx` | Homepage composing all sections |

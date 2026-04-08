@@ -2,6 +2,23 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v2.10.0 — 2026-04-08
+
+### Forms — Resend Migration
+- Replaced Formspree with Resend for email delivery on both contact and franchise forms
+- Created `/api/contact` and `/api/franchise` Next.js API route handlers
+- Forms now POST JSON to internal API routes instead of external Formspree endpoints
+- Styled HTML email templates with all form fields, branded with Omniprise sky blue
+- Proper error handling with Resend SDK error inspection
+- Configurable via env vars: `RESEND_API_KEY`, `FROM_EMAIL`, `CONTACT_EMAIL`, `FRANCHISE_EMAIL`
+- Updated `.env.example` with Resend configuration docs
+
+### Bug Fixes
+- Fixed English brand detail pages showing Spanish text (`metadata.brand` → `metadata.brandDetail` key mismatch in `en.json`)
+
+### Dependencies
+- Added `resend` npm package
+
 ## v2.9.0 — 2026-04-07
 
 ### Testing — Unit & Component
