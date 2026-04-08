@@ -42,6 +42,7 @@ export const BRANDS: Brand[] = [
     description:
       'Restaurante temático único en su clase con 1.600 m² y capacidad para 250 personas. La propuesta combina gastronomía, entretenimiento y ambientación inmersiva, Diseñado para escala, visibilidad y alto volumen operativo.',
     badge: 'Marca insignia',
+    logoColor: 'light',
     story:
       'UFO nació con una ambición radical: crear un espacio donde la gastronomía y el entretenimiento convergen en una experiencia inolvidable. Con 1.600 m² de superficie y una capacidad para 250 personas, UFO no es solo un restaurante — es un destino.\n\nDesde su diseño conceptual hasta cada detalle de la ambientación inmersiva, cada elemento fue pensado para maximizar la experiencia del comensal. La carta gráfica. la iluminación y la disposición espacial crean una atmósfera que trasciende lo convencional.\n\nComo marca insignia de Omniprise. UFO representa el estándar de innovación y ambición que define al grupo. Su éxito demuestra que en Paraguay hay espacio para conceptos gastronómicos de escala internacional.',
     stats: [
@@ -70,6 +71,7 @@ export const BRANDS: Brand[] = [
     description:
       'Pizza bar que combina pizzas de alta calidad, ambiente descontracturado y tragos innovadores. Pensada para consumo frecuente, Plan de expansión 2026: 8 dark-kitchens para cobertura total del Gran Asunción.',
     badge: '8 dark-kitchens proyectadas 2026',
+    logoColor: 'light',
     story:
       'El Club de Los Condenados arrivó para romper con el formato tradicional de pizzería. Nació como un concepto que mezcla pizza de alta calidad con un ambiente nocturno vibrante y tragos innovadores. rápidamente se convirtió en un punto de encuentro para quienes buscan algo más que una simple salida a comer.\n\nSu modelo de negocio combina el consumo presencial con una fuerte apuesta por el delivery, logrando alta rotación en ambos canales. La marca está diseñada para generar recurrencia: clientes que vuelven semana tras semana.\n\nComo parte de Omniprise, Los Condenados escalará bajo el modelo de dark-kitchen en 2026, llevando su propuesta a 8 puntos estratégicos del Gran Asunción sin la inversión de locales físicos tradicionales.',
     stats: [
