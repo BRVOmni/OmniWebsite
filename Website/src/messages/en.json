@@ -7,10 +7,6 @@
       "ogDescription": "Food service operator with 7 brands, 17 locations, and presence in 6 cities.",
       "twitterDescription": "Food service operator with 7 brands, 17 locations, and presence in 6 cities in Paraguay."
     },
-    "brand": {
-      "title": "{brandName} — Omniprise",
-      "notFoundTitle": "Brand not found — Omniprise"
-    },
     "franchise": {
       "title": "Franchises — Omniprise",
       "description": "Become an Omniprise franchisee. The food service operator with the largest presence in Paraguay."
@@ -20,6 +16,7 @@
       "description": "Complete the franchise application in 4 steps. Join the fastest-growing gastronomic platform in Paraguay."
     },
     "brandDetail": {
+      "title": "{brandName} — Omniprise",
       "notFoundTitle": "Brand not found — Omniprise"
     },
     "privacidad": {
