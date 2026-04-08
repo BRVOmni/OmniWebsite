@@ -23,7 +23,7 @@ export function Footer() {
           alt="Omniprise"
           width={120}
           height={34}
-          className="h-5 w-auto"
+          className="h-5 w-auto logo-invert-light"
         />
       </Link>
 

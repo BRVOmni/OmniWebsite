@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useReveal } from '@/lib/use-reveal';
+import { cn } from '@/lib/utils';
 import type { Brand } from '@/lib/brands';
 
 interface BrandHeroProps {
@@ -37,8 +38,10 @@ export function BrandHero({ brand }: BrandHeroProps) {
               alt={brand.name}
               width={420}
               height={180}
-              className="max-h-[160px] w-auto object-contain"
-              style={brand.invertLogo ? { filter: 'invert(1) brightness(0.9)' } : undefined}
+              className={cn(
+                'max-h-[160px] w-auto object-contain',
+                brand.logoColor === 'light' ? 'logo-invert-light' : 'logo-invert-dark',
+              )}
               priority
               onError={() => setLogoError(true)}
             />

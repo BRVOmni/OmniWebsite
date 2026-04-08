@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Link } from '@/i18n/routing';
 import { track } from '@vercel/analytics';
 import { useReveal } from '@/lib/use-reveal';
+import { cn } from '@/lib/utils';
 import { BRANDS, whatsappOrderUrl } from '@/lib/brands';
 import type { Brand } from '@/lib/brands';
 import { MessageCircle } from 'lucide-react';
@@ -33,8 +34,10 @@ function BrandCard({ brand, index, isVisible, orderLabel }: { brand: Brand; inde
               alt={brand.name}
               width={160}
               height={60}
-              className="max-h-[56px] w-auto object-contain"
-              style={brand.invertLogo ? { filter: 'invert(1) brightness(0.9)' } : undefined}
+              className={cn(
+                'max-h-[56px] w-auto object-contain',
+                brand.logoColor === 'light' ? 'logo-invert-light' : 'logo-invert-dark',
+              )}
               onError={() => setLogoError(true)}
             />
           )}
