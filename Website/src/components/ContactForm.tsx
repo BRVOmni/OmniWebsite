@@ -6,7 +6,7 @@ import { track } from '@vercel/analytics';
 import { motion } from 'framer-motion';
 import { validateContact, type StepErrors } from '@/lib/franchise-schema';
 
-const FORM_ACTION = 'https://formspree.io/f/2967699696509779106';
+const FORM_ACTION = '/api/contact';
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -79,8 +79,8 @@ export function ContactForm() {
     try {
       const res = await fetch(FORM_ACTION, {
         method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: new FormData(form),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
       });
 
       if (res.ok) {

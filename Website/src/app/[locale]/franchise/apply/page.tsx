@@ -479,7 +479,7 @@ function SuccessView({ t }: { t: ReturnType<typeof useTranslations<'franchiseApp
   );
 }
 
-const FRANCHISE_FORM_ACTION = 'https://formspree.io/f/2967703689361358019';
+const FRANCHISE_FORM_ACTION = '/api/franchise';
 
 export default function ApplyPage() {
   const searchParams = useSearchParams();
@@ -570,15 +570,10 @@ export default function ApplyPage() {
     setSubmitError(false);
 
     try {
-      const formData = new FormData();
-      Object.entries(data).forEach(([key, value]) => {
-        if (value) formData.append(key, value);
-      });
-
       const res = await fetch(FRANCHISE_FORM_ACTION, {
         method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
       });
 
       if (res.ok) {
