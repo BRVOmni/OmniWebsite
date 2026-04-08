@@ -188,8 +188,13 @@ button:focus:not(:focus-visible) {
 
 /* ─── Theme-aware Logo Inversion ─── */
 
-/* White logos: invert only in light mode so they stay visible */
+/* White logos (Omniprise): invert only in light mode so they stay visible */
 [data-theme="light"] .logo-invert-light {
+  filter: invert(1);
+}
+
+/* Dark logos (Mr. Chow): invert only in dark mode */
+[data-theme="dark"] .logo-invert-dark {
   filter: invert(1);
 }
 

@@ -42,7 +42,6 @@ export const BRANDS: Brand[] = [
     description:
       'Restaurante temático único en su clase con 1.600 m² y capacidad para 250 personas. La propuesta combina gastronomía, entretenimiento y ambientación inmersiva, Diseñado para escala, visibilidad y alto volumen operativo.',
     badge: 'Marca insignia',
-    logoColor: 'dark',
     story:
       'UFO nació con una ambición radical: crear un espacio donde la gastronomía y el entretenimiento convergen en una experiencia inolvidable. Con 1.600 m² de superficie y una capacidad para 250 personas, UFO no es solo un restaurante — es un destino.\n\nDesde su diseño conceptual hasta cada detalle de la ambientación inmersiva, cada elemento fue pensado para maximizar la experiencia del comensal. La carta gráfica. la iluminación y la disposición espacial crean una atmósfera que trasciende lo convencional.\n\nComo marca insignia de Omniprise. UFO representa el estándar de innovación y ambición que define al grupo. Su éxito demuestra que en Paraguay hay espacio para conceptos gastronómicos de escala internacional.',
     stats: [
@@ -71,7 +70,6 @@ export const BRANDS: Brand[] = [
     description:
       'Pizza bar que combina pizzas de alta calidad, ambiente descontracturado y tragos innovadores. Pensada para consumo frecuente, Plan de expansión 2026: 8 dark-kitchens para cobertura total del Gran Asunción.',
     badge: '8 dark-kitchens proyectadas 2026',
-    logoColor: 'dark',
     story:
       'El Club de Los Condenados arrivó para romper con el formato tradicional de pizzería. Nació como un concepto que mezcla pizza de alta calidad con un ambiente nocturno vibrante y tragos innovadores. rápidamente se convirtió en un punto de encuentro para quienes buscan algo más que una simple salida a comer.\n\nSu modelo de negocio combina el consumo presencial con una fuerte apuesta por el delivery, logrando alta rotación en ambos canales. La marca está diseñada para generar recurrencia: clientes que vuelven semana tras semana.\n\nComo parte de Omniprise, Los Condenados escalará bajo el modelo de dark-kitchen en 2026, llevando su propuesta a 8 puntos estratégicos del Gran Asunción sin la inversión de locales físicos tradicionales.',
     stats: [
@@ -100,7 +98,6 @@ export const BRANDS: Brand[] = [
     description:
       'Pasta bar contemporáneo iniciado en el centro de Asunción. Foco en calidad, rapidez y eficiencia operativa. Plan 2026: 8 dark-kitchens y posible apertura en Shopping Multiplaza.',
     badge: '8 dark-kitchens proyectadas 2026',
-    logoColor: 'dark',
     story:
       'Rocco nació de una observación simple: la pasta fresca podía ser mucho más accesible en Paraguay. Un pasta bar contemporáneo en el centro de Asunción que prioriza la calidad del producto, la rapidez del servicio y la eficiencia operativa.\n\nEl concepto fue diseñado desde el primer día para escalar. Los procesos estandarizados y el modelo operativo lean permiten replicar sin perder calidad. Cada nuevo punto de venta replica la misma experiencia.\n\nEn 2026, Rocco buscará expandirse con 8 dark-kitchens estratégicamente ubicadas y una posible apertura en Shopping Multiplaza, consolidándose como referente en el segmento de pasta rápida en el país.',
     stats: [
@@ -129,7 +126,6 @@ export const BRANDS: Brand[] = [
     description:
       "Segunda cadena de pizza más grande del país, con 15 locales activos en el Gran Asunción. Integrada al portafolio de Omniprise el 1 de enero de 2026 bajo una estructura orientada a expansión, estandarización y crecimiento acelerado.",
     badge: '15 locales activos',
-    logoColor: 'dark',
     story:
       "Sammy's Express Pizza no es una startup — es una institución. Con 11 años de trayectoria y 15 locales activos, se consolidó como la segunda cadena de pizza más grande de Paraguay antes de integrarse a Omniprise.\n\nEl 1 de enero de 2026, Sammy's fue adquirida e integrada al ecosistema operativo de Omniprise. La estrategia no es cambiar lo que funciona, sino potenciarlo: estandarizar procesos, optimizar supply chain, y acelerar la expansión hacia nuevas ciudades.\n\nLa integración trae lo mejor de ambos mundos: la trayectoria y el reconocimiento de marca de Sammy's, sumado a la tecnología, know-how operativo y red de proveedores de Omniprise.",
     stats: [
@@ -159,7 +155,6 @@ export const BRANDS: Brand[] = [
     description:
       'Opera desde 2021 bajo el modelo de dark-kitchen, con 8 cocinas activas. Adquirida e integrada al ecosistema operativo de Omniprise el 01/01/2026. Durante 2026 continuará bajo su formato actual, evaluando una posible fusión estratégica con Rocco.',
     badge: '8 cocinas activas',
-    logoColor: 'dark',
     story:
       'PastaBox opera desde 2021 bajo el modelo de dark-kitchen, demostrando que un modelo 100% delivery puede ser rentable y escalable en Paraguay. Con 8 cocinas activas, construyó una operación eficiente con márgenes ajustados y alta rotación.\n\nIntegrada a Omniprise el 1 de enero de 2026, PastaBox aporta volumen operativo, conocimiento del canal delivery y una base de clientes recurrente. Su fortaleza está en la eficiencia operativa y la cobertura geográfica.\n\nDurante 2026, PastaBox continuará operando bajo su formato actual mientras se evalúa una posible fusión estratégica con Rocco, que combinaria la fuerza de ambas marcas en el segmento de pasta.',
     stats: [
@@ -189,7 +184,7 @@ export const BRANDS: Brand[] = [
     description:
       'Opera con 1 dark-kitchen en Mburucuyá y 1 local en Shopping Multiplaza. Plan 2026: 4 nuevas dark-kitchens y 2 locales físicos en Asunción.',
     badge: 'Expansión 2026: 4 nuevas cocinas',
-    logoColor: 'light',
+    logoColor: 'dark',
     story:
       'Mr. Chow trae la gastronomía oriental al mercado paraguayo con una propuesta que mezcla tradición y accesibilidad. Operando desde 2021, construyó una base de clientes fiel que busca algo diferente en el menú habitual.\n\nCon 1 dark-kitchen en Mburucuyá y 1 local en Shopping Multiplaza, Mr. Chow tiene presencia dual: delivery y presencial. Incorporado a Omniprise el 1 de enero de 2026, la marca tiene todo el potencial para escalar rápidamente.\n\nEl plan 2026 es ambicioso: 4 nuevas dark-kitchens y 2 locales físicos en Asunción, llevando la cocina oriental a más puntos de la ciudad con el respaldo operativo completo de Omniprise.',
     stats: [
@@ -221,7 +216,6 @@ export const BRANDS: Brand[] = [
       'Complementa el segmento pizza con un enfoque barrial, accesible y de alta rotación. Especialmente orientada al envío a domicilio para cubrir segmentos de precio que las otras marcas no alcanzan.',
     badge: 'Orientada al envío a domicilio',
     wide: true,
-    logoColor: 'dark',
     story:
       'Barrio Pizzero es la marca que cierra el círculo en el segmento pizza de Omniprise. Mientras Sammy\'s cubre el segmento express y Los Condenados el segmento premium nocturno, Barrio Pizzero se posiciona en el corazón de los barrios: accesible, cercano y con alta frecuencia de pedido.\n\nIncorporada al portafolio el 1 de enero de 2026, su fortaleza está en la penetración territorial y el volumen recurrente. Es la marca que llega donde las demás no llegan, cubriendo zonas residenciales de todo el Gran Asunción con precios competitivos y un modelo optimizado para delivery.\n\nBarrio Pizzero genera el volumen que alimenta la operación. Su enfoque en envío a domicilio y segmentos de precio accesible la convierte en un motor de recurrencia para todo el ecosistema.',
     stats: [

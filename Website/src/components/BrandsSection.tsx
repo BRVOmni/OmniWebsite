@@ -37,6 +37,7 @@ function BrandCard({ brand, index, isVisible, orderLabel }: { brand: Brand; inde
               className={cn(
                 'max-h-[56px] w-auto object-contain',
                 brand.logoColor === 'light' && 'logo-invert-light',
+                brand.logoColor === 'dark' && 'logo-invert-dark',
               )}
               onError={() => setLogoError(true)}
             />
