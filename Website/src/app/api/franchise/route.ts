@@ -1,6 +1,8 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 
+const DASHBOARD_API_URL = process.env.DASHBOARD_API_URL || 'https://dashboard.omniprise.com.py';
+
 export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
@@ -74,11 +76,60 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: result.error.message }, { status: 500 });
     }
 
+    // Forward to dashboard API to save lead in the pipeline
+    try {
+      const fullName = `${body.firstName} ${body.lastName}`.trim();
+      await fetch(`${DASHBOARD_API_URL}/api/franchise/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: fullName,
+          email: body.email,
+          phone: body.phone,
+          city: body.city || '',
+          country: body.country || 'Paraguay',
+          current_brand_name: body.preferredBrand || undefined,
+          years_in_business: body.yearsExperience ? Number(body.yearsExperience) : undefined,
+          investment_range: mapInvestmentRange(body.investmentRange),
+          timeframe_to_start: mapTimeline(body.timeline),
+          motivation: body.motivation || undefined,
+          goals: body.additionalInfo || undefined,
+          lead_source: 'website',
+        }),
+      });
+    } catch (err) {
+      // Dashboard sync failure should NOT fail the form submission
+      // The email was already sent successfully
+      console.error('Dashboard sync failed:', err);
+    }
+
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('Email send failed:', err);
     return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
   }
+}
+
+/** Map website investment range labels to dashboard enum values */
+function mapInvestmentRange(value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  const lower = value.toLowerCase();
+  if (lower.includes('50') && lower.includes('100')) return '50k-100k';
+  if (lower.includes('100') && lower.includes('250')) return '100k-250k';
+  if (lower.includes('250') && lower.includes('500')) return '250k-500k';
+  if (lower.includes('500')) return '500k+';
+  return undefined;
+}
+
+/** Map website timeline labels to dashboard enum values */
+function mapTimeline(value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  const lower = value.toLowerCase();
+  if (lower.includes('inmediat') || lower.includes('immediate')) return 'immediately';
+  if (lower.includes('3') && lower.includes('6')) return '3-6_months';
+  if (lower.includes('6') && lower.includes('12')) return '6-12_months';
+  if (lower.includes('año') || lower.includes('year') || lower.includes('próx')) return 'next_year';
+  return undefined;
 }
 
 function escapeHtml(str: string): string {
