@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
-import { track } from '@vercel/analytics';
 import { Menu, X, ExternalLink, MessageCircle,  } from 'lucide-react';
 import Image from 'next/image';
 import { Link } from '@/i18n/routing';
@@ -113,14 +112,13 @@ export function Navbar() {
             href={whatsappOrderUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => track('whatsapp_order', { source: 'navbar' })}
             className="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-medium text-green-950 bg-green-500 hover:bg-green-400 px-5 py-2 rounded-full tracking-wider transition-all duration-200"
           >
             <MessageCircle className="w-3.5 h-3.5" />
             {t('whatsappCta')}
           </a>
           <button
-            onClick={() => { track('work_modal_opened'); setModalOpen(true); }}
+            onClick={() => setModalOpen(true)}
             className="hidden sm:inline-flex text-[13px] font-medium text-surface-900 bg-text-primary hover:bg-omniprise-50 px-5 py-2 rounded-full tracking-wider transition-all duration-200 cursor-pointer"
           >
             {t('workTogether')}
@@ -185,14 +183,14 @@ export function Navbar() {
                   href={whatsappOrderUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => { setMobileOpen(false); track('whatsapp_order', { source: 'navbar_mobile' }); }}
+                  onClick={() => setMobileOpen(false)}
                   className="text-center text-sm font-medium text-green-950 bg-green-500 hover:bg-green-400 py-3 rounded-full inline-flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-4 h-4" />
                   {t('whatsappCta')}
                 </a>
                 <button
-                  onClick={() => { setMobileOpen(false); track('work_modal_opened'); setModalOpen(true); }}
+                  onClick={() => { setMobileOpen(false); setModalOpen(true); }}
                   className="text-center text-sm font-medium text-surface-900 bg-text-primary py-3 rounded-full"
                 >
                   {t('workTogether')}

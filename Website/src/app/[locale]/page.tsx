@@ -6,7 +6,6 @@ import { BrandsSection } from '@/components/BrandsSection';
 import { VisionSection } from '@/components/VisionSection';
 import { PartnersSection } from '@/components/PartnersSection';
 import { FranchiseSection } from '@/components/FranchiseSection';
-import { ScrollTracker } from '@/components/ScrollTracker';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -34,7 +33,6 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ScrollTracker page="homepage" />
       <HeroSection />
       <StatementSection />
       <StatsSection />

@@ -2,13 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import { track } from '@vercel/analytics';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Send, Loader2 } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { useSearchParams } from 'next/navigation';
 import { BRANDS } from '@/lib/brands';
-import { useScrollDepth } from '@/lib/use-scroll-depth';
 import { validateStep, type StepErrors } from '@/lib/franchise-schema';
 
 interface FormData {
@@ -483,7 +481,6 @@ const FRANCHISE_FORM_ACTION = '/api/franchise';
 
 export default function ApplyPage() {
   const searchParams = useSearchParams();
-  useScrollDepth('franchise_apply');
   const t = useTranslations('franchiseApply');
   const brandParam = searchParams.get('brand');
 
@@ -530,13 +527,11 @@ export default function ApplyPage() {
     }
     setErrors({});
     const nextStep = step + 1;
-    track('franchise_form_step', { step: nextStep + 1, from: step + 1 });
     setStep(nextStep);
   };
 
   const goBackStep = () => {
     setErrors({});
-    track('franchise_form_back', { step: step + 1, to: step });
     setStep((s) => s - 1);
   };
 
@@ -577,15 +572,12 @@ export default function ApplyPage() {
       });
 
       if (res.ok) {
-        track('franchise_form_submitted', { status: 'success', brand: data.preferredBrand || 'none' });
         clearDraft();
         setSubmitted(true);
       } else {
-        track('franchise_form_submitted', { status: 'error', brand: data.preferredBrand || 'none' });
         setSubmitError(true);
       }
     } catch {
-      track('franchise_form_submitted', { status: 'error', brand: data.preferredBrand || 'none' });
       setSubmitError(true);
     } finally {
       setSubmitting(false);

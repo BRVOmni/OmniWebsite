@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { ArrowRight } from 'lucide-react';
-import { track } from '@vercel/analytics';
 import { useReveal } from '@/lib/use-reveal';
 
 export function FranchiseSection() {
@@ -50,7 +49,6 @@ export function FranchiseSection() {
         >
           <Link
             href="/franchise/apply"
-            onClick={() => track('franchise_cta', { source: 'homepage', action: 'apply' })}
             className="text-[15px] font-medium text-surface-900 bg-omniprise-500 hover:bg-omniprise-400 px-9 py-4 rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(14,165,233,0.25)] inline-flex items-center gap-2"
           >
             {t('ctaApply')}
@@ -58,7 +56,6 @@ export function FranchiseSection() {
           </Link>
           <Link
             href="/franchise"
-            onClick={() => track('franchise_cta', { source: 'homepage', action: 'learn_more' })}
             className="text-[15px] font-normal text-text-secondary hover:text-text-primary px-8 py-3.5 rounded-full border border-border-medium tracking-wide transition-all duration-200 hover:-translate-y-0.5"
           >
             {t('ctaKnowMore')}

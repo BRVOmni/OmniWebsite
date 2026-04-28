@@ -2,7 +2,6 @@
 
 import { useState, type FormEvent } from 'react';
 import { useTranslations } from 'next-intl';
-import { track } from '@vercel/analytics';
 import { motion } from 'framer-motion';
 import { validateContact, type StepErrors } from '@/lib/franchise-schema';
 
@@ -84,14 +83,11 @@ export function ContactForm() {
       });
 
       if (res.ok) {
-        track('contact_form_submitted', { status: 'success' });
         setState('success');
       } else {
-        track('contact_form_submitted', { status: 'error' });
         setState('error');
       }
     } catch {
-      track('contact_form_submitted', { status: 'error' });
       setState('error');
     }
   }

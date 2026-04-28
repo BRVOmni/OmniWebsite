@@ -1,5 +1,4 @@
 import { Barlow_Condensed, Inter } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react";
 import { ReducedMotionProvider } from "@/components/ReducedMotionProvider";
 import { getLocale } from "next-intl/server";
 import "./globals.css";
@@ -38,7 +37,6 @@ export default async function RootLayout({
         <ReducedMotionProvider>
           {children}
         </ReducedMotionProvider>
-        <Analytics />
       </body>
     </html>
   );

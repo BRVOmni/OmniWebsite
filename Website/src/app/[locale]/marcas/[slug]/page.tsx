@@ -7,7 +7,6 @@ import { BrandStats } from '@/components/brand-detail/BrandStats';
 import { BrandGallery } from '@/components/brand-detail/BrandGallery';
 import { BrandPresence } from '@/components/brand-detail/BrandPresence';
 import { BrandCTA } from '@/components/brand-detail/BrandCTA';
-import { ScrollTracker } from '@/components/ScrollTracker';
 
 interface BrandPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -107,7 +106,6 @@ export default async function BrandPage({ params }: BrandPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ScrollTracker page={`brand_${brand.slug}`} />
       <BrandHero brand={brand} />
       <BrandStory brand={brand} />
       <BrandStats brand={brand} />

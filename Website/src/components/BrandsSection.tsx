@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Link } from '@/i18n/routing';
-import { track } from '@vercel/analytics';
 import { useReveal } from '@/lib/use-reveal';
 import { cn } from '@/lib/utils';
 import { BRANDS, whatsappOrderUrl } from '@/lib/brands';
@@ -16,7 +15,7 @@ function BrandCard({ brand, index, isVisible, orderLabel }: { brand: Brand; inde
   const [logoError, setLogoError] = useState(false);
 
   return (
-    <Link href={`/marcas/${brand.slug}`} onClick={() => track('brand_card_clicked', { brand: brand.slug })} className="block group">
+    <Link href={`/marcas/${brand.slug}`} className="block group">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -53,7 +52,6 @@ function BrandCard({ brand, index, isVisible, orderLabel }: { brand: Brand; inde
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              track('whatsapp_order', { source: 'homepage', brand: brand.slug });
               window.open(whatsappOrderUrl(brand.name), '_blank', 'noopener,noreferrer');
             }}
             className="inline-flex items-center gap-1.5 text-[11px] font-medium text-green-400 hover:text-green-300 transition-colors cursor-pointer"

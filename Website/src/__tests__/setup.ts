@@ -66,11 +66,6 @@ vi.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: { children: ReactNode }) => children,
 }));
 
-// Mock @vercel/analytics
-vi.mock('@vercel/analytics', () => ({
-  track: vi.fn(),
-}));
-
 // Mock lucide-react icons — return simple svg elements
 function createIconMock(name: string) {
   return (props: Record<string, unknown>) =>
