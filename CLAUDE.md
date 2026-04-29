@@ -8,6 +8,7 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 - **Repo:** github.com:BRVOmni/OmniWebsite.git
 - **Source:** `Website/` directory (the only directory you should be working in)
 - **Node.js:** 22.x (CI pinned to 22; 18+ minimum for local dev)
+- **Lock file caveat:** Regenerate `package-lock.json` with Node 22 (`nvm use 22 && rm -rf node_modules package-lock.json && npm install`). Node 24+ resolves transitive deps differently and produces a lock file that fails `npm ci` on CI.
 
 ## Tech Stack
 
