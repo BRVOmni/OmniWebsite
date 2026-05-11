@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 
   const resend = new Resend(apiKey);
   const franchiseEmail = process.env.FRANCHISE_EMAIL || 'franquicias@omniprise.com.py';
-  const fromEmail = process.env.FROM_EMAIL || 'onboarding@resend.dev';
+  const fromEmail = process.env.FROM_EMAIL || 'noreply@contact.omniprise.com.py';
 
   try {
     const body = await request.json();

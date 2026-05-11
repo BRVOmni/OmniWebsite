@@ -9,7 +9,7 @@ export async function POST(request: Request) {
 
   const resend = new Resend(apiKey);
   const contactEmail = process.env.CONTACT_EMAIL || 'info@omniprise.com.py';
-  const fromEmail = process.env.FROM_EMAIL || 'onboarding@resend.dev';
+  const fromEmail = process.env.FROM_EMAIL || 'noreply@contact.omniprise.com.py';
 
   try {
     const body = await request.json();

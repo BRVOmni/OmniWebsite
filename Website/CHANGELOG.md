@@ -2,6 +2,13 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v2.10.1 — 2026-05-11
+
+### Email — Verified Domain Configuration
+- Updated `FROM_EMAIL` fallback from `onboarding@resend.dev` to `noreply@contact.omniprise.com.py` (verified Resend domain)
+- Contact and franchise forms now send from the verified `contact.omniprise.com.py` subdomain
+- Updated `.env.example` to reflect verified domain setup
+
 ## v2.10.0 — 2026-04-08
 
 ### Forms — Resend Migration
