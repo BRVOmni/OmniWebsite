@@ -88,7 +88,8 @@ export default async function BrandPage({ params }: BrandPageProps) {
     description: brand.description,
     url: pageUrl,
     image: `${baseUrl}${brand.logo}`,
-    servesCuisine: brand.tagline,
+    servesCuisine: brand.cuisine,
+    areaServed: { '@type': 'AdministrativeArea', name: 'Gran Asunción, Paraguay' },
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Asunción',

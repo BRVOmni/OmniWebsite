@@ -88,6 +88,8 @@ Spanish (default, no prefix) and English (`/en` prefix). All routes exist in bot
 | `/franchise/apply` and `/en/franchise/apply` | Client | 4-step application form |
 | `/proveedores` and `/en/proveedores` | Client | Supplier proposal form (posts to `/api/suppliers`) |
 | `/prensa` and `/en/prensa` | SSG | Press page (boilerplate, key figures, press contact — brand assets only on request, never downloadable) |
+| `/agent` and `/en/agent` | SSG | Static reference page for people, search engines and AI assistants (brands, how to order, investing via franchise, contacts). Not linked from nav/footer; indexable; no forms/inputs by design |
+| `/llms.txt` | Route | Plain-text index for LLM crawlers (built from `brands.ts`) |
 | `/privacidad`, `/terminos`, `/cookies` (+ `/en/…`) | SSR | Legal pages (privacy, terms, cookies) |
 
 ## Testing
@@ -103,7 +105,7 @@ Spanish (default, no prefix) and English (`/en` prefix). All routes exist in bot
 - Runner: Playwright (`cd Website && npm run test:e2e`)
 - Config: `Website/playwright.config.ts` (Chromium only, auto-starts dev server)
 - Tests live in `Website/e2e/`
-- 40 tests across 6 files: homepage, brand pages, franchise form, navigation, accessibility, axe-core audits
+- 58 tests across 7 files: homepage, brand pages, franchise form, navigation, accessibility, axe-core audits, agent page + privacy guard (`agent-privacy.spec.ts` fails the build if any public response contains internal/stack tokens)
 
 ### Linting
 - ESLint flat config with typescript-eslint, jsx-a11y, @next/eslint-plugin-next
@@ -119,3 +121,6 @@ Spanish (default, no prefix) and English (`/en` prefix). All routes exist in bot
 - Do not use inline styles
 - Do not commit `.env.local` or secrets
 - Do not modify root `src/` dashboard code when working on the website
+- Do not publish internal systems, provider/stack names, cookie names, legal suffix/RUC, addresses/hours, or downloadable brand assets — the E2E privacy guard enforces a denylist; extend it if new sensitive tokens appear
+- Do not add analytics/tracking scripts (decision Aug 2026) or any interactive agent/chatbot on `/agent` — it must stay a static document
+- On server components use plain `<a href>` (with the locale prefix) instead of next-intl `Link` when the page must not serialise routing config into the payload

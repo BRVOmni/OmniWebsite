@@ -3,7 +3,7 @@ import { getAllBrandSlugs } from '@/lib/brands';
 
 const BASE_URL = 'https://www.omniprise.com.py';
 const LOCALES = ['es', 'en'] as const;
-const PATHS = ['/', '/franchise', '/franchise/apply', '/proveedores', '/prensa', '/privacidad', '/terminos', '/cookies'] as const;
+const PATHS = ['/', '/franchise', '/franchise/apply', '/proveedores', '/prensa', '/agent', '/privacidad', '/terminos', '/cookies'] as const;
 const LEGAL = new Set<string>(['/privacidad', '/terminos', '/cookies']);
 
 export default function sitemap(): MetadataRoute.Sitemap {

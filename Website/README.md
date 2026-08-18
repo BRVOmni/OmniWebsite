@@ -1,6 +1,6 @@
 # Omniprise — Website Documentation
 
-**Version 3.0.0 | Next.js 15 | August 2026**
+**Version 3.1.0 | Next.js 15 | August 2026**
 
 > All audit issues resolved. See [`docs/audits/AUDIT_2026-03-28.md`](../docs/audits/AUDIT_2026-03-28.md) for the full history.
 
@@ -17,6 +17,7 @@
 - Single dark theme — cool ink surfaces with sky blue #0ea5e9 accents (light/dark toggle removed in v3.0)
 - Photo-led homepage (hero mosaic, trust bar, logo strip, photo brand cards, franchise block with verified testimonial)
 - Supplier page (`/proveedores`), press page (`/prensa`, assets on request), terms and cookie policy pages
+- Agent-readable reference page (`/agent`, ES/EN) + `/llms.txt` + explicit AI-crawler policy in `robots.txt`; privacy guard in E2E
 - Real WebP brand logos for 7 brands
 - Gallery with lightbox (35 photos, 5 per brand, touch swipe + keyboard nav)
 - Franchise section with multi-step form (Zod-validated, auto-save to localStorage)
@@ -453,4 +454,4 @@ Before deploying to production:
 ---
 
 **Last Updated:** August 18, 2026
-**Version:** 3.0.0
+**Version:** 3.1.0

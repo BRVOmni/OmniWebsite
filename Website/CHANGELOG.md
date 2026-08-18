@@ -2,6 +2,15 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v3.1.0 — 2026-08-18
+
+### Discoverability for search engines and AI assistants
+- New `/agent` (ES) and `/en/agent` (EN): static reference page — what Omniprise is, brands and how to order, "Invertir en Paraguay con Omniprise" (hands-off franchise model, process, disclaimer), other contact channels, quick facts, and an "about this page" statement (informational only, no instructions for automated systems, no interactive agent, no sensitive data). Not linked from nav/footer; indexable and in the sitemap; no forms or inputs by design.
+- New `/llms.txt` (plain-text index built from `brands.ts`, bilingual).
+- `robots.txt` explicitly allows major AI crawlers and disallows `/api`.
+- Structured data: `Organization` + `WebSite` + `WebPage` graph on `/agent`; brand pages now emit `servesCuisine` (new `cuisine` field) and `areaServed`.
+- E2E privacy guard (`e2e/agent-privacy.spec.ts`): fails if any public response contains internal/stack tokens. It caught next-intl's server `Link` serialising the locale-cookie name into the `/agent` payload — replaced with plain anchors.
+
 ## v3.0.0 — 2026-08-18
 
 ### Redesign — "Omniprise 3.0"

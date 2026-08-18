@@ -32,6 +32,8 @@ export interface Brand {
   galleryImages?: string[];
   /** Photo used on the homepage brand card and the brand page hero (under /public) */
   heroImage: string;
+  /** Short cuisine/category label for structured data and the agent page (Spanish) */
+  cuisine: string;
 }
 
 export const BRANDS: Brand[] = [
@@ -60,6 +62,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['Presencial directa'],
     model: 'Restaurante temático',
     heroImage: '/brands/gallery/ufo/1.jpeg',
+    cuisine: 'Restaurante temático · hamburguesas, sándwiches y platos para compartir',
     galleryCount: 5,
     galleryImages: ['/brands/gallery/ufo/1.jpeg', '/brands/gallery/ufo/2.jpeg', '/brands/gallery/ufo/3.jpeg', '/brands/gallery/ufo/4.jpeg', '/brands/gallery/ufo/5.jpeg'],
     instagram: 'ufo.py',
@@ -89,6 +92,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis'],
     model: 'Pizza bar + dark-kitchen',
     heroImage: '/brands/gallery/los-condenados/4.jpeg',
+    cuisine: 'Pizza bar · pizzas y coctelería',
     galleryCount: 5,
     galleryImages: ['/brands/gallery/los-condenados/1.jpeg', '/brands/gallery/los-condenados/2.jpeg', '/brands/gallery/los-condenados/3.jpeg', '/brands/gallery/los-condenados/4.jpeg', '/brands/gallery/los-condenados/5.jpeg'],
     instagram: 'elclubdeloscondenados',
@@ -118,6 +122,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis', 'Uber Eats'],
     model: 'Pasta bar + dark-kitchen',
     heroImage: '/brands/gallery/rocco/3.jpeg',
+    cuisine: 'Pasta bar · pasta fresca',
     galleryCount: 5,
     galleryImages: ['/brands/gallery/rocco/1.jpeg', '/brands/gallery/rocco/2.jpeg', '/brands/gallery/rocco/3.jpeg', '/brands/gallery/rocco/4.jpeg', '/brands/gallery/rocco/5.jpeg'],
     instagram: 'rocco.com.py',
@@ -148,6 +153,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis', 'WhatsApp Directo'],
     model: 'Express pizza — locales físicos',
     heroImage: '/brands/gallery/sammys/5.jpeg',
+    cuisine: 'Pizza express estilo New York',
     galleryCount: 5,
     galleryImages: ['/brands/gallery/sammys/1.jpeg', '/brands/gallery/sammys/2.jpeg', '/brands/gallery/sammys/3.jpeg', '/brands/gallery/sammys/4.jpeg', '/brands/gallery/sammys/5.jpeg'],
     instagram: 'sammysexpresspizza',
@@ -178,6 +184,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis', 'Uber Eats'],
     model: 'Híbrido — dark-kitchens + local físico',
     heroImage: '/brands/gallery/pastabox/2.jpeg',
+    cuisine: 'Pasta artesanal para delivery',
     galleryCount: 5,
     galleryImages: ['/brands/gallery/pastabox/1.jpeg', '/brands/gallery/pastabox/2.jpeg', '/brands/gallery/pastabox/3.jpeg', '/brands/gallery/pastabox/4.jpeg', '/brands/gallery/pastabox/5.jpeg'],
     instagram: 'pastaboxpy',
@@ -210,6 +217,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis'],
     model: 'Híbrido — dark-kitchen + local físico',
     heroImage: '/brands/gallery/mr-chow/2.jpeg',
+    cuisine: 'Gastronomía oriental',
     galleryCount: 5,
     galleryImages: ['/brands/gallery/mr-chow/1.jpeg', '/brands/gallery/mr-chow/2.jpeg', '/brands/gallery/mr-chow/3.jpeg', '/brands/gallery/mr-chow/4.jpeg', '/brands/gallery/mr-chow/5.jpeg'],
     instagram: 'mrchowpy',
@@ -240,6 +248,7 @@ export const BRANDS: Brand[] = [
     deliveryPlatforms: ['PedidosYa', 'Monchis', 'WhatsApp Directo'],
     model: 'Delivery-first — cocina centralizada',
     heroImage: '/brands/gallery/barrio-pizzero/4.jpeg',
+    cuisine: 'Pizza de barrio para delivery',
     galleryCount: 5,
     galleryImages: ['/brands/gallery/barrio-pizzero/1.jpeg', '/brands/gallery/barrio-pizzero/2.jpeg', '/brands/gallery/barrio-pizzero/3.jpeg', '/brands/gallery/barrio-pizzero/4.jpeg', '/brands/gallery/barrio-pizzero/5.jpeg'],
     instagram: 'barriopizzero',

@@ -6,7 +6,7 @@
 
 ## OVERVIEW
 
-**Current Version:** v3.0.0
+**Current Version:** v3.1.0
 **Live:** https://www.omniprise.com.py
 **Tech Stack:** Next.js 15, React 19, TypeScript, Tailwind CSS 4, Framer Motion, next-intl, Resend
 
@@ -31,6 +31,7 @@
 | -- | v2.9.0 | Testing (Playwright, axe) and WCAG AA fixes | April 7 |
 | -- | v2.10.0 | Formspree → Resend migration | April 8 |
 | -- | v3.0.0 | "Omniprise 3.0" redesign: single dark theme, photo-led homepage, brand/franchise page upgrades, /proveedores, /prensa, /terminos, /cookies, privacy hardening | August 18 |
+| -- | v3.1.0 | /agent reference page (ES/EN), /llms.txt, AI-crawler robots policy, richer JSON-LD, E2E privacy guard | August 18 |
 
 ---
 
@@ -45,6 +46,7 @@
 | `/proveedores` | Supplier proposal form (posts to /api/suppliers → Resend) |
 | `/prensa` | Press page — boilerplate, key figures, contact (assets on request only) |
 | `/terminos`, `/cookies` | Legal pages |
+| `/agent`, `/llms.txt` | Static reference for people, search engines and AI assistants (not in nav) |
 | `/privacidad` | Privacy policy (Spanish, Paraguay law) |
 
 ---
