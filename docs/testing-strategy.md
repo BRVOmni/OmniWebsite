@@ -5,7 +5,7 @@
 | Layer | Tool | Coverage |
 |---|---|---|
 | Unit | Vitest | Zod schema validation (28 tests), utility functions (18 tests) |
-| Component | Vitest + React Testing Library | ContactForm (6), WorkModal (8), ThemeToggle (6), BackToTop (4) |
+| Component | Vitest + React Testing Library | ContactForm (6), WorkModal (8), BackToTop (4) |
 | E2E | Playwright (Chromium) | Homepage (4), brand pages (16), franchise form (5), navigation (4), accessibility (6) |
 | Accessibility | @axe-core/playwright | Automated WCAG audits on 5 pages (homepage, brand detail, franchise, apply, privacy) |
 | Visual Regression | — | Not yet implemented |
@@ -23,7 +23,6 @@
 | `utils.test.ts` | 18 | `cn()`, `getBrandBySlug()`, `whatsappOrderUrl()`, `getAllBrandSlugs()`, BRANDS data integrity |
 | `contact-form.test.tsx` | 6 | ContactForm render, validation, submit, error states |
 | `work-modal.test.tsx` | 8 | WorkModal open/close, aria-modal, Escape key, overlay click |
-| `theme-toggle.test.tsx` | 6 | ThemeToggle dark/light toggle, aria-labels, localStorage persistence |
 | `back-to-top.test.tsx` | 4 | BackToTop visibility, scroll behavior, accessibility |
 
 ### E2E (`Website/e2e/`)
@@ -58,7 +57,7 @@ npm run lint            # eslint with typescript-eslint, jsx-a11y, @next/plugin
 ## Test Setup
 
 - **Vitest config:** `Website/vitest.config.ts` — jsdom environment, React plugin, `@/` path alias
-- **Setup file:** `Website/src/__tests__/setup.ts` — mocks for next-intl, framer-motion, lucide-react, next/image, @vercel/analytics
+- **Setup file:** `Website/src/__tests__/setup.ts` — mocks for next-intl, framer-motion, lucide-react, next/image
 - **Playwright config:** `Website/playwright.config.ts` — Chromium only, auto-starts dev server, 2 retries in CI
 
 ## CI Integration

@@ -5,12 +5,12 @@
 
 ## Context
 
-The website is a public-facing marketing site that loads third-party resources (Google Fonts, Vercel Analytics). A CSP protects against XSS and injection attacks.
+The website is a public-facing marketing site. As of v3.0 it loads no third-party resources at all (fonts are self-hosted via `next/font`, no analytics), so the CSP is fully `'self'`-scoped. A CSP protects against XSS and injection attacks.
 
 ## Decision
 
 Implement a strict CSP via `vercel.json` headers that:
-- Restricts scripts to `'self'`, `'unsafe-inline'` (required by Next.js/Framer Motion), and Vercel Analytics
+- Restricts scripts to `'self'` and `'unsafe-inline'` (required by Next.js/Framer Motion); no third-party script hosts
 - Restricts styles to `'self'` and `'unsafe-inline'` (required by Tailwind)
 - Restricts fonts to `'self'` and Google Fonts
 - Restricts images to `'self'`, data URIs, and Vercel blob storage

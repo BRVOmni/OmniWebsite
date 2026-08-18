@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { useReveal } from '@/lib/use-reveal';
+import { ArrowRight } from 'lucide-react';
+import { Link } from '@/i18n/routing';
 import { ContactForm } from './ContactForm';
 
 export function PartnersSection() {
@@ -11,7 +13,7 @@ export function PartnersSection() {
 
   return (
     <section id="contacto" className="py-24 md:py-36 px-6 md:px-12 bg-surface-900 border-t border-border-subtle">
-      <div ref={ref} className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-28 items-center">
+      <div ref={ref} className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-start">
         {/* Left */}
         <div>
           <motion.div
@@ -61,6 +63,21 @@ export function PartnersSection() {
               info@omniprise.com.py
             </a>
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.25 }}
+            className="mt-8"
+          >
+            <Link
+              href="/proveedores"
+              className="group inline-flex items-center gap-2 h-11 px-6 rounded-full text-sm text-text-secondary hover:text-text-primary border border-border-medium hover:border-border-strong transition-all duration-200 hover:-translate-y-0.5"
+            >
+              {t('supplierCta')}
+              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+            </Link>
+          </motion.div>
         </div>
 
         {/* Right — Contact Form */}
@@ -68,7 +85,7 @@ export function PartnersSection() {
           initial={{ opacity: 0, y: 24 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.25 }}
-          className="md:border-l md:border-border-subtle md:pl-16"
+          className="rounded-card border border-border-subtle bg-surface-800 p-6 md:p-7"
         >
           <ContactForm />
         </motion.div>

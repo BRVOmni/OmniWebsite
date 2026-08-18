@@ -4,8 +4,8 @@
       "title": "Omniprise — Gastronomic Brands Platform",
       "description": "Omniprise is a food service operator created to develop, operate, and integrate high-impact brands in Paraguay.",
       "ogTitle": "Omniprise — Gastronomic Brands Platform",
-      "ogDescription": "Food service operator with 7 brands, 17 locations, and presence in 6 cities.",
-      "twitterDescription": "Food service operator with 7 brands, 17 locations, and presence in 6 cities in Paraguay."
+      "ogDescription": "Food service operator with 7+ brands, 17 locations, and presence in 6 cities.",
+      "twitterDescription": "Food service operator with 7+ brands, 17 locations, and presence in 6 cities in Paraguay."
     },
     "franchise": {
       "title": "Franchises — Omniprise",
@@ -21,7 +21,7 @@
     },
     "privacidad": {
       "title": "Privacy Policy — Omniprise",
-      "description": "Privacy policy and personal data protection of Omniprise S.A."
+      "description": "Privacy policy and personal data protection of Omniprise."
     }
   },
   "layout": {
@@ -33,7 +33,6 @@
     "franquicia": "Franchise",
     "vision": "Vision",
     "contacto": "Contact",
-    "employees": "Employees",
     "whatsappCta": "Try our dishes",
     "workTogether": "Let's work together"
   },
@@ -48,7 +47,15 @@
     "ctaBrands": "Our brands",
     "ctaFranchise": "Become a Franchisee →",
     "ctaKnowMore": "Learn more",
-    "scrollDown": "Scroll down"
+    "scrollDown": "Scroll down",
+    "chipLocationsValue": "17",
+    "chipLocationsLabel": "active locations in Greater Asunción",
+    "chipBrandsValue": "7+",
+    "chipBrandsLabel": "brands in portfolio",
+    "mosaicAlt1": "Wok over open flame at Mr. Chow",
+    "mosaicAlt2": "Pizza being prepared at El Club de los Condenados",
+    "mosaicAlt3": "Dishes at UFO",
+    "mosaicLabel": "Brand photography"
   },
   "statement": {
     "line1": "Omniprise is a food service",
@@ -61,13 +68,27 @@
     "p1": "Combining physical restaurants, dark kitchens, delivery, and mass consumption channels. Founded in late 2024, Omniprise accelerated its development throughout 2025 and took a ",
     "p1Bold": "strategic leap on January 1, 2026",
     "p2": ", incorporating well-established brands into its portfolio through acquisition — consolidating as an ",
-    "p2Bold": "actively expanding group."
+    "p2Bold": "actively expanding group.",
+    "tl1Date": "Late 2024",
+    "tl1Strong": "Omniprise is born",
+    "tl1Text": " — a platform to develop, operate and integrate brands.",
+    "tl2Date": "2025",
+    "tl2Strong": "Own brands:",
+    "tl2Text": " UFO (March), Rocco Pasta Bar (October), El Club de los Condenados (December).",
+    "tl3Date": "Jan 1, 2026",
+    "tl3Strong": "Acquisition and integration",
+    "tl3Text": " of Sammy's, PastaBox, Mr. Chow and Barrio Pizzero.",
+    "tl4Date": "2026 →",
+    "tl4Strong": "Expansion:",
+    "tl4Text": " El Club de los Condenados already runs 11 dark kitchens; Mr. Chow adds 4 dark kitchens to its store; Rocco plans 8 dark kitchens and shopping-mall locations; new own concepts in development and the franchise programme underway."
   },
   "stats": {
     "brands": "Brands in portfolio",
     "locations": "Active locations",
     "team": "Team members",
-    "growth": "Projected growth 2026"
+    "growth": "Projected growth 2026",
+    "brandsNote": "and new concepts in development",
+    "logoStripLabel": "Group brands"
   },
   "pillars": {
     "eyebrow": "Our logic",
@@ -91,8 +112,20 @@
     "eyebrow": "Portfolio",
     "heading1": "Our",
     "heading2": "Brands.",
-    "description": "7 active brands in 6 cities. From high-impact thematic experiences to high-turnover kitchens.",
-    "orderWhatsApp": "Order via WhatsApp"
+    "description": "7+ brands in portfolio, 6 cities — and new concepts always in development. From high-impact thematic experiences to high-turnover kitchens.",
+    "orderWhatsApp": "Order via WhatsApp",
+    "viewBrand": "View brand",
+    "order": "Order",
+    "nextEyebrow": "Coming soon",
+    "nextHeading1": "The next brand",
+    "nextHeading2": "is already on its way.",
+    "nextText": "We develop our own concepts continuously. The next one is ready to launch — and the portfolio keeps growing.",
+    "nextBadge": "New concept · 2026",
+    "acqEyebrow": "Acquisition & integration",
+    "acqHeading1": "Your brand,",
+    "acqHeading2": "in the group?",
+    "acqText": "We bring in brands with proven traction and integrate them into our operating platform to accelerate their growth.",
+    "acqCta": "Let's talk"
   },
   "vision": {
     "eyebrow": "Vision 2026 — 2027",
@@ -110,7 +143,8 @@
     "paragraphPrefix": "Omniprise doesn't seek transactional suppliers. We seek ",
     "paragraphBold": "partners who grow alongside an expanding platform",
     "paragraphSuffix": ", with growing volume, constant visibility, and real projection.",
-    "emailPrefix": "You can also write to us directly at"
+    "emailPrefix": "You can also write to us directly at",
+    "supplierCta": "Are you a supplier? Submit your proposal"
   },
   "contact": {
     "nameLabel": "Name",
@@ -134,7 +168,9 @@
     "heading2": "business.",
     "description": "Operate a proven gastronomic brand with full backing in operations, technology, and marketing.",
     "ctaApply": "Apply for Franchise",
-    "ctaKnowMore": "Learn more"
+    "ctaKnowMore": "Learn more",
+    "firstFranchise": "Complete the application in under 5 minutes — we get back to you within 24 business hours.",
+    "proofLabel": "Hear from those who already invested with the group"
   },
   "footer": {
     "nosotros": "About",
@@ -143,7 +179,11 @@
     "franquicia": "Franchise",
     "contacto": "Contact",
     "copyright": "© 2026 Omniprise. Asunción, Paraguay.",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "proveedores": "Suppliers",
+    "prensa": "Press",
+    "terms": "Terms",
+    "cookies": "Cookies"
   },
   "backToTop": {
     "ariaLabel": "Back to top"
@@ -187,7 +227,11 @@
     "ctaDescription": "Operate {brandName} with the full backing of Omniprise. Technology, training, marketing, and supply chain from day one.",
     "ctaWhatsApp": "Try our dishes",
     "ctaFranchise": "Apply for Franchise",
-    "ctaBackToBrands": "View all brands"
+    "ctaBackToBrands": "View all brands",
+    "relatedEyebrow": "More group brands",
+    "relatedHeadingPrefix": "You may also",
+    "relatedHeadingHighlight": "like.",
+    "relatedCta": "View brand"
   },
   "franchisePage": {
     "heroEyebrow": "Omniprise Franchises",
@@ -216,7 +260,7 @@
     "benefitTitle6": "Marketing",
     "benefitDesc6": "Centralized marketing strategy with content, campaigns, and digital presence included.",
     "brandsEyebrow": "Our Portfolio",
-    "brandsHeading1": "7",
+    "brandsHeading1": "7+",
     "brandsHeading2": "proven",
     "brandsHeading3": "brands",
     "processEyebrow": "The Path",
@@ -238,7 +282,7 @@
     "faqHeadingPrefix": "Everything",
     "faqHeadingHighlight": "people ask",
     "faq1Q": "What types of brands do you franchise?",
-    "faq1A": "We offer 7 proven gastronomic brands: UFO, Mr. Chow, Rocco, PastaBox, Sammy's Express Pizza, Barrio Pizzero, and Los Condenados. Each has a unique concept and validated operational model.",
+    "faq1A": "We offer 7+ proven gastronomic brands: UFO, Mr. Chow, Rocco, PastaBox, Sammy's Express Pizza, Barrio Pizzero, and El Club de los Condenados. Each has a unique concept and validated operational model.",
     "faq2Q": "What is the initial investment?",
     "faq2A": "Investment varies by brand and location. It includes franchise fee, equipment, training, and working capital. We present detailed projections during the evaluation process.",
     "faq3Q": "Do I need gastronomy experience?",
@@ -253,7 +297,10 @@
     "ctaHeadingHighlight": "start",
     "ctaHeadingSuffix": "?",
     "ctaDescription": "Complete the application in under 5 minutes. Our team will contact you within 24 business hours.",
-    "ctaButton": "Start Application"
+    "ctaButton": "Start Application",
+    "proofEyebrow": "Our franchisees",
+    "proofHeadingPrefix": "Hear from those who already",
+    "proofHeadingHighlight": "invested with the group."
   },
   "franchiseApply": {
     "backLink": "Back to Franchises",
@@ -358,9 +405,9 @@
     "eyebrow": "Legal",
     "headingPrefix": "Privacy",
     "headingHighlight": "Policy",
-    "lastUpdated": "Last updated: March 2026",
+    "lastUpdated": "Last updated: August 2026",
     "section1Heading": "1. Data Controller",
-    "section1Body": "The data controller for personal data collected through this website is Omniprise S.A., based in Asunción, Paraguay. You can contact us at info@omniprise.com.py.",
+    "section1Body": "The controller of the personal data collected through this website is Omniprise, domiciled in the city of Asunción, Paraguay. You can contact us at info@omniprise.com.py.",
     "section2Heading": "2. Data We Collect",
     "section2Intro": "We collect personal data that you voluntarily provide through our website forms:",
     "section2Item1": "Contact form: name, email, company, and message.",
@@ -369,11 +416,11 @@
     "section3Intro": "We use your personal data exclusively to:",
     "section3Item1": "Respond to inquiries made through the contact form.",
     "section3Item2": "Evaluate franchise applications and contact potential candidates.",
-    "section3Item3": "Send relevant information about the franchise process when requested.",
+    "section3Item3": "Send relevant information about the franchise or supplier onboarding process when you have requested it.",
     "section4Heading": "4. Legal Basis",
     "section4Body": "The processing of your data is based on your express consent when submitting our forms. This consent is free, prior, and informed, in accordance with the National Constitution of Paraguay (Art. 33) on the right to privacy, Law No. 4868/2013 on Electronic Commerce, and general data protection principles in force in the Republic of Paraguay.",
     "section5Heading": "5. Third Parties with Data Access",
-    "section5Body1": "Forms on this site are processed by Formspree, a form processing service based in the United States. Data submitted through forms is transmitted to Formspree servers for subsequent forwarding to our corporate email. Formspree complies with internationally recognized security and privacy standards.",
+    "section5Body1": "To deliver form submissions and manage requests we use technology service providers acting on behalf of Omniprise, under confidentiality obligations and with internationally recognised security standards. These providers only process data to the extent necessary to provide the service to us.",
     "section5Body2": "We do not sell, rent, or share your personal data with third parties for commercial purposes.",
     "section6Heading": "6. Data Retention",
     "section6Body": "We retain your personal data for as long as necessary to fulfill the purpose for which it was collected. Franchise applications are retained for a maximum of 2 years from receipt, unless you request deletion beforehand.",
@@ -388,13 +435,132 @@
     "section8Heading": "8. Security",
     "section8Body": "We implement reasonable technical and organizational measures to protect your personal data against unauthorized access, loss, destruction, or alteration. Our website uses HTTPS encryption for data transmission.",
     "section9Heading": "9. Navigation Data",
-    "section9Body": "We use Vercel Analytics to collect anonymous and aggregated navigation data (pages visited, time spent, general region). This information does not personally identify the user and is used exclusively to improve the browsing experience on our site.",
+    "section9Body": "This site currently uses no analytics tools or tracking cookies. If we add anonymous, aggregated navigation measurement in the future, we will update this policy and our Cookie Policy.",
     "section10Heading": "10. Modifications",
     "section10Body": "We reserve the right to modify this privacy policy at any time. Changes will take effect upon publication on this website. We recommend reviewing this page periodically.",
     "section11Heading": "11. Contact",
     "section11Intro": "For any questions related to this privacy policy or the processing of your personal data, you can contact us at:",
-    "section11Company": "Omniprise S.A.",
+    "section11Company": "Omniprise",
     "section11Location": "Asunción, Paraguay",
-    "section11EmailLabel": "Email:"
+    "section11EmailLabel": "Email:",
+    "section2Item3": "Supplier form: company name, tax ID (RUC), category, coverage, contact person, email, phone and proposal."
+  },
+  "testimonial": {
+    "quote": "What I value most is the end-to-end support: from the evaluation and the opening to the day-to-day of the store. Every stage had an owner, a plan and a fast response. That's how you enjoy building a business.",
+    "role": "Franchisee",
+    "meta": "Omniprise Group · testimonial collected and approved in writing",
+    "verified": "Verified testimonial",
+    "logoAlt": "Rocco Pasta Bar"
+  },
+  "suppliersPage": {
+    "eyebrow": "Suppliers",
+    "headingPrefix": "Supply the brands",
+    "headingHighlight": "growing in Paraguay.",
+    "intro": "Omniprise centralizes purchasing, processes and standards for 7+ brands and 17 active locations. We are not looking for transactional suppliers: we look for partners that grow alongside an expanding platform, with growing volume, constant visibility and real projection.",
+    "why1Title": "Centralized purchasing",
+    "why1Text": "One counterpart for every brand in the group. Consolidated, predictable volume.",
+    "why2Title": "Long-term relationship",
+    "why2Text": "Agreements designed to grow with us as we open new kitchens and locations.",
+    "why3Title": "Direct relationship",
+    "why3Text": "Direct contact with the purchasing and operations team. No intermediaries.",
+    "why4Title": "Clear standards",
+    "why4Text": "Specifications, quality controls and processes defined from the first order.",
+    "emailPrefix": "Prefer to write to us directly? Send your proposal to",
+    "formHeading": "Tell us what you offer",
+    "formIntro": "Fill in the form and the purchasing team will get in touch.",
+    "companyLabel": "Company name",
+    "companyPlaceholder": "Legal name",
+    "rucLabel": "Tax ID (RUC)",
+    "rucPlaceholder": "80012345-6",
+    "categoryLabel": "Category",
+    "categoryPlaceholder": "Select a category",
+    "category_meat": "Meat & cold cuts",
+    "category_dairy": "Cheese & dairy",
+    "category_produce": "Fruit & vegetables",
+    "category_dry": "Flour, grains & dry goods",
+    "category_beverages": "Beverages",
+    "category_packaging": "Packaging & disposables",
+    "category_equipment": "Kitchen equipment",
+    "category_tech": "Technology & software",
+    "category_services": "Services (cleaning, maintenance, logistics)",
+    "category_other": "Other",
+    "coverageLabel": "Coverage",
+    "coveragePlaceholder": "E.g.: Greater Asunción, nationwide",
+    "contactLabel": "Contact person",
+    "contactPlaceholder": "Full name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "contact@company.com",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "+595 9xx xxx xxx",
+    "messageLabel": "Proposal",
+    "messagePlaceholder": "Tell us which products or services you offer, volumes, certifications…",
+    "submit": "Send proposal",
+    "submitting": "Sending...",
+    "error": "Something went wrong. Try again or write to info@omniprise.com.py",
+    "successTitle": "Proposal received",
+    "successMessage": "Thank you. The purchasing team will review it and get back to you shortly."
+  },
+  "terminosPage": {
+    "eyebrow": "Legal",
+    "headingPrefix": "Terms and",
+    "headingHighlight": "Conditions",
+    "lastUpdated": "Last updated: August 2026",
+    "s1Heading": "1. Acceptance of the terms",
+    "s1Body": "Accessing and using www.omniprise.com.py (the “Site”), operated by Omniprise (Asunción, Paraguay), implies full acceptance of these Terms and Conditions. If you do not agree with them, please do not use the Site.",
+    "s2Heading": "2. Purpose of the Site",
+    "s2Body": "The Site is informational and corporate: it presents the group's brands, its business model, franchise opportunities and contact channels for partners, suppliers and press. Food orders are handled through WhatsApp and each brand's delivery platforms, not through the Site.",
+    "s3Heading": "3. Franchise information",
+    "s3Body": "Franchise information published on the Site is general in nature and does not constitute a binding offer or a promise of results. Commercial terms, investments and projections are communicated individually during the evaluation process and are formalized only through a written contract.",
+    "s4Heading": "4. Intellectual property",
+    "s4Body": "The names, logos, images, texts and other content on the Site — including those of UFO, El Club de los Condenados, Rocco Pasta Bar, Sammy's Express Pizza, PastaBox, Mr. Chow and Barrio Pizzero — are the property of Omniprise or their respective owners and are protected by intellectual property law. Reproduction or use without prior written authorization is prohibited, including press materials, which are provided only on request and under the usage guidelines communicated by the marketing team.",
+    "s5Heading": "5. Permitted use",
+    "s5Body": "You agree to use the Site lawfully and not to take actions that could damage, overload or impair its operation, nor to use the contact forms to send false, offensive or unsolicited content.",
+    "s6Heading": "6. Third-party links",
+    "s6Body": "The Site may contain links to third-party sites and services (e.g. WhatsApp, delivery platforms or social networks). Omniprise does not control and is not responsible for their content, policies or operation.",
+    "s7Heading": "7. Limitation of liability",
+    "s7Body": "Omniprise strives to keep the Site's information accurate and up to date, but does not guarantee the absence of errors or omissions or uninterrupted availability. To the extent permitted by law, Omniprise shall not be liable for damages arising from the use of, or inability to use, the Site.",
+    "s8Heading": "8. Governing law and contact",
+    "s8Body": "These Terms are governed by the laws of the Republic of Paraguay. Any dispute shall be submitted to the ordinary courts of the city of Asunción. You can write to info@omniprise.com.py with any questions about these Terms."
+  },
+  "cookiesPage": {
+    "eyebrow": "Legal",
+    "headingPrefix": "Cookie",
+    "headingHighlight": "Policy",
+    "lastUpdated": "Last updated: August 2026",
+    "s1Heading": "1. What cookies are",
+    "s1Body": "Cookies are small files a website stores on your device to remember information between visits. Alongside cookies, some sites use the browser's local storage for similar purposes.",
+    "s2Heading": "2. What this Site uses",
+    "s2Intro": "www.omniprise.com.py uses only technical storage required for it to work:",
+    "s2Item1": "A language cookie: remembers whether you prefer to view the Site in Spanish or English.",
+    "s2Item2": "Franchise form local storage: saves your application progress in your browser so you don't lose it if you close the page. This information is not sent until you submit the application.",
+    "s2Item3": "Strictly technical cookies required to serve the Site securely.",
+    "s3Heading": "3. What we do NOT use",
+    "s3Body": "The Site currently uses no analytics, advertising, cross-site tracking or behavioural profiling cookies. If we add measurement tools in the future, we will update this policy and, where required, ask for your prior consent.",
+    "s4Heading": "4. How to manage them",
+    "s4Body": "You can delete or block cookies and local storage from your browser settings. If you block technical storage the Site will keep working, but it will not remember your preferred language or your franchise form progress.",
+    "s5Heading": "5. Contact",
+    "s5Body": "For any question about this policy write to info@omniprise.com.py. For more information on personal data processing, see our Privacy Policy."
+  },
+  "prensaPage": {
+    "eyebrow": "Press",
+    "headingPrefix": "Press",
+    "headingHighlight": "kit.",
+    "intro": "Official information for media and partners: group description, key figures and press contact. Logos and brand assets are provided on request through the marketing team.",
+    "boilerplateHeading": "About Omniprise",
+    "boilerplate": "Omniprise is a Paraguayan food service operator created in late 2024 to develop, operate and integrate high-impact brands. It combines physical restaurants, dark kitchens, delivery and mass-consumption channels. Its portfolio includes own brands — UFO, Rocco Pasta Bar and El Club de los Condenados — and brands acquired and integrated on January 1, 2026: Sammy's Express Pizza, PastaBox, Mr. Chow and Barrio Pizzero. Headquartered in Asunción, the group operates 17 physical locations, a network of dark kitchens across Greater Asunción and a team of more than 135 people.",
+    "factsHeading": "Key figures",
+    "fact1Value": "7+",
+    "fact1Label": "Brands",
+    "fact2Value": "17",
+    "fact2Label": "Locations",
+    "fact3Value": "135+",
+    "fact3Label": "Team members",
+    "fact4Value": "6",
+    "fact4Label": "Cities",
+    "contactHeading": "Press contact",
+    "contactText": "Interviews, articles, media enquiries and asset requests: write to us and we'll get back to you shortly.",
+    "materialsHeading": "Brand assets",
+    "materialsText": "Logos, photography and brand pieces are provided exclusively on request and under each brand's usage guidelines. Write to us stating the outlet, the piece and the intended use, and the marketing team will send you the corresponding material.",
+    "materialsCta": "Request assets"
   }
 }

@@ -66,9 +66,9 @@ describe('ContactForm', () => {
 
   it('disables submit button during submission', async () => {
     // Use a promise we control to avoid long waits
-    let resolveFetch!: (value: unknown) => void;
+    let resolveFetch!: (value: Response | PromiseLike<Response>) => void;
     vi.spyOn(globalThis, 'fetch').mockImplementation(
-      () => new Promise((resolve) => { resolveFetch = resolve; }),
+      () => new Promise<Response>((resolve) => { resolveFetch = resolve; }),
     );
 
     const user = userEvent.setup();
@@ -83,6 +83,6 @@ describe('ContactForm', () => {
     expect(screen.getByRole('button')).toBeDisabled();
 
     // Resolve fetch to clean up
-    resolveFetch({ ok: true });
+    resolveFetch({ ok: true } as Response);
   });
 });

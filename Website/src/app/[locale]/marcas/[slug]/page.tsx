@@ -7,6 +7,7 @@ import { BrandStats } from '@/components/brand-detail/BrandStats';
 import { BrandGallery } from '@/components/brand-detail/BrandGallery';
 import { BrandPresence } from '@/components/brand-detail/BrandPresence';
 import { BrandCTA } from '@/components/brand-detail/BrandCTA';
+import { BrandRelated } from '@/components/brand-detail/BrandRelated';
 
 interface BrandPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -100,17 +101,32 @@ export default async function BrandPage({ params }: BrandPageProps) {
     },
   };
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Omniprise', item: isEn ? `${baseUrl}/en` : baseUrl },
+      { '@type': 'ListItem', position: 2, name: isEn ? 'Brands' : 'Marcas', item: isEn ? `${baseUrl}/en#marcas` : `${baseUrl}#marcas` },
+      { '@type': 'ListItem', position: 3, name: brand.name, item: pageUrl },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       <BrandHero brand={brand} />
       <BrandStory brand={brand} />
       <BrandStats brand={brand} />
       <BrandGallery brand={brand} />
       <BrandPresence brand={brand} />
+      <BrandRelated brand={brand} />
       <BrandCTA brand={brand} />
     </>
   );

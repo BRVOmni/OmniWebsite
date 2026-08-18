@@ -6,9 +6,9 @@
 
 ## OVERVIEW
 
-**Current Version:** v2.8.0
+**Current Version:** v3.0.0
 **Live:** https://www.omniprise.com.py
-**Tech Stack:** Next.js 15, React 19, TypeScript, Tailwind CSS 4, Framer Motion, Vercel Analytics
+**Tech Stack:** Next.js 15, React 19, TypeScript, Tailwind CSS 4, Framer Motion, next-intl, Resend
 
 ### Completed Phases
 
@@ -28,6 +28,9 @@
 | -- | v2.7.1 | Fix duplicate main tag on franchise page | April 3 |
 | -- | v2.7.2 | Fix hero scroll indicator overlapping CTA buttons on mobile | April 6 |
 | -- | v2.8.0 | Multi-language support (Spanish + English) with next-intl | April 6 |
+| -- | v2.9.0 | Testing (Playwright, axe) and WCAG AA fixes | April 7 |
+| -- | v2.10.0 | Formspree → Resend migration | April 8 |
+| -- | v3.0.0 | "Omniprise 3.0" redesign: single dark theme, photo-led homepage, brand/franchise page upgrades, /proveedores, /prensa, /terminos, /cookies, privacy hardening | August 18 |
 
 ---
 
@@ -38,7 +41,10 @@
 | `/` | Homepage -- Hero, Statement, Stats, Pillars, Brands, Vision, Partners (contact form), Franchise CTA |
 | `/marcas/[slug]` | Brand detail pages -- Hero, Story, Stats, Gallery, Presence, CTA (7 brands, SSG) |
 | `/franchise` | Franchise landing -- Benefits, Brands, Process, FAQ, CTA |
-| `/franchise/apply` | 4-step application form (submits to Formspree) |
+| `/franchise/apply` | 4-step application form (posts to /api/franchise → Resend + dashboard sync) |
+| `/proveedores` | Supplier proposal form (posts to /api/suppliers → Resend) |
+| `/prensa` | Press page — boilerplate, key figures, contact (assets on request only) |
+| `/terminos`, `/cookies` | Legal pages |
 | `/privacidad` | Privacy policy (Spanish, Paraguay law) |
 
 ---
@@ -73,10 +79,9 @@ Website/
 │   │   ├── VisionSection.tsx
 │   │   ├── PartnersSection.tsx     # Includes ContactForm at #contacto
 │   │   ├── FranchiseSection.tsx    # Franchise CTA teaser
-│   │   ├── ContactForm.tsx         # Formspree contact form
+│   │   ├── ContactForm.tsx         # Contact form (Resend via /api/contact)
 │   │   ├── WorkModal.tsx
 │   │   ├── BackToTop.tsx
-│   │   ├── ThemeToggle.tsx         # Light/dark mode toggle
 │   │   ├── ReducedMotionProvider.tsx
 │   │   ├── ScrollTracker.tsx
 │   │   ├── Footer.tsx
@@ -98,7 +103,7 @@ Website/
 │       ├── brands.ts               # Brand data + helpers (single source of truth)
 │       ├── franchise-schema.ts     # Zod schemas for franchise form
 │       ├── use-reveal.ts           # IntersectionObserver scroll reveal
-│       ├── use-scroll-depth.ts     # Scroll depth tracking
+│       ├── use-active-link.ts      # Route + scroll-spy active state
 │       └── utils.ts                # cn() utility
 ├── public/
 │   ├── brands/                     # 7 brand logos (WebP)

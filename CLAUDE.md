@@ -35,8 +35,8 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 - Translation files: `Website/src/messages/es.json`, `Website/src/messages/en.json`
 
 ### Styling
-- Dark/light theme system with sky blue accent (#0ea5e9 dark, #0369a1 light)
-- Theme toggle persists preference in localStorage, respects system preference
+- Single dark theme (v3.0, Aug 2026): cool "ink" surfaces (`--color-surface-*`) with sky blue accent (#0ea5e9). No light theme, no theme toggle, no `data-theme` attribute — do not reintroduce them
+- Dark-on-transparent brand logos use the `.logo-invert` class (driven by `logoColor: 'dark'` in `brands.ts`); other logos render as-is
 - Use Tailwind utilities only — no inline styles
 - `cn()` utility from `@/lib/utils` for conditional classes (clsx + tailwind-merge)
 
@@ -56,13 +56,14 @@ Grupo Omniprise corporate website — a food service operator in Paraguay with 7
 | File | Purpose |
 |---|---|
 | `Website/src/lib/brands.ts` | All brand data, WhatsApp URL helper, brand slugs |
-| `Website/src/lib/franchise-schema.ts` | Zod schemas for 4-step franchise form |
+| `Website/src/lib/franchise-schema.ts` | Zod schemas for the 4-step franchise form, contact form and supplier form |
 | `Website/src/app/api/contact/route.ts` | Contact form API route (Resend email) |
-| `Website/src/app/api/franchise/route.ts` | Franchise form API route (Resend email) |
-| `Website/src/app/layout.tsx` | Root layout (fonts, theme script, ReducedMotionProvider) |
+| `Website/src/app/api/franchise/route.ts` | Franchise form API route (Resend email + dashboard sync) |
+| `Website/src/app/api/suppliers/route.ts` | Supplier form API route (Resend email) |
+| `Website/src/app/layout.tsx` | Root layout (fonts, ReducedMotionProvider) |
 | `Website/src/app/[locale]/layout.tsx` | Locale layout (NextIntlClientProvider, Navbar, Footer) |
 | `Website/src/app/[locale]/page.tsx` | Homepage composing all sections |
-| `Website/src/app/globals.css` | Tailwind config, design tokens, custom animations, light/dark theme tokens |
+| `Website/src/app/globals.css` | Tailwind config, design tokens (surfaces, text, borders, radii, shadows, motion), custom animations |
 | `Website/src/messages/es.json` | Spanish translations (~400 strings) |
 | `Website/src/messages/en.json` | English translations (~400 strings) |
 | `Website/src/i18n/routing.ts` | Locale config (es, en) and routing |
@@ -85,7 +86,9 @@ Spanish (default, no prefix) and English (`/en` prefix). All routes exist in bot
 | `/marcas/[slug]` and `/en/marcas/[slug]` | SSG | 7 brand detail pages |
 | `/franchise` and `/en/franchise` | SSR | Franchise landing |
 | `/franchise/apply` and `/en/franchise/apply` | Client | 4-step application form |
-| `/privacidad` and `/en/privacidad` | SSR | Privacy policy |
+| `/proveedores` and `/en/proveedores` | Client | Supplier proposal form (posts to `/api/suppliers`) |
+| `/prensa` and `/en/prensa` | SSG | Press page (boilerplate, key figures, press contact — brand assets only on request, never downloadable) |
+| `/privacidad`, `/terminos`, `/cookies` (+ `/en/…`) | SSR | Legal pages (privacy, terms, cookies) |
 
 ## Testing
 
@@ -93,7 +96,7 @@ Spanish (default, no prefix) and English (`/en` prefix). All routes exist in bot
 - Runner: Vitest (`cd Website && npm run test`)
 - Config: `Website/vitest.config.ts` (jsdom environment, React plugin, `@/` path alias)
 - Tests live in `Website/src/__tests__/`
-- 70 tests across 6 files: schema validation (28), component tests (24), utilities (18)
+- 71 tests across 6 files: schema validation (35), component tests (18), utilities (18)
 - Setup file: `Website/src/__tests__/setup.ts` (mocks for next-intl, framer-motion, lucide-react, next/image)
 
 ### E2E Tests

@@ -1,6 +1,6 @@
 # Omniprise — Website Documentation
 
-**Version 2.8.0 | Next.js 15 | April 2026**
+**Version 3.0.0 | Next.js 15 | August 2026**
 
 > All audit issues resolved. See [`docs/audits/AUDIT_2026-03-28.md`](../docs/audits/AUDIT_2026-03-28.md) for the full history.
 
@@ -14,7 +14,9 @@
 - Next.js 15 with TypeScript and Tailwind CSS 4
 - Multi-language support (Spanish default at `/`, English at `/en`) via next-intl
 - 15+ React components with framer-motion animations
-- Dark + colorful hybrid design with light/dark theme toggle (sky blue #0ea5e9 accents)
+- Single dark theme — cool ink surfaces with sky blue #0ea5e9 accents (light/dark toggle removed in v3.0)
+- Photo-led homepage (hero mosaic, trust bar, logo strip, photo brand cards, franchise block with verified testimonial)
+- Supplier page (`/proveedores`), press page (`/prensa`, assets on request), terms and cookie policy pages
 - Real WebP brand logos for 7 brands
 - Gallery with lightbox (35 photos, 5 per brand, touch swipe + keyboard nav)
 - Franchise section with multi-step form (Zod-validated, auto-save to localStorage)
@@ -23,8 +25,7 @@
 - Privacy policy page (Paraguay law compliant)
 - Dynamic sitemap with hreflang alternates + robots.txt generated from brand data
 - Open Graph meta tags + dynamic OG images
-- Vercel Analytics with custom event tracking
-- Scroll depth tracking (25%, 50%, 75%, 90%)
+- No analytics or tracking scripts (privacy-first; decision Aug 2026)
 - Gallery skeleton loading with brand-colored placeholders
 - Vercel deployment from GitHub
 
@@ -191,7 +192,7 @@ npx vercel --prod
 | lucide-react | 0.577 | Icons |
 | clsx + tailwind-merge | latest | Class utilities |
 | zod | 4.x | Form validation |
-| @vercel/analytics | latest | Analytics + custom events |
+| resend | 6.x | Transactional email for the contact, franchise and supplier forms |
 
 ---
 
@@ -226,9 +227,13 @@ Website/
 │   │   ├── Footer.tsx           # Footer with navigation links
 │   │   ├── WorkModal.tsx        # "Trabajemos juntos" modal
 │   │   ├── BackToTop.tsx        # Scroll-to-top button
-│   │   ├── ThemeToggle.tsx      # Light/dark mode toggle
-│   │   ├── ContactForm.tsx      # Contact form (Formspree)
-│   │   ├── ScrollTracker.tsx    # Client wrapper for scroll depth tracking
+│   │   ├── ContactForm.tsx      # Contact form (posts to /api/contact → Resend)
+│   │   ├── SupplierForm.tsx     # Supplier form (posts to /api/suppliers → Resend)
+│   │   ├── TrustBar.tsx         # 7+ / 17 / 135+ / 30% counters under the hero
+│   │   ├── LogoStrip.tsx        # Static full-colour brand logo row
+│   │   ├── Testimonial.tsx      # Verified franchisee testimonial card
+│   │   ├── LegalArticle.tsx     # Shared layout for legal pages
+│   │   ├── PressKit.tsx         # Press page (assets on request)
 │   │   ├── ReducedMotionProvider.tsx # framer-motion reduced-motion wrapper
 │   │   └── brand-detail/        # Brand page sub-components
 │   │       ├── BrandHero.tsx    # Brand header with logo + badge
@@ -248,7 +253,7 @@ Website/
 │       ├── brands.ts            # Canonical brand data (7 brands) + helpers
 │       ├── franchise-schema.ts  # Zod schemas for franchise (4 steps) + contact forms
 │       ├── use-reveal.ts        # Scroll-triggered reveal + counter hooks
-│       ├── use-scroll-depth.ts  # Scroll depth tracking hook
+│       ├── use-active-link.ts   # Route + scroll-spy active state for nav/footer
 │       └── utils.ts             # cn() utility
 ├── public/
 │   ├── brands/                  # 7 brand WebP logos
@@ -293,15 +298,15 @@ npm run build
 /* Brand */
 --color-omniprise-500: #0ea5e9    /* Sky blue accent */
 
-/* Surfaces (dark theme) */
---color-surface-950: #09090b      /* Deepest background */
---color-surface-900: #111110
---color-surface-800: #161614      /* Body background */
---color-surface-700: #1e1e1c
+/* Surfaces (single dark theme, cool ink neutrals) */
+--color-surface-950: #0a0c0f      /* Deepest background */
+--color-surface-900: #0f1216
+--color-surface-800: #14181d      /* Body background */
+--color-surface-700: #1b2027
 
 /* Text */
---color-text-primary: #f5f4f0
---color-text-secondary: rgba(245, 244, 240, 0.6)
+--color-text-primary: #f4f6f8
+--color-text-secondary: rgba(244, 246, 248, 0.64)
 --color-text-accent: #0ea5e9
 
 /* Borders */
@@ -385,7 +390,7 @@ Search for `@omniprise.com.py` across components to find all email references.
 - [x] Favicon + apple-touch-icon
 - [x] ESLint config (typescript-eslint flat config)
 - [x] Custom 404 page
-- [x] Analytics (Vercel Analytics)
+- [x] ~~Analytics (Vercel Analytics)~~ (removed — no tracking scripts as of v3.0)
 - [x] Contact form
 - [x] "Back to Top" button
 - [x] Brand detail pages (`/marcas/[slug]`)
@@ -402,9 +407,7 @@ Search for `@omniprise.com.py` across components to find all email references.
 - [x] Gallery with lightbox — 35 photos, keyboard + touch swipe nav
 - [x] Dynamic sitemap + robots.txt generated from brand data
 - [x] Zod validation for franchise form and contact form — Spanish error messages
-- [x] Scroll depth tracking — `scroll_depth` analytics events at 25/50/75/90%
 - [x] WhatsApp ordering CTA — navbar, brand pages, homepage cards
-- [x] Custom analytics events
 - [x] Replaced bloated FranchiseSection with lean CTA teaser
 - [x] Canonical brand data centralized in `src/lib/brands.ts`
 
@@ -424,7 +427,7 @@ Search for `@omniprise.com.py` across components to find all email references.
 
 ### Next Up
 - [x] Enable Next.js image optimization (already enabled — no `unoptimized` flag)
-- [x] Light/dark theme toggle
+- [x] ~~Light/dark theme toggle~~ (removed in v3.0 — single dark theme)
 - [x] Multi-language support (Spanish + English) via next-intl
 - [ ] Lead capture API with Supabase
 - [ ] Blog/news section for SEO
@@ -449,5 +452,5 @@ Before deploying to production:
 
 ---
 
-**Last Updated:** April 6, 2026
-**Version:** 2.8.0
+**Last Updated:** August 18, 2026
+**Version:** 3.0.0

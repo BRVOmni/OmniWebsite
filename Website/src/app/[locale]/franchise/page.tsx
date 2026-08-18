@@ -5,21 +5,18 @@ import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Link } from '@/i18n/routing';
 import { useReveal } from '@/lib/use-reveal';
+import Image from 'next/image';
 import { ArrowRight, ChevronDown } from 'lucide-react';
-import { BRANDS as CANONICAL_BRANDS } from '@/lib/brands';
-
-const FRANCHISE_BRANDS = CANONICAL_BRANDS.map((b) => ({
-  name: b.name,
-  slug: b.slug,
-  desc: b.tagline,
-}));
+import { BRANDS } from '@/lib/brands';
+import { cn } from '@/lib/utils';
+import { Testimonial } from '@/components/Testimonial';
 
 function FranchiseHero() {
   const t = useTranslations('franchisePage');
   const STATS = [
-    { value: '7', label: t('heroStatsBrands') },
+    { value: '7+', label: t('heroStatsBrands') },
     { value: '17', label: t('heroStatsLocations') },
-    { value: '135', label: t('heroStatsTeam') },
+    { value: '135+', label: t('heroStatsTeam') },
     { value: '6', label: t('heroStatsCities') },
   ];
 
@@ -62,7 +59,7 @@ function FranchiseHero() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65, duration: 0.8 }}
-          className="flex flex-col sm:flex-row items-center gap-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <Link
             href="/franchise/apply"
@@ -159,7 +156,7 @@ function BrandsSection() {
 
   return (
     <section className="py-24 md:py-32 px-6 md:px-12 bg-surface-900 border-t border-border-subtle">
-      <div ref={ref} className="max-w-[1000px] mx-auto">
+      <div ref={ref} className="max-w-[1200px] mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 24 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -178,26 +175,42 @@ function BrandsSection() {
         </motion.h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {FRANCHISE_BRANDS.map((b, i) => (
+          {BRANDS.map((b, i) => (
             <motion.div
-              key={b.name}
+              key={b.slug}
               initial={{ opacity: 0, y: 20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.1 + i * 0.06 }}
             >
               <Link
                 href={`/marcas/${b.slug}`}
-                className="block bg-surface-800 border border-border-subtle rounded-xl p-6 hover:border-omniprise-500/30 transition-colors duration-300 group"
+                className="group flex flex-col h-full overflow-hidden rounded-card border border-border-subtle bg-surface-800 transition-[transform,border-color,box-shadow] duration-500 ease-out-expo hover:-translate-y-1 hover:border-omniprise-500/35 hover:shadow-lift"
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-omniprise-500/10 flex items-center justify-center text-omniprise-500 font-display font-bold text-sm">
-                    {b.name.charAt(0)}
+                <div className="relative aspect-[16/9] overflow-hidden bg-surface-700">
+                  <Image
+                    src={b.heroImage}
+                    alt={b.name}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-1000 ease-out-expo group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-surface-800/60" aria-hidden="true" />
+                </div>
+                <div className="flex flex-col gap-2 p-5">
+                  <div className="h-11 flex items-center">
+                    <Image
+                      src={b.logo}
+                      alt={`Logo ${b.name}`}
+                      width={160}
+                      height={64}
+                      className={cn('w-auto h-auto max-w-[140px] max-h-11 object-contain object-left', b.logoColor === 'dark' && 'logo-invert')}
+                    />
                   </div>
-                  <h3 className="font-display font-bold text-sm uppercase tracking-[0.04em] text-text-primary group-hover:text-omniprise-400 transition-colors">
+                  <h3 className="font-display font-bold text-xl uppercase tracking-[0.02em] leading-none text-text-primary group-hover:text-omniprise-400 transition-colors">
                     {b.name}
                   </h3>
+                  <p className="text-[13px] text-text-secondary leading-relaxed">{b.tagline}</p>
                 </div>
-                <p className="text-[13px] text-text-secondary leading-relaxed">{b.desc}</p>
               </Link>
             </motion.div>
           ))}
@@ -265,6 +278,43 @@ function ProcessSection() {
   );
 }
 
+function ProofSection() {
+  const { ref, isVisible } = useReveal();
+  const t = useTranslations('franchisePage');
+
+  return (
+    <section className="py-20 md:py-28 px-6 md:px-12 border-t border-border-subtle bg-[radial-gradient(70%_60%_at_85%_20%,rgba(14,165,233,0.14),transparent_65%)]">
+      <div ref={ref} className="max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] gap-10 md:gap-16 items-start">
+        <div>
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8 }}
+            className="text-[10px] tracking-[0.2em] uppercase text-text-hint font-medium mb-4"
+          >
+            {t('proofEyebrow')}
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="font-display font-black text-[clamp(36px,5vw,56px)] leading-[0.95] uppercase tracking-wide"
+          >
+            {t('proofHeadingPrefix')} <span className="text-omniprise-500">{t('proofHeadingHighlight')}</span>
+          </motion.h2>
+        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <Testimonial />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 function FAQSection() {
   const { ref, isVisible } = useReveal();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -279,8 +329,19 @@ function FAQSection() {
     { q: t('faq6Q'), a: t('faq6A') },
   ];
 
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_ITEMS.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  };
+
   return (
     <section className="py-24 md:py-36 px-6 md:px-12 bg-surface-900 border-t border-border-subtle">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <div ref={ref} className="max-w-[800px] mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 24 }}
@@ -388,6 +449,7 @@ export default function FranchisePage() {
     <>
       <FranchiseHero />
       <BenefitsSection />
+      <ProofSection />
       <BrandsSection />
       <ProcessSection />
       <FAQSection />

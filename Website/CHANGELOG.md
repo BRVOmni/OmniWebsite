@@ -2,6 +2,20 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v3.0.0 — 2026-08-18
+
+### Redesign — "Omniprise 3.0"
+- **Single dark theme.** Removed the light theme, `ThemeToggle`, the `data-theme` bootstrap script and the `.logo-invert-light/dark` rules. Surfaces moved to a cool "ink" scale (`#0a0c0f` → `#37404b`); added `--radius-tile/card`, `--shadow-lift/glow`, `--ease-out-expo` tokens.
+- **Homepage rebuilt:** split hero with photo mosaic + stat chips, `TrustBar` (7+ / 17 / 135+ / 30%) and static full-colour `LogoStrip` under the hero, statement with a 4-row timeline, photo brand cards (UFO featured, "Próximamente" tile, acquisitions band), pillars with icons, franchise feature block with the 4-step process and a verified franchisee `Testimonial`, vision photo strip, restyled contact form. `StatsSection` retired.
+- **Navbar** transparent over the hero → blurred solid on scroll; active-link states (route + scroll-spy) in navbar and footer; the "Empleados" link to the internal dashboard was removed from the public site.
+- **Brand pages:** photo hero, "También te puede interesar" related-brands section, `BreadcrumbList` JSON-LD. Brand stories replaced with approved copy; El Club de los Condenados (full name) now lists 11 active dark-kitchens; Sammy's tagline updated (12+ years, NY style).
+- **Franchise page:** brand grid with real photos/logos, proof section with the franchisee testimonial, `FAQPage` JSON-LD, 7+ / 135+ counts.
+- **New pages:** `/proveedores` (supplier form → `/api/suppliers` via Resend, Zod-validated), `/terminos`, `/cookies`, `/prensa` (press page: boilerplate, key figures, contact — assets on request only). Footer + sitemap updated.
+- **Assets:** brand logo WebPs trimmed of transparent canvas (Los Condenados was on a 1920×1080 canvas).
+- **No analytics by decision** — the site ships with zero tracking scripts; docs/analytics-events.md kept for history only.
+- **Privacy hardening:** legal pages and metadata name no providers, cookie names, hosting or legal suffix — the public site says only "Omniprise".
+- **Hygiene:** CSP no longer whitelists Formspree, Vercel Analytics or Google Fonts (all unused). Fixed a `tsc` error in `contact-form.test.tsx`. Added supplier schema tests (71 unit tests across 6 files).
+
 ## v2.10.1 — 2026-05-11
 
 ### Email — Verified Domain Configuration

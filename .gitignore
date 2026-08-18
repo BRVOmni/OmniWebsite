@@ -7,3 +7,7 @@ old-static/
 .env*.local
 next-env.d.ts
 tsconfig.tsbuildinfo
+
+# Playwright output
+Website/test-results/
+Website/playwright-report/

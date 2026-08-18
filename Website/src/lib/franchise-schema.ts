@@ -62,3 +62,29 @@ export function validateContact(data: Record<string, string>): StepErrors {
   }
   return errors;
 }
+
+// ─── Supplier form (/proveedores) ───────────────────────────────────────────
+
+export const supplierSchema = z.object({
+  company: z.string().min(1, REQ),
+  ruc: z.string().min(1, REQ),
+  category: z.string().min(1, 'Seleccioná una categoría'),
+  coverage: z.string().min(1, REQ),
+  contactName: z.string().min(1, REQ),
+  email: z.string().min(1, REQ).email('Ingresá un email válido'),
+  phone: z.string().min(1, REQ),
+  message: z.string(),
+});
+
+export type SupplierData = z.infer<typeof supplierSchema>;
+
+export function validateSupplier(data: Record<string, string>): StepErrors {
+  const result = supplierSchema.safeParse(data);
+  if (result.success) return {};
+  const errors: StepErrors = {};
+  for (const issue of result.error.issues) {
+    const key = issue.path[0];
+    if (typeof key === 'string' && !errors[key]) errors[key] = issue.message;
+  }
+  return errors;
+}

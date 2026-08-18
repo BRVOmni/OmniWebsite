@@ -25,14 +25,7 @@ export default async function RootLayout({
   const locale = await getLocale();
 
   return (
-    <html lang={locale} data-theme="dark" className={`${barlowCondensed.variable} ${inter.variable}`}>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('omniprise_theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t)}else if(window.matchMedia('(prefers-color-scheme:light)').matches){document.documentElement.setAttribute('data-theme','light')}}catch(e){}})()`,
-          }}
-        />
-      </head>
+    <html lang={locale} className={`${barlowCondensed.variable} ${inter.variable}`}>
       <body>
         <ReducedMotionProvider>
           {children}

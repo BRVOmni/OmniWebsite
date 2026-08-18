@@ -17,8 +17,17 @@ export function BrandHero({ brand }: BrandHeroProps) {
 
   return (
     <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-6 md:px-12 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-surface-900 via-surface-800 to-surface-800" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,rgba(14,165,233,0.08)0%,transparent_70%)]" />
+      <Image
+        src={brand.heroImage}
+        alt=""
+        aria-hidden="true"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover opacity-40 scale-105"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-surface-950/70 via-surface-900/60 to-surface-800" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,rgba(14,165,233,0.10)0%,transparent_70%)]" aria-hidden="true" />
 
       <div ref={ref} className="relative z-10 flex flex-col items-center gap-10">
         {/* Brand logo */}
@@ -40,8 +49,7 @@ export function BrandHero({ brand }: BrandHeroProps) {
               height={180}
               className={cn(
                 'max-h-[160px] w-auto object-contain',
-                brand.logoColor === 'light' && 'logo-invert-light',
-                brand.logoColor === 'dark' && 'logo-invert-dark',
+                brand.logoColor === 'dark' && 'logo-invert',
               )}
               priority
               onError={() => setLogoError(true)}
@@ -54,7 +62,7 @@ export function BrandHero({ brand }: BrandHeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.35, duration: 0.8 }}
-          className="font-display font-black text-[clamp(42px,7vw,60px)] uppercase tracking-[0.22em] text-text-primary"
+          className="font-display font-black text-[clamp(28px,4.5vw,48px)] uppercase tracking-[0.2em] text-text-primary"
         >
           {brand.tag}
         </motion.div>

@@ -26,7 +26,7 @@ function Field({
   error?: string;
   rows?: number;
 }) {
-  const inputClass = `w-full bg-surface-800 border rounded-lg px-4 py-3 text-sm text-text-primary placeholder:text-text-hint/50 focus:outline-none focus:border-omniprise-500/50 focus:ring-1 focus:ring-omniprise-500/20 transition-all ${
+  const inputClass = `w-full min-w-0 bg-surface-900 border rounded-[10px] px-3.5 py-3 text-[15px] text-text-primary placeholder:text-text-hint/60 focus:outline-none focus:border-omniprise-500 focus:ring-[3px] focus:ring-omniprise-500/[0.18] transition-[border-color,box-shadow] ${
     error ? 'border-danger-500/60' : 'border-border-medium'
   }`;
 

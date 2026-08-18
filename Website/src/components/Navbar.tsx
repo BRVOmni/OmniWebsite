@@ -3,14 +3,14 @@
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ExternalLink, MessageCircle,  } from 'lucide-react';
+import { Menu, X, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
 import { Link } from '@/i18n/routing';
 import { usePathname, useRouter } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 import { WorkModal } from './WorkModal';
-import { ThemeToggle } from './ThemeToggle';
 import { whatsappOrderUrl } from '@/lib/brands';
+import { useActiveLink } from '@/lib/use-active-link';
 
 export function LanguageSwitcher() {
   const locale = useLocale();
@@ -47,9 +47,11 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const isActive = useActiveLink(['nosotros', 'marcas', 'vision', 'contacto']);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -63,12 +65,12 @@ export function Navbar() {
     <>
       <nav
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 flex items-center justify-between',
-          'px-6 md:px-12 h-16',
+          'fixed top-0 left-0 right-0 z-50 flex items-center justify-between 2xl:grid 2xl:grid-cols-[1fr_auto_1fr]',
+          'px-6 md:px-12 h-16 md:h-[68px]',
           'border-b transition-all duration-300',
-          scrolled
-            ? 'bg-surface-900/97 border-border-subtle backdrop-blur-xl'
-            : 'bg-surface-800/88 border-transparent backdrop-blur-lg'
+          scrolled || mobileOpen
+            ? 'bg-surface-950/80 border-border-subtle backdrop-blur-xl'
+            : 'bg-transparent border-transparent'
         )}
       >
         {/* Logo */}
@@ -78,18 +80,25 @@ export function Navbar() {
             alt="Omniprise"
             width={140}
             height={40}
-            className="h-7 w-auto logo-invert-light"
+            className="h-7 w-auto"
             priority
           />
         </Link>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-8">
+        <ul className="hidden lg:flex items-center justify-center gap-5 xl:gap-8">
           {NAV_LINK_KEYS.map((link) => (
             <li key={link.key}>
               <Link
                 href={link.href}
-                className="text-[13px] font-normal tracking-wider text-text-secondary hover:text-text-primary transition-colors duration-200"
+                aria-current={isActive(link.href) ? 'page' : undefined}
+                className={cn(
+                  'relative text-[12.5px] xl:text-[13px] font-normal tracking-wider transition-colors duration-200 py-1',
+                  'after:absolute after:left-0 after:-bottom-0.5 after:h-px after:bg-omniprise-500 after:transition-[width] after:duration-300',
+                  isActive(link.href)
+                    ? 'text-text-primary after:w-full'
+                    : 'text-text-secondary hover:text-text-primary after:w-0',
+                )}
               >
                 {t(link.key)}
               </Link>
@@ -98,39 +107,29 @@ export function Navbar() {
         </ul>
 
         {/* Right actions */}
-        <div className="flex items-center gap-2.5">
-          <a
-            href="https://dashboard.omniprise.com.py"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-normal text-text-secondary hover:text-text-primary px-5 py-2 rounded-full border border-border-medium tracking-wider transition-all duration-200"
-          >
-            {t('employees')}
-            <ExternalLink className="w-3 h-3" />
-          </a>
+        <div className="flex items-center justify-end gap-2 xl:gap-2.5">
           <a
             href={whatsappOrderUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-medium text-green-950 bg-green-500 hover:bg-green-400 px-5 py-2 rounded-full tracking-wider transition-all duration-200"
+            className="hidden sm:inline-flex items-center gap-1.5 whitespace-nowrap text-[13px] font-medium text-green-950 bg-green-500 hover:bg-green-400 px-4 xl:px-5 py-2 rounded-full tracking-wider transition-all duration-200"
           >
             <MessageCircle className="w-3.5 h-3.5" />
             {t('whatsappCta')}
           </a>
           <button
             onClick={() => setModalOpen(true)}
-            className="hidden sm:inline-flex text-[13px] font-medium text-surface-900 bg-text-primary hover:bg-omniprise-50 px-5 py-2 rounded-full tracking-wider transition-all duration-200 cursor-pointer"
+            className="hidden sm:inline-flex whitespace-nowrap text-[13px] font-medium text-surface-900 bg-text-primary hover:bg-omniprise-50 px-4 xl:px-5 py-2 rounded-full tracking-wider transition-all duration-200 cursor-pointer"
           >
             {t('workTogether')}
           </button>
 
           <LanguageSwitcher />
-          <ThemeToggle />
 
           {/* Mobile menu toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 text-text-secondary hover:text-text-primary transition-colors"
+            className="lg:hidden p-2 text-text-secondary hover:text-text-primary transition-colors"
             aria-label="Toggle menu"
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -164,21 +163,17 @@ export function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block text-2xl font-display font-bold uppercase tracking-wider text-text-secondary hover:text-text-primary py-3 border-b border-border-subtle transition-colors"
+                    aria-current={isActive(link.href) ? 'page' : undefined}
+                    className={cn(
+                      'block text-2xl font-display font-bold uppercase tracking-wider py-3 border-b border-border-subtle transition-colors',
+                      isActive(link.href) ? 'text-omniprise-400' : 'text-text-secondary hover:text-text-primary',
+                    )}
                   >
                     {t(link.key)}
                   </Link>
                 </motion.div>
               ))}
               <div className="flex flex-col gap-3 mt-6">
-                <a
-                  href="https://dashboard.omniprise.com.py"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-center text-sm text-text-secondary border border-border-medium py-3 rounded-full"
-                >
-                  {t('employees')}
-                </a>
                 <a
                   href={whatsappOrderUrl()}
                   target="_blank"
@@ -197,7 +192,6 @@ export function Navbar() {
                 </button>
                 <div className="flex items-center justify-center gap-3 pt-2">
                   <LanguageSwitcher />
-                  <ThemeToggle />
                 </div>
               </div>
             </motion.div>

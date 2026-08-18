@@ -1,33 +1,6 @@
 @import "tailwindcss";
 
-/* ─── Omniprise Website v2.0 ─── Dark + Colorful Hybrid ─── */
-
-/* ─── Light Theme ─── */
-
-[data-theme="light"] {
-  --color-surface-950: #ffffff;
-  --color-surface-900: #f8f8f7;
-  --color-surface-800: #f0f0ee;
-  --color-surface-700: #e5e5e3;
-  --color-surface-600: #d4d4d2;
-  --color-surface-500: #b0b0ae;
-  --color-text-primary: #18181b;
-  --color-text-secondary: rgba(24, 24, 27, 0.72);
-  --color-text-hint: rgba(24, 24, 27, 0.62);
-  --color-text-accent: #0369a1;
-  --color-omniprise-500: #0369a1;
-  --color-border-subtle: rgba(0, 0, 0, 0.06);
-  --color-border-medium: rgba(0, 0, 0, 0.12);
-  --color-border-strong: rgba(0, 0, 0, 0.20);
-  --color-danger-500: #dc2626;
-  --color-danger-600: #b91c1c;
-}
-
-/* ─── Theme Transition ─── */
-
-[data-theme-transitioning] * {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
-}
+/* ─── Omniprise Website v3.0 ─── Single dark theme, sky-blue accent ─── */
 
 @theme {
   /* Brand Colors */
@@ -54,24 +27,35 @@
   --color-danger-500: #ef4444;
   --color-danger-600: #dc2626;
 
-  /* Dark surface system */
-  --color-surface-950: #09090b;
-  --color-surface-900: #111110;
-  --color-surface-800: #161614;
-  --color-surface-700: #1e1e1c;
-  --color-surface-600: #2a2a28;
-  --color-surface-500: #3a3a38;
+  /* Surface system — cool "ink" neutrals so the sky accent sits in the ground */
+  --color-surface-950: #0a0c0f;
+  --color-surface-900: #0f1216;
+  --color-surface-800: #14181d;
+  --color-surface-700: #1b2027;
+  --color-surface-600: #262d36;
+  --color-surface-500: #37404b;
 
-  /* Light text system */
-  --color-text-primary: #f5f4f0;
-  --color-text-secondary: rgba(245, 244, 240, 0.6);
-  --color-text-hint: rgba(245, 244, 240, 0.45);
+  /* Text system */
+  --color-text-primary: #f4f6f8;
+  --color-text-secondary: rgba(244, 246, 248, 0.64);
+  --color-text-hint: rgba(244, 246, 248, 0.45);
   --color-text-accent: #0ea5e9;
 
   /* Borders */
-  --color-border-subtle: rgba(255, 255, 255, 0.08);
-  --color-border-medium: rgba(255, 255, 255, 0.16);
-  --color-border-strong: rgba(255, 255, 255, 0.24);
+  --color-border-subtle: rgba(244, 246, 248, 0.07);
+  --color-border-medium: rgba(244, 246, 248, 0.14);
+  --color-border-strong: rgba(244, 246, 248, 0.24);
+
+  /* Radii */
+  --radius-tile: 0.875rem;   /* 14px — inputs, small tiles */
+  --radius-card: 1.375rem;   /* 22px — cards, media */
+
+  /* Shadows (dark UI: ambient lift only, used on hover) */
+  --shadow-lift: 0 30px 60px -30px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(14, 165, 233, 0.08);
+  --shadow-glow: 0 10px 30px -10px rgba(14, 165, 233, 0.55);
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Typography */
   --font-display: 'Barlow Condensed', ui-sans-serif, system-ui, sans-serif;
@@ -85,6 +69,7 @@
   --animate-counter: counter-pulse 2s ease-in-out infinite;
   --animate-scroll-pulse: scroll-pulse 2s ease-in-out infinite;
   --animate-float: float 6s ease-in-out infinite;
+  --animate-marquee: marquee 60s linear infinite;
 }
 
 /* Keyframes */
@@ -116,6 +101,10 @@
 @keyframes scroll-pulse {
   0%, 100% { opacity: 0.3; transform: scaleY(1); }
   50% { opacity: 0.7; transform: scaleY(1.15); }
+}
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
 }
 
 @keyframes float {
@@ -165,13 +154,8 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(14, 165, 233, 0.3);
 }
 
-[data-theme="dark"] ::selection,
 ::selection {
   color: white;
-}
-
-[data-theme="light"] ::selection {
-  color: #18181b;
 }
 
 /* ─── Focus Visible (keyboard accessibility) ─── */
@@ -186,15 +170,11 @@ button:focus:not(:focus-visible) {
   outline: none;
 }
 
-/* ─── Theme-aware Logo Inversion ─── */
+/* ─── Logo Inversion ─── */
 
-/* White logos (Omniprise): invert only in light mode so they stay visible */
-[data-theme="light"] .logo-invert-light {
-  filter: invert(1);
-}
-
-/* Dark logos (Mr. Chow): invert only in dark mode */
-[data-theme="dark"] .logo-invert-dark {
+/* Dark-on-transparent brand logos (Mr. Chow) need their negative on the dark UI.
+   Prefer an official negative asset from marketing when available. */
+.logo-invert {
   filter: invert(1);
 }
 

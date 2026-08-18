@@ -40,6 +40,7 @@ export default function PrivacidadPage() {
               <ul className="list-disc pl-6 space-y-2">
                 <li>{t('section2Item1')}</li>
                 <li>{t('section2Item2')}</li>
+                <li>{t('section2Item3')}</li>
               </ul>
             </section>
 

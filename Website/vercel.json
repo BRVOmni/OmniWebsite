@@ -10,7 +10,7 @@
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://www.omniprise.com.py; connect-src 'self' https://formspree.io https://va.vercel-scripts.com; frame-ancestors 'none'; form-action 'self' https://formspree.io; base-uri 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://www.omniprise.com.py; connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'"
         },
         {
           "key": "Permissions-Policy",

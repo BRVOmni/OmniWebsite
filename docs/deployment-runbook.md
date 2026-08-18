@@ -87,7 +87,11 @@ DNS changes propagate in up to 24 hours. Do not change these without confirming 
 2. Hard-refresh with Ctrl+Shift+R to clear CDN cache
 3. Check that the correct branch (`main`) was deployed
 
-### Formspree forms stop working
+### Forms stop working (Resend)
+
+> Note: forms moved from Formspree to Resend in v2.10 (`/api/contact`, `/api/franchise`, `/api/suppliers`). Check `RESEND_API_KEY` / `FROM_EMAIL` in Vercel env vars and the Resend dashboard for bounces before anything else. Legacy Formspree notes below.
+
+### Formspree forms stop working (legacy)
 
 1. Check Formspree dashboard for rate limits or account issues
 2. Verify the form endpoint IDs in source code match Formspree

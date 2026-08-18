@@ -1,5 +1,7 @@
 # Analytics Events Reference
 
+> **Status (Aug 2026): retired.** Vercel Analytics and all custom events were removed (`65aaece`, May 2026) and the v3.0 redesign deliberately ships with no analytics or tracking scripts (privacy-first decision). This document is kept for history only; nothing below is instrumented today.
+
 Custom events tracked via Vercel Analytics. Search the codebase with `grep track(` to find instrumentation points.
 
 | Event | Properties | Triggered By | File |

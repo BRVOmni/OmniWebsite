@@ -1,6 +1,7 @@
 import { HeroSection } from '@/components/HeroSection';
 import { StatementSection } from '@/components/StatementSection';
-import { StatsSection } from '@/components/StatsSection';
+import { TrustBar } from '@/components/TrustBar';
+import { LogoStrip } from '@/components/LogoStrip';
 import { PillarsSection } from '@/components/PillarsSection';
 import { BrandsSection } from '@/components/BrandsSection';
 import { VisionSection } from '@/components/VisionSection';
@@ -34,13 +35,14 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <HeroSection />
+      <TrustBar />
+      <LogoStrip />
       <StatementSection />
-      <StatsSection />
-      <PillarsSection />
       <BrandsSection />
+      <PillarsSection />
+      <FranchiseSection />
       <VisionSection />
       <PartnersSection />
-      <FranchiseSection />
     </>
   );
 }

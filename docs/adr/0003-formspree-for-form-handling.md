@@ -1,5 +1,7 @@
 # ADR-3: Formspree for form handling
 
+> **Status: Superseded** (v2.10.0, April 2026) — forms now post to internal Next.js API routes that send email via Resend. Kept for history.
+
 **Date:** 2026-03-25
 **Status:** Accepted
 

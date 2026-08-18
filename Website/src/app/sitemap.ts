@@ -3,7 +3,8 @@ import { getAllBrandSlugs } from '@/lib/brands';
 
 const BASE_URL = 'https://www.omniprise.com.py';
 const LOCALES = ['es', 'en'] as const;
-const PATHS = ['/', '/franchise', '/franchise/apply', '/privacidad'] as const;
+const PATHS = ['/', '/franchise', '/franchise/apply', '/proveedores', '/prensa', '/privacidad', '/terminos', '/cookies'] as const;
+const LEGAL = new Set<string>(['/privacidad', '/terminos', '/cookies']);
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const brandSlugs = getAllBrandSlugs();
@@ -13,8 +14,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     PATHS.map((path) => ({
       url: locale === 'es' ? `${BASE_URL}${path}` : `${BASE_URL}/en${path}`,
       lastModified: now,
-      changeFrequency: path === '/' ? ('weekly' as const) : path === '/privacidad' ? ('yearly' as const) : ('monthly' as const),
-      priority: path === '/' ? 1 : path === '/franchise' ? 0.8 : path === '/franchise/apply' ? 0.6 : 0.3,
+      changeFrequency: path === '/' ? ('weekly' as const) : LEGAL.has(path) ? ('yearly' as const) : ('monthly' as const),
+      priority: path === '/' ? 1 : path === '/franchise' ? 0.8 : path === '/franchise/apply' ? 0.6 : LEGAL.has(path) ? 0.3 : 0.5,
       alternates: {
         languages: Object.fromEntries(
           LOCALES.map((l) => [l, l === 'es' ? `${BASE_URL}${path}` : `${BASE_URL}/en${path}`])
