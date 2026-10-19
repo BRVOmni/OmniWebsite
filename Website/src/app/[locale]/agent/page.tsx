@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { BRANDS, whatsappOrderUrl } from '@/lib/brands';
+import { COMPANY, FIGURES } from '@/lib/company';
 
 interface AgentPageProps {
   params: Promise<{ locale: string }>;
@@ -41,8 +42,8 @@ export default async function AgentPage({ params }: AgentPageProps) {
         name: 'Omniprise',
         url: BASE_URL,
         logo: `${BASE_URL}/omniprise-logo.png`,
-        description: t('aboutBody'),
-        foundingDate: '2024',
+        description: t('aboutBody', FIGURES),
+        foundingDate: String(COMPANY.foundedYear),
         areaServed: { '@type': 'Country', name: 'Paraguay' },
         address: { '@type': 'PostalAddress', addressLocality: 'Asunción', addressCountry: 'PY' },
         contactPoint: [
@@ -90,7 +91,7 @@ export default async function AgentPage({ params }: AgentPageProps) {
         <div className="space-y-14 text-[15.5px] text-text-secondary leading-relaxed">
           <section aria-labelledby="about">
             <h2 id="about" className="font-display font-bold text-2xl uppercase tracking-wide text-text-primary mb-4">{t('aboutHeading')}</h2>
-            <p>{t('aboutBody')}</p>
+            <p>{t('aboutBody', FIGURES)}</p>
           </section>
 
           <section aria-labelledby="brands">
@@ -153,7 +154,7 @@ export default async function AgentPage({ params }: AgentPageProps) {
               {FACTS.map((n) => (
                 <div key={n} className="rounded-tile border border-border-subtle bg-surface-900 p-4">
                   <dt className="text-[11px] tracking-[0.14em] uppercase text-text-hint font-semibold">{t(`fact${n}Label`)}</dt>
-                  <dd className="font-display font-black text-2xl text-text-primary mt-1">{t(`fact${n}Value`)}</dd>
+                  <dd className="font-display font-black text-2xl text-text-primary mt-1">{t(`fact${n}Value`, FIGURES)}</dd>
                 </div>
               ))}
             </dl>

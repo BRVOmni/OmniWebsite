@@ -4,8 +4,8 @@
       "title": "Omniprise — Gastronomic Brands Platform",
       "description": "Omniprise is a food service operator created to develop, operate, and integrate high-impact brands in Paraguay.",
       "ogTitle": "Omniprise — Gastronomic Brands Platform",
-      "ogDescription": "Food service operator with 7+ brands, 17 locations, and presence in 6 cities.",
-      "twitterDescription": "Food service operator with 7+ brands, 17 locations, and presence in 6 cities in Paraguay."
+      "ogDescription": "Food service operator with {brands} brands, {locations} locations, and presence in {cities} cities.",
+      "twitterDescription": "Food service operator with {brands} brands, {locations} locations, and presence in {cities} cities in Paraguay."
     },
     "franchise": {
       "title": "Franchises — Omniprise",
@@ -22,6 +22,22 @@
     "privacidad": {
       "title": "Privacy Policy — Omniprise",
       "description": "Privacy policy and personal data protection of Omniprise."
+    },
+    "proveedores": {
+      "title": "Suppliers — Omniprise",
+      "description": "Become a supplier to Omniprise's brands. Centralized purchasing for {brands} brands and {locations} locations in Paraguay."
+    },
+    "prensa": {
+      "title": "Press — Omniprise",
+      "description": "Press — Omniprise: group description, key figures and media contact. Brand materials on request."
+    },
+    "terminos": {
+      "title": "Terms and Conditions — Omniprise",
+      "description": "Terms and conditions for using the Omniprise website."
+    },
+    "cookies": {
+      "title": "Cookie Policy — Omniprise",
+      "description": "Which cookies and local storage the Omniprise website uses, and why."
     }
   },
   "layout": {
@@ -48,9 +64,7 @@
     "ctaFranchise": "Become a Franchisee →",
     "ctaKnowMore": "Learn more",
     "scrollDown": "Scroll down",
-    "chipLocationsValue": "17",
     "chipLocationsLabel": "active locations in Greater Asunción",
-    "chipBrandsValue": "7+",
     "chipBrandsLabel": "brands in portfolio",
     "mosaicAlt1": "Wok over open flame at Mr. Chow",
     "mosaicAlt2": "Pizza being prepared at El Club de los Condenados",
@@ -112,7 +126,7 @@
     "eyebrow": "Portfolio",
     "heading1": "Our",
     "heading2": "Brands.",
-    "description": "7+ brands in portfolio, 6 cities — and new concepts always in development. From high-impact thematic experiences to high-turnover kitchens.",
+    "description": "{brands} brands in portfolio, {cities} cities — and new concepts always in development. From high-impact thematic experiences to high-turnover kitchens.",
     "orderWhatsApp": "Order via WhatsApp",
     "viewBrand": "View brand",
     "order": "Order",
@@ -359,6 +373,12 @@
     "motivationLabel": "Why are you interested in an Omniprise franchise?",
     "motivationPlaceholder": "Tell us your vision and why you think you fit our model...",
     "howHeardLabel": "How did you hear about us?",
+    "howHeard1": "Instagram",
+    "howHeard2": "Facebook",
+    "howHeard3": "Google",
+    "howHeard4": "Referral",
+    "howHeard5": "Event",
+    "howHeard6": "Other",
     "additionalLabel": "Additional information (optional)",
     "additionalPlaceholder": "Any other details you'd like to share...",
     "previous": "Previous",
@@ -456,7 +476,7 @@
     "eyebrow": "Suppliers",
     "headingPrefix": "Supply the brands",
     "headingHighlight": "growing in Paraguay.",
-    "intro": "Omniprise centralizes purchasing, processes and standards for 7+ brands and 17 active locations. We are not looking for transactional suppliers: we look for partners that grow alongside an expanding platform, with growing volume, constant visibility and real projection.",
+    "intro": "Omniprise centralizes purchasing, processes and standards for {brands} brands and {locations} active locations. We are not looking for transactional suppliers: we look for partners that grow alongside an expanding platform, with growing volume, constant visibility and real projection.",
     "why1Title": "Centralized purchasing",
     "why1Text": "One counterpart for every brand in the group. Consolidated, predictable volume.",
     "why2Title": "Long-term relationship",
@@ -547,15 +567,15 @@
     "headingHighlight": "kit.",
     "intro": "Official information for media and partners: group description, key figures and press contact. Logos and brand assets are provided on request through the marketing team.",
     "boilerplateHeading": "About Omniprise",
-    "boilerplate": "Omniprise is a Paraguayan food service operator created in late 2024 to develop, operate and integrate high-impact brands. It combines physical restaurants, dark kitchens, delivery and mass-consumption channels. Its portfolio includes own brands — UFO, Rocco Pasta Bar and El Club de los Condenados — and brands acquired and integrated on January 1, 2026: Sammy's Express Pizza, PastaBox, Mr. Chow and Barrio Pizzero. Headquartered in Asunción, the group operates 17 physical locations, a network of dark kitchens across Greater Asunción and a team of more than 135 people.",
+    "boilerplate": "Omniprise is a Paraguayan food service operator created in late 2024 to develop, operate and integrate high-impact brands. It combines physical restaurants, dark kitchens, delivery and mass-consumption channels. Its portfolio includes own brands — UFO, Rocco Pasta Bar and El Club de los Condenados — and brands acquired and integrated on January 1, 2026: Sammy's Express Pizza, PastaBox, Mr. Chow and Barrio Pizzero. Headquartered in Asunción, the group operates {locations} physical locations, a network of dark kitchens across Greater Asunción and a team of more than {teamCount} people.",
     "factsHeading": "Key figures",
-    "fact1Value": "7+",
+    "fact1Value": "{brands}",
     "fact1Label": "Brands",
-    "fact2Value": "17",
+    "fact2Value": "{locations}",
     "fact2Label": "Locations",
-    "fact3Value": "135+",
+    "fact3Value": "{team}",
     "fact3Label": "Team members",
-    "fact4Value": "6",
+    "fact4Value": "{cities}",
     "fact4Label": "Cities",
     "contactHeading": "Press contact",
     "contactText": "Interviews, articles, media enquiries and asset requests: write to us and we'll get back to you shortly.",
@@ -571,7 +591,7 @@
     "intro": "This page summarises, in plain language, what Omniprise is, which brands it operates in Paraguay, how to order, how to invest through a franchise and how to reach us. It is written for people, search engines and AI assistants that need accurate, citable information.",
     "updated": "Updated: August 2026",
     "aboutHeading": "What Omniprise is",
-    "aboutBody": "Omniprise is a food service operator headquartered in Asunción, Paraguay, created in late 2024 to develop, operate and integrate high-impact brands. It combines physical restaurants, dark kitchens, delivery and mass-consumption channels. It operates 7+ brands, 17 physical locations, a network of dark kitchens across Greater Asunción and a team of more than 135 people, with presence in 6 cities. It develops its own brands (UFO, Rocco Pasta Bar, El Club de los Condenados) and, on January 1, 2026, integrated by acquisition Sammy's Express Pizza, PastaBox, Mr. Chow and Barrio Pizzero.",
+    "aboutBody": "Omniprise is a food service operator headquartered in Asunción, Paraguay, created in late 2024 to develop, operate and integrate high-impact brands. It combines physical restaurants, dark kitchens, delivery and mass-consumption channels. It operates {brands} brands, {locations} physical locations, a network of dark kitchens across Greater Asunción and a team of more than {teamCount} people, with presence in {cities} cities. It develops its own brands (UFO, Rocco Pasta Bar, El Club de los Condenados) and, on January 1, 2026, integrated by acquisition Sammy's Express Pizza, PastaBox, Mr. Chow and Barrio Pizzero.",
     "brandsHeading": "Brands and how to order",
     "brandsIntro": "All brands operate in Greater Asunción, Paraguay. Orders can be placed via WhatsApp or through the delivery apps listed for each brand.",
     "brandCuisine": "Offer",
@@ -602,13 +622,13 @@
     "contactText": "info@omniprise.com.py",
     "factsHeading": "Quick facts",
     "fact1Label": "Brands",
-    "fact1Value": "7+",
+    "fact1Value": "{brands}",
     "fact2Label": "Physical locations",
-    "fact2Value": "17",
+    "fact2Value": "{locations}",
     "fact3Label": "Team members",
-    "fact3Value": "135+",
+    "fact3Value": "{team}",
     "fact4Label": "Cities",
-    "fact4Value": "6",
+    "fact4Value": "{cities}",
     "fact5Label": "Headquarters",
     "fact5Value": "Asunción, Paraguay",
     "fact6Label": "Founded",

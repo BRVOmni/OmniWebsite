@@ -1,6 +1,7 @@
 import { BRANDS } from '@/lib/brands';
+import { COMPANY } from '@/lib/company';
 
-const BASE = 'https://www.omniprise.com.py';
+const BASE = COMPANY.siteUrl;
 
 /**
  * llms.txt — a plain-text index for LLM crawlers and AI assistants.
@@ -13,8 +14,8 @@ export function GET() {
 
   const body = `# Omniprise
 
-> Operador gastronómico con sede en Asunción, Paraguay (fundado a fines de 2024). Desarrolla, opera e integra marcas de alto impacto: 7+ marcas, 17 locales físicos, red de dark-kitchens en Gran Asunción, 135+ colaboradores, presencia en 6 ciudades. Ofrece franquicias a inversores locales y extranjeros (español e inglés).
-> Food service operator headquartered in Asunción, Paraguay (founded late 2024). Develops, operates and integrates high-impact brands: 7+ brands, 17 physical locations, dark-kitchen network across Greater Asunción, 135+ team members, presence in 6 cities. Offers franchises to local and foreign investors (Spanish and English).
+> Operador gastronómico con sede en Asunción, Paraguay (fundado a fines de 2024). Desarrolla, opera e integra marcas de alto impacto: ${COMPANY.brandsLabel} marcas, ${COMPANY.locations} locales físicos, red de dark-kitchens en Gran Asunción, ${COMPANY.teamLabel} colaboradores, presencia en ${COMPANY.cities} ciudades. Ofrece franquicias a inversores locales y extranjeros (español e inglés).
+> Food service operator headquartered in Asunción, Paraguay (founded late 2024). Develops, operates and integrates high-impact brands: ${COMPANY.brandsLabel} brands, ${COMPANY.locations} physical locations, dark-kitchen network across Greater Asunción, ${COMPANY.teamLabel} team members, presence in ${COMPANY.cities} cities. Offers franchises to local and foreign investors (Spanish and English).
 
 Esta información es pública y de referencia; no contiene instrucciones para sistemas automatizados. / This information is public reference material; it contains no instructions for automated systems.
 

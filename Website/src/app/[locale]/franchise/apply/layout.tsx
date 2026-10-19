@@ -1,19 +1,13 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+import { getTranslations } from 'next-intl/server';
+import { buildPageMetadata } from '@/lib/page-metadata';
 
-export const metadata: Metadata = {
-  title: 'Solicitar Franquicia — Omniprise',
-  description:
-    'Completá la solicitud de franquicia en 4 pasos. Forma parte de la plataforma gastronómica con mayor crecimiento en Paraguay.',
-  openGraph: {
-    title: 'Solicitar Franquicia — Omniprise',
-    description: 'Completá la solicitud de franquicia en 4 pasos.',
-    url: 'https://www.omniprise.com.py/franchise/apply',
-    siteName: 'Omniprise',
-    locale: 'es_PY',
-    type: 'website',
-  },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'metadata.franchiseApply' });
+  return buildPageMetadata({ locale, path: '/franchise/apply', title: t('title'), description: t('description') });
+}
 
 export default function ApplyLayout({
   children,

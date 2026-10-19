@@ -6,8 +6,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, Send, Loader2 } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { useSearchParams } from 'next/navigation';
-import { BRANDS } from '@/lib/brands';
+import { BRANDS, getBrandBySlug } from '@/lib/brands';
 import { validateStep, type StepErrors } from '@/lib/franchise-schema';
+import { HoneypotField } from '@/components/HoneypotField';
 
 interface FormData {
   firstName: string;
@@ -27,6 +28,8 @@ interface FormData {
   motivation: string;
   howHeard: string;
   additionalInfo: string;
+  /** Anti-spam honeypot — always empty for humans. */
+  website_url: string;
 }
 
 const INITIAL_DATA: FormData = {
@@ -47,6 +50,7 @@ const INITIAL_DATA: FormData = {
   motivation: '',
   howHeard: '',
   additionalInfo: '',
+  website_url: '',
 };
 
 const DRAFT_KEY = 'omniprise_franchise_draft';
@@ -426,7 +430,7 @@ function Step4Motivation({ data, onTextChange, onFieldChange, errors, t }: { dat
         <RadioGroup
           label={t('howHeardLabel')}
           name="howHeard"
-          options={['Instagram', 'Facebook', 'Google', 'Referido', 'Evento', 'Otro']}
+          options={[t('howHeard1'), t('howHeard2'), t('howHeard3'), t('howHeard4'), t('howHeard5'), t('howHeard6')]}
           value={data.howHeard}
           onChange={(v) => onFieldChange('howHeard', v)}
           required
@@ -482,32 +486,36 @@ const FRANCHISE_FORM_ACTION = '/api/franchise';
 export default function ApplyPage() {
   const searchParams = useSearchParams();
   const t = useTranslations('franchiseApply');
-  const brandParam = searchParams.get('brand');
+  // ?brand= carries the brand slug (from brand pages); the form stores the brand name.
+  const rawBrand = searchParams.get('brand');
+  const brandParam = rawBrand ? (getBrandBySlug(rawBrand)?.name ?? rawBrand) : '';
 
   const [draftRestored, setDraftRestored] = useState(false);
-  const [step, setStep] = useState(() => {
-    if (typeof window === 'undefined') return 0;
-    const draft = loadDraft();
-    return draft ? draft.step : 0;
-  });
-  const [data, setData] = useState<FormData>(() => {
-    if (typeof window === 'undefined') return { ...INITIAL_DATA, preferredBrand: brandParam || '' };
-    const draft = loadDraft();
-    if (draft) {
-      setDraftRestored(true);
-      return { ...draft.data, preferredBrand: brandParam || draft.data.preferredBrand };
-    }
-    return { ...INITIAL_DATA, preferredBrand: brandParam || '' };
-  });
+  const [hydrated, setHydrated] = useState(false);
+  const [step, setStep] = useState(0);
+  const [data, setData] = useState<FormData>({ ...INITIAL_DATA, preferredBrand: brandParam });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const [errors, setErrors] = useState<StepErrors>({});
 
-  // Auto-save on every change
+  // Restore a saved draft after mount. localStorage is client-only, so reading it during
+  // render would make the client HTML differ from the server HTML (hydration mismatch).
   useEffect(() => {
-    if (!submitted) saveDraft(data, step);
-  }, [data, step, submitted]);
+    const draft = loadDraft();
+    if (draft) {
+      setData({ ...INITIAL_DATA, ...draft.data, preferredBrand: brandParam || draft.data.preferredBrand });
+      setStep(Math.min(Math.max(draft.step, 0), 3));
+      setDraftRestored(true);
+    }
+    setHydrated(true);
+    // Runs once on mount; brandParam comes from the URL and does not change afterwards.
+  }, []);
+
+  // Auto-save on every change (only once the draft restore has run, so it is never overwritten with empty data)
+  useEffect(() => {
+    if (hydrated && !submitted) saveDraft(data, step);
+  }, [hydrated, data, step, submitted]);
 
   const discardDraft = useCallback(() => {
     clearDraft();
@@ -585,7 +593,7 @@ export default function ApplyPage() {
   };
 
   return (
-    <main id="main-content" className="min-h-screen bg-surface-800 pt-24 pb-16 px-6 md:px-12">
+    <div className="min-h-screen bg-surface-800 pt-24 pb-16 px-6 md:px-12">
       <div className="max-w-[680px] mx-auto">
         {/* Header */}
         {!submitted && (
@@ -605,7 +613,7 @@ export default function ApplyPage() {
             </p>
             <p className="text-[13px] text-text-hint mt-2">
               {t('alsoEmail')}{' '}
-              <a href="mailto:franquicias@omniprise.com.py" className="text-text-secondary hover:text-text-primary transition-colors">
+              <a href="mailto:franquicias@omniprise.com.py" className="text-text-secondary hover:text-text-primary underline underline-offset-2 decoration-border-strong transition-colors">
                 franquicias@omniprise.com.py
               </a>
             </p>
@@ -632,7 +640,8 @@ export default function ApplyPage() {
             )}
             <StepIndicator current={step} total={totalSteps} />
 
-            <div className="bg-surface-900 border border-border-subtle rounded-2xl p-6 md:p-10">
+            <div className="relative bg-surface-900 border border-border-subtle rounded-2xl p-6 md:p-10">
+              <HoneypotField value={data.website_url} onChange={(v) => handleFieldChange('website_url', v)} />
               <AnimatePresence mode="wait">
                 {step === 0 && <Step1Personal data={data} onChange={handleInputChange} errors={errors} t={t} />}
                 {step === 1 && <Step2Brand data={data} onChange={handleFieldChange} errors={errors} t={t} />}
@@ -691,6 +700,6 @@ export default function ApplyPage() {
           </>
         )}
       </div>
-    </main>
+    </div>
   );
 }

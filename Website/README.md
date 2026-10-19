@@ -1,6 +1,6 @@
 # Omniprise — Website Documentation
 
-**Version 3.1.0 | Next.js 15 | August 2026**
+**Version 3.1.1 | Next.js 15 | October 2026**
 
 > All audit issues resolved. See [`docs/audits/AUDIT_2026-03-28.md`](../docs/audits/AUDIT_2026-03-28.md) for the full history.
 
@@ -22,6 +22,9 @@
 - Gallery with lightbox (35 photos, 5 per brand, touch swipe + keyboard nav)
 - Franchise section with multi-step form (Zod-validated, auto-save to localStorage)
 - Contact form with Zod validation (Spanish error messages)
+- Form abuse protection: honeypot field + per-IP rate limit + server-side Zod validation on all three API routes
+- Content Security Policy with a per-request script nonce (`src/middleware.ts`); every page renders per request so the nonce can be stamped into the HTML
+- Company figures centralized in `src/lib/company.ts` (trust bar, hero, franchise, press, `/agent`, `llms.txt`, manifest, JSON-LD)
 - WhatsApp ordering CTA across all pages
 - Privacy policy page (Paraguay law compliant)
 - Dynamic sitemap with hreflang alternates + robots.txt generated from brand data
@@ -163,7 +166,7 @@ Local (Website/)  ──git push──>  GitHub (main)  ──webhook──>  Ve
 2. **Invalid vercel.json** — Must be strict JSON. No trailing commas, no comments.
 3. **Missing ESLint** — Next.js 15 requires ESLint as devDependency for production builds.
 4. **Large image files** — Compress logos before adding to `public/brands/`. Target under 500KB.
-5. **Dark logos on dark background** — Dark logos need `invertLogo: true` in `brands.ts`.
+5. **Dark logos on dark background** — Dark-on-transparent logos need `logoColor: 'dark'` in `brands.ts`.
 
 ### Manual Deploy (Emergency)
 
@@ -208,18 +211,18 @@ Website/
 │   │   ├── error.tsx            # Custom error page
 │   │   ├── not-found.tsx        # Custom 404 page
 │   │   ├── sitemap.ts           # Dynamic sitemap (both locales, hreflang alternates)
+│   │   ├── manifest.ts          # Web app manifest (figures from company.ts)
 │   │   ├── robots.ts            # Dynamic robots.txt
 │   │   └── [locale]/
 │   │       ├── layout.tsx       # Locale layout (NextIntlClientProvider + Navbar + Footer)
 │   │       ├── page.tsx         # Home page composing all sections
 │   │       ├── privacidad/      # Privacy policy (Paraguay law)
 │   │       ├── franchise/       # Franchise landing + apply form
-│   │       └── marcas/[slug]/   # Brand detail pages (SSG)
+│   │       └── marcas/[slug]/   # Brand detail pages (rendered per request — see CSP note)
 │   ├── components/
 │   │   ├── Navbar.tsx           # Fixed nav with WhatsApp + work modal + language switcher
 │   │   ├── HeroSection.tsx      # Hero with animated stats
 │   │   ├── StatementSection.tsx # "No somos un restaurante"
-│   │   ├── StatsSection.tsx     # Animated counter stats
 │   │   ├── PillarsSection.tsx   # 3 core pillars
 │   │   ├── BrandsSection.tsx    # Brand cards with logos + WhatsApp links
 │   │   ├── VisionSection.tsx    # Company vision statement
@@ -229,6 +232,7 @@ Website/
 │   │   ├── WorkModal.tsx        # "Trabajemos juntos" modal
 │   │   ├── BackToTop.tsx        # Scroll-to-top button
 │   │   ├── ContactForm.tsx      # Contact form (posts to /api/contact → Resend)
+│   │   ├── HoneypotField.tsx    # Hidden anti-spam field used by all forms
 │   │   ├── SupplierForm.tsx     # Supplier form (posts to /api/suppliers → Resend)
 │   │   ├── TrustBar.tsx         # 7+ / 17 / 135+ / 30% counters under the hero
 │   │   ├── LogoStrip.tsx        # Static full-colour brand logo row
@@ -249,9 +253,15 @@ Website/
 │   ├── messages/
 │   │   ├── es.json              # Spanish translations (~400 strings)
 │   │   └── en.json              # English translations (~400 strings)
-│   ├── middleware.ts             # Locale detection + cookie persistence
+│   ├── middleware.ts             # Locale routing + CSP with per-request script nonce
 │   └── lib/
 │       ├── brands.ts            # Canonical brand data (7 brands) + helpers
+│       ├── company.ts           # Company-wide figures, WhatsApp number, site URL
+│       ├── page-metadata.ts     # Localized title/description + canonical + hreflang helper
+│       ├── dashboard-lead.ts    # Maps form answers to the dashboard's lead enums
+│       ├── rate-limit.ts        # In-memory per-IP rate limiter for the API routes
+│       ├── form-guard.ts        # Honeypot field name + check
+│       ├── escape-html.ts       # HTML escaping for e-mail templates
 │       ├── franchise-schema.ts  # Zod schemas for franchise (4 steps) + contact forms
 │       ├── use-reveal.ts        # Scroll-triggered reveal + counter hooks
 │       ├── use-active-link.ts   # Route + scroll-spy active state for nav/footer
@@ -355,7 +365,9 @@ export function NewSection() {
   tagline: "Tagline here",
   description: "2-3 sentences about the brand",
   badge: "Badge text",
-  invertLogo: true,  // only if the logo is dark/black
+  logoColor: 'dark',  // only if the logo is dark-on-transparent
+  heroImage: "/brands/gallery/<slug>/1.jpeg",
+  cuisine: "Short cuisine label (Spanish)",
   story: "Full brand story...",
   stats: [...],
   milestones: [...],
@@ -368,8 +380,8 @@ export function NewSection() {
 }
 ```
 
-### Updating Stats
-Edit the `stats` array in `src/components/StatsSection.tsx`.
+### Updating Company Figures
+Edit `src/lib/company.ts` (brands, locations, team, cities, growth). Message strings interpolate them via `{brands}`, `{locations}`, `{team}`, `{teamCount}`, `{cities}` placeholders, so no copy needs to change.
 
 ### Updating Contact Email
 Search for `@omniprise.com.py` across components to find all email references.
@@ -430,7 +442,7 @@ Search for `@omniprise.com.py` across components to find all email references.
 - [x] Enable Next.js image optimization (already enabled — no `unoptimized` flag)
 - [x] ~~Light/dark theme toggle~~ (removed in v3.0 — single dark theme)
 - [x] Multi-language support (Spanish + English) via next-intl
-- [ ] Lead capture API with Supabase
+- [x] Lead capture → dashboard pipeline (`/api/franchise` forwards each lead to the dashboard)
 - [ ] Blog/news section for SEO
 
 ---
@@ -453,5 +465,5 @@ Before deploying to production:
 
 ---
 
-**Last Updated:** August 18, 2026
-**Version:** 3.1.0
+**Last Updated:** October 19, 2026
+**Version:** 3.1.1

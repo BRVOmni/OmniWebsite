@@ -11,3 +11,7 @@ tsconfig.tsbuildinfo
 # Playwright output
 Website/test-results/
 Website/playwright-report/
+
+# Local-only material (brand photos, external proposal) — not part of the site
+Brand Pictures/
+proposal/

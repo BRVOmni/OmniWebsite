@@ -1,7 +1,7 @@
 # ADR-1: Monorepo with Website subdirectory
 
 **Date:** 2026-03-25
-**Status:** Accepted
+**Status:** Accepted — amended 2026-10-19: the internal dashboard code that shared this repository was removed (it had been superseded by a separate repository since early 2026). `Website/` remains the Vercel root directory; the repo root keeps only docs, `Logos/` and the `website:*` scripts.
 
 ## Context
 

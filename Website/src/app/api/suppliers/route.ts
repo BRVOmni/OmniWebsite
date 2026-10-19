@@ -1,8 +1,32 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 import { supplierSchema } from '@/lib/franchise-schema';
+import { isHoneypotTripped } from '@/lib/form-guard';
+import { getClientIp, rateLimit, RATE_PRESETS } from '@/lib/rate-limit';
+import { escapeHtml } from '@/lib/escape-html';
 
 export async function POST(request: Request) {
+  let body: Record<string, unknown>;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+  }
+
+  // Bots that fill the hidden field get a quiet "success" and nothing is sent.
+  if (isHoneypotTripped(body)) return NextResponse.json({ success: true });
+
+  const limit = rateLimit(`suppliers:${getClientIp(request)}`, RATE_PRESETS.suppliers.limit, RATE_PRESETS.suppliers.windowMs);
+  if (!limit.allowed) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429, headers: { 'Retry-After': String(limit.retryAfterSec) } });
+  }
+
+  const parsed = supplierSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: 'Invalid fields' }, { status: 400 });
+  }
+  const d = parsed.data;
+
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     return NextResponse.json({ error: 'Email service not configured' }, { status: 500 });
@@ -13,13 +37,6 @@ export async function POST(request: Request) {
   const fromEmail = process.env.FROM_EMAIL || 'noreply@contact.omniprise.com.py';
 
   try {
-    const body = await request.json();
-    const parsed = supplierSchema.safeParse(body);
-    if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid fields' }, { status: 400 });
-    }
-    const d = parsed.data;
-
     const fields: Array<{ label: string; value: string }> = [
       { label: 'Razón social', value: d.company },
       { label: 'RUC', value: d.ruc },
@@ -70,13 +87,4 @@ export async function POST(request: Request) {
     console.error('Supplier email failed:', err);
     return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
   }
-}
-
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
 }

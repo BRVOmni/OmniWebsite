@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useAnimatedCounter } from '@/lib/use-reveal';
 import { cn } from '@/lib/utils';
+import { COMPANY } from '@/lib/company';
 
 interface TrustStat {
   target: number;
@@ -41,10 +42,10 @@ export function TrustBar() {
   const t = useTranslations('stats');
 
   const STATS: TrustStat[] = [
-    { target: 7, suffix: '+', label: t('brands'), note: t('brandsNote') },
-    { target: 17, suffix: '', label: t('locations') },
-    { target: 135, suffix: '+', label: t('team') },
-    { target: 30, suffix: '%', label: t('growth'), accent: true },
+    { target: COMPANY.brandsCount, suffix: '+', label: t('brands'), note: t('brandsNote') },
+    { target: COMPANY.locations, suffix: '', label: t('locations') },
+    { target: COMPANY.teamCount, suffix: '+', label: t('team') },
+    { target: COMPANY.growthPct, suffix: '%', label: t('growth'), accent: true },
   ];
 
   return (

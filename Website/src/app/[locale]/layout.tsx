@@ -2,13 +2,19 @@ import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
+import { FIGURES } from '@/lib/company';
+import { SITE_URL, localizedPath } from '@/lib/page-metadata';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { BackToTop } from '@/components/BackToTop';
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
+/**
+ * Rendered per request: the CSP middleware issues a fresh script nonce on every response,
+ * and a nonce can only be stamped into HTML that is rendered for that request. Prerendered
+ * HTML served from the CDN would carry no nonce and the browser would block every script.
+ * `generateStaticParams` was removed for the same reason: listed params would still be prerendered. (ADR-2 amended 2026-10-19.)
+ */
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -18,7 +24,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: t('title'),
     description: t('description'),
     keywords: ['Omniprise', 'gastronomía', 'Paraguay', 'franquicia', 'restaurantes', 'delivery', 'food service'],
-    metadataBase: new URL('https://www.omniprise.com.py'),
+    metadataBase: new URL(SITE_URL),
+    // Defaults for the home page; every other route sets its own canonical/alternates.
+    alternates: {
+      canonical: `${SITE_URL}${localizedPath(locale, '/')}`.replace(/\/$/, '') || SITE_URL,
+      languages: { es: SITE_URL, en: `${SITE_URL}/en`, 'x-default': SITE_URL },
+    },
     icons: {
       icon: [
         { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
@@ -26,11 +37,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ],
       apple: '/apple-touch-icon.png',
     },
-    manifest: '/manifest.json',
+    manifest: '/manifest.webmanifest',
     openGraph: {
       title: t('title'),
-      description: t('ogDescription'),
-      url: 'https://www.omniprise.com.py',
+      description: t('ogDescription', FIGURES),
+      url: SITE_URL,
       siteName: 'Omniprise',
       locale: locale === 'en' ? 'en_US' : 'es_PY',
       type: 'website',
@@ -39,7 +50,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     twitter: {
       card: 'summary_large_image',
       title: t('title'),
-      description: t('ogDescription'),
+      description: t('ogDescription', FIGURES),
       images: ['/omniprise-logo.jpg'],
     },
   };

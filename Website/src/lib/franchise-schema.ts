@@ -31,6 +31,11 @@ export const step4Schema = z.object({
   additionalInfo: z.string(),
 });
 
+/** Whole application (all four steps) — used server-side by /api/franchise. */
+export const franchiseSchema = step1Schema.extend(step2Schema.shape).extend(step3Schema.shape).extend(step4Schema.shape);
+
+export type FranchiseData = z.infer<typeof franchiseSchema>;
+
 export const contactSchema = z.object({
   name: z.string().min(1, 'Ingresá tu nombre'),
   email: z.string().min(1, 'Ingresá tu email').email('Ingresá un email válido'),

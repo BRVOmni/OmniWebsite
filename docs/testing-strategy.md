@@ -4,14 +4,14 @@
 
 | Layer | Tool | Coverage |
 |---|---|---|
-| Unit | Vitest | Zod schema validation (28 tests), utility functions (18 tests) |
+| Unit | Vitest | Zod schema validation (35 tests), utility functions (18 tests), dashboard lead mapping (7), form guard + rate limit (9) |
 | Component | Vitest + React Testing Library | ContactForm (6), WorkModal (8), BackToTop (4) |
 | E2E | Playwright (Chromium) | Homepage (4), brand pages (16), franchise form (5), navigation (4), accessibility (6), axe audits (5), agent page + privacy guard (18) |
 | Accessibility | @axe-core/playwright | Automated WCAG audits on 5 pages (homepage, brand detail, franchise, apply, privacy) |
 | Visual Regression | — | Not yet implemented |
 | Lint | ESLint + jsx-a11y | Static accessibility analysis, 0 violations |
 
-**Totals:** 71 unit/component tests + 58 E2E tests = **129 tests**
+**Totals:** 87 unit/component tests + 58 E2E tests = **145 tests**
 
 ## Test Files
 
@@ -24,6 +24,9 @@
 | `contact-form.test.tsx` | 6 | ContactForm render, validation, submit, error states |
 | `work-modal.test.tsx` | 8 | WorkModal open/close, aria-modal, Escape key, overlay click |
 | `back-to-top.test.tsx` | 4 | BackToTop visibility, scroll behavior, accessibility |
+| `supplier-schema.test.ts` | 7 | Supplier form Zod schema + Spanish error messages |
+| `dashboard-lead.test.ts` | 7 | Investment range / timeframe / years mapping for every ES and EN form option |
+| `form-guard.test.ts` | 9 | Honeypot check, rate limiter window, client IP extraction, merged `franchiseSchema` |
 
 ### E2E (`Website/e2e/`)
 

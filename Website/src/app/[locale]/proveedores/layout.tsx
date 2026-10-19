@@ -1,18 +1,13 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
+import { buildPageMetadata } from '@/lib/page-metadata';
+import { FIGURES } from '@/lib/company';
 
-export const metadata: Metadata = {
-  title: 'Proveedores — Omniprise',
-  description:
-    'Sé proveedor de las marcas de Omniprise. Compras centralizadas para 7+ marcas y 17 locales en Paraguay.',
-  openGraph: {
-    title: 'Proveedores — Omniprise',
-    description: 'Sé proveedor de las marcas de Omniprise. Compras centralizadas para 7+ marcas y 17 locales en Paraguay.',
-    url: 'https://www.omniprise.com.py/proveedores',
-    siteName: 'Omniprise',
-    locale: 'es_PY',
-    type: 'website',
-  },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'metadata.proveedores' });
+  return buildPageMetadata({ locale, path: '/proveedores', title: t('title'), description: t('description', FIGURES) });
+}
 
 export default function ProveedoresLayout({ children }: { children: React.ReactNode }) {
   return children;

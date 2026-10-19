@@ -30,8 +30,8 @@ export function BrandHero({ brand }: BrandHeroProps) {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,rgba(14,165,233,0.10)0%,transparent_70%)]" aria-hidden="true" />
 
       <div ref={ref} className="relative z-10 flex flex-col items-center gap-10">
-        {/* Brand logo */}
-        <motion.div
+        {/* Brand logo — the page's h1 (accessible name comes from the logo alt / fallback text) */}
+        <motion.h1
           initial={{ opacity: 0, scale: 0.92 }}
           animate={isVisible ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -55,7 +55,7 @@ export function BrandHero({ brand }: BrandHeroProps) {
               onError={() => setLogoError(true)}
             />
           )}
-        </motion.div>
+        </motion.h1>
 
         {/* Tag line */}
         <motion.div

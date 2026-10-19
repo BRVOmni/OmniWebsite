@@ -8,16 +8,17 @@ import { useReveal } from '@/lib/use-reveal';
 import Image from 'next/image';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { BRANDS } from '@/lib/brands';
+import { COMPANY } from '@/lib/company';
 import { cn } from '@/lib/utils';
 import { Testimonial } from '@/components/Testimonial';
 
 function FranchiseHero() {
   const t = useTranslations('franchisePage');
   const STATS = [
-    { value: '7+', label: t('heroStatsBrands') },
-    { value: '17', label: t('heroStatsLocations') },
-    { value: '135+', label: t('heroStatsTeam') },
-    { value: '6', label: t('heroStatsCities') },
+    { value: COMPANY.brandsLabel, label: t('heroStatsBrands') },
+    { value: String(COMPANY.locations), label: t('heroStatsLocations') },
+    { value: COMPANY.teamLabel, label: t('heroStatsTeam') },
+    { value: String(COMPANY.cities), label: t('heroStatsCities') },
   ];
 
   return (

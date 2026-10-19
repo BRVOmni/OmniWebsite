@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
+import { COMPANY } from '@/lib/company';
 
 const MOSAIC = [
   { src: '/brands/gallery/mr-chow/4.jpeg', altKey: 'mosaicAlt1', caption: 'Mr. Chow', big: true },
@@ -99,11 +100,11 @@ export function HeroSection() {
 
           {/* Stat chips */}
           <div className="absolute z-[2] left-2 sm:-left-5 bottom-[14%] flex items-center gap-3 rounded-tile border border-border-medium bg-surface-900/85 backdrop-blur-xl px-4 py-3 shadow-lift">
-            <span className="font-display font-black text-[34px] leading-none text-omniprise-500">{t('chipLocationsValue')}</span>
+            <span className="font-display font-black text-[34px] leading-none text-omniprise-500">{COMPANY.locations}</span>
             <span className="text-xs text-text-secondary leading-tight max-w-[12ch]">{t('chipLocationsLabel')}</span>
           </div>
           <div className="absolute z-[2] right-2 sm:-right-3.5 top-[9%] flex items-center gap-3 rounded-tile border border-border-medium bg-surface-900/85 backdrop-blur-xl px-4 py-3 shadow-lift">
-            <span className="font-display font-black text-[34px] leading-none text-omniprise-500">{t('chipBrandsValue')}</span>
+            <span className="font-display font-black text-[34px] leading-none text-omniprise-500">{COMPANY.brandsLabel}</span>
             <span className="text-xs text-text-secondary leading-tight max-w-[12ch]">{t('chipBrandsLabel')}</span>
           </div>
         </motion.div>

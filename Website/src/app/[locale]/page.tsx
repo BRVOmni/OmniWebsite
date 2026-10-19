@@ -7,6 +7,7 @@ import { BrandsSection } from '@/components/BrandsSection';
 import { VisionSection } from '@/components/VisionSection';
 import { PartnersSection } from '@/components/PartnersSection';
 import { FranchiseSection } from '@/components/FranchiseSection';
+import { COMPANY } from '@/lib/company';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -23,7 +24,7 @@ const jsonLd = {
   },
   numberOfEmployees: {
     '@type': 'QuantitativeValue',
-    value: 135,
+    value: COMPANY.teamCount,
   },
 };
 

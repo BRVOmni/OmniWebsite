@@ -1,9 +1,36 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
+import { franchiseSchema } from '@/lib/franchise-schema';
+import { mapInvestmentRange, mapTimeline, parseYears } from '@/lib/dashboard-lead';
+import { isHoneypotTripped } from '@/lib/form-guard';
+import { getClientIp, rateLimit, RATE_PRESETS } from '@/lib/rate-limit';
+import { escapeHtml } from '@/lib/escape-html';
 
 const DASHBOARD_API_URL = process.env.DASHBOARD_API_URL || 'https://dashboard.omniprise.com.py';
+const DASHBOARD_TIMEOUT_MS = 8000;
 
 export async function POST(request: Request) {
+  let raw: Record<string, unknown>;
+  try {
+    raw = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+  }
+
+  // Bots that fill the hidden field get a quiet "success" and nothing is sent.
+  if (isHoneypotTripped(raw)) return NextResponse.json({ success: true });
+
+  const limit = rateLimit(`franchise:${getClientIp(request)}`, RATE_PRESETS.franchise.limit, RATE_PRESETS.franchise.windowMs);
+  if (!limit.allowed) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429, headers: { 'Retry-After': String(limit.retryAfterSec) } });
+  }
+
+  const parsed = franchiseSchema.safeParse(raw);
+  if (!parsed.success) {
+    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+  }
+  const body = parsed.data;
+
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     return NextResponse.json({ error: 'Email service not configured' }, { status: 500 });
@@ -12,16 +39,11 @@ export async function POST(request: Request) {
   const resend = new Resend(apiKey);
   const franchiseEmail = process.env.FRANCHISE_EMAIL || 'franquicias@omniprise.com.py';
   const fromEmail = process.env.FROM_EMAIL || 'noreply@contact.omniprise.com.py';
+  const fullName = `${body.firstName} ${body.lastName}`.trim();
 
   try {
-    const body = await request.json();
-
-    if (!body.firstName || !body.lastName || !body.email || !body.phone) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
     const fields: Array<{ label: string; value: string }> = [
-      { label: 'Nombre', value: `${body.firstName} ${body.lastName}` },
+      { label: 'Nombre', value: fullName },
       { label: 'Email', value: body.email },
       { label: 'Teléfono', value: body.phone },
       { label: 'Ciudad', value: body.city },
@@ -51,7 +73,8 @@ export async function POST(request: Request) {
     const result = await resend.emails.send({
       from: fromEmail,
       to: franchiseEmail,
-      subject: `Nueva solicitud de franquicia: ${body.firstName} ${body.lastName}`,
+      replyTo: body.email,
+      subject: `Nueva solicitud de franquicia: ${fullName}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #0ea5e9;">Nueva solicitud de franquicia</h2>
@@ -76,20 +99,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: result.error.message }, { status: 500 });
     }
 
-    // Forward to dashboard API to save lead in the pipeline
+    // Forward to the dashboard pipeline. A sync failure must never fail the submission:
+    // the e-mail already went out. Bounded by a timeout so a slow dashboard cannot hang this route.
     try {
-      const fullName = `${body.firstName} ${body.lastName}`.trim();
-      await fetch(`${DASHBOARD_API_URL}/api/franchise/submit`, {
+      const res = await fetch(`${DASHBOARD_API_URL}/api/franchise/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(DASHBOARD_TIMEOUT_MS),
         body: JSON.stringify({
           full_name: fullName,
           email: body.email,
           phone: body.phone,
-          city: body.city || '',
+          city: body.city,
           country: body.country || 'Paraguay',
           current_brand_name: body.preferredBrand || undefined,
-          years_in_business: body.yearsExperience ? Number(body.yearsExperience) : undefined,
+          years_in_business: parseYears(body.yearsExperience),
           investment_range: mapInvestmentRange(body.investmentRange),
           timeframe_to_start: mapTimeline(body.timeline),
           motivation: body.motivation || undefined,
@@ -97,9 +121,8 @@ export async function POST(request: Request) {
           lead_source: 'website',
         }),
       });
+      if (!res.ok) console.error('Dashboard sync rejected the lead:', res.status, await res.text().catch(() => ''));
     } catch (err) {
-      // Dashboard sync failure should NOT fail the form submission
-      // The email was already sent successfully
       console.error('Dashboard sync failed:', err);
     }
 
@@ -108,35 +131,4 @@ export async function POST(request: Request) {
     console.error('Email send failed:', err);
     return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
   }
-}
-
-/** Map website investment range labels to dashboard enum values */
-function mapInvestmentRange(value: string | undefined): string | undefined {
-  if (!value) return undefined;
-  const lower = value.toLowerCase();
-  if (lower.includes('50') && lower.includes('100')) return '50k-100k';
-  if (lower.includes('100') && lower.includes('250')) return '100k-250k';
-  if (lower.includes('250') && lower.includes('500')) return '250k-500k';
-  if (lower.includes('500')) return '500k+';
-  return undefined;
-}
-
-/** Map website timeline labels to dashboard enum values */
-function mapTimeline(value: string | undefined): string | undefined {
-  if (!value) return undefined;
-  const lower = value.toLowerCase();
-  if (lower.includes('inmediat') || lower.includes('immediate')) return 'immediately';
-  if (lower.includes('3') && lower.includes('6')) return '3-6_months';
-  if (lower.includes('6') && lower.includes('12')) return '6-12_months';
-  if (lower.includes('año') || lower.includes('year') || lower.includes('próx')) return 'next_year';
-  return undefined;
-}
-
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
 }

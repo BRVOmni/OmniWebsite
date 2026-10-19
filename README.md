@@ -2,6 +2,8 @@
 
 The public corporate website for Grupo Omniprise, a food service operator in Paraguay running 7 brands across 17 locations.
 
+The site lives in [`Website/`](./Website). The repository root only holds shared documentation, the original logo files (`Logos/`) and a `package.json` with convenience scripts.
+
 **Live:** https://www.omniprise.com.py
 
 ---
@@ -41,7 +43,7 @@ npm run website:lint     # Lint website code
 npm run website:test     # Run website tests
 ```
 
-No `.env` file needed for local development. See `Website/.env.example` for reference on configurable values (Formspree endpoints, WhatsApp number).
+No `.env` file needed for local development. See `Website/.env.example` for the form e-mail configuration (Resend API key, recipient addresses); it is only needed to actually send e-mails.
 
 ---
 
@@ -63,7 +65,7 @@ See [`docs/deployment-runbook.md`](./docs/deployment-runbook.md) for rollback pr
 | [`SECURITY.md`](./SECURITY.md) | Vulnerability reporting policy |
 | [`docs/deployment-runbook.md`](./docs/deployment-runbook.md) | Deployment and rollback procedures |
 | [`docs/testing-strategy.md`](./docs/testing-strategy.md) | Testing approach and priorities |
-| [`docs/analytics-events.md`](./docs/analytics-events.md) | Custom analytics event reference |
+| [`docs/analytics-events.md`](./docs/analytics-events.md) | Retired analytics events (history only; the site ships with no tracking) |
 | [`docs/accessibility.md`](./docs/accessibility.md) | Accessibility statement and testing |
 | [`docs/adr/`](./docs/adr/) | Architecture Decision Records |
 

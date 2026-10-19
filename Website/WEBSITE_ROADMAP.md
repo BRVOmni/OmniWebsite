@@ -6,7 +6,7 @@
 
 ## OVERVIEW
 
-**Current Version:** v3.1.0
+**Current Version:** v3.1.1
 **Live:** https://www.omniprise.com.py
 **Tech Stack:** Next.js 15, React 19, TypeScript, Tailwind CSS 4, Framer Motion, next-intl, Resend
 
@@ -32,6 +32,7 @@
 | -- | v2.10.0 | Formspree → Resend migration | April 8 |
 | -- | v3.0.0 | "Omniprise 3.0" redesign: single dark theme, photo-led homepage, brand/franchise page upgrades, /proveedores, /prensa, /terminos, /cookies, privacy hardening | August 18 |
 | -- | v3.1.0 | /agent reference page (ES/EN), /llms.txt, AI-crawler robots policy, richer JSON-LD, E2E privacy guard | August 18 |
+| -- | v3.1.1 | Lead-sync mapping fix, franchise form fixes, brand h1, localized metadata, contrast, form abuse protection, company figures centralized, nonce-based CSP (pages render per request), dependency refresh, dead dashboard code removed from the repo root | October 19 |
 
 ---
 
@@ -40,7 +41,7 @@
 | Route | Description |
 |---|---|
 | `/` | Homepage -- Hero, Statement, Stats, Pillars, Brands, Vision, Partners (contact form), Franchise CTA |
-| `/marcas/[slug]` | Brand detail pages -- Hero, Story, Stats, Gallery, Presence, CTA (7 brands, SSG) |
+| `/marcas/[slug]` | Brand detail pages -- Hero, Story, Stats, Gallery, Presence, CTA (7 brands, rendered per request) |
 | `/franchise` | Franchise landing -- Benefits, Brands, Process, FAQ, CTA |
 | `/franchise/apply` | 4-step application form (posts to /api/franchise → Resend + dashboard sync) |
 | `/proveedores` | Supplier proposal form (posts to /api/suppliers → Resend) |
@@ -63,6 +64,7 @@ Website/
 │   │   ├── not-found.tsx           # Custom 404 (hardcoded Spanish)
 │   │   ├── sitemap.ts              # Dynamic sitemap (both locales, hreflang alternates)
 │   │   ├── robots.ts               # Dynamic robots.txt
+│   │   ├── manifest.ts             # Web app manifest (from company.ts)
 │   │   └── [locale]/
 │   │       ├── layout.tsx          # Locale layout (NextIntlClientProvider + Navbar + Footer)
 │   │       ├── page.tsx            # Homepage
@@ -75,17 +77,16 @@ Website/
 │   │   ├── Navbar.tsx              # Fixed nav + mobile hamburger + work modal + language switcher
 │   │   ├── HeroSection.tsx
 │   │   ├── StatementSection.tsx
-│   │   ├── StatsSection.tsx
 │   │   ├── PillarsSection.tsx
 │   │   ├── BrandsSection.tsx       # 3-column brand card grid
 │   │   ├── VisionSection.tsx
 │   │   ├── PartnersSection.tsx     # Includes ContactForm at #contacto
 │   │   ├── FranchiseSection.tsx    # Franchise CTA teaser
 │   │   ├── ContactForm.tsx         # Contact form (Resend via /api/contact)
+│   │   ├── HoneypotField.tsx       # Hidden anti-spam field
 │   │   ├── WorkModal.tsx
 │   │   ├── BackToTop.tsx
 │   │   ├── ReducedMotionProvider.tsx
-│   │   ├── ScrollTracker.tsx
 │   │   ├── Footer.tsx
 │   │   └── brand-detail/           # 6 brand page components
 │   │       ├── BrandHero.tsx
@@ -100,9 +101,13 @@ Website/
 │   ├── messages/
 │   │   ├── es.json                # Spanish translations (~400 strings)
 │   │   └── en.json                # English translations (~400 strings)
-│   ├── middleware.ts               # Locale detection + cookie persistence
+│   ├── middleware.ts               # Locale routing + CSP (per-request script nonce)
 │   └── lib/
 │       ├── brands.ts               # Brand data + helpers (single source of truth)
+│       ├── company.ts              # Company figures, WhatsApp number, site URL
+│       ├── page-metadata.ts        # Localized metadata + canonical/hreflang
+│       ├── dashboard-lead.ts       # Form answers → dashboard lead enums
+│       ├── rate-limit.ts / form-guard.ts / escape-html.ts  # API route protection
 │       ├── franchise-schema.ts     # Zod schemas for franchise form
 │       ├── use-reveal.ts           # IntersectionObserver scroll reveal
 │       ├── use-active-link.ts      # Route + scroll-spy active state
@@ -112,10 +117,9 @@ Website/
 │   ├── brands/gallery/             # 35 gallery photos (5 per brand)
 │   ├── omniprise-logo.png          # Navbar/footer logo
 │   ├── omniprise-logo.jpg          # OG/Twitter card image
-│   ├── favicon-*.png               # Multi-size favicons
-│   └── manifest.json
+│   └── favicon-*.png               # Multi-size favicons
 ├── next.config.ts
-├── vercel.json                     # Security headers + CSP
+├── vercel.json                     # Static security headers (CSP lives in middleware.ts)
 ├── package.json
 └── tsconfig.json
 ```
@@ -130,7 +134,7 @@ Website/
 - [x] **Add auto-save** to franchise application form
 
 ### P3 -- Infrastructure
-- [ ] **Supabase CRM Integration** -- Connect franchise leads to dashboard CRM module
+- [x] **Dashboard CRM Integration** -- `/api/franchise` forwards each lead to the dashboard pipeline (`/api/franchise/submit`)
 - [x] **CI/CD Pipeline** -- GitHub Actions for lint + build on PRs (`ci.yml`)
 - [ ] **Blog/news section** for SEO
 
@@ -164,5 +168,5 @@ Website/
 
 ---
 
-*Last Updated:* April 6, 2026 -- v2.8.0
-*Next Milestone:* Blog/news section (P3), Supabase CRM integration (P3)
+*Last Updated:* October 19, 2026 -- v3.1.1
+*Next Milestone:* Location dataset / "Dónde estamos" (pending Bruno's privacy decision), blog/news section (P3)

@@ -8,6 +8,7 @@ import { Link } from '@/i18n/routing';
 import { useReveal } from '@/lib/use-reveal';
 import { cn } from '@/lib/utils';
 import { BRANDS, whatsappOrderUrl } from '@/lib/brands';
+import { FIGURES } from '@/lib/company';
 import type { Brand } from '@/lib/brands';
 
 interface BrandCardProps {
@@ -132,7 +133,7 @@ export function BrandsSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-[15px] text-text-secondary max-w-[36ch] leading-relaxed"
           >
-            {t('description')}
+            {t('description', FIGURES)}
           </motion.p>
         </div>
 

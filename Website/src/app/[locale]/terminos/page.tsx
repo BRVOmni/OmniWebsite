@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
+import { buildPageMetadata } from '@/lib/page-metadata';
 import { LegalArticle } from '@/components/LegalArticle';
 
-export const metadata: Metadata = {
-  title: 'Términos y Condiciones — Omniprise',
-  description: 'Términos y condiciones de uso del sitio web de Omniprise.',
-  robots: { index: true, follow: true },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'metadata.terminos' });
+  return buildPageMetadata({ locale, path: '/terminos', title: t('title'), description: t('description') });
+}
 
 const SECTIONS = [
   { heading: 's1Heading', body: 's1Body' },

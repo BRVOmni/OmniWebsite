@@ -1,7 +1,7 @@
 # ADR-4: Content Security Policy (CSP)
 
 **Date:** 2026-04-02
-**Status:** Accepted
+**Status:** Accepted — amended 2026-10-19: the policy moved from the static `vercel.json` header to `src/middleware.ts`, which issues a per-request nonce (`script-src 'self' 'nonce-…' 'strict-dynamic'`, no `'unsafe-inline'`/`'unsafe-eval'` for scripts; `'unsafe-eval'` and websocket `connect-src` are added only in development). `style-src` keeps `'unsafe-inline'` because server-rendered `style=""` attributes (framer-motion initial states, next/font) are inline styles. `object-src 'none'` was added and the deprecated `X-XSS-Protection` header dropped. Consequence: routes render dynamically (ADR-2 amendment).
 
 ## Context
 

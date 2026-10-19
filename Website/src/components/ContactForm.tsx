@@ -4,6 +4,7 @@ import { useState, type FormEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { validateContact, type StepErrors } from '@/lib/franchise-schema';
+import { HoneypotField } from './HoneypotField';
 
 const FORM_ACTION = '/api/contact';
 
@@ -121,7 +122,8 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="relative flex flex-col gap-5">
+      <HoneypotField />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <Field label={t('nameLabel')} name="name" placeholder={t('namePlaceholder')} required error={errors.name} />
         <Field label={t('emailLabel')} name="email" type="email" placeholder={t('emailPlaceholder')} required error={errors.email} />

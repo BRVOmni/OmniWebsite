@@ -2,6 +2,24 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v3.1.1 — 2026-10-19
+
+### Fixes
+- **Dashboard lead sync:** the franchise form's Guaraní investment ranges were mapped with USD-era substring checks, so leads landed in the dashboard with a wrong or empty `investment_range` (and lead score). Mapping now goes by the lower bound of the chosen range (`src/lib/dashboard-lead.ts`, unit-tested against every ES/EN option); `years_in_business` parses the first number instead of `Number()`-ing free text.
+- **Franchise form:** `?brand=<slug>` from brand pages is resolved to the brand name, so the preferred brand is actually pre-selected; the saved draft is restored after mount instead of inside `useState` initializers (hydration mismatch for returning visitors); the page no longer nests a second `<main id="main-content">` inside the layout's main (axe `landmark-no-duplicate-main`); "how did you hear" options are translated.
+- **Brand pages** now have an `<h1>` (the logo, with the brand name as accessible name / text fallback).
+- **Metadata:** `/franchise`, `/franchise/apply`, `/proveedores`, `/prensa`, `/privacidad`, `/terminos` and `/cookies` get locale-aware titles and descriptions (English pages no longer carry Spanish metadata), plus canonical URLs, `hreflang` alternates and Open Graph via `src/lib/page-metadata.ts`. `/privacidad` previously had no metadata at all.
+- **Contrast:** `--color-text-hint` raised from 0.45 to 0.55 alpha (4.25:1 → ≥5.7:1 on every surface), clearing the `color-contrast` axe violations on all audited pages.
+
+### Changes
+- **Form abuse protection** on `/api/contact`, `/api/franchise` and `/api/suppliers`: hidden honeypot field (bots get a silent "success"), per-IP sliding-window rate limit (5/10 min contact & suppliers, 3/10 min franchise → `429` + `Retry-After`), server-side Zod validation on every route (the merged `franchiseSchema` is new), shared `escapeHtml`, `replyTo` set to the sender, and an 8 s timeout on the dashboard sync so a slow dashboard cannot hang the route.
+- **Company figures centralized** in `src/lib/company.ts` (brands, locations, team, cities, growth, WhatsApp number). Trust bar, hero chips, franchise hero, press and `/agent` facts, `llms.txt`, JSON-LD and metadata all read from it; message strings use `{brands}`, `{locations}`, `{team}`, `{teamCount}`, `{cities}` placeholders. The manifest is now generated (`src/app/manifest.ts` → `/manifest.webmanifest`) instead of a static file, and the home page gets canonical + hreflang.
+- **CSP hardened:** the policy now comes from `src/middleware.ts` with a per-request script nonce and `'strict-dynamic'` — `'unsafe-inline'` and `'unsafe-eval'` are gone from `script-src` (`object-src 'none'` added, deprecated `X-XSS-Protection` dropped). Because a nonce must be rendered into the HTML, every route under `[locale]` is now rendered per request instead of prerendered (`generateStaticParams` removed; ADR-2 and ADR-4 amended).
+- **Dependencies** refreshed within their ranges with Node 22 (Next.js 15.5.28, Resend 6.34, React 19.3). The critical Next.js and the Resend advisories are gone; the two that remain (bundled PostCSS) need Next 16 and are deferred.
+- **Repo:** the dead internal-dashboard code at the repository root (old `src/`, `package.json` with Supabase deps, `deploy.sh`, `public/`, configs) was deleted; the root `package.json` now only carries the `website:*` convenience scripts.
+- **Docs:** README / CONTRIBUTING / roadmap / CLAUDE.md / testing strategy brought in line with the code (no more Formspree, `invertLogo`, `StatsSection`); the March audit lives only under `docs/audits/`; `tsconfig.tsbuildinfo` untracked; `Brand Pictures/` and `proposal/` ignored.
+
+
 ## v3.1.0 — 2026-08-18
 
 ### Discoverability for search engines and AI assistants

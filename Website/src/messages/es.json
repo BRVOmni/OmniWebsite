@@ -4,8 +4,8 @@
       "title": "Omniprise — Plataforma de Marcas Gastronómicas",
       "description": "Omniprise es un operador gastronómico creado para desarrollar, operar e integrar marcas de alto impacto en Paraguay.",
       "ogTitle": "Omniprise — Plataforma de Marcas Gastronómicas",
-      "ogDescription": "Operador gastronómico con 7+ marcas, 17 locales y presencia en 6 ciudades.",
-      "twitterDescription": "Operador gastronómico con 7+ marcas, 17 locales y presencia en 6 ciudades en Paraguay."
+      "ogDescription": "Operador gastronómico con {brands} marcas, {locations} locales y presencia en {cities} ciudades.",
+      "twitterDescription": "Operador gastronómico con {brands} marcas, {locations} locales y presencia en {cities} ciudades en Paraguay."
     },
     "franchise": {
       "title": "Franquicias — Omniprise",
@@ -22,6 +22,22 @@
     "privacidad": {
       "title": "Política de Privacidad — Omniprise",
       "description": "Política de privacidad y protección de datos personales de Omniprise."
+    },
+    "proveedores": {
+      "title": "Proveedores — Omniprise",
+      "description": "Sé proveedor de las marcas de Omniprise. Compras centralizadas para {brands} marcas y {locations} locales en Paraguay."
+    },
+    "prensa": {
+      "title": "Prensa — Omniprise",
+      "description": "Prensa — Omniprise: descripción del grupo, cifras clave y contacto para medios. Materiales gráficos a pedido."
+    },
+    "terminos": {
+      "title": "Términos y Condiciones — Omniprise",
+      "description": "Términos y condiciones de uso del sitio web de Omniprise."
+    },
+    "cookies": {
+      "title": "Política de Cookies — Omniprise",
+      "description": "Qué cookies y almacenamiento local utiliza el sitio de Omniprise y para qué."
     }
   },
   "layout": {
@@ -48,9 +64,7 @@
     "ctaFranchise": "Conviértete en Franquiciado →",
     "ctaKnowMore": "Conocer más",
     "scrollDown": "Bajar",
-    "chipLocationsValue": "17",
     "chipLocationsLabel": "locales activos en Gran Asunción",
-    "chipBrandsValue": "7+",
     "chipBrandsLabel": "marcas en portafolio",
     "mosaicAlt1": "Wok a fuego vivo en Mr. Chow",
     "mosaicAlt2": "Pizza en preparación en El Club de los Condenados",
@@ -112,7 +126,7 @@
     "eyebrow": "Portafolio",
     "heading1": "Nuestras",
     "heading2": "Marcas.",
-    "description": "7+ marcas en portafolio, 6 ciudades — y nuevos conceptos siempre en desarrollo. Desde experiencias temáticas de alto impacto hasta cocinas de alta rotación.",
+    "description": "{brands} marcas en portafolio, {cities} ciudades — y nuevos conceptos siempre en desarrollo. Desde experiencias temáticas de alto impacto hasta cocinas de alta rotación.",
     "orderWhatsApp": "Pedir por WhatsApp",
     "viewBrand": "Ver marca",
     "order": "Pedir",
@@ -359,6 +373,12 @@
     "motivationLabel": "¿Por qué te interesa una franquicia Omniprise?",
     "motivationPlaceholder": "Cuéntanos tu visión y por qué crees que encajas con nuestro modelo...",
     "howHeardLabel": "¿Cómo nos conociste?",
+    "howHeard1": "Instagram",
+    "howHeard2": "Facebook",
+    "howHeard3": "Google",
+    "howHeard4": "Referido",
+    "howHeard5": "Evento",
+    "howHeard6": "Otro",
     "additionalLabel": "Información adicional (opcional)",
     "additionalPlaceholder": "Cualquier otro detalle que quieras compartir...",
     "previous": "Anterior",
@@ -456,7 +476,7 @@
     "eyebrow": "Proveedores",
     "headingPrefix": "Sé proveedor de las marcas",
     "headingHighlight": "que crecen en Paraguay.",
-    "intro": "Omniprise centraliza compras, procesos y estándares para 7+ marcas y 17 locales activos. No buscamos proveedores transaccionales: buscamos socios que crezcan junto a una plataforma en expansión, con volumen creciente, visibilidad constante y proyección real.",
+    "intro": "Omniprise centraliza compras, procesos y estándares para {brands} marcas y {locations} locales activos. No buscamos proveedores transaccionales: buscamos socios que crezcan junto a una plataforma en expansión, con volumen creciente, visibilidad constante y proyección real.",
     "why1Title": "Compras centralizadas",
     "why1Text": "Un solo interlocutor para todas las marcas del grupo. Volumen consolidado y previsible.",
     "why2Title": "Relación de largo plazo",
@@ -547,15 +567,15 @@
     "headingHighlight": "prensa.",
     "intro": "Información oficial para medios y colaboradores: descripción del grupo, cifras clave y contacto de prensa. Los logotipos y materiales gráficos se entregan a pedido a través del equipo de marketing.",
     "boilerplateHeading": "Sobre Omniprise",
-    "boilerplate": "Omniprise es un operador gastronómico paraguayo creado a finales de 2024 para desarrollar, operar e integrar marcas de alto impacto. Combina restaurantes físicos, dark-kitchens, delivery y canales de consumo masivo. Su portafolio incluye marcas propias — UFO, Rocco Pasta Bar y El Club de los Condenados — y marcas adquiridas e integradas el 1 de enero de 2026: Sammy's Express Pizza, PastaBox, Mr. Chow y Barrio Pizzero. Con sede en Asunción, el grupo opera 17 locales físicos, una red de dark-kitchens en Gran Asunción y un equipo de más de 135 colaboradores.",
+    "boilerplate": "Omniprise es un operador gastronómico paraguayo creado a finales de 2024 para desarrollar, operar e integrar marcas de alto impacto. Combina restaurantes físicos, dark-kitchens, delivery y canales de consumo masivo. Su portafolio incluye marcas propias — UFO, Rocco Pasta Bar y El Club de los Condenados — y marcas adquiridas e integradas el 1 de enero de 2026: Sammy's Express Pizza, PastaBox, Mr. Chow y Barrio Pizzero. Con sede en Asunción, el grupo opera {locations} locales físicos, una red de dark-kitchens en Gran Asunción y un equipo de más de {teamCount} colaboradores.",
     "factsHeading": "Cifras clave",
-    "fact1Value": "7+",
+    "fact1Value": "{brands}",
     "fact1Label": "Marcas",
-    "fact2Value": "17",
+    "fact2Value": "{locations}",
     "fact2Label": "Locales físicos",
-    "fact3Value": "135+",
+    "fact3Value": "{team}",
     "fact3Label": "Colaboradores",
-    "fact4Value": "6",
+    "fact4Value": "{cities}",
     "fact4Label": "Ciudades",
     "contactHeading": "Contacto de prensa",
     "contactText": "Entrevistas, notas, consultas de medios y solicitud de materiales: escribinos y te respondemos a la brevedad.",
@@ -571,7 +591,7 @@
     "intro": "Esta página resume, en lenguaje simple y sin adornos, qué es Omniprise, qué marcas opera en Paraguay, cómo pedir, cómo invertir a través de una franquicia y cómo contactarnos. Está pensada para personas, buscadores y asistentes de inteligencia artificial que necesitan información precisa y citable.",
     "updated": "Actualizado: agosto 2026",
     "aboutHeading": "Qué es Omniprise",
-    "aboutBody": "Omniprise es un operador gastronómico con sede en Asunción, Paraguay, creado a finales de 2024 para desarrollar, operar e integrar marcas de alto impacto. Combina restaurantes físicos, dark-kitchens, delivery y canales de consumo masivo. Opera 7+ marcas, 17 locales físicos, una red de dark-kitchens en Gran Asunción y un equipo de más de 135 colaboradores, con presencia en 6 ciudades. Desarrolla marcas propias (UFO, Rocco Pasta Bar, El Club de los Condenados) e integró por adquisición, el 1 de enero de 2026, a Sammy's Express Pizza, PastaBox, Mr. Chow y Barrio Pizzero.",
+    "aboutBody": "Omniprise es un operador gastronómico con sede en Asunción, Paraguay, creado a finales de 2024 para desarrollar, operar e integrar marcas de alto impacto. Combina restaurantes físicos, dark-kitchens, delivery y canales de consumo masivo. Opera {brands} marcas, {locations} locales físicos, una red de dark-kitchens en Gran Asunción y un equipo de más de {teamCount} colaboradores, con presencia en {cities} ciudades. Desarrolla marcas propias (UFO, Rocco Pasta Bar, El Club de los Condenados) e integró por adquisición, el 1 de enero de 2026, a Sammy's Express Pizza, PastaBox, Mr. Chow y Barrio Pizzero.",
     "brandsHeading": "Marcas y cómo pedir",
     "brandsIntro": "Todas las marcas operan en Gran Asunción, Paraguay. Se puede pedir por WhatsApp o por las apps de delivery indicadas en cada marca.",
     "brandCuisine": "Propuesta",
@@ -602,13 +622,13 @@
     "contactText": "info@omniprise.com.py",
     "factsHeading": "Datos rápidos",
     "fact1Label": "Marcas",
-    "fact1Value": "7+",
+    "fact1Value": "{brands}",
     "fact2Label": "Locales físicos",
-    "fact2Value": "17",
+    "fact2Value": "{locations}",
     "fact3Label": "Colaboradores",
-    "fact3Value": "135+",
+    "fact3Value": "{team}",
     "fact4Label": "Ciudades",
-    "fact4Value": "6",
+    "fact4Value": "{cities}",
     "fact5Label": "Sede",
     "fact5Value": "Asunción, Paraguay",
     "fact6Label": "Fundación",

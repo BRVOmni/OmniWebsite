@@ -1,7 +1,7 @@
 # ADR-2: Static generation (SSG) for brand pages
 
 **Date:** 2026-03-29
-**Status:** Accepted
+**Status:** Accepted — amended 2026-10-19: all routes under `[locale]` are now rendered per request (`dynamic = 'force-dynamic'` in the locale layout) because the Content Security Policy uses a per-request script nonce (see ADR-4). Prerendered HTML served from the CDN cannot carry a nonce, so static generation and a nonce-based CSP are mutually exclusive. Brand data is still read from `brands.ts` at build time and the pages are still cheap to render; `generateStaticParams` is kept for route typing and for the `notFound()` guard.
 
 ## Context
 

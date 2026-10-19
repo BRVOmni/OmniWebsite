@@ -38,7 +38,7 @@
   /* Text system */
   --color-text-primary: #f4f6f8;
   --color-text-secondary: rgba(244, 246, 248, 0.64);
-  --color-text-hint: rgba(244, 246, 248, 0.45);
+  --color-text-hint: rgba(244, 246, 248, 0.55); /* ≥5.7:1 on every surface (WCAG AA); 0.45 measured 4.25:1 */
   --color-text-accent: #0ea5e9;
 
   /* Borders */

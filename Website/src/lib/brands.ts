@@ -1,3 +1,5 @@
+import { COMPANY } from './company';
+
 export interface BrandStat {
   label: string;
   value: string;
@@ -260,7 +262,7 @@ export function getBrandBySlug(slug: string): Brand | undefined {
 }
 
 export function whatsappOrderUrl(brandName?: string): string {
-  const phone = '595992035000';
+  const phone = COMPANY.whatsappPhone;
   const text = brandName
     ? `Hola! Me interesa ordenar de ${brandName}`
     : 'Hola! Me interesa hacer un pedido';

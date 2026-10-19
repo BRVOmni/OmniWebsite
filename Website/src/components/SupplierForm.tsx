@@ -4,6 +4,7 @@ import { useState, type FormEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { validateSupplier, type StepErrors } from '@/lib/franchise-schema';
+import { HoneypotField } from './HoneypotField';
 
 const FORM_ACTION = '/api/suppliers';
 const CATEGORY_KEYS = ['meat', 'dairy', 'produce', 'dry', 'beverages', 'packaging', 'equipment', 'tech', 'services', 'other'] as const;
@@ -79,7 +80,8 @@ export function SupplierForm() {
   const selectCls = `${inputBase} ${errors.category ? 'border-danger-500/60' : 'border-border-medium'} appearance-none`;
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="relative flex flex-col gap-5">
+      <HoneypotField />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <Field label={t('companyLabel')} name="company" placeholder={t('companyPlaceholder')} required error={errors.company} />
         <Field label={t('rucLabel')} name="ruc" placeholder={t('rucPlaceholder')} required error={errors.ruc} />

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getBrandBySlug, getAllBrandSlugs } from '@/lib/brands';
+import { getBrandBySlug } from '@/lib/brands';
 import { BrandHero } from '@/components/brand-detail/BrandHero';
 import { BrandStory } from '@/components/brand-detail/BrandStory';
 import { BrandStats } from '@/components/brand-detail/BrandStats';
@@ -11,10 +11,6 @@ import { BrandRelated } from '@/components/brand-detail/BrandRelated';
 
 interface BrandPageProps {
   params: Promise<{ locale: string; slug: string }>;
-}
-
-export async function generateStaticParams() {
-  return getAllBrandSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: BrandPageProps): Promise<Metadata> {

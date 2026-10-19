@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
+import { buildPageMetadata } from '@/lib/page-metadata';
 import { LegalArticle } from '@/components/LegalArticle';
 
-export const metadata: Metadata = {
-  title: 'Política de Cookies — Omniprise',
-  description: 'Qué cookies y almacenamiento local utiliza el sitio de Omniprise y para qué.',
-  robots: { index: true, follow: true },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'metadata.cookies' });
+  return buildPageMetadata({ locale, path: '/cookies', title: t('title'), description: t('description') });
+}
 
 const SECTIONS = [
   { heading: 's1Heading', body: 's1Body' },

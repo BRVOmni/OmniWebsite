@@ -10,7 +10,7 @@ The website targets **WCAG 2.1 Level AA** compliance.
 
 ### Current Measures
 
-- **Color contrast:** All text meets 4.5:1 minimum contrast ratio against backgrounds
+- **Color contrast:** All text meets 4.5:1 minimum contrast ratio against backgrounds (hint text raised to 0.55 alpha in v3.1.1 after axe measured 4.25:1)
 - **Keyboard navigation:** Full support — all interactive elements are reachable and operable via keyboard
 - **Screen reader support:** Semantic HTML, proper ARIA attributes, meaningful alt text
 - **Focus indicators:** Global `:focus-visible` ring (sky blue, 2px outline) on all interactive elements

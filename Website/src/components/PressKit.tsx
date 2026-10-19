@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Mail } from 'lucide-react';
+import { FIGURES } from '@/lib/company';
 
 const FACTS = ['fact1', 'fact2', 'fact3', 'fact4'] as const;
 const PRESS_MAIL = 'mailto:info@omniprise.com.py?subject=Prensa';
@@ -27,14 +28,14 @@ export function PressKit() {
         <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] gap-6 mb-6">
           <div className="rounded-card border border-border-subtle bg-surface-800 p-6 md:p-8">
             <h2 className="font-display font-bold text-2xl uppercase tracking-[0.02em] mb-4">{t('boilerplateHeading')}</h2>
-            <p className="text-[15px] text-text-secondary leading-relaxed">{t('boilerplate')}</p>
+            <p className="text-[15px] text-text-secondary leading-relaxed">{t('boilerplate', FIGURES)}</p>
           </div>
           <div className="rounded-card border border-border-subtle bg-surface-800 p-6 md:p-8">
             <h2 className="font-display font-bold text-2xl uppercase tracking-[0.02em] mb-4">{t('factsHeading')}</h2>
             <ul className="grid grid-cols-2 gap-4">
               {FACTS.map((k) => (
                 <li key={k}>
-                  <span className="block font-display font-black text-[40px] leading-none text-omniprise-500">{t(`${k}Value`)}</span>
+                  <span className="block font-display font-black text-[40px] leading-none text-omniprise-500">{t(`${k}Value`, FIGURES)}</span>
                   <span className="block mt-1 text-[11px] font-semibold tracking-[0.14em] uppercase text-text-hint">{t(`${k}Label`)}</span>
                 </li>
               ))}

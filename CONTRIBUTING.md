@@ -126,6 +126,7 @@ Keep PRs small and focused. One feature or fix per PR. Large PRs take longer to 
 - **Styling** — Tailwind CSS utility classes; no inline styles
 - **Imports** — Use `@/` path aliases (`@/components/`, `@/lib/`)
 - **Brand data** — Always use the canonical `BRANDS` array from `@/lib/brands.ts`
+- **Company figures** — brands/locations/team/cities come from `@/lib/company.ts`; message strings use `{brands}`, `{locations}`, `{team}`, `{cities}` placeholders
 - **Animations** — Use the `useReveal` hook for scroll-triggered animations
 - **Forms** — Validate with Zod schemas; Spanish error messages for user-facing forms
 - **Tests** — Use named imports matching component exports
@@ -137,7 +138,8 @@ Keep PRs small and focused. One feature or fix per PR. Large PRs take longer to 
 1. Compress the logo to WebP (target under 500KB) and add to `Website/public/brands/`
 2. Add 5 gallery photos to `Website/public/brands/gallery/<slug>/`
 3. Update the `BRANDS` array in `Website/src/lib/brands.ts`
-4. Set `invertLogo: true` if the logo is dark (invisible on dark background)
+4. Set `logoColor: 'dark'` if the logo is dark-on-transparent (it is inverted via `.logo-invert` on the dark UI)
+5. Add `heroImage` (one of the gallery photos) and a short `cuisine` label
 
 ---
 
@@ -148,7 +150,7 @@ Keep PRs small and focused. One feature or fix per PR. Large PRs take longer to 
 | `Website/README.md` | Full technical docs — project structure, components, design system, QA checklist |
 | `docs/deployment-runbook.md` | Deployment and rollback procedures |
 | `docs/testing-strategy.md` | Testing approach and priorities |
-| `docs/analytics-events.md` | Custom analytics event reference |
+| `docs/analytics-events.md` | Retired analytics events (history only; no tracking ships) |
 | `docs/accessibility.md` | Accessibility statement and testing |
 | `docs/adr/` | Architecture Decision Records |
 

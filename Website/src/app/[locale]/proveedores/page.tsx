@@ -6,6 +6,7 @@ import { Boxes, Clock, Handshake, ShieldCheck } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useReveal } from '@/lib/use-reveal';
 import { SupplierForm } from '@/components/SupplierForm';
+import { FIGURES } from '@/lib/company';
 
 const WHY: Array<{ Icon: LucideIcon; key: string }> = [
   { Icon: Boxes, key: 'why1' },
@@ -45,7 +46,7 @@ export default function ProveedoresPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-[clamp(15px,1.4vw,18px)] font-light text-text-secondary leading-relaxed max-w-[52ch] mb-10"
           >
-            {t('intro')}
+            {t('intro', FIGURES)}
           </motion.p>
 
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">

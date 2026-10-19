@@ -27,7 +27,7 @@ export function LanguageSwitcher() {
       type="button"
       onClick={switchLocale}
       className="p-2 rounded-full text-text-secondary hover:text-text-primary hover:bg-surface-700 transition-colors duration-200 cursor-pointer text-[11px] font-bold tracking-wider uppercase"
-      aria-label={locale === 'es' ? 'Switch to English' : 'Cambiar a Español'}
+      aria-label={locale === 'es' ? 'EN — Switch to English' : 'ES — Cambiar a Español'}
     >
       {locale === 'es' ? 'EN' : 'ES'}
     </button>
