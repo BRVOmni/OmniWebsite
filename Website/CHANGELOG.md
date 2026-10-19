@@ -2,6 +2,12 @@
 
 All notable changes to the Omniprise corporate website.
 
+## v3.1.2 — 2026-10-19
+
+### Content
+- **Rocco brand entry rewritten** (`brands.ts`): 8 dark-kitchens now operating (were "proyectadas"), first franchise open since September 2026 in the food court of the new Distrito Perseverancia mall, "pasta fresca" removed (the kitchen uses dry pasta), tagline switched to the brand's own line ("Rico, sin vueltas"), and the story now names the format (pastas en pote), the signature plates and «Armá tu pasta». Stats, milestones, locations, model, badge and cuisine updated; the agent page, `llms.txt` and JSON-LD inherit the change.
+- Homepage timeline (ES/EN) updated accordingly.
+
 ## v3.1.1 — 2026-10-19
 
 ### Fixes

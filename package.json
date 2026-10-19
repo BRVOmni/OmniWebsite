@@ -1,6 +1,6 @@
 {
   "name": "omniprise-website-repo",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "private": true,
   "license": "UNLICENSED",
   "description": "Grupo Omniprise corporate website. The site lives in Website/; this root only carries convenience scripts and shared docs.",

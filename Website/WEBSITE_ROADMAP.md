@@ -6,7 +6,7 @@
 
 ## OVERVIEW
 
-**Current Version:** v3.1.1
+**Current Version:** v3.1.2
 **Live:** https://www.omniprise.com.py
 **Tech Stack:** Next.js 15, React 19, TypeScript, Tailwind CSS 4, Framer Motion, next-intl, Resend
 
@@ -33,6 +33,7 @@
 | -- | v3.0.0 | "Omniprise 3.0" redesign: single dark theme, photo-led homepage, brand/franchise page upgrades, /proveedores, /prensa, /terminos, /cookies, privacy hardening | August 18 |
 | -- | v3.1.0 | /agent reference page (ES/EN), /llms.txt, AI-crawler robots policy, richer JSON-LD, E2E privacy guard | August 18 |
 | -- | v3.1.1 | Lead-sync mapping fix, franchise form fixes, brand h1, localized metadata, contrast, form abuse protection, company figures centralized, nonce-based CSP (pages render per request), dependency refresh, dead dashboard code removed from the repo root | October 19 |
+| -- | v3.1.2 | Rocco brand entry rewritten (8 dark-kitchens operating, Distrito Perseverancia franchise, menu, brand voice) | October 19 |
 
 ---
 
@@ -168,5 +169,5 @@ Website/
 
 ---
 
-*Last Updated:* October 19, 2026 -- v3.1.1
+*Last Updated:* October 19, 2026 -- v3.1.2
 *Next Milestone:* Location dataset / "Dónde estamos" (pending Bruno's privacy decision), blog/news section (P3)

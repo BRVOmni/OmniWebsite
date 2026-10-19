@@ -1,6 +1,6 @@
 # Omniprise — Website Documentation
 
-**Version 3.1.1 | Next.js 15 | October 2026**
+**Version 3.1.2 | Next.js 15 | October 2026**
 
 > All audit issues resolved. See [`docs/audits/AUDIT_2026-03-28.md`](../docs/audits/AUDIT_2026-03-28.md) for the full history.
 
@@ -466,4 +466,4 @@ Before deploying to production:
 ---
 
 **Last Updated:** October 19, 2026
-**Version:** 3.1.1
+**Version:** 3.1.2
