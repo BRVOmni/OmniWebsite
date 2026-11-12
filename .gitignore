@@ -15,3 +15,6 @@ Website/playwright-report/
 # Local-only material (brand photos, external proposal) — not part of the site
 Brand Pictures/
 proposal/
+
+# Local MCP config (machine-specific paths)
+.mcp.json
